@@ -104,22 +104,23 @@ type ProviderReport struct {
 // Resolution is the full composition plan: what was selected, how it is
 // delivered, and the trace built while those choices were made.
 type Resolution struct {
-	Request        *schema.Request
-	Person         *person.Person
-	Personalities  []string
-	Boundaries     []string
-	RolePurpose    string
-	RoleBriefing   string
-	OperatingBase  string
-	Instructions   []Selected
-	Skills         []Selected
-	CompiledBodies []Selected
-	FavoriteColor  string
-	Warnings       []string
-	Decisions      []Decision
-	Providers      []ProviderReport
-	SourceIDs      []string
-	Repositories   []schema.RepositorySelection
+	Request           *schema.Request
+	Person            *person.Person
+	Personalities     []string
+	Boundaries        []string
+	RolePurpose       string
+	RoleBriefing      string
+	OperatingBase     string
+	OperatingAppendix string
+	Instructions      []Selected
+	Skills            []Selected
+	CompiledBodies    []Selected
+	FavoriteColor     string
+	Warnings          []string
+	Decisions         []Decision
+	Providers         []ProviderReport
+	SourceIDs         []string
+	Repositories      []schema.RepositorySelection
 }
 
 func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, missing []schema.MissingSource) (*Resolution, error) {

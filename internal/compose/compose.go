@@ -27,6 +27,9 @@ type Options struct {
 	// OperatingBase is the host doctrine that leads the bundle's instructions,
 	// so a projected role no longer depends on a host-owned load point.
 	OperatingBase string
+	// OperatingAppendix is the configured tail, kept out of OperatingBase so the
+	// roster-card rewrite cannot reach it. agent-compose#6987.
+	OperatingAppendix string
 }
 
 // RootSource names one trusted provider root selected by a host launcher.
@@ -104,7 +107,7 @@ func RunWithOptions(requestPath, outDir string, opts Options) (*Result, error) {
 	if err != nil {
 		return nil, wrapPolicyError(err, externalOnly)
 	}
-	return materialize(req, p, sources, missing, outDir, externalOnly, "")
+	return materialize(req, p, sources, missing, outDir, externalOnly, "", "")
 }
 
 // RunRoots composes trusted absolute provider roots selected by a host
@@ -163,7 +166,7 @@ func RunRootsWithMissing(
 		}
 		sources = append(sources, source)
 	}
-	return materialize(req, p, sources, missing, outDir, hostExternalOnly, opts.OperatingBase)
+	return materialize(req, p, sources, missing, outDir, hostExternalOnly, opts.OperatingBase, opts.OperatingAppendix)
 }
 
 func materialize(
@@ -174,6 +177,7 @@ func materialize(
 	outDir string,
 	externalOnly bool,
 	operatingBase string,
+	operatingAppendix string,
 ) (*Result, error) {
 	// Applied here because both entry points funnel through materialize, and
 	// everything downstream reads the identity off the person.
@@ -187,6 +191,7 @@ func materialize(
 		return nil, wrapPolicyError(err, externalOnly)
 	}
 	res.OperatingBase = operatingBase
+	res.OperatingAppendix = operatingAppendix
 	b, err := bundle.Materialize(res, outDir)
 	if err != nil {
 		return nil, wrapPolicyError(err, externalOnly)

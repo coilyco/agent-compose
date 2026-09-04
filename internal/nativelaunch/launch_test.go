@@ -797,6 +797,58 @@ func TestRefreshLeadsInstructionsWithTheOperatingBase(t *testing.T) {
 	}
 }
 
+// stripRosterCards deletes a card to the next heading, so an appendix appended
+// after the last card went with it. It travels separately now. #6987.
+func TestRefreshKeepsTheAppendixBehindTheLastRosterCard(t *testing.T) {
+	p, err := person.Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	last := p.RoleOrder[len(p.RoleOrder)-1]
+	card, err := p.RenderRoleIdentityCard(last, p.Roles[last].FavoriteColor, p.RoleActiveBoundaries(last))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	projects := filepath.Join(t.TempDir(), "projects")
+	provider := filepath.Join(projects, "coilyco-flight-deck", "agentic-os")
+	writeProvider(t, provider, true)
+	manifest := filepath.Join(t.TempDir(), "repository-plan.yaml")
+	writeManifest(t, manifest, projects, provider)
+	home := t.TempDir()
+
+	base := "# Agent instructions\n\nPronouns stay she/her.\n\n" + card
+	const tail = "<!-- appendix: agent-compose.yaml entry 1 -->\n## Checkin dashboard\n\nRead the dashboard first."
+	if _, err := Refresh(Options{
+		Role:              "frontend",
+		Harness:           "claude",
+		CWD:               projects,
+		TargetDir:         t.TempDir(),
+		RuntimeHome:       home,
+		OperatingBase:     base,
+		OperatingAppendix: tail,
+		PlanPath:          manifest,
+		OutDir:            filepath.Join(t.TempDir(), "bundles"),
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	raw, err := os.ReadFile(filepath.Join(home, ".claude", "CLAUDE.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := string(raw)
+	if !strings.Contains(body, "## Checkin dashboard") {
+		t.Fatalf("appendix missing from the projected instructions:\n%s", body)
+	}
+	if !strings.Contains(body, "Pronouns stay she/her.") {
+		t.Errorf("operating base doctrine dropped:\n%s", body)
+	}
+	if heading := "\n# " + p.RoleDisplayName(last) + "\n"; strings.Contains(body, heading) {
+		t.Errorf("base still carries the %q roster card", heading)
+	}
+}
+
 // Without a session home the host load point still supplies the base, so
 // repeating it in the bundle would double the doctrine.
 func TestRefreshOmitsTheOperatingBaseWithoutARuntimeHome(t *testing.T) {

@@ -53,6 +53,11 @@ appendix:
     roles: [platform, sysadmin]
 ```
 
+A native role bundle carries the appendix apart from the sources, because it
+rewrites the source body before rendering and a rewrite keyed to headings
+swallows whatever follows the last one. The block lands at the tail of the
+bundle's instructions, holding the position it holds on the host load point.
+
 A `path` entry is rewritten the way a source is: frontmatter stripped,
 `## See also` dropped, relative links absolutized against the file's own
 directory. Inline `text` composes verbatim, because nothing about a config

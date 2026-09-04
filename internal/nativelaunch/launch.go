@@ -43,11 +43,14 @@ type Options struct {
 	RuntimeHome string
 	// OperatingBase leads the composed instructions, so a session home that
 	// replaces the host load point keeps the doctrine that file carried.
-	OperatingBase   string
-	PlanPath        string
-	OutDir          string
-	PersonSelection compose.Options
-	SkipProjection  bool
+	OperatingBase string
+	// OperatingAppendix travels apart from the base because the base is rewritten
+	// before rendering; see cascade.ComposeParts. agent-compose#6987.
+	OperatingAppendix string
+	PlanPath          string
+	OutDir            string
+	PersonSelection   compose.Options
+	SkipProjection    bool
 }
 
 // Result records the immutable bundle and projected load points selected for
@@ -109,6 +112,7 @@ func Refresh(opts Options) (*Result, error) {
 	}
 	selection := opts.PersonSelection
 	selection.OperatingBase = opts.OperatingBase
+	selection.OperatingAppendix = opts.OperatingAppendix
 	composed, err := compose.RunRootsWithMissing(
 		request,
 		roots,

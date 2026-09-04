@@ -317,6 +317,11 @@ func joinInstructions(res *resolver.Resolution) ([]byte, error) {
 		out = append(out, '\n')
 		out = append(out, raw...)
 	}
+	// The appendix bypasses stripRosterCards and lands last, holding the position
+	// it holds on the host load point. agent-compose#6987.
+	if tail := strings.TrimSpace(res.OperatingAppendix); tail != "" {
+		out = append(out, []byte("\n"+tail+"\n")...)
+	}
 	if len(out) > 0 && out[len(out)-1] != '\n' {
 		out = append(out, '\n')
 	}

@@ -153,22 +153,40 @@ func Compose(
 	appendix []AppendixBlock,
 	role string,
 ) (string, error) {
+	body, tail, err := ComposeParts(sources, overrides, appendix, role)
+	if err != nil {
+		return "", err
+	}
+	if tail == "" {
+		return body, nil
+	}
+	return body + "\n" + tail, nil
+}
+
+// ComposeParts returns the source body and the role's appendix separately,
+// because a bundle rewrites the body. See docs/cascade.md. agent-compose#6987.
+func ComposeParts(
+	sources []string,
+	overrides map[string]string,
+	appendix []AppendixBlock,
+	role string,
+) (string, string, error) {
 	parts := []string{Banner}
 	for _, src := range sources {
 		_, body, err := parseSource(src)
 		if err != nil {
-			return "", err
+			return "", "", err
 		}
 		body = strings.Trim(body, "\n")
 		fence := fmt.Sprintf("<!-- source: %s -->", src)
 		if override := overrides[src]; override != "" {
 			_, overrideBody, err := parseSource(override)
 			if err != nil {
-				return "", err
+				return "", "", err
 			}
 			body, err = applyOverrides(body, overrideBody)
 			if err != nil {
-				return "", err
+				return "", "", err
 			}
 			fence = fmt.Sprintf("<!-- source: %s (override: %s) -->", src, filepath.Base(override))
 		}
@@ -176,13 +194,18 @@ func Compose(
 		body = absolutizeLinks(body, filepath.Dir(src))
 		parts = append(parts, fence+"\n"+body)
 	}
+	var blocks []string
 	for _, block := range appendix {
 		if !appendixBinds(block, role) {
 			continue
 		}
-		parts = append(parts, block.Fence+"\n"+block.Body)
+		blocks = append(blocks, block.Fence+"\n"+block.Body)
 	}
-	return strings.Join(parts, "\n\n") + "\n", nil
+	composed := strings.Join(parts, "\n\n") + "\n"
+	if len(blocks) == 0 {
+		return composed, "", nil
+	}
+	return composed, strings.Join(blocks, "\n\n") + "\n", nil
 }
 
 // appendixBinds reports whether a block composes for role; an empty role

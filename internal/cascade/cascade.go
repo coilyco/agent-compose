@@ -275,6 +275,19 @@ func ResolveLoadPoints(cfg *Config) map[string]string {
 // OperatingBase renders the base for one harness and role: the load point's
 // own sources, plus each appendix block bound to that role.
 func OperatingBase(cfg *Config, harness, role string) (string, error) {
+	body, tail, err := OperatingBaseParts(cfg, harness, role)
+	if err != nil {
+		return "", err
+	}
+	if tail == "" {
+		return body, nil
+	}
+	return body + "\n" + tail, nil
+}
+
+// OperatingBaseParts splits that render into sources and appendix, for a caller
+// that rewrites the sources before rendering them. See ComposeParts.
+func OperatingBaseParts(cfg *Config, harness, role string) (string, string, error) {
 	gathered, _ := GatherSources(cfg)
 	filtering := cfg.Scopes != nil
 	var machineScopes []string
@@ -283,7 +296,7 @@ func OperatingBase(cfg *Config, harness, role string) (string, error) {
 	}
 	selected := selectByHarness(SelectByScope(gathered, machineScopes, filtering), harness)
 	if len(selected) == 0 {
-		return "", fmt.Errorf("no operating-base sources matched harness %q", harness)
+		return "", "", fmt.Errorf("no operating-base sources matched harness %q", harness)
 	}
 	overrides := map[string]string{}
 	for _, src := range selected {
@@ -293,9 +306,9 @@ func OperatingBase(cfg *Config, harness, role string) (string, error) {
 	}
 	appendix, errs := GatherAppendix(cfg)
 	if len(errs) > 0 {
-		return "", fmt.Errorf("operating base: %s", strings.Join(errs, "; "))
+		return "", "", fmt.Errorf("operating base: %s", strings.Join(errs, "; "))
 	}
-	return Compose(selected, overrides, appendix, role)
+	return ComposeParts(selected, overrides, appendix, role)
 }
 
 // DefaultSkillLoadPoints mirrors DefaultLoadPoints for skills. Claude reads only

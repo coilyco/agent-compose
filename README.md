@@ -16,7 +16,7 @@ authority attached to it. You can read and diff every file before a run, and
 
 ## The roster
 
-`roster:core` is the zero-config default, and it ships seven seats. Each one has
+`roster:core` is the zero-config default, and it ships eight seats. Each one has
 a name, a charter, and a meld of two personality traits that shape how it writes
 and what it reaches for first.
 

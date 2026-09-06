@@ -1,0 +1,33 @@
+{
+  "theme": "custom:aos-infosec",
+  "spinnerVerbs": {
+    "mode": "replace",
+    "verbs": [
+      "Probing",
+      "Casing",
+      "Circling",
+      "Prying",
+      "Reaching",
+      "Retracing",
+      "Holding",
+      "Hauling",
+      "Persisting",
+      "Tracing",
+      "Finishing",
+      "Anchoring"
+    ]
+  },
+  "spinnerTipsEnabled": true,
+  "spinnerTipsOverride": {
+    "excludeDefault": false,
+    "tips": [
+      "Find what the estate exposes, and prove the path to it before someone else does.",
+      "Cassandra holds the Security Engineer charter. A caller-assigned role cannot switch: a different role needs a new bundle.",
+      "Boundary: suspicious, tenacious."
+    ]
+  },
+  "subagentStatusLine": {
+    "type": "command",
+    "command": "acompose statusline --subagent --color"
+  }
+}

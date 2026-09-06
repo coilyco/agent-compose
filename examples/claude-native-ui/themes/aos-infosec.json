@@ -1,0 +1,21 @@
+{
+  "name": "Security Engineer (Cassandra)",
+  "base": "dark",
+  "overrides": {
+    "autoAccept": "#7f8fd6",
+    "autoAcceptShimmer": "#9daef8",
+    "bashBorder": "#8f8c47",
+    "briefLabelClaude": "#9190c4",
+    "claude": "#9190c4",
+    "claudeShimmer": "#b0afe5",
+    "clawd_body": "#9190c4",
+    "permission": "#8f8c47",
+    "permissionShimmer": "#aeab65",
+    "promptBorder": "#9190c4",
+    "promptBorderShimmer": "#b0afe5",
+    "purple_FOR_SUBAGENTS_ONLY": "#9190c4",
+    "remember": "#8f8c47",
+    "skill": "#7f8fd6",
+    "suggestion": "#8f8c47"
+  }
+}

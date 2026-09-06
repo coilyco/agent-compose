@@ -2,20 +2,20 @@
   "name": "Developer Advocate (Gem)",
   "base": "dark",
   "overrides": {
-    "autoAccept": "#ff9c79",
-    "autoAcceptShimmer": "#ffbc98",
+    "autoAccept": "#f09372",
+    "autoAcceptShimmer": "#ffb391",
     "bashBorder": "#b3be49",
-    "briefLabelClaude": "#f7ab5d",
-    "claude": "#f7ab5d",
-    "claudeShimmer": "#ffcb7e",
-    "clawd_body": "#f7ab5d",
+    "briefLabelClaude": "#eea560",
+    "claude": "#eea560",
+    "claudeShimmer": "#ffc580",
+    "clawd_body": "#eea560",
     "permission": "#b3be49",
     "permissionShimmer": "#d3df6b",
-    "promptBorder": "#f7ab5d",
-    "promptBorderShimmer": "#ffcb7e",
+    "promptBorder": "#eea560",
+    "promptBorderShimmer": "#ffc580",
     "remember": "#b3be49",
-    "skill": "#ff9c79",
+    "skill": "#f09372",
     "suggestion": "#b3be49",
-    "yellow_FOR_SUBAGENTS_ONLY": "#f7ab5d"
+    "yellow_FOR_SUBAGENTS_ONLY": "#eea560"
   }
 }

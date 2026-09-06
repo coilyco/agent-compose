@@ -5,17 +5,17 @@
     "autoAccept": "#8f8c47",
     "autoAcceptShimmer": "#aeab65",
     "bashBorder": "#5fa87a",
-    "briefLabelClaude": "#9c8b31",
-    "claude": "#9c8b31",
-    "claudeShimmer": "#bbaa52",
-    "clawd_body": "#9c8b31",
+    "briefLabelClaude": "#95943e",
+    "claude": "#95943e",
+    "claudeShimmer": "#b4b35e",
+    "clawd_body": "#95943e",
     "permission": "#5fa87a",
     "permissionShimmer": "#7ec898",
-    "promptBorder": "#9c8b31",
-    "promptBorderShimmer": "#bbaa52",
+    "promptBorder": "#95943e",
+    "promptBorderShimmer": "#b4b35e",
     "remember": "#5fa87a",
     "skill": "#8f8c47",
     "suggestion": "#5fa87a",
-    "yellow_FOR_SUBAGENTS_ONLY": "#9c8b31"
+    "yellow_FOR_SUBAGENTS_ONLY": "#95943e"
   }
 }

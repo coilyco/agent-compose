@@ -2,8 +2,8 @@ package person
 
 import "testing"
 
-// Every boundary reaches all seven seats: one owner, two scoped, four deferring.
-// A seat missing from one is the oversight the third state exists to prevent.
+// Every boundary reaches every seat with exactly one owner. The scoped/deferring
+// split is a roster decision that moves as seats are added, so it is not asserted.
 func TestEveryBoundaryAllocatesTheWholeRoster(t *testing.T) {
 	p, err := Load()
 	if err != nil {
@@ -30,10 +30,10 @@ func TestEveryBoundaryAllocatesTheWholeRoster(t *testing.T) {
 				}
 			}
 		}
-		if owner != 1 || scoped != 2 || deferring != 4 {
+		if owner != 1 || owner+scoped+deferring != len(p.RoleOrder) {
 			t.Errorf(
-				"boundary %q reaches %d owner, %d scoped, %d deferring, want 1, 2, 4",
-				boundaryName, owner, scoped, deferring,
+				"boundary %q reaches %d owner, %d scoped, %d deferring, want 1 owner and %d seats total",
+				boundaryName, owner, scoped, deferring, len(p.RoleOrder),
 			)
 		}
 	}

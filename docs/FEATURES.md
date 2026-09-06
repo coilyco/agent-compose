@@ -25,9 +25,9 @@ rather than only in the issue.
 ## Composition engine
 
 * `agent-compose compose` turns a KDL request into an immutable bundle.
-* `roster:core` has 7 seats and 10 personalities. Each seat melds one signature
+* `roster:core` has 8 seats and 11 personalities. Each seat melds one signature
   trait with one bond shared with a sibling seat, and every boundary reaches all
-  seven as one owner, two scoped, and four deferring.
+  eight, exactly one of them as owner.
   [Role briefings](role-briefings.md) own each charter.
 * [External person packages](person-packages.md) and
   [local personality libraries](personality.md) replace the default. Their

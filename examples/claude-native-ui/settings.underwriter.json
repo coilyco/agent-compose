@@ -1,5 +1,5 @@
 {
-  "theme": "custom:aos-infosec",
+  "theme": "custom:aos-underwriter",
   "spinnerVerbs": {
     "mode": "replace",
     "verbs": [
@@ -21,8 +21,8 @@
   "spinnerTipsOverride": {
     "excludeDefault": false,
     "tips": [
-      "Find what the estate exposes, and prove the path to it before someone else does.",
-      "Cassandra holds the Security Engineer charter. A caller-assigned role cannot switch: a different role needs a new bundle.",
+      "Underwrite a company's claim that its high-risk AI system meets the Act, and stand behind the file that proves it.",
+      "Cassandra holds the AI Underwriter charter. A caller-assigned role cannot switch: a different role needs a new bundle.",
       "Boundary: suspicious, tenacious."
     ]
   },

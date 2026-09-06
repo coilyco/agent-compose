@@ -6,10 +6,10 @@ copies drift apart. A body every role declares is a roster-wide rule instead.
 
 ## Why boundaries exist
 
-Role skill bodies have a 400-word ceiling. Before boundaries, every role sharing
-an allocation restated it in its own charter, so shared policy competed with
-role-specific prose for one budget. Extraction freed 602 words across the Core
-Roster with no doctrine lost, and each side is bounded separately.
+Role skill bodies have a 1,200-word ceiling. Before boundaries, every role
+sharing an allocation restated it in its own charter, so shared policy competed
+with role-specific prose for one budget. Extraction freed 602 words across the
+Core Roster with no doctrine lost, and each side is bounded separately.
 
 ## How a boundary differs from its neighbours
 

@@ -30,7 +30,7 @@ tiers. Core roles declare the list explicitly. Core uses exactly two per
 role, covers every canonical personality, caps usage at three roles, and
 requires legible, distinct derived colors. External packages retain any
 nonempty ordered meld. A [role skill](role-briefings.md) needs valid
-frontmatter, three paragraphs, and at most 400 body words after its leading
+frontmatter, three paragraphs, and at most 1,200 body words after its leading
 title. Invalid sources fail loading. The default has eight roles and eleven
 personalities. Its explicit [role-by-tier matrix](harness-vendoring.md) groups
 complex, foundational, and high-security roles without changing their

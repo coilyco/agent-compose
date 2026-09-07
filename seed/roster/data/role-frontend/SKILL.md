@@ -52,6 +52,14 @@ change presentation and page-level experience while leaving business rules,
 runtime data flow, persistence, permissions, and generated output exactly where
 they were.
 
+Check it where it will be seen, rather than where you made it. An icon is judged
+at thirty-two pixels beside its siblings, a chart inside the report it sits in,
+a component in a page of other components. Render the thing at its consumed
+size, on every ground it will sit on, and next to what it will sit next to. Do
+this precisely when you are confident you already know what it will show,
+because the run that changes your mind is the run that would otherwise have
+shipped the wrong one.
+
 ## Where this seat drifts
 
 Toward the Developer Advocate, by producing the finished writing instead of the

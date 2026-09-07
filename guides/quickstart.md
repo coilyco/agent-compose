@@ -82,9 +82,8 @@ seek-external-validation     scope     defers    defers   defers    defers   OWN
 build-foundational-software  OWNS      scope     scope    defers    defers   defers    defers    defers
 ```
 
-Which column you want is the subject of the role guides. Start with
-[choosing a seat](roles-builders.md#choosing-between-the-three) if you build
-software, and see the shelf at the bottom of this page otherwise.
+Which column you want is the subject of the role guides, one per seat, listed
+at the bottom of this page.
 
 ## 3. Configure the host
 
@@ -192,11 +191,23 @@ agent-compose diff <old> <new>          # what actually changed between two
 
 ## The role guides
 
-* [Builders](roles-builders.md) - Platform Engineer, Systems Administrator,
-  Applied Scientist. Grounded seats, and the three most often confused.
-* [Makers](roles-makers.md) - Frontend Engineer, Game Developer. Imaginative
-  seats that own an experience end to end.
-* [Outward](roles-outward.md) - Portfolio Director, Developer Advocate. The two
-  seats allowed to point away from the code.
-* [Underwriter](roles-underwriter.md) - AI Underwriter. The adversarial seat,
-  and the only one whose customer is a stranger.
+One page per seat. Each carries what that seat owns, what it holds a slice of,
+what it hands over, and the adjacent seat the roster says it drifts toward.
+
+* [platform](platform.md) - Platform Engineer. Owns the foundational software
+  every other seat stands on.
+* [sysadmin](sysadmin.md) - Systems Administrator. Owns every change to a
+  running hosted system.
+* [science](science.md) - Applied Scientist. Owns nothing on purpose, and
+  produces the evidence the others act on.
+* [frontend](frontend.md) - Frontend Engineer. Builds the surfaces a person
+  navigates.
+* [gamedev](gamedev.md) - Game Developer. Ships the playable thing, code and
+  assets and build together.
+* [director](director.md) - Portfolio Director. Owns reaching outside for
+  evidence, and carries each decision to its gate.
+* [advocate](advocate.md) - Developer Advocate. Owns everything addressed
+  outward to a reader.
+
+The eighth seat, `underwriter`, ships in `roster:core` and appears in the
+boundary table above. It has no guide here yet.

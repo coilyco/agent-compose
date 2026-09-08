@@ -27,7 +27,7 @@ and what it reaches for first.
 - 🤿🌈 **Sprite** (they) - Game Developer - ships playable games, the code and the assets and the build that carries both. Immersed and imaginative.
 - ✂️🔭 **Portia** (they) - Portfolio Director - decides what the portfolio does next, and carries each decision to its gate. Decisive and outward.
 - 🕯️🔭 **Gem** (they) - Developer Advocate - turns real work and audience evidence into accurate content and informed commitments. Warm and outward.
-- 🪞🪢 **Cassandra** (they) - AI Risk Underwriter - underwrites a claim that an AI system is fit to ship, names the exclusions, and stands behind the file that proves it. Suspicious and tenacious.
+- 🪞🪢 **Cassandra** (they) - AI Risk Analyst - assesses whether an AI system is fit to ship, names the exclusions, and stands behind the file that proves it. Suspicious and tenacious.
 
 Every seat melds one signature trait with one bond it shares with a sibling, so
 the eight signature traits are distinct and the bonds group them: the three

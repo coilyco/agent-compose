@@ -88,6 +88,7 @@ type yamlRoleEntity struct {
 	Seats            []yamlAgent          `yaml:"seats,omitempty"`
 	Acts             []yamlAct            `yaml:"acts,omitempty"`
 	CopyContract     *yamlCopyContract    `yaml:"copy_contract,omitempty"`
+	Archived         bool                 `yaml:"archived,omitempty"`
 }
 
 type yamlEmblemEntity struct {
@@ -201,6 +202,7 @@ func (r *yamlRoleEntity) model() Role {
 		Element:             r.Element,
 		Creature:            r.Creature,
 		Skill:               r.Skill,
+		Archived:            r.Archived,
 		Methods:             r.Methods,
 		SupportedModelTiers: r.ModelTier,
 		Personalities:       r.Personalities,

@@ -98,6 +98,7 @@ def test_role_metadata_matches_the_go_snapshot(loaded: Roster, go_snapshot: dict
             ("purpose", role.purpose, go_role["purpose"]),
             ("skill", role.skill, go_role["skill"]),
             ("skill_source", role.skill_source, go_role["skill_source"]),
+            ("archived", role.archived, go_role.get("archived", False)),
             ("stance", role.stance, go_role["stance"]),
             ("tiers", role.supported_model_tiers, go_role["supported_model_tiers"]),
             ("defers", role.defers, go_role["boundaries"]),

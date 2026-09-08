@@ -6,6 +6,7 @@ stance: standing side-on rather than square, weight on the back foot, head turne
 element: fire
 creature: Fire-Snake-Badger
 skill: role-underwriter
+archived: true
 model_tier:
   - frontier
 personalities:

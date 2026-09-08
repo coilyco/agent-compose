@@ -336,6 +336,9 @@ func TestEmbeddedRolePersonalitiesSelectBoundSkills(t *testing.T) {
 	for _, roleName := range p.RoleOrder {
 		t.Run(roleName, func(t *testing.T) {
 			role := p.Roles[roleName]
+			if role.Archived {
+				t.Skip("archived roles are refused by Resolve, which TestResolveRefusesAnArchivedRole covers")
+			}
 			modelTier := schema.ModelTierFrontier
 			if len(role.SupportedModelTiers) > 0 {
 				modelTier = role.SupportedModelTiers[0]
@@ -482,5 +485,30 @@ func TestResolveShadowsCopiesThatDifferOnlyByLineEnding(t *testing.T) {
 	}
 	if !shadowed {
 		t.Fatalf("expected the CRLF copy shadowed, decisions: %+v", res.Decisions)
+	}
+}
+
+func TestResolveRefusesAnArchivedRole(t *testing.T) {
+	src := makeSource(t, "aos", nil)
+	p := testPerson()
+	role := p.Roles["platform"]
+	role.Archived = true
+	p.Roles["platform"] = role
+
+	_, err := Resolve(testRequest(schema.DeliveryNativeSkills), p, []*schema.Source{src}, nil)
+	if err == nil || !strings.Contains(err.Error(), "archived") {
+		t.Fatalf("expected an archived role to be refused, got %v", err)
+	}
+	// The roster still describes the seat, so the message must not read as absence.
+	if strings.Contains(err.Error(), "not defined") {
+		t.Fatalf("archived must not report as undefined, got %v", err)
+	}
+}
+
+func TestResolveComposesARoleThatIsNotArchived(t *testing.T) {
+	src := makeSource(t, "aos", nil)
+
+	if _, err := Resolve(testRequest(schema.DeliveryNativeSkills), testPerson(), []*schema.Source{src}, nil); err != nil {
+		t.Fatalf("a live role must still compose, got %v", err)
 	}
 }

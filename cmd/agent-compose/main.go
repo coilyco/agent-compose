@@ -607,9 +607,13 @@ func runCatalogRoles(_ context.Context, cmd *cli.Command) error {
 // The label tracks the `personalities` field rather than the meld heading, so
 // this line and `catalog personalities` name the same thing.
 func catalogRoleLine(entry person.RoleCatalogEntry) string {
+	slug := entry.Slug
+	if entry.Archived {
+		slug += " (archived)"
+	}
 	return fmt.Sprintf(
 		"%s // %s // %s // personalities: %s // color: %s\n",
-		entry.Slug,
+		slug,
 		entry.Skill,
 		entry.Purpose,
 		strings.Join(entry.Personalities, ", "),

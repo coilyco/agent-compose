@@ -147,6 +147,11 @@ func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, mi
 		return nil, fmt.Errorf("role %q is not defined by person %q; defined roles: %s",
 			req.Role, p.Name, strings.Join(sortedKeys(p.Roles), ", "))
 	}
+	// Distinguished from the line above on purpose: a retired seat is still
+	// described by the roster, so "not defined" would send a reader hunting.
+	if role.Archived {
+		return nil, fmt.Errorf("role %q is archived by person %q and cannot be composed", req.Role, p.Name)
+	}
 	if !role.SupportsModelTier(req.ModelTier) {
 		return nil, fmt.Errorf(
 			"role %q does not support model tier %q",

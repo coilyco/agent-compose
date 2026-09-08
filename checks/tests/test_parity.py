@@ -65,11 +65,22 @@ def _tree(root: pathlib.Path) -> dict[str, bytes]:
     return {str(p.relative_to(root)): p.read_bytes() for p in files}
 
 
+def _composable() -> list[str]:
+    """Role order minus the archived, which both engines refuse to compose.
+
+    Parity over a refused role has nothing to compare. The refusal itself is
+    covered on each side: TestResolveRefusesAnArchivedRole in Go, and
+    test_compose_refuses_an_archived_role in housecast.
+    """
+    loaded_roster = roster.load()
+    return [n for n in loaded_roster.role_order if not loaded_roster.roles[n].archived]
+
+
 def _cases() -> list[tuple[str, str]]:
     loaded_roster = roster.load()
     return [
         (name, tier)
-        for name in loaded_roster.role_order
+        for name in _composable()
         for tier in loaded_roster.roles[name].supported_model_tiers
     ]
 
@@ -87,7 +98,7 @@ def test_bundle_is_byte_identical_to_go(
     assert _tree(mine) == _tree(reference)
 
 
-@pytest.mark.parametrize("role", sorted(roster.load().role_order))
+@pytest.mark.parametrize("role", sorted(_composable()))
 def test_compiled_delivery_is_byte_identical_to_go(
     go_binary: pathlib.Path,
     loaded: Roster,

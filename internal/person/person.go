@@ -125,6 +125,9 @@ type Role struct {
 	Seats               []Seat         `json:"seats"`
 	SupportedModelTiers []string       `json:"supported_model_tiers,omitempty"`
 	CopyContract        *CopyContract  `json:"copy_contract,omitempty"`
+	// Retired from selection, kept whole and still a valid adjacency target.
+	// See docs/role-selection.md.
+	Archived bool `json:"archived,omitempty"`
 }
 
 // ScopedBoundary is a bounded grant, not an absence: the scope text is the

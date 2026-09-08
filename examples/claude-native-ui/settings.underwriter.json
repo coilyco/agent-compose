@@ -21,8 +21,8 @@
   "spinnerTipsOverride": {
     "excludeDefault": false,
     "tips": [
-      "Underwrite a company's claim that its high-risk AI system meets the Act, and stand behind the file that proves it.",
-      "Cassandra holds the AI Underwriter charter. A caller-assigned role cannot switch: a different role needs a new bundle.",
+      "Underwrite a claim that an AI system is fit to ship, name the exclusions, and stand behind the file that proves it.",
+      "Cassandra holds the AI Risk Underwriter charter. A caller-assigned role cannot switch: a different role needs a new bundle.",
       "Boundary: suspicious, tenacious."
     ]
   },

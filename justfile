@@ -109,6 +109,10 @@ check *ARGS:
 parity *ARGS:
     @uv run pytest checks/tests/test_parity.py "$@"
 
+# Re-resolve uv.lock after a pyproject dependency pin moves.
+lock *ARGS:
+    @uv lock "$@"
+
 # Reconcile the checks virtualenv with pyproject.toml.
 sync *ARGS:
     @uv sync "$@"

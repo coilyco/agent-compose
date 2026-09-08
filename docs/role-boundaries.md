@@ -105,10 +105,10 @@ until an independently reviewed re-run.
 Each slug names the behavior that moves. Every boundary reaches all eight seats
 and exactly one owns it, so a missing seat is a defect. The rest split per boundary.
 
-* `build-foundational-software`, owner platform - scoped for sysadmin and science, who write estate configuration and measurement instruments. Deferred by frontend, gamedev, director, advocate, and underwriter, who specifies the platform it sells and hands the build over.
+* `build-foundational-software`, owner platform - scoped for sysadmin and science, who write estate configuration and measurement instruments. Deferred by frontend, gamedev, director, advocate, and underwriter, who specifies the tooling an engagement needs and hands the build over.
 * `modify-live-backend`, owner sysadmin - scoped for platform and gamedev, who run CI, local environments, and a local world. Deferred by advocate, science, frontend, director, and underwriter.
 * `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by platform, sysadmin, science, director, and underwriter.
-* `seek-external-validation`, owner director - scoped for advocate, platform, and underwriter, who read their audience, audit a candidate dependency, and reach the regulator and market their own venture sells into. Deferred by frontend, sysadmin, gamedev, and science.
+* `seek-external-validation`, owner director - scoped for advocate, platform, and underwriter, who read their audience, audit a candidate dependency, and reach the regime and market the system under assessment answers to. Deferred by frontend, sysadmin, gamedev, and science.
 
 ## See also
 

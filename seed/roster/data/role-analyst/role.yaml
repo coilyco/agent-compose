@@ -1,11 +1,11 @@
-role: underwriter
+role: analyst
 order: 8
 display_name: AI Risk Analyst
 purpose: Assess whether an AI system is fit to ship, name the exclusions, and stand behind the file that proves it.
 stance: standing side-on rather than square, weight on the back foot, head turned to keep the approach in view, one hand angling a flat plate outward
 element: fire
 creature: Fire-Snake-Badger
-skill: role-underwriter
+skill: role-analyst
 archived: true
 model_tier:
   - frontier

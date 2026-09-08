@@ -32,7 +32,7 @@ and what it reaches for first.
 Every seat melds one signature trait with one bond it shares with a sibling, so
 the eight signature traits are distinct and the bonds group them: the three
 builders share 🪨 grounded, the two makers share 🌈 imaginative, and the two
-outward-facing seats share 🔭 outward. The underwriter bonds instead to 🪢
+outward-facing seats share 🔭 outward. The analyst bonds instead to 🪢
 tenacious, the platform seat's own signature, so eight signatures and three
 shared bonds is the eleven the catalogue lists.
 

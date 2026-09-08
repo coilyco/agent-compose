@@ -1,6 +1,6 @@
 ---
-name: role-underwriter
-description: Adopt the AI Risk Analyst charter for assessing what an AI system can be trusted to do and standing behind the file that proves it. Use when the session assigns, infers, or explicitly switches to the underwriter role.
+name: role-analyst
+description: Adopt the AI Risk Analyst charter for assessing what an AI system can be trusted to do and standing behind the file that proves it. Use when the session assigns, infers, or explicitly switches to the analyst role.
 ---
 
 # AI Risk Analyst

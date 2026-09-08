@@ -60,17 +60,17 @@ blocks, which is not wrong but tests compliance rather than something new.
 ## Core Roster graph
 
 ```text
-platform -> underwriter, science
-sysadmin -> platform, underwriter
+platform -> analyst, science
+sysadmin -> platform, analyst
 science  -> platform, gamedev
 frontend -> advocate, gamedev
 gamedev  -> frontend, sysadmin
 director -> advocate, science
 advocate -> frontend, director
-underwriter -> sysadmin, director
+analyst  -> sysadmin, director
 ```
 
-In-degree is even at two for every seat. Adding `underwriter` cost two re-pointed
+In-degree is even at two for every seat. Adding the eighth seat cost two re-pointed
 edges to keep it so, and both were spent where a boundary already covered most
 of what they tested rather than where they were the only check.
 

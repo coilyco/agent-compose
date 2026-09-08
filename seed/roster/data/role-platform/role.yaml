@@ -20,8 +20,8 @@ scoped_boundaries:
   - boundary: seek-external-validation
     scope: the maintainers, cadence, licence, and supply-chain health of a candidate dependency, never where the estate should invest
 adjacents:
-  - role: sysadmin
-    reason: operating what it built instead of handing the running estate over
+  - role: analyst
+    reason: assessing what a dependency exposes once trusted instead of whether the venture should buy it
   - role: science
     reason: building a measurement harness as ordinary foundational tooling instead of leaving the measuring to it
 voice:

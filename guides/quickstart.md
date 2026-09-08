@@ -75,7 +75,7 @@ each boundary, a few hold a named slice of it, and the rest hand the work over
 rather than doing it badly.
 
 ```
-boundary                     platform  sysadmin  science  frontend  gamedev  director  advocate  underwriter
+boundary                     platform  sysadmin  science  frontend  gamedev  director  advocate  analyst
 modify-live-backend          scope     OWNS      defers   defers    scope    defers    defers    defers
 suggest-external-comms       defers    defers    defers   scope     scope    defers    OWNS      defers
 seek-external-validation     scope     defers    defers   defers    defers   OWNS      scope     scope
@@ -209,7 +209,7 @@ what it hands over, and the adjacent seat the roster says it drifts toward.
 * [advocate](advocate.md) - Developer Advocate. Owns everything addressed
   outward to a reader.
 
-The eighth seat, `underwriter`, ships in `roster:core` and appears in the
+The eighth seat, `analyst`, ships in `roster:core` and appears in the
 boundary table above. It has no guide here yet.
 
 Those seven answer "what is this seat for". For a worked morning running two of

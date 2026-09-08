@@ -34,4 +34,4 @@ frontend // #ee7eea // #2e1328 // playful, imaginative
 gamedev // #2980fe // #032036 // immersed, imaginative
 director // #de6962 // #341212 // decisive, outward
 advocate // #eea560 // #2f1800 // warm, outward
-underwriter // #9190c4 // #1e1936 // suspicious, tenacious
+analyst // #9190c4 // #1e1936 // suspicious, tenacious

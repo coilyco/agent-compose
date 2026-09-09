@@ -21,9 +21,9 @@ before the first release tag, and this roll-forward window keeps a failed
 release eligible when a later main push carries only recovery evidence. The
 classifier fails closed to publication when its base revision is unavailable.
 
-An automatic release bumps the minor version, cross-compiles macOS, Linux, and
-Windows binaries, creates the Forgejo release, uploads checksums and package
-files, and updates Homebrew and Scoop when their write tokens are present.
+An automatic release publishes a new minor version once its binaries build,
+cross-compiling macOS, Linux and Windows, creating the Forgejo release, uploading
+checksums and package files, and updating Homebrew and Scoop when tokens allow.
 Those two bumps run **before** the GitHub mirror check, whose poll ceiling stays
 well under the job's `timeout-minutes`. Neither channel reads the mirror, and a
 step killed mid-loop takes every later step down with it, so a red release may

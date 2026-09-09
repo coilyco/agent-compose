@@ -67,6 +67,11 @@ def main() -> int:
     try:
         with opener.open(request, timeout=15) as response:
             response.read()
+    except urllib.error.HTTPError as exc:
+        # The status separates the fixes: 400 is a malformed chat id, 401 a bad
+        # token, 5xx wait and retry. The body is not printed, it echoes payload.
+        print(f"telegram alert failed (HTTP {exc.code})", file=sys.stderr)
+        return 1
     except urllib.error.URLError as exc:
         print(f"telegram alert failed ({type(exc).__name__})", file=sys.stderr)
         return 1

@@ -77,6 +77,7 @@ type yamlRoleEntity struct {
 	Skill            string               `yaml:"skill,omitempty"`
 	Methods          []string             `yaml:"methods,omitempty"`
 	ModelTier        []string             `yaml:"model_tier,omitempty"`
+	Guardrail        string               `yaml:"guardrail,omitempty"`
 	Personalities    []string             `yaml:"personalities,omitempty"`
 	Boundaries       []string             `yaml:"boundaries,omitempty"`
 	ScopedBoundaries []yamlScopedBoundary `yaml:"scoped_boundaries,omitempty"`
@@ -121,6 +122,21 @@ type yamlPersonalityEntity struct {
 	Verbs       []string             `yaml:"verbs,omitempty"`
 	Aliases     []string             `yaml:"aliases,omitempty"`
 	Acts        []yamlAct            `yaml:"acts,omitempty"`
+}
+
+type yamlGuardrailEntity struct {
+	Guardrail string       `yaml:"guardrail"`
+	Order     int          `yaml:"order,omitempty"`
+	Skill     string       `yaml:"skill,omitempty"`
+	Role      string       `yaml:"role,omitempty"`
+	Card      string       `yaml:"card,omitempty"`
+	Detector  string       `yaml:"detector,omitempty"`
+	Attests   *yamlAttests `yaml:"attests,omitempty"`
+}
+
+type yamlAttests struct {
+	In  string `yaml:"in"`
+	Out string `yaml:"out"`
 }
 
 type yamlBoundaryEntity struct {
@@ -201,6 +217,7 @@ func (r *yamlRoleEntity) model() Role {
 		Stance:              r.Stance,
 		Element:             r.Element,
 		Creature:            r.Creature,
+		Guardrail:           r.Guardrail,
 		Skill:               r.Skill,
 		Archived:            r.Archived,
 		Methods:             r.Methods,
@@ -261,6 +278,14 @@ func (p *yamlPersonalityEntity) model() Personality {
 		}
 	}
 	return personality
+}
+
+func (g *yamlGuardrailEntity) model() Guardrail {
+	rail := Guardrail{Skill: g.Skill, Role: g.Role, Card: g.Card, Detector: g.Detector}
+	if g.Attests != nil {
+		rail.Attests = &GuardrailAttests{In: g.Attests.In, Out: g.Attests.Out}
+	}
+	return rail
 }
 
 func (b *yamlBoundaryEntity) model() Boundary {

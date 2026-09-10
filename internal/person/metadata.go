@@ -157,6 +157,9 @@ func (p *Person) RenderRoleIdentityCard(roleName, meldedColor string, boundaries
 	if len(boundarySkills) > 0 {
 		fmt.Fprintf(&out, "**Boundaries // `%s`**\n", strings.Join(boundarySkills, "` // `"))
 	}
+	if role.Guardrail != "" {
+		fmt.Fprintf(&out, "**Guardrail // `%s`**\n", p.Guardrails[role.Guardrail].Skill)
+	}
 	fmt.Fprintf(&out, "**Favorite color // `%s`**\n", meldedColor)
 	if role.Identity != nil {
 		fmt.Fprintf(
@@ -176,6 +179,14 @@ func (p *Person) RenderRoleIdentityCard(roleName, meldedColor string, boundaries
 			fmt.Fprintf(&out, " // %s: %s (%s)", seat.Selector(), seat.Name, seat.Pronouns)
 		}
 		out.WriteString("**\n")
+	}
+	// Ahead of the meld on purpose: a correction arriving after five kilobytes of
+	// register guidance competes with it rather than bounding it.
+	if role.Guardrail != "" {
+		rail := p.Guardrails[role.Guardrail]
+		fmt.Fprintf(&out, "\n## Guardrail // %s\n\n", displaySlug(role.Guardrail))
+		fmt.Fprintf(&out, "%s\n\n", strings.TrimSpace(rail.Card))
+		fmt.Fprintf(&out, "The procedure is `%s`. Load it before you rely on it.\n", rail.Skill)
 	}
 	out.WriteString("\n## Personality meld\n\n")
 	for _, name := range role.Personalities {
@@ -235,6 +246,9 @@ func (p *Person) RenderRoleIdentityCard(roleName, meldedColor string, boundaries
 	named := append([]string{roleSkill}, boundarySkills...)
 	for _, name := range role.Personalities {
 		named = append(named, p.Personalities[name].Skill)
+	}
+	if role.Guardrail != "" {
+		named = append(named, p.Guardrails[role.Guardrail].Skill)
 	}
 	out.WriteString("## Active doctrine\n\n")
 	sizes, total := p.skillBodySizes(roleName, named)

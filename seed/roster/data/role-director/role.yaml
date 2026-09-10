@@ -8,6 +8,7 @@ creature: Air-Falcon-Adder
 skill: role-director
 model_tier:
   - frontier
+guardrail: unsycophantic-critique
 personalities:
   - decisive
   - outward

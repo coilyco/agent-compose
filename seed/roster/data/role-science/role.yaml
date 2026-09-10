@@ -8,6 +8,7 @@ creature: Water-Frog-Mole
 skill: role-science
 model_tier:
   - frontier
+guardrail: provable-results
 personalities:
   - empirical
   - grounded

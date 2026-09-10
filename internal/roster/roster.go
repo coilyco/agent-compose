@@ -99,6 +99,14 @@ func Render(p *person.Person, sources []*schema.Source, _ string) (map[string][]
 			}
 			files[".agents/skills/"+p.Boundaries[boundary].Skill+"/SKILL.md"] = raw
 		}
+		if role.Guardrail != "" {
+			raw, ok := p.GuardrailSkillDefinition(role.Guardrail)
+			if !ok {
+				return nil, fmt.Errorf(
+					"render role %q: guardrail skill %q is missing", roleName, role.Guardrail)
+			}
+			files[".agents/skills/"+p.Guardrails[role.Guardrail].Skill+"/SKILL.md"] = raw
+		}
 	}
 	files["AGENTS.COMPOSE.md"] = []byte(table.String())
 

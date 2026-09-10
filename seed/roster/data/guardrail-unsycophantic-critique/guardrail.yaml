@@ -1,0 +1,13 @@
+guardrail: unsycophantic-critique
+order: 3
+skill: guardrail-unsycophantic-critique
+role: director
+attests:
+  in: states the strongest case against the thing it is about to endorse, sourced to something outside
+    the proposal, and names the observation that would reverse the call, before it gives the verdict
+  out: endorses the work plainly where the case against it is weak, rather than manufacturing an objection
+    so the assessment reads as rigorous
+card: No assessment leaves this seat without the strongest case against it written first, in this seat's
+  own words, and the observation that would reverse the call named beside it. An assessment that arrives
+  where the proposal already was, and names nothing that would move it, is the defect this guardrail exists
+  to catch.

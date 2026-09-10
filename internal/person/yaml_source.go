@@ -163,6 +163,25 @@ func buildYAMLPerson(kind, name string, files []sectionFile, label string) (*Per
 			}
 			p.Boundaries[entity.Boundary] = entity.model()
 			p.BoundaryOrder = append(p.BoundaryOrder, entity.Boundary)
+		case "guardrail":
+			var entity yamlGuardrailEntity
+			if err := decodeEntity(file.raw, &entity); err != nil {
+				return nil, fmt.Errorf("%s: person fragment %q: %w", label, file.name, err)
+			}
+			if entity.Guardrail != file.slug {
+				return nil, fmt.Errorf(
+					"%s: person fragment %q filename does not match guardrail %q",
+					label, file.name, entity.Guardrail)
+			}
+			if _, dup := p.Guardrails[entity.Guardrail]; dup {
+				return nil, fmt.Errorf(
+					"%s: person guardrail %q declared twice", label, entity.Guardrail)
+			}
+			if p.Guardrails == nil {
+				p.Guardrails = map[string]Guardrail{}
+			}
+			p.Guardrails[entity.Guardrail] = entity.model()
+			p.GuardrailOrder = append(p.GuardrailOrder, entity.Guardrail)
 		}
 	}
 	p.Raw = raw.Bytes()

@@ -10,6 +10,7 @@ model_tier:
   - frontier
   - commodity
   - oss
+guardrail: house-tone
 personalities:
   - warm
   - outward

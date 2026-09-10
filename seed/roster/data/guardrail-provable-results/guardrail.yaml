@@ -1,0 +1,13 @@
+guardrail: provable-results
+order: 1
+skill: guardrail-provable-results
+role: science
+attests:
+  in: pastes the command that produced the claim and that command's output beside it, tagged MEASURED,
+    so a reader can check it without rerunning anything
+  out: makes the claim it cannot measure and marks it EXPECTED with what would settle it, rather than
+    withholding the claim to avoid needing the tag
+card: No number, comparison, or completion claim leaves this seat without the command that produced it
+  and that command's output beside it, in chat exactly as in a commit. Tag every such claim MEASURED or
+  EXPECTED before you send it. A claim tagged MEASURED whose command a reader cannot see is the defect
+  this guardrail exists to catch.

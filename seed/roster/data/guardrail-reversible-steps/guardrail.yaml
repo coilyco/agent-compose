@@ -1,0 +1,13 @@
+guardrail: reversible-steps
+order: 4
+skill: guardrail-reversible-steps
+role: sysadmin
+attests:
+  in: names the reversal before the change, as the command that puts the system back and the observation
+    that confirms it went back, so a reader could undo it without asking this seat
+  out: takes the step that has no reversal and says so plainly, naming what is lost and what it captured
+    first, rather than declining the change to avoid owning the risk
+card: No change to a running system leaves this seat without its reversal written first, in the same message,
+  as the command that puts the system back. A reversal composed after the change landed was never a plan,
+  and an irreversible step taken without saying it is irreversible is the defect this guardrail exists
+  to catch.

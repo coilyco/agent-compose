@@ -66,6 +66,7 @@ var personSections = []struct {
 	{directory: "roles", node: "role"},
 	{directory: "boundaries", node: "boundary"},
 	{directory: "personalities", node: "personality"},
+	{directory: "guardrails", node: "guardrail"},
 }
 
 var librarySections = []struct {
@@ -74,6 +75,7 @@ var librarySections = []struct {
 }{
 	{directory: "boundaries", node: "boundary"},
 	{directory: "personalities", node: "personality"},
+	{directory: "guardrails", node: "guardrail"},
 }
 
 // Seat is one named agent identity within a role. The harness joins the
@@ -117,7 +119,10 @@ type Role struct {
 	Creature         string           `json:"creature,omitempty"`
 	// Element selects the animal lineage a seat is drawn from, ATLA-style.
 	// Kai's assignment, mirrored by the renderer. See docs/identity.md.
-	Element             string         `json:"element,omitempty"`
+	Element string `json:"element,omitempty"`
+	// Guardrail names this role's guardrail element, or is empty. Four roles
+	// carry one by Kai's scope decision, so absence is a decision.
+	Guardrail           string         `json:"guardrail,omitempty"`
 	Personalities       []string       `json:"personalities"`
 	FavoriteColor       string         `json:"favorite_color,omitempty"`
 	Background          string         `json:"background,omitempty"`
@@ -235,6 +240,25 @@ type Boundary struct {
 	Source  string `json:"source,omitempty"`
 	Digest  string `json:"digest,omitempty"`
 	Acts    []Act  `json:"acts,omitempty"`
+}
+
+// Guardrail is one strong course correction bound to a single role. Card is
+// eager, so the correction fires without the seat choosing to load its skill.
+type Guardrail struct {
+	Skill    string            `json:"skill"`
+	Role     string            `json:"role"`
+	Card     string            `json:"card"`
+	Detector string            `json:"detector,omitempty"`
+	Attests  *GuardrailAttests `json:"attests,omitempty"`
+	Source   string            `json:"source,omitempty"`
+	Digest   string            `json:"digest,omitempty"`
+}
+
+// GuardrailAttests carries the two eval targets an attested guardrail authors.
+// A detector generates both instead, so exactly one of the pair is ever set.
+type GuardrailAttests struct {
+	In  string `json:"in"`
+	Out string `json:"out"`
 }
 
 // ActsForSide returns the acts a seat holding this boundary on one side runs.
@@ -395,12 +419,15 @@ type Person struct {
 	BoundaryOrder        []string               `json:"boundary_order,omitempty"`
 	Personalities        map[string]Personality `json:"personalities"`
 	PersonalityOrder     []string               `json:"personality_order"`
+	Guardrails           map[string]Guardrail   `json:"guardrails,omitempty"`
+	GuardrailOrder       []string               `json:"guardrail_order,omitempty"`
 	Raw                  []byte                 `json:"-"`
 	Libraries            map[string]string      `json:"-"`
 	PersonalityLibraries map[string]string      `json:"-"`
 	roleSkills           map[string][]byte
 	roleMethods          map[string]map[string][]byte
 	boundarySkills       map[string][]byte
+	guardrailSkills      map[string][]byte
 	source               fs.FS
 }
 
@@ -1048,6 +1075,9 @@ func loadLibrarySource(source fs.FS, label string) (*Person, string, error) {
 	}
 	// A library may publish shared doctrine, so its boundary bodies are read and
 	// bounded here rather than only in the consuming package.
+	if err := loadGuardrailSkills(source, library); err != nil {
+		return nil, "", fmt.Errorf("personality library %q: %w", id, err)
+	}
 	if err := loadBoundarySkills(source, library); err != nil {
 		return nil, "", fmt.Errorf("personality library %q: %w", id, err)
 	}
@@ -1200,6 +1230,9 @@ func loadSource(source fs.FS, label string) (*Person, error) {
 	if err := loadRoleMethods(source, p); err != nil {
 		return nil, fmt.Errorf("%s: %w", label, err)
 	}
+	if err := loadGuardrailSkills(source, p); err != nil {
+		return nil, err
+	}
 	if err := loadBoundarySkills(source, p); err != nil {
 		return nil, fmt.Errorf("%s: %w", label, err)
 	}
@@ -1321,6 +1354,38 @@ func loadBoundarySkills(source fs.FS, p *Person) error {
 		p.boundarySkills[boundaryName] = append([]byte(nil), raw...)
 	}
 	return nil
+}
+
+// loadGuardrailSkills reads each guardrail body. The card half is eager and
+// lives on the element, so only the procedure is read here.
+func loadGuardrailSkills(source fs.FS, p *Person) error {
+	p.guardrailSkills = map[string][]byte{}
+	for _, name := range p.GuardrailOrder {
+		rail := p.Guardrails[name]
+		path := "definitions/skills/" + rail.Skill + "/SKILL.md"
+		raw, err := fs.ReadFile(source, path)
+		if err != nil {
+			return fmt.Errorf("guardrail %q skill %q: read definition: %w", name, rail.Skill, err)
+		}
+		if err := validateSkillDefinition(rail.Skill, raw); err != nil {
+			return err
+		}
+		digest := sha256.Sum256(raw)
+		rail.Source = p.ProviderID() + ":guardrail:" + name
+		rail.Digest = fmt.Sprintf("sha256:%x", digest)
+		p.Guardrails[name] = rail
+		p.guardrailSkills[name] = append([]byte(nil), raw...)
+	}
+	return nil
+}
+
+// GuardrailSkillDefinition returns the raw procedure skill for one guardrail.
+func (p *Person) GuardrailSkillDefinition(name string) ([]byte, bool) {
+	raw, ok := p.guardrailSkills[name]
+	if !ok {
+		return nil, false
+	}
+	return append([]byte(nil), raw...), true
 }
 
 // BoundarySkillDefinition returns the raw shared doctrine skill for one boundary.
@@ -1653,10 +1718,11 @@ func Source(p *Person) (*schema.Source, error) {
 		return nil, fmt.Errorf("person %q personality invariant is empty", p.Name)
 	}
 
-	// The definitions tree carries personality and boundary bodies alike, so the
-	// canonical set spans both catalogs.
-	expected := make(map[string]bool, len(p.Personalities)+len(p.Boundaries))
-	canonicalSkills := make([]string, 0, len(p.Personalities)+len(p.Boundaries))
+	// The definitions tree carries personality, boundary and guardrail bodies
+	// alike, so the canonical set spans all three catalogs.
+	total := len(p.Personalities) + len(p.Boundaries) + len(p.Guardrails)
+	expected := make(map[string]bool, total)
+	canonicalSkills := make([]string, 0, total)
 	for _, binding := range p.Personalities {
 		expected[binding.Skill] = true
 		canonicalSkills = append(canonicalSkills, binding.Skill)
@@ -1665,6 +1731,10 @@ func Source(p *Person) (*schema.Source, error) {
 	for _, binding := range p.Boundaries {
 		expected[binding.Skill] = true
 		boundarySkills[binding.Skill] = true
+		canonicalSkills = append(canonicalSkills, binding.Skill)
+	}
+	for _, binding := range p.Guardrails {
+		expected[binding.Skill] = true
 		canonicalSkills = append(canonicalSkills, binding.Skill)
 	}
 	sort.Strings(canonicalSkills)

@@ -15,16 +15,18 @@ const (
 // Snapshot is the complete public person boundary emitted during convergence.
 // Model selection, authority, and runtime routing stay outside this contract.
 type Snapshot struct {
-	Format        string                  `json:"format"`
-	SchemaVersion int                     `json:"schema_version"`
-	Source        string                  `json:"source"`
-	Person        string                  `json:"person"`
-	RoleOrder     []string                `json:"role_order"`
-	Roles         map[string]SnapshotRole `json:"roles"`
-	BoundaryOrder []string                `json:"boundary_order,omitempty"`
-	Boundaries    map[string]Boundary     `json:"boundaries,omitempty"`
-	Personalities map[string]Personality  `json:"personalities"`
-	Expressions   []string                `json:"expressions"`
+	Format         string                  `json:"format"`
+	SchemaVersion  int                     `json:"schema_version"`
+	Source         string                  `json:"source"`
+	Person         string                  `json:"person"`
+	RoleOrder      []string                `json:"role_order"`
+	Roles          map[string]SnapshotRole `json:"roles"`
+	BoundaryOrder  []string                `json:"boundary_order,omitempty"`
+	Boundaries     map[string]Boundary     `json:"boundaries,omitempty"`
+	Personalities  map[string]Personality  `json:"personalities"`
+	GuardrailOrder []string                `json:"guardrail_order,omitempty"`
+	Guardrails     map[string]Guardrail    `json:"guardrails,omitempty"`
+	Expressions    []string                `json:"expressions"`
 }
 
 // SnapshotRole embeds the canonical role so future role fields enter the
@@ -45,6 +47,21 @@ func BuildSnapshot(p *Person) (*Snapshot, error) {
 		if !ok {
 			return nil, fmt.Errorf("build person snapshot: role order names missing role %q", name)
 		}
+		if role.Guardrail != "" {
+			rail, ok := p.Guardrails[role.Guardrail]
+			if !ok {
+				return nil, fmt.Errorf(
+					"build person snapshot: role %q names missing guardrail %q",
+					name, role.Guardrail,
+				)
+			}
+			if rail.Role != name {
+				return nil, fmt.Errorf(
+					"build person snapshot: role %q names guardrail %q, which claims role %q",
+					name, role.Guardrail, rail.Role,
+				)
+			}
+		}
 		for _, personalityName := range role.Personalities {
 			if _, ok := p.Personalities[personalityName]; !ok {
 				return nil, fmt.Errorf(
@@ -62,16 +79,18 @@ func BuildSnapshot(p *Person) (*Snapshot, error) {
 		)
 	}
 	return &Snapshot{
-		Format:        SnapshotFormat,
-		SchemaVersion: SnapshotSchemaVersion,
-		Source:        p.ProviderID(),
-		Person:        p.Name,
-		RoleOrder:     append([]string(nil), p.RoleOrder...),
-		Roles:         roles,
-		BoundaryOrder: append([]string(nil), p.BoundaryOrder...),
-		Boundaries:    p.Boundaries,
-		Personalities: p.Personalities,
-		Expressions:   ExpressionVocabulary(),
+		Format:         SnapshotFormat,
+		SchemaVersion:  SnapshotSchemaVersion,
+		Source:         p.ProviderID(),
+		Person:         p.Name,
+		RoleOrder:      append([]string(nil), p.RoleOrder...),
+		Roles:          roles,
+		BoundaryOrder:  append([]string(nil), p.BoundaryOrder...),
+		Boundaries:     p.Boundaries,
+		Personalities:  p.Personalities,
+		GuardrailOrder: append([]string(nil), p.GuardrailOrder...),
+		Guardrails:     p.Guardrails,
+		Expressions:    ExpressionVocabulary(),
 	}, nil
 }
 

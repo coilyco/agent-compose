@@ -1852,6 +1852,31 @@ func Source(p *Person) (*schema.Source, error) {
 				EntryPoint: "SKILL.md",
 			})
 		}
+		// A guardrail binds to exactly one role, so it rides here rather than in
+		// the shared skill list, the same way a boundary body does.
+		if rail := p.Roles[roleName].Guardrail; rail != "" {
+			binding, ok := p.Guardrails[rail]
+			if !ok {
+				return nil, fmt.Errorf("person %q role %q has no guardrail binding %q", p.Name, roleName, rail)
+			}
+			raw, ok := p.GuardrailSkillDefinition(rail)
+			if !ok {
+				return nil, fmt.Errorf("person %q role %q has no guardrail skill %q", p.Name, roleName, rail)
+			}
+			path := "skills/" + binding.Skill + "/SKILL.md"
+			if existing, collision := files[path]; collision && !bytes.Equal(existing.Data, raw) {
+				return nil, fmt.Errorf(
+					"person %q role %q guardrail skill %q collides with another person skill",
+					p.Name, roleName, binding.Skill,
+				)
+			}
+			files[path] = &fstest.MapFile{Data: raw, Mode: 0o644}
+			src.RoleSkills[roleName] = append(src.RoleSkills[roleName], schema.ContentRef{
+				ID:         binding.Skill,
+				Path:       "skills/" + binding.Skill,
+				EntryPoint: "SKILL.md",
+			})
+		}
 	}
 	return src, nil
 }

@@ -353,6 +353,9 @@ func TestEmbeddedRolePersonalitiesSelectBoundSkills(t *testing.T) {
 			}
 			rolePersonalities := role.Personalities
 			wantCount := len(rolePersonalities) + len(p.RoleActiveBoundaries(roleName)) + len(role.Methods) + 1
+			if role.Guardrail != "" {
+				wantCount++
+			}
 			if len(res.Skills) != wantCount {
 				t.Fatalf("selected %d skills, want %d: %+v", len(res.Skills), wantCount, res.Skills)
 			}

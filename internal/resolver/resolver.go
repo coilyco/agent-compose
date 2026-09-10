@@ -443,6 +443,20 @@ func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, mi
 		res.Skills = append(res.Skills, selected)
 		added[boundSkill] = true
 	}
+	if role.Guardrail != "" {
+		binding, ok := p.Guardrails[role.Guardrail]
+		if !ok {
+			return nil, fmt.Errorf("role %q names guardrail %q without a catalog binding", req.Role, role.Guardrail)
+		}
+		selected, found := selectedBySkill[binding.Skill]
+		if !found {
+			return nil, fmt.Errorf("guardrail %q binds skill %q, but no admitted source provides it", role.Guardrail, binding.Skill)
+		}
+		if !added[binding.Skill] {
+			res.Skills = append(res.Skills, selected)
+			added[binding.Skill] = true
+		}
+	}
 	for _, src := range sources {
 		refs := append([]schema.ContentRef{}, src.Skills...)
 		refs = append(refs, src.RoleSkills[req.Role]...)

@@ -489,11 +489,14 @@ func TestPersonSourceBindsAIOnlyRoleMethods(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Methods belong to one role and boundaries are shared, so both counts derive
-	// from the loaded model rather than a second copy of the roster policy.
+	// Methods and a guardrail belong to one role and boundaries are shared, so
+	// every count derives from the model rather than a second copy of the policy.
 	for _, roleName := range p.RoleOrder {
 		role := p.Roles[roleName]
 		want := 1 + len(role.Methods) + len(p.RoleActiveBoundaries(roleName))
+		if role.Guardrail != "" {
+			want++
+		}
 		if got := len(src.RoleSkills[roleName]); got != want {
 			t.Errorf("role %q selected %d person skills, want %d", roleName, got, want)
 		}

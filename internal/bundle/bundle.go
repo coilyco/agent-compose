@@ -57,6 +57,7 @@ type Manifest struct {
 	ModelTier       string                       `json:"model_tier"`
 	Personalities   []string                     `json:"personalities"`
 	Boundaries      []string                     `json:"boundaries,omitempty"`
+	Guardrail       string                       `json:"guardrail,omitempty"`
 	Color           string                       `json:"color"`
 	Identity        RoleIdentity                 `json:"identity,omitempty"`
 	Sources         []string                     `json:"sources"`
@@ -260,6 +261,7 @@ func write(res *resolver.Resolution, root string) error {
 		ModelTier:       res.Request.ModelTier,
 		Personalities:   res.Personalities,
 		Boundaries:      res.Boundaries,
+		Guardrail:       res.Person.Roles[res.Request.Role].Guardrail,
 		Color:           res.FavoriteColor,
 		Identity:        identity,
 		Sources:         res.SourceIDs,
@@ -495,6 +497,9 @@ func manifestContent(res *resolver.Resolution) ([]ContentDigest, error) {
 	active := map[string]bool{}
 	for _, personalityName := range res.Personalities {
 		active[res.Person.Personalities[personalityName].Skill] = true
+	}
+	if rail := res.Person.Roles[res.Request.Role].Guardrail; rail != "" {
+		active[res.Person.Guardrails[rail].Skill] = true
 	}
 	for _, selected := range res.Skills {
 		if !active[selected.ID] {

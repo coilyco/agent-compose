@@ -18,6 +18,7 @@ import subprocess
 from typing import Any
 
 import pytest
+import yaml
 from housecast import roster
 from housecast.roster import Roster
 
@@ -33,6 +34,7 @@ def _skills(loaded: Roster) -> list[tuple[str, str]]:
     entries = [(r.skill, r.body) for r in loaded.roles.values()]
     entries += [(p.skill, p.body) for p in loaded.personalities.values()]
     entries += [(b.skill, b.body) for b in loaded.boundaries.values()]
+    entries += [(g.skill, g.body) for g in loaded.guardrails.values()]
     return sorted(entries)
 
 
@@ -58,6 +60,28 @@ def test_the_invariant_matches_the_go_source(loaded: Roster) -> None:
 def test_every_go_role_is_present(loaded: Roster) -> None:
     go_roles = {p.name.removeprefix("role-") for p in GO_DATA.glob("role-*") if p.is_dir()}
     assert go_roles == set(loaded.roles)
+
+
+@pytest.mark.skipif(not GO_DATA.is_dir(), reason=GONE)
+def test_every_go_guardrail_is_present_and_its_scalars_match(loaded: Roster) -> None:
+    """`sync-roster` vendors bodies and acts, never the scalar fields, so a guardrail's
+    detector and card are hand-copied on both sides. The detector names a command a
+    grader re-runs, so a stale copy grades against a check nobody is running."""
+    go_names = {p.name.removeprefix("guardrail-") for p in GO_DATA.glob("guardrail-*")}
+    assert go_names == set(loaded.guardrails)
+    stale = []
+    for name, rail in loaded.guardrails.items():
+        spec = yaml.safe_load((GO_DATA / f"guardrail-{name}" / "guardrail.yaml").read_text())
+        theirs = (
+            spec["skill"],
+            spec["role"],
+            " ".join(spec["card"].split()),
+            spec.get("detector", ""),
+        )
+        mine = (rail.skill, rail.role, " ".join(rail.card.split()), rail.detector)
+        if mine != theirs:
+            stale.append(name)
+    assert not stale, f"regenerate housecast/data/roster.yaml, these drifted: {stale}"
 
 
 @pytest.mark.skipif(not GO_DATA.is_dir(), reason=GONE)

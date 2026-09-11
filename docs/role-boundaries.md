@@ -70,13 +70,12 @@ instructions.
 
 ### What it buys the evaluation board
 
-A boundary is scored as a pair, the in-half proving the rule fires and the
-out-half proving it does not fire on the neighbouring case that must still be
-served. A scoped grant fits neither half, so it earns its own pair: a
-within-scope case proving the grant actually works, and a beyond-scope case
-proving the limit holds. That moves the measured question from **does the rule
-fire** to **does the grant hold its limits**, and "acted, but exceeded the scope"
-is the failure a binary model cannot see.
+A boundary is scored as a pair, the in-half proving the rule fires and the out-half
+proving it does not fire on the neighbouring case that must still be served. A scoped
+grant fits neither half, so it earns its own pair: a within-scope case proving the
+grant works, and a beyond-scope case proving the limit holds. That moves the measured
+question from **does the rule fire** to **does the grant hold its limits**, and
+"acted, but exceeded the scope" is the failure a binary model cannot see.
 
 housecast's `evalkit.matrix` derives that pair from `scoped_boundaries`, within-scope as the
 in-half, so `in` means one thing in all three states: acting on own territory.
@@ -102,13 +101,14 @@ until an independently reviewed re-run.
 
 ## Core Roster boundaries
 
-Each slug names the behavior that moves. Every boundary reaches all eight seats
+Each slug names the behavior that moves. Every boundary reaches all nine seats
 and exactly one owns it, so a missing seat is a defect. The rest split per boundary.
 
-* `build-foundational-software`, owner platform - scoped for sysadmin and science, who write estate configuration and measurement instruments. Deferred by frontend, gamedev, director, advocate, and analyst, who specifies the tooling an engagement needs and hands the build over.
-* `modify-live-backend`, owner sysadmin - scoped for platform and gamedev, who run CI, local environments, and a local world. Deferred by advocate, science, frontend, director, and analyst.
-* `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by platform, sysadmin, science, director, and analyst.
-* `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime and market the system under assessment answers to. Deferred by frontend, sysadmin, gamedev, and science.
+* `hold-emotional-weight`, owner psych - scoped by nobody, which is what marks the seat as orthogonal rather than merely tenth. Deferred by platform, sysadmin, science, frontend, gamedev, director, advocate, and analyst, who finish the task and hand the weight over.
+* `build-foundational-software`, owner platform - scoped for sysadmin and science, who write estate configuration and measurement instruments. Deferred by frontend, gamedev, director, advocate, analyst, and psych, who specifies the tooling an engagement needs and hands the build over.
+* `modify-live-backend`, owner sysadmin - scoped for platform and gamedev, who run CI, local environments, and a local world. Deferred by advocate, science, frontend, director, analyst, and psych.
+* `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by platform, sysadmin, science, director, analyst, and psych.
+* `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime and market the system under assessment answers to. Deferred by frontend, sysadmin, gamedev, science, and psych.
 
 ## See also
 

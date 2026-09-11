@@ -87,7 +87,7 @@ A caller that already has an identity would otherwise carry two. Sirens Echo
 composes `sysadmin` for its operator doctrine and answers as Sirens Echo, so
 without this its prompt introduced Vera as well, a name from a different context,
 in a lane whose policy forbids describing itself at all. The alternative was a
-whole person package, which replaces the roster as one unit: copying eight roles
+whole person package, which replaces the roster as one unit: copying nine roles
 to rename one seat makes every future roster change something the copy chases.
 
 ### What it does not do

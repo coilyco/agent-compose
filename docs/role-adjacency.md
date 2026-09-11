@@ -54,7 +54,7 @@ confusions no boundary allocates.
 
 Spend adjacency slots accordingly. An edge earns its slot when it points where
 no boundary reaches: at a seat that owns none, or at a gap the allocation leaves
-open. Two of the fourteen below name a confusion the owner's boundary already
+open. Two of the eighteen below name a confusion the owner's boundary already
 blocks, which is not wrong but tests compliance rather than something new.
 
 ## Core Roster graph
@@ -68,11 +68,47 @@ gamedev  -> frontend, sysadmin
 director -> advocate, science
 advocate -> frontend, director
 analyst  -> sysadmin, director
+psych    -> analyst, director
 ```
 
-In-degree is even at two for every seat. Adding the eighth seat cost two re-pointed
-edges to keep it so, and both were spent where a boundary already covered most
-of what they tested rather than where they were the only check.
+In-degree is not even. Measured across the nine `role.yaml` files, analyst and
+director receive three edges each, five seats receive two, and psych receives
+none. Only out-degree is enforced, in `internal/person/person.go`, so in-degree
+is an authoring observation rather than a rule. The ninth seat landed without
+re-pointing an edge, and its in-degree of zero is the orthogonality signal
+below rather than an omission.
+
+## Measuring orthogonality
+
+A seat is orthogonal when the axis it works on is one every other seat crosses
+and none owns. Psych is the roster's example, and three properties separate it
+from the eight seats around it. All three are read from the roster files.
+
+* **Owns a boundary nobody scopes.** `hold-emotional-weight` is the only one of
+  the five with zero scoped holders, against two, three, three, and two for the
+  rest. The behavior is all-or-nothing, because a bounded grant to do a little
+  of it names the harm rather than a safe subset.
+* **Receives no adjacency edge.** Nothing drifts toward it, where every other
+  seat receives two or three.
+* **Holds no scoped grant.** It defers the other four boundaries outright.
+  Director does too and fails the first two, so the three are read together.
+
+A fourth property is not structural and carries most of the value. The guardrail
+inverts a resting behavior of the base model rather than holding a trained
+practice to its own standard. `withheld-comfort` exists because an untrained
+assistant agrees, where `provable-results` and `reversible-steps` hold a craft
+to a standard it already recognises. A seat whose failure mode is the model's
+default does work no ordinary charter produces.
+
+### Testing a candidate seat
+
+Propose the behavior, then try to write its scoped grant. A candidate that
+scopes cleanly is an ordinary seat and joins the roster on the usual terms.
+Retiring a shipped surface scopes cleanly, since retiring your own module is
+sensible, so it fails this test despite naming a real gap that no charter
+covers. Characterizing a person who is not in the conversation does not scope,
+because "inside your own artifact" is the failure the boundary would exist to
+prevent.
 
 ## See also
 

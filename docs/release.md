@@ -10,7 +10,7 @@ no-cancel queue and validates the exact commit, and the owning
 Automatic publication occurs when the unreleased diff from the latest reachable
 `v*` release tag changes shipped product inputs:
 
-* the Go command or internal engine and embedded Core Roster
+* the Go command or internal engine, and the Core Roster shipped in `seed/`
 * Go module dependencies
 * release binary construction
 * Homebrew or Scoop rendering, and the `scripts/ci` steps that publish

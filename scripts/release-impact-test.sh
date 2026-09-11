@@ -58,11 +58,20 @@ fixture_git commit -q -m results
 results_revision=$(fixture_git rev-parse HEAD)
 expect false push "$docs_revision" "$results_revision"
 
+# The seed ships inside the package, so a roster-only revision is product
+# impact even though nothing rebuilds. agent-compose#7397.
+mkdir -p "$fixture_root/seed/roster/data/role-fixture"
+printf 'role: fixture\n' >"$fixture_root/seed/roster/data/role-fixture/role.yaml"
+fixture_git add seed
+fixture_git commit -q -m seed
+seed_revision=$(fixture_git rev-parse HEAD)
+expect true push "$results_revision" "$seed_revision"
+
 printf '// product change\n' >>"$fixture_root/cmd/tool/main.go"
 fixture_git add cmd/tool/main.go
 fixture_git commit -q -m product
 product_revision=$(fixture_git rev-parse HEAD)
-expect true push "$results_revision" "$product_revision"
+expect true push "$seed_revision" "$product_revision"
 expect true push 0000000000000000000000000000000000000000 "$product_revision"
 
 printf 'format: recovery\n' >"$fixture_root/evaluations/latest/result.yaml"

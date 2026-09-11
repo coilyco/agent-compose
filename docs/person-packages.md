@@ -105,9 +105,9 @@ data/personality-tenacious/SKILL.md
 Every first-class entity owns one flat directory named `<kind>-<slug>`, where
 kind is `role`, `personality`, `boundary`, or `guardrail`. Its KDL fragment is
 named for the kind, its body is `SKILL.md`, and a role may add `evals.yaml`.
-The directory slug must match the node slug. Each entity declares an `order`,
-which sequences the roster in place of the filename prefixes the layout used to
-carry. Order is data on the entity, so moving a directory never reorders
+The directory slug must match the node slug. Each entity declares an `order`
+from 1 to 99, which sequences the roster in place of the filename prefixes it
+replaced. Order is data on the entity, so moving a directory never reorders
 anything, and it is unique within its kind, since a duplicate would let the
 sequence fall silently to the slug. Two kinds may share an order. The loader
 strips it before parsing, so it never reaches the node model. The invariant

@@ -18,6 +18,10 @@ const dataRoot = "data"
 
 var entityOrder = regexp.MustCompile(`(?m)^\s*order[ =](\d+)\s*$|(?m)\s+order=(\d+)`)
 
+// maxEntityOrder is what the two-digit projected prefix can carry. Declaring
+// past it is refused here. See docs/person-packages.md.
+const maxEntityOrder = 99
+
 var entityKinds = map[string]string{
 	"role":        "roles",
 	"personality": "personalities",
@@ -127,6 +131,9 @@ func entityOrderOf(fragment, extension string) (int, string, error) {
 	if declared.Order < 1 {
 		return 0, "", fmt.Errorf("needs an order")
 	}
+	if declared.Order > maxEntityOrder {
+		return 0, "", fmt.Errorf("order %d is above the maximum of %d", declared.Order, maxEntityOrder)
+	}
 	return declared.Order, fragment, nil
 }
 
@@ -144,6 +151,9 @@ func takeEntityOrder(fragment string) (int, string, error) {
 	order, err := strconv.Atoi(digits)
 	if err != nil || order < 1 {
 		return 0, "", fmt.Errorf("order %q is not a positive integer", digits)
+	}
+	if order > maxEntityOrder {
+		return 0, "", fmt.Errorf("order %d is above the maximum of %d", order, maxEntityOrder)
 	}
 	stripped := entityOrder.ReplaceAllString(fragment, "")
 	stripped = strings.ReplaceAll(stripped, "{\n\n", "{\n")

@@ -81,3 +81,26 @@ func TestDataLayoutSequencesDistinctOrdersByFilename(t *testing.T) {
 		}
 	}
 }
+
+// The two-digit projected prefix caps the order at 99, and `personFragmentSlug`
+// used to catch order 100 by refusing the filename it produced.
+func TestDataLayoutRefusesAnOrderAboveTheCapByNamingTheOrder(t *testing.T) {
+	_, _, err := dataLayout(entityDir("personality", "alpha", maxEntityOrder+1), "fixture")
+	if err == nil {
+		t.Fatalf("order %d must be refused", maxEntityOrder+1)
+	}
+	for _, want := range []string{"alpha", "order 100", "maximum of 99"} {
+		if !strings.Contains(err.Error(), want) {
+			t.Fatalf("error %q does not name %q", err, want)
+		}
+	}
+	if strings.Contains(err.Error(), ".yaml") {
+		t.Fatalf("error %q names a filename the author never wrote", err)
+	}
+}
+
+func TestDataLayoutAcceptsTheOrderAtTheCap(t *testing.T) {
+	if _, _, err := dataLayout(entityDir("personality", "alpha", maxEntityOrder), "fixture"); err != nil {
+		t.Fatalf("order %d is the cap, not past it: %v", maxEntityOrder, err)
+	}
+}

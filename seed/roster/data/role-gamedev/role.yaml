@@ -16,6 +16,7 @@ boundaries:
   - build-foundational-software
   - hold-emotional-weight
   - seek-external-validation
+  - study-an-unmet-party
 scoped_boundaries:
   - boundary: modify-live-backend
     scope: a local world, server, or save you launched yourself, and routine operation of a game server you already run, including mod sync, restart, config reload, and world backup, never provisioning a new server, changing its topology or capacity, or a first deployment

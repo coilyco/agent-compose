@@ -16,6 +16,7 @@ boundaries:
   - hold-emotional-weight
   - seek-external-validation
   - suggest-external-comms
+  - study-an-unmet-party
 scoped_boundaries:
   - boundary: build-foundational-software
     scope: executable configuration only your own estate consumes, never shared tooling, validators, or code other seats build on

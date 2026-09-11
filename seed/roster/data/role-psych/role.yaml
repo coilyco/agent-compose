@@ -17,6 +17,7 @@ boundaries:
   - modify-live-backend
   - suggest-external-comms
   - seek-external-validation
+  - study-an-unmet-party
 adjacents:
   - role: analyst
     reason: producing a finding about the person instead of a turn with them

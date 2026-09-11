@@ -416,10 +416,10 @@ func sq(v int) int {
 	return v * v
 }
 
-// A window background is read behind text all day, so it sits far below the
-// legible band and holds almost no chroma. See internal/palette/role-palette.txt.
+// A window background sits far below the legible band and holds almost no chroma.
+// Lightness buys separation as the roster grows, not chroma: role-palette.txt.
 const (
-	backgroundL      = 0.235
+	backgroundL      = 0.260
 	backgroundChroma = 0.055
 )
 

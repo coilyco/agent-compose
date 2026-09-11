@@ -59,6 +59,11 @@ func RenderSnapshot(p *person.Person) ([]byte, error) {
 	out.WriteString("backgrounds nobody can tell apart. Each role's hue is held and moved onto\n")
 	out.WriteString("equal spacing at a fixed low lightness and chroma, at the rotation offset\n")
 	out.WriteString("that turns every role the least. agentic-os#1245, #358.\n\n")
+	out.WriteString("Lightness buys that spacing and chroma does not. Adjacent hues sit closer\n")
+	out.WriteString("as the roster grows, and more chroma at a low lightness pushes them out of\n")
+	out.WriteString("sRGB where they clamp back together. Measured while adding the tenth seat:\n")
+	out.WriteString("at L 0.235 the closest pair fell to 0.0267 against a 0.0300 floor, raising\n")
+	out.WriteString("chroma to 0.070 recovered only 0.0025, and L 0.260 cleared it outright.\n\n")
 	fmt.Fprintf(&out, "Closest accent pair: %.4f\n", separation)
 	fmt.Fprintf(&out, "Closest background pair: %.4f\n\n", backgroundSeparation)
 	for _, name := range p.RoleOrder {

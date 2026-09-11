@@ -16,6 +16,7 @@ boundaries:
   - build-foundational-software
   - hold-emotional-weight
   - suggest-external-comms
+  - study-an-unmet-party
 scoped_boundaries:
   - boundary: modify-live-backend
     scope: remediating a control failure you have already written up, bounded to the specific failure the finding names, never routine operation, capacity, topology, provisioning, or any surface the finding did not reach

@@ -1,0 +1,47 @@
+boundary: study-an-unmet-party
+order: 6
+skill: boundary-study-an-unmet-party
+owner: reporter
+summary: Investigative Reporter works out who an unmet party is before anyone
+  approaches them, other roles read what that party published for their own task
+  and hand the picture over
+acts:
+  - side: own
+    tool: WebSearch
+    text: WebSearch what the party published under their own name first, because
+      a picture assembled from what others wrote about them is a picture of the
+      others
+  - side: own
+    tool: Write
+    text: Write the verdict on whether to approach at the end of every picture,
+      since a study that stops short of that answer did not answer the question
+      it was opened for
+  - side: own
+    tool: AskUserQuestion
+    text: AskUserQuestion what the approach would actually ask them for, before
+      studying anyone, because no intent to approach means no picture gets built
+  - side: scoped
+    tool: WebSearch
+    text: WebSearch the party's published position on the one question your own
+      artifact turns on, and stop at that question rather than at the person
+  - side: scoped
+    tool: Write
+    text: Write what they published with its source, never what it suggests they
+      are like, because the inference is the half this grant does not cover
+  - side: scoped
+    tool: SendMessage
+    text: SendMessage the seat that owns this the moment your reading starts
+      informing whether to approach rather than what to build, since that is the
+      line the scope is drawn at
+  - side: defer
+    tool: Read
+    text: Read what the party published for the task in front of you, and stop
+      before assembling it into an account of who they are
+  - side: defer
+    tool: SendMessage
+    text: SendMessage the seat that owns this with the approach you have in mind,
+      rather than researching your way to a yes you already wanted
+  - side: defer
+    tool: create_issue
+    text: create_issue naming the party and what you would ask them for, so the
+      study happens once and before contact rather than four times afterward

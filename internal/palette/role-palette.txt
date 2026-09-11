@@ -24,15 +24,22 @@ backgrounds nobody can tell apart. Each role's hue is held and moved onto
 equal spacing at a fixed low lightness and chroma, at the rotation offset
 that turns every role the least. agentic-os#1245, #358.
 
-Closest accent pair: 0.1098
-Closest background pair: 0.0307
+Lightness buys that spacing and chroma does not. Adjacent hues sit closer
+as the roster grows, and more chroma at a low lightness pushes them out of
+sRGB where they clamp back together. Measured while adding the tenth seat:
+at L 0.235 the closest pair fell to 0.0267 against a 0.0300 floor, raising
+chroma to 0.070 recovered only 0.0025, and L 0.260 cleared it outright.
 
-platform // #7b8c53 // #142305 // tenacious, grounded
-sysadmin // #00a397 // #00242d // protective, grounded
-science // #40d7a8 // #00261b // empirical, grounded
-frontend // #ee7eeb // #2d1329 // playful, imaginative
-gamedev // #2780ff // #081f37 // immersed, imaginative
-director // #df6963 // #331117 // decisive, outward
-advocate // #eaaa5a // #321503 // warm, outward
-analyst // #918ec2 // #1f1836 // suspicious, tenacious
-psych // #aea227 // #271d00 // warm, protective
+Closest accent pair: 0.0810
+Closest background pair: 0.0319
+
+platform // #709b62 // #0e2b14 // tenacious, grounded
+sysadmin // #0d9c92 // #002a36 // protective, grounded
+science // #14d5b8 // #002c27 // empirical, grounded
+frontend // #ee7eea // #321a31 // playful, imaginative
+gamedev // #3b82ff // #11243e // immersed, imaginative
+director // #da656f // #391721 // decisive, outward
+advocate // #f7a060 // #3a1a0e // warm, outward
+analyst // #9190c1 // #251e3c // suspicious, tenacious
+psych // #ab9137 // #332000 // warm, protective
+reporter // #99b052 // #252602 // tenacious, outward

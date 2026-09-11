@@ -17,6 +17,7 @@ boundaries:
   - hold-emotional-weight
   - modify-live-backend
   - seek-external-validation
+  - study-an-unmet-party
 scoped_boundaries:
   - boundary: suggest-external-comms
     scope: labels, empty states, error text, and microcopy shown inside a surface you own, never words addressed outward to a reader

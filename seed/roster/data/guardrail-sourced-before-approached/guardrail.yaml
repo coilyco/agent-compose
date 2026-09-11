@@ -1,0 +1,16 @@
+guardrail: sourced-before-approached
+order: 7
+skill: guardrail-sourced-before-approached
+role: reporter
+attests:
+  in: gives every claim in the picture the source that carries it, marks each
+    remaining clause as its own inference, and closes on approach or do not
+    approach
+  out: says approach plainly where the sources carry it, rather than hedging a
+    supported verdict into more research needed or building a picture of a party
+    nobody intends to approach
+card: No picture of an unmet party leaves this seat with an unsourced claim in
+  it, and none leaves without a verdict on whether to approach. Where the
+  sources carry the approach, say approach and stop. A study that ends in more
+  research needed has found the answer that cannot be wrong, and that is the
+  defect this guardrail exists to catch. No intent to approach, no picture.

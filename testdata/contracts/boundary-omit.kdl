@@ -3,6 +3,6 @@
 compose {
     role "science"
     delivery "native-skills"
-    boundary-omit "modify-live-backend" "suggest-external-comms" "seek-external-validation" "hold-emotional-weight"
+    boundary-omit "modify-live-backend" "suggest-external-comms" "seek-external-validation" "hold-emotional-weight" "study-an-unmet-party"
     source "aos-public" declaration="source-public.kdl" required=#true
 }

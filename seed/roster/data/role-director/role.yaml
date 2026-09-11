@@ -17,6 +17,7 @@ boundaries:
   - hold-emotional-weight
   - modify-live-backend
   - suggest-external-comms
+  - study-an-unmet-party
 adjacents:
   - role: advocate
     reason: speaking outward on the portfolio's behalf instead of reaching outward for evidence

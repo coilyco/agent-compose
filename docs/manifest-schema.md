@@ -62,9 +62,10 @@ for the `writing-voice-guide-linter` engine holding the rules this seat lints
 its own prose against. It merges two kinds of rule.
 
 * **Carried** - a selected skill shipping a root `profile.json` contributes its
-  hand-written rules verbatim. Discovery reads the document rather than matching
-  a skill name, so a source ships a house style without agent-compose knowing
-  what that source called it.
+  hand-written rules. Discovery reads the document rather than matching a skill
+  name, so a source ships a house style without agent-compose knowing what that
+  source called it. A carried rule keeps the keys `Rule` declares and loses any
+  other, so `blocking` is declared there: dropping it ships a gate as a warning.
 * **Generated** - one rule per term on the seat's melded `voice.avoid` bank,
   role first then personalities, deduped so the role bank keeps a shared term.
 

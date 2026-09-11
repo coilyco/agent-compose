@@ -136,3 +136,35 @@ func TestBuildReportsEmptyRatherThanWritingAnUnloadableProfile(t *testing.T) {
 		t.Fatalf("expected the empty sentinel, got %v", err)
 	}
 }
+
+// blocking decides the engine's --block-only exit status, so a round trip that
+// drops it turns a gating rule into a warning and the bundle reports success.
+func TestCarriedAndBuildKeepBlocking(t *testing.T) {
+	carried, err := Carried("kai-voice-guide-linter", []byte(
+		`{"rules":[
+			{"id":"em-dash","pattern":"—","hint":"replace with ' - '","blocking":true},
+			{"id":"wordy","pattern":"\\bverily\\b","hint":"cut it"}
+		]}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := Build("coilyco:advocate", carried, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var profile Profile
+	if err := json.Unmarshal(raw, &profile); err != nil {
+		t.Fatal(err)
+	}
+	if gate := ruleByID(t, profile.Rules, "em-dash"); !gate.Blocking {
+		t.Fatalf("blocking was dropped on the round trip: %+v", gate)
+	}
+	if warn := ruleByID(t, profile.Rules, "wordy"); warn.Blocking {
+		t.Fatalf("a rule with no blocking key became a gate: %+v", warn)
+	}
+	// omitempty keeps a warning's document identical to what it was before the
+	// field existed, so adding it rewrites no shipped profile.
+	if strings.Contains(string(raw), `"id": "wordy"`) && strings.Count(string(raw), `"blocking"`) != 1 {
+		t.Fatalf("blocking is written for a non-gating rule:\n%s", raw)
+	}
+}

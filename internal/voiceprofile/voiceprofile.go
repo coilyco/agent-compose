@@ -15,15 +15,16 @@ import (
 // Format names the artifact so a consumer can refuse an unrecognized one.
 const Format = "agent-compose.voice-profile"
 
-// Rule is one linter rule. The engine reads id, pattern, hint, scope and flags,
-// and ignores anything else, so source rides along as provenance.
+// Rule is one linter rule. The engine reads id, pattern, hint, scope, flags and
+// blocking, and ignores anything else, so source rides along as provenance.
 type Rule struct {
-	ID      string   `json:"id"`
-	Pattern string   `json:"pattern"`
-	Hint    string   `json:"hint"`
-	Scope   string   `json:"scope,omitempty"`
-	Flags   []string `json:"flags,omitempty"`
-	Source  string   `json:"source,omitempty"`
+	ID       string   `json:"id"`
+	Pattern  string   `json:"pattern"`
+	Hint     string   `json:"hint"`
+	Scope    string   `json:"scope,omitempty"`
+	Flags    []string `json:"flags,omitempty"`
+	Blocking bool     `json:"blocking,omitempty"`
+	Source   string   `json:"source,omitempty"`
 }
 
 // Profile is the document the linter engine loads.

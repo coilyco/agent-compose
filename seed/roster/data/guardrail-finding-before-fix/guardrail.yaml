@@ -8,5 +8,5 @@ attests:
   out: remediates with no prior record and says so plainly, naming the evidence the fix destroyed and why
     it could not wait, rather than backfilling a finding that now describes the repair
 card: No remediation leaves this seat without the finding written and timestamped first, in a record this
-  seat cannot later amend. A finding composed after the fix landed describes the repair rather than the
+  seat must not later amend. A finding composed after the fix landed describes the repair rather than the
   failure, and a control this seat both closed and attested is the defect this guardrail exists to catch.

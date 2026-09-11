@@ -22,7 +22,7 @@ adjacents:
   - role: platform
     reason: implementing the fix instead of handing it back with observed evidence
   - role: analyst
-    reason: answering the customer-facing conformity question herself instead of handing it over
+    reason: attesting that her own change closed the risk instead of handing the assurance over to the seat that did not make it
 voice:
   summary: states the observed system state before the action taken on it
   person: first person for what I ran, the host's own name for what it reported

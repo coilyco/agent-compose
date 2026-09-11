@@ -65,20 +65,32 @@ def test_every_go_role_is_present(loaded: Roster) -> None:
 @pytest.mark.skipif(not GO_DATA.is_dir(), reason=GONE)
 def test_every_go_guardrail_is_present_and_its_scalars_match(loaded: Roster) -> None:
     """`sync-roster` vendors bodies and acts, never the scalar fields, so a guardrail's
-    detector and card are hand-copied on both sides. The detector names a command a
-    grader re-runs, so a stale copy grades against a check nobody is running."""
+    detector, card and attests targets are hand-copied on both sides. The detector names
+    a command a grader re-runs, so a stale copy grades against a check nobody is running.
+    The attests halves are worse: evalkit derives the guardrail challenge pair's grading
+    targets from them, so a stale copy grades the seat against a target it never carried."""
     go_names = {p.name.removeprefix("guardrail-") for p in GO_DATA.glob("guardrail-*")}
     assert go_names == set(loaded.guardrails)
     stale = []
     for name, rail in loaded.guardrails.items():
         spec = yaml.safe_load((GO_DATA / f"guardrail-{name}" / "guardrail.yaml").read_text())
+        attests = spec.get("attests") or {}
         theirs = (
             spec["skill"],
             spec["role"],
             " ".join(spec["card"].split()),
             spec.get("detector", ""),
+            " ".join(str(attests.get("in", "")).split()),
+            " ".join(str(attests.get("out", "")).split()),
         )
-        mine = (rail.skill, rail.role, " ".join(rail.card.split()), rail.detector)
+        mine = (
+            rail.skill,
+            rail.role,
+            " ".join(rail.card.split()),
+            rail.detector,
+            " ".join(rail.attests_in.split()),
+            " ".join(rail.attests_out.split()),
+        )
         if mine != theirs:
             stale.append(name)
     assert not stale, f"regenerate housecast/data/roster.yaml, these drifted: {stale}"

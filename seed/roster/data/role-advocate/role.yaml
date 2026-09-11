@@ -18,10 +18,11 @@ boundaries:
   - build-foundational-software
   - hold-emotional-weight
   - modify-live-backend
-  - study-an-unmet-party
 scoped_boundaries:
   - boundary: seek-external-validation
     scope: replies, engagement, community threads, and direct audience feedback, never a portfolio-level question about where attention or investment goes
+  - boundary: study-an-unmet-party
+    scope: the party's published position on the one question a reply, a thread, or a piece of content turns on, recorded with its source, never an account of who they are and never whether to approach them
 adjacents:
   - role: frontend
     reason: reshaping the surface instead of writing for the one that exists

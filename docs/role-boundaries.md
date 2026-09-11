@@ -101,14 +101,14 @@ until an independently reviewed re-run.
 
 ## Core Roster boundaries
 
-Each slug names the behavior that moves. Every boundary reaches all nine seats
-and exactly one owns it, so a missing seat is a defect. The rest split per boundary.
+Each slug names the behavior that moves. Every boundary reaches all ten seats and exactly one owns it, so a missing seat is a defect. The rest split per boundary.
 
-* `hold-emotional-weight`, owner psych - scoped by nobody, which is what marks the seat as orthogonal rather than merely tenth. Deferred by platform, sysadmin, science, frontend, gamedev, director, advocate, and analyst, who finish the task and hand the weight over.
-* `build-foundational-software`, owner platform - scoped for sysadmin and science, who write estate configuration and measurement instruments. Deferred by frontend, gamedev, director, advocate, analyst, and psych, who specifies the tooling an engagement needs and hands the build over.
-* `modify-live-backend`, owner sysadmin - scoped for platform and gamedev, who run CI, local environments, and a local world. Deferred by advocate, science, frontend, director, analyst, and psych.
-* `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by platform, sysadmin, science, director, analyst, and psych.
-* `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime and market the system under assessment answers to. Deferred by frontend, sysadmin, gamedev, science, and psych.
+* `modify-live-backend`, owner sysadmin - scoped for platform, gamedev, and analyst, who run CI and local environments, run a world they launched themselves, and remediate the specific control failure they already wrote up. Deferred by advocate, director, frontend, science, psych, and reporter.
+* `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by analyst, director, platform, psych, reporter, science, and sysadmin.
+* `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime the system under assessment answers to. Deferred by frontend, gamedev, psych, reporter, science, and sysadmin.
+* `build-foundational-software`, owner platform - scoped for sysadmin and science, who write estate configuration and measurement instruments. Deferred by advocate, analyst, director, frontend, gamedev, psych, and reporter.
+* `hold-emotional-weight`, owner psych - scoped for analyst alone, who reads a store as an instrument and counts against a fixed rule without answering what it holds. Deferred by advocate, director, frontend, gamedev, platform, reporter, science, and sysadmin, who finish the task and hand the weight over.
+* `study-an-unmet-party`, owner reporter - scoped for advocate and director, who read the party's published position on the one question their own artifact turns on. Deferred by analyst, frontend, gamedev, platform, psych, science, and sysadmin, who read what the party published for the task in front of them and hand the picture over.
 
 ## See also
 

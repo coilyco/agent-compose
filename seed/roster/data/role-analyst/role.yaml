@@ -14,10 +14,11 @@ personalities:
   - tenacious
 boundaries:
   - build-foundational-software
-  - hold-emotional-weight
   - suggest-external-comms
   - study-an-unmet-party
 scoped_boundaries:
+  - boundary: hold-emotional-weight
+    scope: reading a person's store to count against a fixed rule and writing up a control that failed, never replying to what the store holds, characterising the person it is about, or raising the failure with them
   - boundary: modify-live-backend
     scope: remediating a control failure you have already written up, bounded to the specific failure the finding names, never routine operation, capacity, topology, provisioning, or any surface the finding did not reach
   - boundary: seek-external-validation

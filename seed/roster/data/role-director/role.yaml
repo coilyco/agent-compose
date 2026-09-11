@@ -17,7 +17,9 @@ boundaries:
   - hold-emotional-weight
   - modify-live-backend
   - suggest-external-comms
-  - study-an-unmet-party
+scoped_boundaries:
+  - boundary: study-an-unmet-party
+    scope: the party's published position on the one question a portfolio decision turns on, recorded with its source, never an account of who they are and never the verdict on whether to approach them
 adjacents:
   - role: advocate
     reason: speaking outward on the portfolio's behalf instead of reaching outward for evidence

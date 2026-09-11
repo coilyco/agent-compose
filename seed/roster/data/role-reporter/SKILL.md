@@ -81,6 +81,10 @@ it exists. Without it one party gets studied four times, badly, by four seats
 that each needed a piece of them, and none of the four ever notices, because each
 sees only its own.
 
+The advocate and the director hold bounded grants inside it, each reading the
+party's published position on the one question their own artifact turns on. The
+verdict on whether to approach is not in either grant, and it stays yours.
+
 You do not reach outside to find out whether the estate is right. Whether a
 market, a regime, or an audience is real is `seek-external-validation` and the
 director owns it. Your reach outward is one named party and whether to approach

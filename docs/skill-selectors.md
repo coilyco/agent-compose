@@ -74,29 +74,30 @@ roles {
 **The grant is open.** A repository added to the org later reaches the bundle
 with no config change, so the `skill` children are the whole review surface and
 an org declared without one is refused. Patterns keep the semantics above but
-apply across the org's whole skill surface rather than per catalogue.
+apply across the org's whole surface rather than per catalogue. Each
+contributing catalogue becomes one bundle source at scope `org` holding only
+the named slice, and is a bare skills directory rather than a provider tree, so
+it carries no invariant and no role graph.
 
 An org the manifest holds no catalogue for is an error: an org contributing
 nothing is an empty selector by another name. A skill offered by two catalogues
-in one org is fatal and names both, rather than the later entry silently
-winning. A skill is a directory carrying `SKILL.md`, because five repositories
-keep a `categories.yaml` beside their skills and `skill "*"` must not admit it.
+in one org is fatal and names both. A skill is a directory carrying `SKILL.md`,
+because five repositories keep a `categories.yaml` beside theirs.
 
 ## A skill is reachable by address
 
-`skill_requests` in the cascade config names one skill, written terse as
+`skill_requests` in the cascade config names one skill, terse as
 `owner/repo/skill` or qualified as `forge/owner/repo/skill`. Resolution happens
 against the compiled set at converge time, and an address resolving to nothing
-**fails the converge and names the address** rather than starting a lane with
-one focus missing. A terse address served by two forges is refused the same way
-a bare source in [skill catalogues](skill-catalogues.md) is. Catalogues still
-mount whole, so a request today is resolution and validation rather than reach.
+**fails the converge and names the address** rather than starting a lane with a
+focus missing. A terse address served by two forges is refused as a bare source
+in [skill catalogues](skill-catalogues.md) is. Catalogues still mount whole, so
+a request today is resolution and validation rather than reach.
 
 ## Global skill load points
 
 `skill_load_points` names the harness-native directory each harness reads for
-global skills. Converge links the compiled residency set into every wired
-destination.
+global skills, and converge links the compiled residency set into each.
 
 ### Defaults
 
@@ -105,16 +106,15 @@ Claude and codex are wired by default, matching `load_points`:
 * `claude` - `~/.claude/skills`
 * `codex` - `~/.agents/skills`
 
-Claude Code reads `.claude/skills` and never the portable `.agents/skills`
-directory, so one shared path cannot serve both harnesses. Goose and opencode
-do read the portable directory, but like their instruction load points they
-stay opt-in through config.
+Claude Code reads `.claude/skills` and never the portable `.agents/skills`, so
+one shared path cannot serve both. Goose and opencode do read the portable
+directory, but like their instruction load points stay opt-in through config.
 
 ### Overrides
 
 A configured entry replaces its default. A null or false value opts that
-harness out entirely, the same falsy rule `load_points` uses.
+harness out, the same falsy rule `load_points` uses.
 
-Naming one harness leaves the other on its default. Before this, config that
-set only `codex` unwired claude silently, and a claude session started with no
-global skills at all while codex had the full set.
+Naming one harness leaves the other on its default. Before this, config setting
+only `codex` unwired claude silently, and a claude session started with no
+global skills while codex had the full set.

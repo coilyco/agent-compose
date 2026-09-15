@@ -40,6 +40,9 @@ type RootSource struct {
 	Scope         string
 	Skills        []string
 	BindingSkills []string
+	// Catalogue reads Root as a bare skills directory rather than a provider
+	// tree, which is what an org grant expands to.
+	Catalogue bool
 }
 
 type externalOnlyError struct {
@@ -148,7 +151,13 @@ func RunRootsWithMissing(
 	}
 	sources := make([]*schema.Source, 0, len(roots))
 	for _, root := range roots {
-		source, err := schema.LoadSource(root.Root)
+		load := schema.LoadSource
+		if root.Catalogue {
+			load = func(path string) (*schema.Source, error) {
+				return schema.LoadCatalogue(root.ID, path)
+			}
+		}
+		source, err := load(root.Root)
 		if err != nil {
 			return nil, wrapPolicyError(
 				fmt.Errorf("source %q: %w", root.ID, err),

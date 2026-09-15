@@ -21,10 +21,12 @@ type Catalog struct {
 	Skills []string
 }
 
-// Skill is one admitted skill, carrying the address a record names it by.
+// Skill is one admitted skill, carrying the address a record names it by and
+// the catalogue root it was found in.
 type Skill struct {
 	Name    string
 	Path    string
+	Root    string
 	Source  catalogmanifest.Source
 	Address string
 }
@@ -140,6 +142,7 @@ func skillOf(catalog Catalog, name string) Skill {
 	return Skill{
 		Name:    name,
 		Path:    filepath.Join(catalog.Path, name),
+		Root:    catalog.Path,
 		Source:  catalog.Source,
 		Address: catalog.Source.SkillAddress(name),
 	}

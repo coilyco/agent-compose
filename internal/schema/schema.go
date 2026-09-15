@@ -34,6 +34,9 @@ const (
 	ProviderScopeDefault = "default"
 	ProviderScopeHarness = "harness"
 	ProviderScopeRole    = "role"
+	// ProviderScopeOrg is a catalogue an org grant admitted. It is a catalogue
+	// provider, so it carries the catalogue category like the default scope.
+	ProviderScopeOrg = "org"
 
 	// CoreLibraryRoot names the embedded personality library wherever a
 	// personality-library root is accepted. See docs/personality.md.
@@ -1161,4 +1164,46 @@ func oneStringArg(n *kdl.Node) (string, error) {
 		return "", fmt.Errorf("node %q: argument must be a non-empty string", n.Name())
 	}
 	return v, nil
+}
+
+// LoadCatalogue reads a bare skills directory as a source. A catalogue holds
+// skill directories directly, with no .agents/skills, invariant or role graph.
+func LoadCatalogue(id, root string) (*Source, error) {
+	absolute, err := filepath.Abs(root)
+	if err != nil {
+		return nil, err
+	}
+	info, err := os.Stat(absolute)
+	if err != nil {
+		return nil, err
+	}
+	if !info.IsDir() {
+		return nil, fmt.Errorf("catalogue root %s is not a directory", root)
+	}
+	entries, err := os.ReadDir(absolute)
+	if err != nil {
+		return nil, fmt.Errorf("catalogue root %s: %w", root, err)
+	}
+	src := &Source{ID: id, Root: absolute}
+	for _, entry := range entries {
+		name := entry.Name()
+		if !entry.IsDir() || name == "personality-shared" {
+			continue
+		}
+		// A catalogue keeps housekeeping beside its skills, so a missing
+		// SKILL.md skips the directory rather than failing the load.
+		marker := filepath.Join(absolute, name, "SKILL.md")
+		if info, err := os.Stat(marker); err != nil || !info.Mode().IsRegular() {
+			continue
+		}
+		src.Skills = append(src.Skills, ContentRef{
+			ID:         name,
+			Path:       name,
+			EntryPoint: "SKILL.md",
+		})
+	}
+	if len(src.Skills) == 0 {
+		return nil, fmt.Errorf("catalogue root %s holds no skill carrying SKILL.md", root)
+	}
+	return src, nil
 }

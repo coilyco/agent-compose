@@ -134,7 +134,8 @@ func verifyProviderReports(
 			wantCategory = resolver.ProviderCategoryPerson
 		case schema.ProviderScopeRole:
 			wantCategory = resolver.ProviderCategoryRole
-		case schema.ProviderScopeRequest, schema.ProviderScopeDefault, schema.ProviderScopeHarness:
+		case schema.ProviderScopeRequest, schema.ProviderScopeDefault,
+			schema.ProviderScopeHarness, schema.ProviderScopeOrg:
 		default:
 			return fmt.Errorf("bundle trace provider %q has unknown scope %q", provider.Source, provider.Scope)
 		}

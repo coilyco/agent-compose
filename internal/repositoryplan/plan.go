@@ -215,7 +215,8 @@ func validIdentity(value string) bool {
 
 func validScope(value string) bool {
 	switch value {
-	case "operating-context", "global", "role", "provider", "role-union", "resident-only":
+	case "operating-context", "global", "role", "provider", "role-union",
+		"resident-only", "org":
 		return true
 	default:
 		return false

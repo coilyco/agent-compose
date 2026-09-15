@@ -16,18 +16,22 @@ const Format = "aos.catalogues.v1"
 
 type document struct {
 	Format     string  `json:"format"`
+	Forge      string  `json:"forge"`
 	Catalogues []entry `json:"catalogues"`
 }
 
 type entry struct {
 	Source string `json:"source"`
+	Forge  string `json:"forge"`
 	Path   string `json:"path"`
 	Commit string `json:"commit"`
 }
 
-// Catalog is one verified local skill root in declaration order.
+// Catalog is one verified local skill root in declaration order. Source
+// travels with Path so a downstream record can name where a skill came from.
 type Catalog struct {
-	Path string
+	Path   string
+	Source Source
 }
 
 var fullCommit = regexp.MustCompile(`^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$`)
@@ -61,13 +65,32 @@ func Load(path string) ([]Catalog, error) {
 			Format,
 		)
 	}
+	defaultForge, err := parseForge(manifest.Forge)
+	if err != nil {
+		return nil, fmt.Errorf("skill catalogue manifest %s: %w", path, err)
+	}
 	catalogs := make([]Catalog, 0, len(manifest.Catalogues))
 	for index, item := range manifest.Catalogues {
-		if strings.TrimSpace(item.Source) == "" {
+		entryForge, err := parseForge(item.Forge)
+		if err != nil {
 			return nil, fmt.Errorf(
-				"skill catalogue manifest %s entry %d names no source",
+				"skill catalogue manifest %s entry %d: %w",
 				path,
 				index,
+				err,
+			)
+		}
+		fallback := entryForge
+		if fallback == "" {
+			fallback = defaultForge
+		}
+		source, err := parseSource(item.Source, fallback)
+		if err != nil {
+			return nil, fmt.Errorf(
+				"skill catalogue manifest %s entry %d %w",
+				path,
+				index,
+				err,
 			)
 		}
 		if !filepath.IsAbs(item.Path) {
@@ -101,7 +124,7 @@ func Load(path string) ([]Catalog, error) {
 				index,
 			)
 		}
-		catalogs = append(catalogs, Catalog{Path: clean})
+		catalogs = append(catalogs, Catalog{Path: clean, Source: source})
 	}
 	return catalogs, nil
 }

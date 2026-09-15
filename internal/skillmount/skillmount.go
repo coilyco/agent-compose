@@ -27,10 +27,11 @@ type sidecar struct {
 	Links []link `json:"links"`
 }
 
-// Catalog is a verified skill root projected to every configured load point.
-// Catalogs apply after local repositories in declaration order.
+// Catalog is a verified skill root projected to every configured load point,
+// applied after local repositories in declaration order. Source is its origin.
 type Catalog struct {
-	Path string
+	Path   string
+	Source string
 }
 
 // Result summarizes one convergence. Warnings retain the affected path so a
@@ -83,7 +84,7 @@ func discover(manifestPath string, loadPoints map[string]string, catalogs []Cata
 		}
 		destinations[destination] = harness
 		skills := map[string]string{}
-		addRoot := func(root string) error {
+		addRoot := func(root, origin string) error {
 			info, err := os.Stat(root)
 			if errors.Is(err, os.ErrNotExist) {
 				return nil
@@ -102,7 +103,8 @@ func discover(manifestPath string, loadPoints map[string]string, catalogs []Cata
 				target := filepath.Join(root, entry.Name())
 				info, err := os.Stat(target)
 				if errors.Is(err, os.ErrNotExist) {
-					warnings[fmt.Sprintf("inspect skill %s: %v", target, err)] = true
+					warnings[describeSkill(origin, entry.Name(), target)+
+						fmt.Sprintf(": %v", err)] = true
 					continue
 				}
 				if err != nil {
@@ -118,12 +120,12 @@ func discover(manifestPath string, loadPoints map[string]string, catalogs []Cata
 			if err := skillselector.Validate(repository.Skills); err != nil {
 				return nil, nil, fmt.Errorf("repository %q skill selector: %w", repository.Identity, err)
 			}
-			if err := addRoot(filepath.Join(repository.Path, ".agents", "skills")); err != nil {
+			if err := addRoot(filepath.Join(repository.Path, ".agents", "skills"), ""); err != nil {
 				return nil, nil, err
 			}
 		}
 		for _, catalog := range catalogs {
-			if err := addRoot(catalog.Path); err != nil {
+			if err := addRoot(catalog.Path, catalog.Source); err != nil {
 				return nil, nil, err
 			}
 		}
@@ -262,4 +264,13 @@ func ApplyWithCatalogs(
 		return result, fmt.Errorf("write skill mount ownership: %w", err)
 	}
 	return result, nil
+}
+
+// describeSkill names a skill by source where the root has one. A residency
+// repository has none, and inventing one would claim unstated provenance.
+func describeSkill(origin, name, target string) string {
+	if origin == "" {
+		return fmt.Sprintf("inspect skill %s", target)
+	}
+	return fmt.Sprintf("inspect skill %s/%s", origin, name)
 }

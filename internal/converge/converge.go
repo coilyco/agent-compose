@@ -51,7 +51,10 @@ func Run(paths cascade.Paths, opts Options, stdout, stderr io.Writer) int {
 			return 1
 		}
 		for _, catalog := range local {
-			catalogs = append(catalogs, skillmount.Catalog{Path: catalog.Path})
+			catalogs = append(catalogs, skillmount.Catalog{
+				Path:   catalog.Path,
+				Source: catalog.Source.String(),
+			})
 		}
 		if opts.Verbose {
 			fmt.Fprintf(stdout, "catalog local=%d\n", len(local))

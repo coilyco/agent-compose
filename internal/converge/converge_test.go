@@ -198,9 +198,10 @@ func TestConvergeProjectsAOSLocalCatalogueManifest(t *testing.T) {
 	manifest := filepath.Join(dir, "catalogues.json")
 	body := `{
   "format": "aos.catalogues.v1",
+  "forge": "https://forgejo.example.test",
   "catalogues": [
-    {"source": "one/catalogue@main", "path": "` + filepath.ToSlash(first) + `", "commit": "1111111111111111111111111111111111111111"},
-    {"source": "two/catalogue@main", "path": "` + filepath.ToSlash(second) + `", "commit": "2222222222222222222222222222222222222222"}
+    {"source": "one/catalogue/.agents/skills@main", "path": "` + filepath.ToSlash(first) + `", "commit": "1111111111111111111111111111111111111111"},
+    {"source": "two/catalogue/.agents/skills@main", "path": "` + filepath.ToSlash(second) + `", "commit": "2222222222222222222222222222222222222222"}
   ]
 }
 `

@@ -374,3 +374,68 @@ func TestApplyWithCatalogsOverlaysLocalSkillsForEveryLoadPoint(t *testing.T) {
 		}
 	}
 }
+
+// A vanished catalogue skill is reported by source: the cache path names
+// neither the forge nor the repository to go fix.
+func TestApplyWarnsWithTheCatalogueSourceRatherThanItsCachePath(t *testing.T) {
+	dir := t.TempDir()
+	root := filepath.Join(dir, "root")
+	makeSkill(t, root, "kept")
+
+	catalogRoot := filepath.Join(dir, "cache", "0a1b2c3d")
+	if err := os.MkdirAll(catalogRoot, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	target := filepath.Join(dir, "fragile-target")
+	if err := os.MkdirAll(target, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Symlink(target, filepath.Join(catalogRoot, "sirens-game-enshrouded")); err != nil {
+		t.Fatal(err)
+	}
+
+	destination := filepath.Join(dir, "skills")
+	state := filepath.Join(dir, "state")
+	points := map[string]string{"codex": destination}
+	manifest := filepath.Join(dir, "repository-plan.yaml")
+	writeEligibility(t, manifest, []string{root}, map[string][]string{})
+	source := "forgejo.coilysiren.me/coilyco-gaming/enshrouded/.agents/skills@main"
+	catalogs := []Catalog{{Path: catalogRoot, Source: source}}
+
+	if _, err := ApplyWithCatalogs(manifest, points, state, catalogs); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.RemoveAll(target); err != nil {
+		t.Fatal(err)
+	}
+
+	result, err := ApplyWithCatalogs(manifest, points, state, catalogs)
+	if err != nil {
+		t.Fatalf("vanished catalogue skill must not fail convergence: %v", err)
+	}
+	if len(result.Warnings) != 1 {
+		t.Fatalf("warnings = %q, want one", result.Warnings)
+	}
+	want := "forgejo.coilysiren.me/coilyco-gaming/enshrouded/.agents/skills@main/sirens-game-enshrouded"
+	if !strings.Contains(result.Warnings[0], want) {
+		t.Fatalf("warning = %q, want it to name %q", result.Warnings[0], want)
+	}
+	// The path stays in the wrapped cause, as Result documents. What changes
+	// is that the skill is identified by source first.
+	if !strings.Contains(result.Warnings[0], catalogRoot) {
+		t.Fatalf("warning = %q, want the inspected path retained in the cause",
+			result.Warnings[0])
+	}
+	if !strings.HasPrefix(result.Warnings[0], "inspect skill "+want) {
+		t.Fatalf("warning = %q, want it to lead with the qualified source",
+			result.Warnings[0])
+	}
+}
+
+// A residency repository has no source, so its warning keeps naming the path.
+func TestApplyWarnsWithThePathWhenARootHasNoSource(t *testing.T) {
+	if got := describeSkill("", "fragile", "/tmp/root/.agents/skills/fragile"); got !=
+		"inspect skill /tmp/root/.agents/skills/fragile" {
+		t.Fatalf("pathless description = %q", got)
+	}
+}

@@ -192,8 +192,10 @@ func TestConvergeProjectsAOSLocalCatalogueManifest(t *testing.T) {
 	}
 	first := filepath.Join(dir, "catalogues", "first")
 	second := filepath.Join(dir, "catalogues", "second")
-	writeTestSkill(t, first, "shared", "first")
-	writeTestSkill(t, second, "shared", "second")
+	// Equal content, because divergent content under one name is now fatal.
+	// The refusal has its own test below.
+	writeTestSkill(t, first, "shared", "shared")
+	writeTestSkill(t, second, "shared", "shared")
 	writeTestSkill(t, second, "aos-only", "aos")
 	manifest := filepath.Join(dir, "catalogues.json")
 	body := `{
@@ -225,12 +227,17 @@ func TestConvergeProjectsAOSLocalCatalogueManifest(t *testing.T) {
 	if !strings.Contains(out, "catalog local=2") {
 		t.Fatalf("local catalogue summary missing: %s", out)
 	}
+	// Declaration order still decides which copy is kept where content raises
+	// no objection, and the dedupe is reported rather than silent.
+	if !strings.Contains(out, "catalog duplicate shared kept=") {
+		t.Fatalf("dedupe was not reported: %s", out)
+	}
 	shared, err := os.Readlink(filepath.Join(skillLoadPoint, "shared"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if body := readFile(t, filepath.Join(shared, "SKILL.md")); body != "second" {
-		t.Fatalf("manifest declaration order was not preserved: %q", body)
+	if body := readFile(t, filepath.Join(shared, "SKILL.md")); body != "shared" {
+		t.Fatalf("shared skill body = %q", body)
 	}
 	if _, err := os.Readlink(filepath.Join(skillLoadPoint, "aos-only")); err != nil {
 		t.Fatal("AOS-only skill was not projected")
@@ -511,5 +518,100 @@ func TestConvergeRefusesRequestsWithNoCompiledSet(t *testing.T) {
 	}
 	if !strings.Contains(errOut, "skill_catalog_manifest") {
 		t.Fatalf("failure does not name what is missing: %s", errOut)
+	}
+}
+
+// convergeCatalogues writes one manifest over the given catalogue roots and
+// converges it, so a test can vary only the catalogue content.
+func convergeCatalogues(t *testing.T, build func(dir string) []string) (int, string, string, string) {
+	t.Helper()
+	dir := t.TempDir()
+	paths := cascade.Paths{
+		Config:       filepath.Join(dir, "agent-compose.yaml"),
+		Composed:     filepath.Join(dir, "COMPOSED.md"),
+		ProjectsRoot: filepath.Join(dir, "projects"),
+		Home:         filepath.Join(dir, "home"),
+	}
+	doctrine := filepath.Join(dir, "doctrine", "AGENTS.COMPOSE.md")
+	if err := os.MkdirAll(filepath.Dir(doctrine), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(doctrine, []byte("# Doctrine\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	roots := build(dir)
+	entries := make([]string, 0, len(roots))
+	for index, root := range roots {
+		entries = append(entries, fmt.Sprintf(
+			`    {"source": "org/repo-%02d/.agents/skills@main", "path": %q, "commit": %q}`,
+			index, filepath.ToSlash(root), strings.Repeat(fmt.Sprintf("%x", index%16), 40)))
+	}
+	manifest := filepath.Join(dir, "catalogues.json")
+	body := "{\n  \"format\": \"aos.catalogues.v1\",\n" +
+		"  \"forge\": \"https://forgejo.example.test\",\n  \"catalogues\": [\n" +
+		strings.Join(entries, ",\n") + "\n  ]\n}\n"
+	if err := os.WriteFile(manifest, []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	skillLoadPoint := filepath.Join(dir, "links", "skills")
+	config := "sources:\n  - " + doctrine + "\n" +
+		"skill_catalog_manifest: " + manifest + "\n" +
+		"skill_load_points:\n  codex: " + skillLoadPoint + "\n" +
+		"load_points:\n  claude: null\n  codex: " +
+		filepath.Join(dir, "links", "AGENTS.md") + "\n"
+	if err := os.WriteFile(paths.Config, []byte(config), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	code, out, errOut := run(t, paths)
+	return code, out, errOut, skillLoadPoint
+}
+
+// R1: a manifest of twenty-two entries loads, every tree validates, and each
+// catalogue reports its own provenance rather than one merged count.
+func TestConvergeLoadsTwentyTwoCataloguesWithPerSourceProvenance(t *testing.T) {
+	const count = 22
+	code, out, errOut, loadPoint := convergeCatalogues(t, func(dir string) []string {
+		roots := make([]string, 0, count)
+		for index := 0; index < count; index++ {
+			root := filepath.Join(dir, "catalogues", fmt.Sprintf("c%02d", index))
+			writeTestSkill(t, root, fmt.Sprintf("skill-%02d", index), "body")
+			roots = append(roots, root)
+		}
+		return roots
+	})
+	if code != 0 {
+		t.Fatalf("twenty-two catalogue converge failed: %s %s", out, errOut)
+	}
+	if !strings.Contains(out, fmt.Sprintf("catalog local=%d", count)) {
+		t.Fatalf("catalogue count missing: %s", out)
+	}
+	for index := 0; index < count; index++ {
+		line := fmt.Sprintf("catalog forgejo.example.test/org/repo-%02d/.agents/skills@main skills=1", index)
+		if !strings.Contains(out, line) {
+			t.Fatalf("per-source provenance missing for entry %d: %s", index, out)
+		}
+		if _, err := os.Stat(filepath.Join(loadPoint, fmt.Sprintf("skill-%02d", index))); err != nil {
+			t.Fatalf("catalogue %d skill was not projected: %v", index, err)
+		}
+	}
+}
+
+// R4: one name meaning two different skills stops the converge and names both
+// sources, rather than the last manifest entry quietly winning.
+func TestConvergeRefusesOneNameMeaningTwoSkills(t *testing.T) {
+	code, _, errOut, _ := convergeCatalogues(t, func(dir string) []string {
+		first := filepath.Join(dir, "catalogues", "a")
+		second := filepath.Join(dir, "catalogues", "b")
+		writeTestSkill(t, first, "shared", "one thing")
+		writeTestSkill(t, second, "shared", "a different thing")
+		return []string{first, second}
+	})
+	if code == 0 {
+		t.Fatal("divergent content under one name converged")
+	}
+	for _, want := range []string{"org/repo-00", "org/repo-01", "shared"} {
+		if !strings.Contains(errOut, want) {
+			t.Fatalf("refusal does not name %s: %s", want, errOut)
+		}
 	}
 }

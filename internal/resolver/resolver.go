@@ -1,8 +1,6 @@
 package resolver
 
 import (
-	"bytes"
-	"crypto/sha256"
 	"fmt"
 	"io/fs"
 	"path"
@@ -11,6 +9,7 @@ import (
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/treehash"
 )
 
 const (
@@ -317,7 +316,7 @@ func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, mi
 	selectedBySkill := map[string]Selected{}
 	skillDigests := map[string]string{}
 	considerSkill := func(src *schema.Source, ref schema.ContentRef, reason string) error {
-		digest, err := treeDigest(src.FileSystem(), ref.Path)
+		digest, err := treehash.Digest(src.FileSystem(), ref.Path)
 		if err != nil {
 			return fmt.Errorf("source %q skill %q: %w", src.ID, ref.ID, err)
 		}
@@ -349,7 +348,7 @@ func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, mi
 			if err != nil {
 				return nil, fmt.Errorf("source %q instruction %q: %w", src.ID, ref.ID, err)
 			}
-			body := normalizeEOL(raw)
+			body := treehash.NormalizeEOL(raw)
 			if prior, dup := instructionBytes[ref.ID]; dup {
 				if string(prior) == string(body) {
 					res.decide(Decision{
@@ -617,46 +616,6 @@ func entryPoint(ref schema.ContentRef) string {
 
 func (r *Resolution) decide(d Decision) {
 	r.Decisions = append(r.Decisions, d)
-}
-
-func treeDigest(files fs.FS, root string) (string, error) {
-	h := sha256.New()
-	err := fs.WalkDir(files, root, func(p string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if d.Type()&fs.ModeSymlink != 0 {
-			return fmt.Errorf("%s: symlinks are invalid inside a source", p)
-		}
-		if d.IsDir() {
-			return nil
-		}
-		rel := strings.TrimPrefix(p, strings.TrimSuffix(root, "/")+"/")
-		if rel == p {
-			return fmt.Errorf("%s is not beneath %s", p, root)
-		}
-		raw, err := fs.ReadFile(files, p)
-		if err != nil {
-			return err
-		}
-		body := normalizeEOL(raw)
-		fmt.Fprintf(h, "%s\x00%d\x00", rel, len(body))
-		h.Write(body)
-		return nil
-	})
-	if err != nil {
-		return "", err
-	}
-	return fmt.Sprintf("%x", h.Sum(nil)), nil
-}
-
-// normalizeEOL folds CRLF so two checkouts of one commit digest equal, and
-// hashes raw when a NUL byte says the content is binary.
-func normalizeEOL(raw []byte) []byte {
-	if bytes.IndexByte(raw, 0) >= 0 {
-		return raw
-	}
-	return bytes.ReplaceAll(raw, []byte("\r\n"), []byte("\n"))
 }
 
 func treeBytes(files fs.FS, root string) (int64, error) {

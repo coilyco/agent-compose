@@ -108,7 +108,7 @@ rather than only in the issue.
   smoke proves idempotence.
 * [`appendix`](cascade.md) composes inline or file tail blocks, optionally scoped to named roles.
 * [`source_delivery`](cascade.md) emits a source as an `@path` import rather than inlining it, so a source the repository cascade also delivers is loaded once; a missing target fails convergence rather than shipping a pointer to nothing.
-* [Local skill catalogues](skill-catalogues.md) consume AOS roots, each addressed by a forge-qualified source that travels with the root, so a bare owner/repo real on two forges fails rather than picking one. An [org grant](skill-selectors.md) admits a whole owner from the compiled set, open to repositories added later and bounded only by its selectors, and `skill_requests` reaches one skill by address, failing the converge by name when it resolves to nothing.
+* [Local skill catalogues](skill-catalogues.md) consume AOS roots, each addressed by a forge-qualified source that travels with the root, so a bare owner/repo real on two forges fails rather than picking one, and one name meaning two different skills stops the converge naming both. An [org grant](skill-selectors.md) admits a whole owner from the compiled set, open to repositories added later and bounded only by its selectors, and `skill_requests` reaches one skill by address, failing the converge by name when it resolves to nothing.
 * [Release](release.md) publishes unreleased deltas under a hold, with roll-forward recovery.
 * A bundle carries a [voice profile](manifest-schema.md) merging a skill's rules with the seat's avoid banks, so a Refuse reaches a checker.
 

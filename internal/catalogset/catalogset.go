@@ -11,6 +11,7 @@ import (
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogmanifest"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/skillselector"
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/treehash"
 )
 
 // Catalog is one compiled catalogue and the skills it actually offers.
@@ -26,6 +27,14 @@ type Skill struct {
 	Path    string
 	Source  catalogmanifest.Source
 	Address string
+}
+
+// Duplicate is one name two catalogues offer with equal content. Divergent
+// content is fatal instead. See docs/skill-catalogues.md.
+type Duplicate struct {
+	Name   string
+	Kept   catalogmanifest.Source
+	Shadow catalogmanifest.Source
 }
 
 // Set is the compiled superset in manifest declaration order.
@@ -204,4 +213,58 @@ func contains(values []string, want string) bool {
 		}
 	}
 	return false
+}
+
+// Duplicates rules on every name more than one catalogue offers: equal content
+// dedupes with a note, divergent content is fatal and names both sources.
+func (s *Set) Duplicates() ([]Duplicate, error) {
+	owning := map[string][]Catalog{}
+	order := make([]string, 0)
+	for _, catalog := range s.catalogs {
+		for _, name := range catalog.Skills {
+			if _, seen := owning[name]; !seen {
+				order = append(order, name)
+			}
+			owning[name] = append(owning[name], catalog)
+		}
+	}
+	sort.Strings(order)
+	notes := make([]Duplicate, 0)
+	for _, name := range order {
+		holders := owning[name]
+		if len(holders) < 2 {
+			continue
+		}
+		first, err := skillDigest(holders[0], name)
+		if err != nil {
+			return nil, err
+		}
+		for _, other := range holders[1:] {
+			next, err := skillDigest(other, name)
+			if err != nil {
+				return nil, err
+			}
+			if next != first {
+				return nil, fmt.Errorf(
+					"skill %q is owned by %s and %s with different content: "+
+						"one name cannot mean two skills",
+					name, holders[0].Source, other.Source,
+				)
+			}
+			// Declaration order decides which copy is kept, which is the
+			// manifest contract's own rule where content does not object.
+			notes = append(notes, Duplicate{
+				Name: name, Kept: holders[0].Source, Shadow: other.Source,
+			})
+		}
+	}
+	return notes, nil
+}
+
+func skillDigest(catalog Catalog, name string) (string, error) {
+	digest, err := treehash.Digest(os.DirFS(catalog.Path), name)
+	if err != nil {
+		return "", fmt.Errorf("digest skill %s: %w", catalog.Source.SkillAddress(name), err)
+	}
+	return digest, nil
 }

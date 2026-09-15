@@ -99,8 +99,23 @@ func Run(paths cascade.Paths, opts Options, stdout, stderr io.Writer) int {
 			fmt.Fprintf(stderr, "agent-compose: %v\n", err)
 			return 1
 		}
+		// Divergent content under one name is fatal, so this runs before any
+		// projection rather than reporting after the fact.
+		notes, err := set.Duplicates()
+		if err != nil {
+			fmt.Fprintf(stderr, "agent-compose: %v\n", err)
+			return 1
+		}
+		for _, note := range notes {
+			fmt.Fprintf(stdout, "catalog duplicate %s kept=%s shadowed=%s\n",
+				note.Name, note.Kept, note.Shadow)
+		}
 		if opts.Verbose {
 			fmt.Fprintf(stdout, "catalog local=%d\n", len(local))
+			for _, catalog := range set.Catalogs() {
+				fmt.Fprintf(stdout, "catalog %s skills=%d\n",
+					catalog.Source, len(catalog.Skills))
+			}
 		}
 	}
 

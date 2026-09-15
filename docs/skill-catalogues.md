@@ -115,6 +115,6 @@ skill in it drops the catalogue path:
 Source travels with the path rather than being checked and dropped, which is
 what lets a warning name the repository to fix instead of a cache directory.
 
-Entries retain declaration order, later ones winning duplicate skill names.
-Existing unowned files at a native load point still win over every managed
-catalogue.
+Entries retain declaration order. Two catalogues offering one skill name dedupe
+on equal content and are **fatal on divergent content**, naming both sources.
+Unowned files at a load point still win over every managed catalogue.

@@ -224,3 +224,116 @@ func TestResolveRefusesATerseAddressServedByTwoForges(t *testing.T) {
 		t.Fatalf("naming the forge must settle it: %v", err)
 	}
 }
+
+func TestDuplicatesDedupesEqualContentAndNamesIt(t *testing.T) {
+	dir := t.TempDir()
+	first := makeCatalog(t, filepath.Join(dir, "a"), "shared", "only-here")
+	second := makeCatalog(t, filepath.Join(dir, "b"), "shared")
+	set := build(t,
+		catalogmanifest.Catalog{
+			Path:   first,
+			Source: source(t, "https://forgejo.example.test/org/one/.agents/skills@main"),
+		},
+		catalogmanifest.Catalog{
+			Path:   second,
+			Source: source(t, "https://forgejo.example.test/org/two/.agents/skills@main"),
+		},
+	)
+	notes, err := set.Duplicates()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(notes) != 1 {
+		t.Fatalf("notes = %+v, want one", notes)
+	}
+	// Declaration order keeps the first, which is the manifest contract's own
+	// rule where content raises no objection.
+	if notes[0].Name != "shared" ||
+		notes[0].Kept.Repo != "one" ||
+		notes[0].Shadow.Repo != "two" {
+		t.Fatalf("note = %+v", notes[0])
+	}
+}
+
+func TestDuplicatesRefusesDivergentContentAndNamesBoth(t *testing.T) {
+	dir := t.TempDir()
+	first := makeCatalog(t, filepath.Join(dir, "a"), "shared")
+	second := makeCatalog(t, filepath.Join(dir, "b"), "shared")
+	body := filepath.Join(second, "shared", "SKILL.md")
+	if err := os.WriteFile(body, []byte("a different skill wearing the same name\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	set := build(t,
+		catalogmanifest.Catalog{
+			Path:   first,
+			Source: source(t, "https://forgejo.example.test/org/one/.agents/skills@main"),
+		},
+		catalogmanifest.Catalog{
+			Path:   second,
+			Source: source(t, "https://github.com/org/two/.agents/skills@main"),
+		},
+	)
+	_, err := set.Duplicates()
+	if err == nil {
+		t.Fatal("divergent content under one name was admitted")
+	}
+	for _, want := range []string{"forgejo.example.test/org/one", "github.com/org/two", "shared"} {
+		if !strings.Contains(err.Error(), want) {
+			t.Fatalf("error %q does not name %s", err, want)
+		}
+	}
+}
+
+// Line endings must not decide the ruling: the same skill checked out on two
+// hosts would otherwise read as two different skills.
+func TestDuplicatesFoldsLineEndings(t *testing.T) {
+	dir := t.TempDir()
+	first := makeCatalog(t, filepath.Join(dir, "a"), "shared")
+	second := makeCatalog(t, filepath.Join(dir, "b"), "shared")
+	if err := os.WriteFile(filepath.Join(first, "shared", "SKILL.md"),
+		[]byte("one\ntwo\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(second, "shared", "SKILL.md"),
+		[]byte("one\r\ntwo\r\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	set := build(t,
+		catalogmanifest.Catalog{
+			Path:   first,
+			Source: source(t, "https://forgejo.example.test/org/one/.agents/skills@main"),
+		},
+		catalogmanifest.Catalog{
+			Path:   second,
+			Source: source(t, "https://forgejo.example.test/org/two/.agents/skills@main"),
+		},
+	)
+	notes, err := set.Duplicates()
+	if err != nil {
+		t.Fatalf("CRLF alone must not make two skills: %v", err)
+	}
+	if len(notes) != 1 {
+		t.Fatalf("notes = %+v, want one dedupe note", notes)
+	}
+}
+
+func TestDuplicatesIsSilentWhenNoNameIsSharedTwice(t *testing.T) {
+	dir := t.TempDir()
+	set := build(t,
+		catalogmanifest.Catalog{
+			Path:   makeCatalog(t, filepath.Join(dir, "a"), "one"),
+			Source: source(t, "https://forgejo.example.test/org/one/.agents/skills@main"),
+		},
+		catalogmanifest.Catalog{
+			Path:   makeCatalog(t, filepath.Join(dir, "b"), "two"),
+			Source: source(t, "https://forgejo.example.test/org/two/.agents/skills@main"),
+		},
+	)
+	notes, err := set.Duplicates()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(notes) != 0 {
+		t.Fatalf("notes = %+v, want none", notes)
+	}
+}

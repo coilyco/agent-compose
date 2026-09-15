@@ -9,7 +9,8 @@ binary in a scratch home before it was written down.
 
 Three files, in three places, and one command that reads them.
 
-* `~/.agent-compose/roster` - the seats themselves - eight roles, their
+* `~/.agent-compose/roster` - the seats themselves - ten roles, seven of them
+  offered and three archived, their
   personalities, and the boundaries between them. The binary does not carry
   this. It mounts it.
 * `~/.agent-compose/agent-compose.yaml` - your host configuration - which
@@ -164,10 +165,15 @@ invariant, then every seat this deployment offers.
 
 ## Host convergence is not the only shape
 
-That composed file carried all eight seats: 52,912 bytes in the run above, one
-charter after another, so the agent can see the whole roster and switch inside
-it. That is the right shape for an interactive session where you have not
-decided yet.
+That composed file carried every seat the deployment offers: 52,912 bytes in the
+run above, one charter after another, so the agent can see the whole roster and
+switch inside it. That is the right shape for an interactive session where you
+have not decided yet.
+
+Both byte counts on this page come from a run that predates the 2026-09-15
+archiving of three seats, so a run today carries seven charters and fewer bytes.
+They are left as the record of the run that produced them rather than re-estimated
+against a roster they were never measured on.
 
 When you have decided, assign the role instead and carry one:
 

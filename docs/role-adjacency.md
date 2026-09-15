@@ -82,6 +82,14 @@ a rule. Both zero-in-degree seats landed without any existing edge being
 re-pointed toward them, which is what a late addition looks like rather than a
 property of the seat.
 
+Analyst, psych and reporter were archived on 2026-09-15 and the graph above is
+unchanged, because archiving retires a seat from selection and keeps everything
+else. So platform and sysadmin still declare an edge to analyst, and out-degree
+still validates at two for all ten. What did change is downstream: `evalkit`
+derives role-fit cases from the live seats only, so the two edges pointing at
+analyst still derive a case for platform and for sysadmin, while the three
+archived seats derive none of their own.
+
 ## See also
 
 * [Role boundaries](role-boundaries.md) - shared behavior allocated to one owner.

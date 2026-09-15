@@ -16,9 +16,10 @@ authority attached to it. You can read and diff every file before a run, and
 
 ## The roster
 
-`roster:core` is the zero-config default, and it ships eight seats. Each one has
-a name, a charter, and a meld of two personality traits that shape how it writes
-and what it reaches for first.
+`roster:core` is the zero-config default. It describes ten seats and offers seven,
+because three are [archived](docs/role-selection.md). Each one has a name, a
+charter, and a meld of two personality traits that shape how it writes and what
+it reaches for first.
 
 - 🪢🪨 **Angie** (she) - Platform Engineer - builds and lands the foundational software the rest of the estate is built on. Tenacious and grounded.
 - 🛡️🪨 **Vera** (she) - Systems Administrator - operates the real hosted systems and release surfaces. Protective and grounded.
@@ -28,13 +29,13 @@ and what it reaches for first.
 - ✂️🔭 **Portia** (they) - Portfolio Director - decides what the portfolio does next, and carries each decision to its gate. Decisive and outward.
 - 🕯️🔭 **Gem** (they) - Developer Advocate - turns real work and audience evidence into accurate content and informed commitments. Warm and outward.
 - 🪞🪢 **Cassandra** (they) - AI Risk Analyst - **archived** - assessed whether an AI system was fit to ship, named the exclusions, and stood behind the file that proved it. Suspicious and tenacious.
+- 🕯️🛡️ **Iris** (she) - Behavioral Psychologist - **archived** - stayed with what a person actually brought, and named the thing they were steering around before offering relief. Warm and protective.
+- 🪢🔭 **Nell** (she) - Investigative Reporter - **archived** - worked out who an unmet party was from what they published, and said whether to approach them at all. Tenacious and outward.
 
-Every seat melds one signature trait with one bond it shares with a sibling, so
-the eight signature traits are distinct and the bonds group them: the three
-builders share 🪨 grounded, the two makers share 🌈 imaginative, and the two
-outward-facing seats share 🔭 outward. The analyst bonds instead to 🪢
-tenacious, the platform seat's own signature, so eight signatures and three
-shared bonds make the eleven the catalogue lists.
+The catalogue lists eleven traits. Five belong to one seat alone (🪞 suspicious,
+✂️ decisive, 🧪 empirical, 🤿 immersed, 🎨 playful) and six are bonds two or more
+seats share: 🪨 grounded across the three builders, 🌈 imaginative across the two
+makers, and 🔭 outward, 🪢 tenacious, 🕯️ warm and 🛡️ protective across the rest.
 
 Each personality carries a color, an emblem, a motif, and a body written in
 prose, which is where the creature art comes from and what a voice melds along

@@ -101,14 +101,14 @@ until an independently reviewed re-run.
 
 ## Core Roster boundaries
 
-Each slug names the behavior that moves. Every boundary reaches all ten seats and exactly one owns it, so a missing seat is a defect. The rest split per boundary.
+Each slug names the behavior that moves. Every boundary reaches all ten seats and exactly one owns it, so a missing seat is a defect. The rest split per boundary. Archiving a seat does not drop it from a boundary, so analyst, psych and reporter still appear below.
+
+Two boundaries were deleted on 2026-09-15 with the seats that owned them: `hold-emotional-weight`, owned by psych, and `study-an-unmet-party`, owned by reporter. Neither behavior is allocated now, so no seat defers it and no seat owns it.
 
 * `modify-live-backend`, owner sysadmin - scoped for platform, gamedev, and analyst, who run CI and local environments, run a world they launched themselves, and remediate the specific control failure they already wrote up. Deferred by advocate, director, frontend, science, psych, and reporter.
 * `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by analyst, director, platform, psych, reporter, science, and sysadmin.
 * `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime the system under assessment answers to. Deferred by frontend, gamedev, psych, reporter, science, and sysadmin.
 * `build-foundational-software`, owner platform - scoped for sysadmin and science, who write estate configuration and measurement instruments. Deferred by advocate, analyst, director, frontend, gamedev, psych, and reporter.
-* `hold-emotional-weight`, owner psych - scoped for analyst alone, who reads a store as an instrument and counts against a fixed rule without answering what it holds. Deferred by advocate, director, frontend, gamedev, platform, reporter, science, and sysadmin, who finish the task and hand the weight over.
-* `study-an-unmet-party`, owner reporter - scoped for advocate and director, who read the party's published position on the one question their own artifact turns on. Deferred by analyst, frontend, gamedev, platform, psych, science, and sysadmin, who read what the party published for the task in front of them and hand the picture over.
 
 ## See also
 

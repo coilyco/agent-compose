@@ -16,20 +16,20 @@ as a soft signal and selects the closest role. The agent records that role as
 inferred and loads its role skill plus complete ordered personality meld. Its
 role methods remain lazy until a matching task triggers them.
 
-In an eligible directly steered session, an explicit user request naming a
-valid rendered role slug switches immediately without a second confirmation.
-The agent loads the target charter and boundary, announces the role, and stops acting from the
-prior charter. The switched role remains inferred and persists until another explicit switch or
-session end. This permits later switches and a return to an earlier role.
+In an eligible directly steered session, an explicit user request naming a valid rendered role slug switches
+immediately without a second confirmation. The agent loads the target charter and boundary, announces the role,
+and stops acting from the prior charter. The switched role remains inferred and persists until another explicit
+switch or session end, so later switches and a return to an earlier role are both permitted.
 
 An agent-proposed switch requires a separate confirmation. An unknown target fails with the
 available rendered role slugs. The complete rules live in [native adaptation](native-adaptation.md).
 
 ### Archived roles
 
-`archived: true` retires a seat from selection and keeps everything else. The resolver refuses it with a message
-saying archived rather than undefined, since the roster still describes the seat, and `catalog roles` lists it
-marked `(archived)`. housecast refuses it identically, so parity skips exactly the roles both engines refuse.
+`archived: true` retires a seat from selection and keeps everything else. The resolver refuses it as archived
+rather than undefined, since the roster still describes the seat, and `catalog roles` marks it. housecast refuses
+it identically, so parity skips exactly the roles both engines refuse. `overlay.Build` never reads the flag, so
+`analyst`, `psych` and `reporter`, archived 2026-09-15 with their boundaries and guardrails deleted, still answer it.
 
 ### Caller-assigned roles
 

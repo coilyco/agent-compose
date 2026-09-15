@@ -127,3 +127,73 @@ func TestUntrustedManifestInputsFailForTheirOwnReason(t *testing.T) {
 		})
 	}
 }
+
+// One catalogue listed twice is a malformed manifest, not a duplicate skill
+// name to rule on, so it is refused before any content is compared.
+func TestLoadRefusesTheSameCatalogueTwice(t *testing.T) {
+	root := t.TempDir()
+	first := filepath.Join(root, "first")
+	second := filepath.Join(root, "second")
+	for _, path := range []string{first, second} {
+		if err := os.MkdirAll(path, 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	commit := "1111111111111111111111111111111111111111"
+	source := "https://forgejo.example.test/org/one/.agents/skills@main"
+	other := "https://forgejo.example.test/org/two/.agents/skills@main"
+	for name, body := range map[string]string{
+		"repeated source": `{"format":"aos.catalogues.v1","catalogues":[` +
+			`{"source":"` + source + `","path":"` + filepath.ToSlash(first) + `","commit":"` + commit + `"},` +
+			`{"source":"` + source + `","path":"` + filepath.ToSlash(second) + `","commit":"` + commit + `"}]}`,
+		"repeated path": `{"format":"aos.catalogues.v1","catalogues":[` +
+			`{"source":"` + source + `","path":"` + filepath.ToSlash(first) + `","commit":"` + commit + `"},` +
+			`{"source":"` + other + `","path":"` + filepath.ToSlash(first) + `","commit":"` + commit + `"}]}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			manifest := filepath.Join(root, strings.ReplaceAll(name, " ", "-")+".json")
+			writeManifestTestFile(t, manifest, body)
+			_, err := Load(manifest)
+			if err == nil {
+				t.Fatal("a repeated catalogue entry was accepted")
+			}
+			if !strings.Contains(err.Error(), "repeats") {
+				t.Fatalf("error does not name the repeat: %v", err)
+			}
+		})
+	}
+}
+
+func TestLoadCarriesPrivateAndIndex(t *testing.T) {
+	root := t.TempDir()
+	first := filepath.Join(root, "first")
+	second := filepath.Join(root, "second")
+	for _, path := range []string{first, second} {
+		if err := os.MkdirAll(path, 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	manifest := filepath.Join(root, "catalogues.json")
+	writeManifestTestFile(t, manifest, `{
+  "format": "aos.catalogues.v1",
+  "forge": "https://forgejo.example.test",
+  "catalogues": [
+    {"source": "org/public/.agents/skills@main", "path": "`+filepath.ToSlash(first)+`", "commit": "1111111111111111111111111111111111111111"},
+    {"source": "org/secret/.agents/skills@main", "private": true, "path": "`+filepath.ToSlash(second)+`", "commit": "2222222222222222222222222222222222222222"}
+  ]
+}
+`)
+	catalogs, err := Load(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if catalogs[0].Source.Private || !catalogs[1].Source.Private {
+		t.Fatalf("private flags = %v, %v", catalogs[0].Source.Private, catalogs[1].Source.Private)
+	}
+	if strings.Contains(catalogs[1].Source.String(), "secret") {
+		t.Fatalf("private catalogue leaked: %q", catalogs[1].Source.String())
+	}
+	if catalogs[1].Source.Index != 1 {
+		t.Fatalf("index = %d", catalogs[1].Source.Index)
+	}
+}

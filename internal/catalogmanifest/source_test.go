@@ -122,3 +122,48 @@ func TestParseForgeAcceptsBothWrittenForms(t *testing.T) {
 		t.Fatal("a forge carrying a path was accepted")
 	}
 }
+
+// A private source redacts everywhere it renders, because String is what
+// reaches a log line, a warning, and a published artifact.
+func TestPrivateSourceRedactsByDefault(t *testing.T) {
+	source, err := ParseSource(
+		"https://forgejo.coilysiren.me/coilyco-gaming/enshrouded/.agents/skills@main", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source.Private = true
+	source.Index = 3
+
+	if got := source.String(); got != "private catalogue 3" {
+		t.Fatalf("String = %q", got)
+	}
+	// Only the source half redacts: the skill name ships regardless, so a skill
+	// named after its private repo is an authoring choice, not a leak to close.
+	address := source.SkillAddress("sirens-game-enshrouded")
+	prefix, name, found := strings.Cut(address, "/sirens-game-enshrouded")
+	if !found || name != "" {
+		t.Fatalf("SkillAddress = %q, want it to end in the skill name", address)
+	}
+	for _, leak := range []string{"coilyco-gaming", "forgejo.coilysiren.me", "/enshrouded"} {
+		if strings.Contains(prefix, leak) {
+			t.Fatalf("SkillAddress source half %q leaks %q", prefix, leak)
+		}
+	}
+	if prefix != "private catalogue 3" {
+		t.Fatalf("SkillAddress source half = %q", prefix)
+	}
+	if source.Reveal() != "forgejo.coilysiren.me/coilyco-gaming/enshrouded/.agents/skills@main" {
+		t.Fatalf("Reveal = %q", source.Reveal())
+	}
+}
+
+func TestPublicSourceIsUnchangedByTheRedactionPath(t *testing.T) {
+	source, err := ParseSource("https://forgejo.example.test/org/repo/.agents/skills@main", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source.Index = 2
+	if source.String() != source.Reveal() {
+		t.Fatalf("public source redacted: %q", source.String())
+	}
+}

@@ -542,9 +542,13 @@ func convergeCatalogues(t *testing.T, build func(dir string) []string) (int, str
 	roots := build(dir)
 	entries := make([]string, 0, len(roots))
 	for index, root := range roots {
+		private := ""
+		if strings.HasSuffix(root, "-private") {
+			private = `"private": true, `
+		}
 		entries = append(entries, fmt.Sprintf(
-			`    {"source": "org/repo-%02d/.agents/skills@main", "path": %q, "commit": %q}`,
-			index, filepath.ToSlash(root), strings.Repeat(fmt.Sprintf("%x", index%16), 40)))
+			`    {"source": "org/repo-%02d/.agents/skills@main", %s"path": %q, "commit": %q}`,
+			index, private, filepath.ToSlash(root), strings.Repeat(fmt.Sprintf("%x", index%16), 40)))
 	}
 	manifest := filepath.Join(dir, "catalogues.json")
 	body := "{\n  \"format\": \"aos.catalogues.v1\",\n" +
@@ -613,5 +617,45 @@ func TestConvergeRefusesOneNameMeaningTwoSkills(t *testing.T) {
 		if !strings.Contains(errOut, want) {
 			t.Fatalf("refusal does not name %s: %s", want, errOut)
 		}
+	}
+}
+
+// R5: a private catalogue's content reaches the load point and its identity
+// reaches nothing, which is the spec's own grep check over what ships.
+func TestConvergeKeepsAPrivateCatalogueOutOfEverythingItWrites(t *testing.T) {
+	var loadPoint string
+	code, out, errOut, lp := convergeCatalogues(t, func(dir string) []string {
+		open := filepath.Join(dir, "catalogues", "a")
+		shut := filepath.Join(dir, "catalogues", "b-private")
+		writeTestSkill(t, open, "public-skill", "open")
+		writeTestSkill(t, shut, "sirens-game-enshrouded", "secret body")
+		return []string{open, shut}
+	})
+	loadPoint = lp
+	if code != 0 {
+		t.Fatalf("private catalogue converge failed: %s %s", out, errOut)
+	}
+
+	// The content ships, which is what lets a private focus reach a public lane
+	// without being copied into it.
+	target, err := os.Readlink(filepath.Join(loadPoint, "sirens-game-enshrouded"))
+	if err != nil {
+		t.Fatalf("private catalogue skill was not projected: %v", err)
+	}
+	if body := readFile(t, filepath.Join(target, "SKILL.md")); body != "secret body" {
+		t.Fatalf("projected body = %q", body)
+	}
+
+	// The identity does not. repo-01 is the private entry's own source.
+	for name, stream := range map[string]string{"stdout": out, "stderr": errOut} {
+		if strings.Contains(stream, "org/repo-01") {
+			t.Fatalf("%s names the private source: %s", name, stream)
+		}
+		if strings.Contains(stream, "repo-00") && !strings.Contains(stream, "private catalogue 1") {
+			t.Fatalf("%s reports the public source but not the redacted private one: %s", name, stream)
+		}
+	}
+	if !strings.Contains(out, "private catalogue 1") {
+		t.Fatalf("the private catalogue was not reported at all: %s", out)
 	}
 }

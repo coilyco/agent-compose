@@ -14,10 +14,24 @@ type Source struct {
 	Repo  string
 	Path  string
 	Ref   string
+	// Private redacts this source everywhere it is rendered. Index orders the
+	// redaction so two private catalogues stay distinguishable.
+	Private bool
+	Index   int
 }
 
-// String is the recorded form: host-qualified, no scheme, ref retained.
+// String is the recorded form: host-qualified, no scheme, ref retained. A
+// private source redacts, because this is what reaches logs and artifacts.
 func (s Source) String() string {
+	if s.Private {
+		return fmt.Sprintf("private catalogue %d", s.Index)
+	}
+	return s.Reveal()
+}
+
+// Reveal is the unredacted form, for a message that stays on the host holding
+// the catalogue. Never use it where output ships. See docs/skill-catalogues.md.
+func (s Source) Reveal() string {
 	recorded := strings.Join([]string{s.Forge, s.Owner, s.Repo, s.Path}, "/")
 	if s.Ref != "" {
 		recorded += "@" + s.Ref
@@ -26,8 +40,11 @@ func (s Source) String() string {
 }
 
 // SkillAddress names one skill the way a request reaches it, dropping the
-// catalogue's own path.
+// catalogue's own path. A private source redacts, as String does.
 func (s Source) SkillAddress(name string) string {
+	if s.Private {
+		return fmt.Sprintf("private catalogue %d/%s", s.Index, name)
+	}
 	return strings.Join([]string{s.Forge, s.Owner, s.Repo, name}, "/")
 }
 

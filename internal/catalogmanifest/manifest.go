@@ -21,10 +21,11 @@ type document struct {
 }
 
 type entry struct {
-	Source string `json:"source"`
-	Forge  string `json:"forge"`
-	Path   string `json:"path"`
-	Commit string `json:"commit"`
+	Source  string `json:"source"`
+	Forge   string `json:"forge"`
+	Path    string `json:"path"`
+	Commit  string `json:"commit"`
+	Private bool   `json:"private"`
 }
 
 // Catalog is one verified local skill root in declaration order. Source
@@ -70,6 +71,10 @@ func Load(path string) ([]Catalog, error) {
 		return nil, fmt.Errorf("skill catalogue manifest %s: %w", path, err)
 	}
 	catalogs := make([]Catalog, 0, len(manifest.Catalogues))
+	// One catalogue listed twice is a malformed manifest rather than a content
+	// ambiguity, so it is refused here rather than ruled on later.
+	seenSource := map[string]int{}
+	seenPath := map[string]int{}
 	for index, item := range manifest.Catalogues {
 		entryForge, err := parseForge(item.Forge)
 		if err != nil {
@@ -124,6 +129,22 @@ func Load(path string) ([]Catalog, error) {
 				index,
 			)
 		}
+		if first, repeat := seenSource[source.Reveal()]; repeat {
+			return nil, fmt.Errorf(
+				"skill catalogue manifest %s entry %d repeats the source of entry %d",
+				path, index, first,
+			)
+		}
+		if first, repeat := seenPath[clean]; repeat {
+			return nil, fmt.Errorf(
+				"skill catalogue manifest %s entry %d repeats the path of entry %d",
+				path, index, first,
+			)
+		}
+		seenSource[source.Reveal()] = index
+		seenPath[clean] = index
+		source.Index = index
+		source.Private = item.Private
 		catalogs = append(catalogs, Catalog{Path: clean, Source: source})
 	}
 	return catalogs, nil

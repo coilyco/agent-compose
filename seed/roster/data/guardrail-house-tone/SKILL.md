@@ -1,6 +1,6 @@
 ---
 name: guardrail-house-tone
-description: Outward text ships only after the voice linter has run on it as a file and its exit is pasted. Use when the advocate role is composed.
+description: Outward text loads every writing skill it triggers before drafting, and ships only after the voice linter has run on it as a file and its exit is pasted. Use when the advocate role is composed.
 ---
 
 # Guardrail: house tone
@@ -36,3 +36,21 @@ artifacts, which needs context the linter does not have.
 
 What does not count: a clean run on an earlier draft, a clean run on a
 different file, and the linter's silence when you never gave it a path.
+
+## Load the writing skills before you draft, not after
+
+The linter is a detector, and a detector catches only what a regex reaches.
+Register, length band, and whether a constraint you name traces to something
+the principal actually said are all invisible to it, and all three are how a
+draft goes wrong.
+
+So before drafting anything the comms boundary calls outward, load every
+writing skill the task triggers and read the references each one names. The
+deployment names those skills, so resolve them from this seat's catalog the way
+you resolve the linter. A subject carrying its own doctrine loads that too,
+because what such an entry exists to catch reaches a reader through drafted
+text more often than through a decision.
+
+A clean run on a draft written without them is a clean run on the wrong
+question, which is how a reply once cleared this guardrail at three times its
+register's length while naming a constraint with no source behind it.

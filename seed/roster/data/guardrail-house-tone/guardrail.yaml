@@ -3,7 +3,8 @@ order: 2
 skill: guardrail-house-tone
 role: advocate
 detector: <voice-linter> --profile <voice-profile> <file> --strict
-card: Outward text does not ship until the linter has run on it as a file and you have pasted its exit.
+card: Outward text loads every writing skill it triggers before drafting, and does not ship until the
+  linter has run on it as a file and you have pasted its exit.
   Text composed in a message and never written to disk was never linted, and sending it is the violation
   this guardrail exists to catch. Clear every house-style hit before sending, then hand-check the two
   things a regex cannot reach.

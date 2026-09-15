@@ -10,6 +10,7 @@ import (
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/cascade"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogmanifest"
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogset"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roster"
@@ -21,6 +22,42 @@ import (
 type Options struct {
 	Reapply bool
 	Verbose bool
+}
+
+// resolveSkillRequests reaches each configured address in the compiled set. An
+// address that resolves to nothing fails the converge and names itself.
+func resolveSkillRequests(
+	addresses []string,
+	set *catalogset.Set,
+	stdout, stderr io.Writer,
+	verbose bool,
+) ([]skillmount.Request, int) {
+	if len(addresses) == 0 {
+		return nil, 0
+	}
+	if set == nil {
+		fmt.Fprintf(stderr,
+			"agent-compose: skill_requests needs skill_catalog_manifest, "+
+				"because an address resolves against the compiled set\n")
+		return nil, 1
+	}
+	requests := make([]skillmount.Request, 0, len(addresses))
+	for _, address := range addresses {
+		skill, err := set.Resolve(address)
+		if err != nil {
+			fmt.Fprintf(stderr, "agent-compose: %v\n", err)
+			return nil, 1
+		}
+		requests = append(requests, skillmount.Request{
+			Name:    skill.Name,
+			Path:    skill.Path,
+			Address: skill.Address,
+		})
+	}
+	if verbose {
+		fmt.Fprintf(stdout, "requests resolved=%d\n", len(requests))
+	}
+	return requests, 0
 }
 
 // Run refreshes the roster from the selected person plus configured overlays,
@@ -39,6 +76,7 @@ func Run(paths cascade.Paths, opts Options, stdout, stderr io.Writer) int {
 		return 1
 	}
 	var catalogs []skillmount.Catalog
+	var set *catalogset.Set
 	if cfg.SkillCatalogManifest != "" {
 		manifestPath := cascade.ResolveConfiguredPath(
 			cfg.SkillCatalogManifest,
@@ -56,9 +94,19 @@ func Run(paths cascade.Paths, opts Options, stdout, stderr io.Writer) int {
 				Source: catalog.Source.String(),
 			})
 		}
+		set, err = catalogset.Build(local)
+		if err != nil {
+			fmt.Fprintf(stderr, "agent-compose: %v\n", err)
+			return 1
+		}
 		if opts.Verbose {
 			fmt.Fprintf(stdout, "catalog local=%d\n", len(local))
 		}
+	}
+
+	requested, code := resolveSkillRequests(cfg.SkillRequests, set, stdout, stderr, opts.Verbose)
+	if code != 0 {
+		return code
 	}
 
 	p, err := person.Load()
@@ -105,11 +153,12 @@ func Run(paths cascade.Paths, opts Options, stdout, stderr io.Writer) int {
 		return code
 	}
 	manifestPath := filepath.Join(filepath.Dir(paths.Composed), "repository-plan.yaml")
-	skills, err := skillmount.ApplyWithCatalogs(
+	skills, err := skillmount.ApplyWithRequests(
 		manifestPath,
 		cascade.ResolveSkillLoadPoints(cfg),
 		filepath.Dir(paths.Config),
 		catalogs,
+		requested,
 	)
 	for _, warning := range skills.Warnings {
 		fmt.Fprintf(stderr, "agent-compose: warning: %s (skipped)\n", warning)

@@ -31,9 +31,9 @@ func (s Source) SkillAddress(name string) string {
 	return strings.Join([]string{s.Forge, s.Owner, s.Repo, name}, "/")
 }
 
-// parseSource qualifies a bare owner/repo against fallback. A source carrying
+// ParseSource qualifies a bare owner/repo against fallback. A source carrying
 // its own scheme ignores fallback.
-func parseSource(raw, fallback string) (Source, error) {
+func ParseSource(raw, fallback string) (Source, error) {
 	raw = strings.TrimSpace(raw)
 	if raw == "" {
 		return Source{}, fmt.Errorf("names no source")

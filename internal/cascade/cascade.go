@@ -37,6 +37,7 @@ type Config struct {
 	RosterSources        []string            `yaml:"roster_sources"`
 	SkillLoadPoints      map[string]RawValue `yaml:"skill_load_points"`
 	SkillCatalogManifest string              `yaml:"skill_catalog_manifest"`
+	SkillRequests        []string            `yaml:"skill_requests"`
 	OperatingContext     []string            `yaml:"operating_context"`
 	SourceDelivery       string              `yaml:"source_delivery"`
 	Appendix             []AppendixEntry     `yaml:"appendix"`

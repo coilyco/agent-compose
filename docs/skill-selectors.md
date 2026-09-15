@@ -52,6 +52,46 @@ same selector evidence and budget across Claude, Codex, Goose, and OpenCode.
 See the [role-provider example](../examples/role-provider-selector/README.md)
 for a minimal configuration fragment.
 
+## An org grants a whole owner
+
+An `org` node names a forge **owner** rather than a path, so which repositories
+it holds is the compiled manifest's answer rather than a list kept in config:
+
+```kdl
+repositories {
+    org gaming owner="coilyco-gaming" {
+        skill "repo-*"
+        skill "sirens-game-*"
+    }
+}
+roles {
+    role gamedev {
+        use-org gaming
+    }
+}
+```
+
+**The grant is open.** A repository added to the org later reaches the bundle
+with no config change, so the `skill` children are the whole review surface and
+an org declared without one is refused. Patterns keep the semantics above but
+apply across the org's whole skill surface rather than per catalogue.
+
+An org the manifest holds no catalogue for is an error: an org contributing
+nothing is an empty selector by another name. A skill offered by two catalogues
+in one org is fatal and names both, rather than the later entry silently
+winning. A skill is a directory carrying `SKILL.md`, because five repositories
+keep a `categories.yaml` beside their skills and `skill "*"` must not admit it.
+
+## A skill is reachable by address
+
+`skill_requests` in the cascade config names one skill, written terse as
+`owner/repo/skill` or qualified as `forge/owner/repo/skill`. Resolution happens
+against the compiled set at converge time, and an address resolving to nothing
+**fails the converge and names the address** rather than starting a lane with
+one focus missing. A terse address served by two forges is refused the same way
+a bare source in [skill catalogues](skill-catalogues.md) is. Catalogues still
+mount whole, so a request today is resolution and validation rather than reach.
+
 ## Global skill load points
 
 `skill_load_points` names the harness-native directory each harness reads for

@@ -61,7 +61,7 @@ func TestParseSourceQualifiesAgainstTheDeclaredForge(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			got, err := parseSource(testCase.raw, testCase.fallback)
+			got, err := ParseSource(testCase.raw, testCase.fallback)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -78,7 +78,7 @@ func TestParseSourceQualifiesAgainstTheDeclaredForge(t *testing.T) {
 // The same bare source is real on two forges, so an unqualified one must not
 // resolve at all rather than silently pick a side.
 func TestParseSourceRefusesAnUnqualifiedSource(t *testing.T) {
-	_, err := parseSource("coilyco-flight-deck/agentic-os/.agents/skills@main", "")
+	_, err := ParseSource("coilyco-flight-deck/agentic-os/.agents/skills@main", "")
 	if err == nil {
 		t.Fatal("unqualified source resolved")
 	}
@@ -97,7 +97,7 @@ func TestParseSourceRejectsMalformedInput(t *testing.T) {
 		"empty segment":     "owner//repo/.agents/skills@main",
 	} {
 		t.Run(name, func(t *testing.T) {
-			if _, err := parseSource(raw, "forgejo.example.test"); err == nil {
+			if _, err := ParseSource(raw, "forgejo.example.test"); err == nil {
 				t.Fatalf("malformed source %q resolved", raw)
 			}
 		})

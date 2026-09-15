@@ -402,3 +402,114 @@ func ensureGitRepository(t *testing.T, root string) {
 		}
 	}
 }
+
+// convergeWithRequests builds one catalogue set and converges the given
+// skill_requests against it, returning the exit code and streams.
+func convergeWithRequests(t *testing.T, requests string) (int, string, string, string) {
+	t.Helper()
+	dir := t.TempDir()
+	paths := cascade.Paths{
+		Config:       filepath.Join(dir, "agent-compose.yaml"),
+		Composed:     filepath.Join(dir, "COMPOSED.md"),
+		ProjectsRoot: filepath.Join(dir, "projects"),
+		Home:         filepath.Join(dir, "home"),
+	}
+	doctrine := filepath.Join(dir, "doctrine", "AGENTS.COMPOSE.md")
+	if err := os.MkdirAll(filepath.Dir(doctrine), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(doctrine, []byte("# Doctrine\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	catalogue := filepath.Join(dir, "catalogues", "enshrouded")
+	writeTestSkill(t, catalogue, "sirens-game-enshrouded", "focus")
+	// Not a skill: five repositories keep one of these beside their skills.
+	if err := os.WriteFile(filepath.Join(catalogue, "categories.yaml"), []byte("a: b\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	manifest := filepath.Join(dir, "catalogues.json")
+	body := `{
+  "format": "aos.catalogues.v1",
+  "forge": "https://forgejo.example.test",
+  "catalogues": [
+    {"source": "coilyco-gaming/enshrouded/.agents/skills@main", "path": "` +
+		filepath.ToSlash(catalogue) + `", "commit": "1111111111111111111111111111111111111111"}
+  ]
+}
+`
+	if err := os.WriteFile(manifest, []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	skillLoadPoint := filepath.Join(dir, "links", "skills")
+	config := "sources:\n  - " + doctrine + "\n" +
+		"skill_catalog_manifest: " + manifest + "\n" + requests +
+		"skill_load_points:\n  codex: " + skillLoadPoint + "\n" +
+		"load_points:\n  claude: null\n  codex: " +
+		filepath.Join(dir, "links", "AGENTS.md") + "\n"
+	if err := os.WriteFile(paths.Config, []byte(config), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	code, out, errOut := run(t, paths)
+	return code, out, errOut, skillLoadPoint
+}
+
+func TestConvergeResolvesASkillRequestByAddress(t *testing.T) {
+	code, out, errOut, loadPoint := convergeWithRequests(t,
+		"skill_requests:\n  - coilyco-gaming/enshrouded/sirens-game-enshrouded\n")
+	if code != 0 {
+		t.Fatalf("addressed converge failed: %s %s", out, errOut)
+	}
+	// The count is the attributable evidence: catalogues still mount whole, so
+	// presence at the load point happens with no request at all.
+	if !strings.Contains(out, "requests resolved=1") {
+		t.Fatalf("resolution summary missing: %s", out)
+	}
+	if _, err := os.Stat(filepath.Join(loadPoint, "sirens-game-enshrouded")); err != nil {
+		t.Fatalf("addressed skill was not projected: %v", err)
+	}
+	if _, err := os.Lstat(filepath.Join(loadPoint, "categories.yaml")); !os.IsNotExist(err) {
+		t.Fatal("a non-skill file beside the skills was projected")
+	}
+}
+
+func TestConvergeFailsAndNamesAnUnresolvableAddress(t *testing.T) {
+	code, _, errOut, _ := convergeWithRequests(t,
+		"skill_requests:\n  - coilyco-gaming/enshrouded/absent-focus\n")
+	if code == 0 {
+		t.Fatal("an unresolvable address converged")
+	}
+	if !strings.Contains(errOut, "coilyco-gaming/enshrouded/absent-focus") {
+		t.Fatalf("failure does not name the address: %s", errOut)
+	}
+}
+
+func TestConvergeRefusesRequestsWithNoCompiledSet(t *testing.T) {
+	dir := t.TempDir()
+	paths := cascade.Paths{
+		Config:       filepath.Join(dir, "agent-compose.yaml"),
+		Composed:     filepath.Join(dir, "COMPOSED.md"),
+		ProjectsRoot: filepath.Join(dir, "projects"),
+		Home:         filepath.Join(dir, "home"),
+	}
+	doctrine := filepath.Join(dir, "doctrine", "AGENTS.COMPOSE.md")
+	if err := os.MkdirAll(filepath.Dir(doctrine), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(doctrine, []byte("# Doctrine\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	config := "sources:\n  - " + doctrine + "\n" +
+		"skill_requests:\n  - coilyco-gaming/enshrouded/sirens-game-enshrouded\n" +
+		"load_points:\n  claude: null\n  codex: " +
+		filepath.Join(dir, "links", "AGENTS.md") + "\n"
+	if err := os.WriteFile(paths.Config, []byte(config), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	code, _, errOut := run(t, paths)
+	if code == 0 {
+		t.Fatal("requests without a compiled set converged")
+	}
+	if !strings.Contains(errOut, "skill_catalog_manifest") {
+		t.Fatalf("failure does not name what is missing: %s", errOut)
+	}
+}

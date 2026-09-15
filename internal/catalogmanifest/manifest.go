@@ -84,7 +84,7 @@ func Load(path string) ([]Catalog, error) {
 		if fallback == "" {
 			fallback = defaultForge
 		}
-		source, err := parseSource(item.Source, fallback)
+		source, err := ParseSource(item.Source, fallback)
 		if err != nil {
 			return nil, fmt.Errorf(
 				"skill catalogue manifest %s entry %d %w",

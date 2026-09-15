@@ -482,20 +482,29 @@ roles {
 		}
 	})
 
+	// Multi-line because KDL takes a newline as the node terminator: as
+	// one-liners four of these five were rejected before reaching validation.
 	for name, graph := range map[string]string{
-		"undeclared repository": `roles { role platform { use-repository missing } }`,
-		"invalid selector":      `repositories { repository hardware path="example/hardware" { skill "[" } } roles {}`,
-		"duplicate path":        `repositories { repository one path="example/hardware"; repository two path="example/hardware" } roles {}`,
-		"unsafe path":           `repositories { repository hardware path="../hardware" } roles {}`,
-		"unknown use property":  `repositories { repository hardware path="example/hardware" { skill "*" } } roles { role platform { use-repository hardware required=#true } }`,
+		"undeclared repository": "roles {\n role platform {\n use-repository missing\n }\n}\n",
+		"invalid selector": "repositories {\n repository hardware path=\"example/hardware\" {\n" +
+			" skill \"[\"\n }\n}\nroles {\n}\n",
+		"duplicate path": "repositories {\n repository one path=\"example/hardware\"\n" +
+			" repository two path=\"example/hardware\"\n}\nroles {\n}\n",
+		"unsafe path": "repositories {\n repository hardware path=\"../hardware\"\n}\nroles {\n}\n",
+		"unknown use property": "repositories {\n repository hardware path=\"example/hardware\" {\n" +
+			" skill \"*\"\n }\n}\nroles {\n role platform {\n use-repository hardware required=#true\n }\n}\n",
 	} {
 		t.Run(name, func(t *testing.T) {
 			root := makeProvider(t)
-			if err := os.WriteFile(filepath.Join(root, ".agents", "roles.kdl"), []byte(graph+"\n"), 0o644); err != nil {
+			if err := os.WriteFile(filepath.Join(root, ".agents", "roles.kdl"), []byte(graph), 0o644); err != nil {
 				t.Fatal(err)
 			}
-			if _, err := LoadSource(root); err == nil {
+			err := LoadSourceErr(root)
+			if err == nil {
 				t.Fatalf("invalid unified graph passed: %s", graph)
+			}
+			if strings.Contains(err.Error(), "parse error at") {
+				t.Fatalf("fixture is malformed KDL rather than an invalid graph: %v", err)
 			}
 		})
 	}
@@ -713,4 +722,101 @@ func TestLoadInferredProviderAllowsMissingInvariant(t *testing.T) {
 	if len(src.Instructions) != 0 || len(src.Skills) != 1 {
 		t.Fatalf("provider without invariant loaded incorrectly: %+v", src)
 	}
+}
+
+func makeOrgProvider(t *testing.T) string {
+	t.Helper()
+	root := t.TempDir()
+	ordinary := filepath.Join(root, ".agents", "skills", "coding-go")
+	if err := os.MkdirAll(ordinary, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(ordinary, "SKILL.md"), []byte("# Go\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	return root
+}
+
+func TestLoadProviderParsesOrgDeclarationAndBinding(t *testing.T) {
+	root := makeOrgProvider(t)
+	if err := os.WriteFile(filepath.Join(root, ".agents", "roles.kdl"), []byte(`repositories {
+    repository lore path="coilyco-bridge/lore" {
+        skill "repo-lore"
+    }
+    org gaming owner="coilyco-gaming" {
+        skill "repo-*"
+        skill "sirens-game-*"
+    }
+}
+
+roles {
+    role gamedev {
+        use-repository lore
+        use-org gaming
+    }
+}
+`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	source, err := LoadSource(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	definition, declared := source.Orgs["gaming"]
+	if !declared || definition.Owner != "coilyco-gaming" || len(definition.Skills) != 2 {
+		t.Fatalf("org definition = %+v", definition)
+	}
+	uses := source.RoleOrgs["gamedev"]
+	if len(uses) != 1 || uses[0].Org != "gaming" {
+		t.Fatalf("role org uses = %+v", uses)
+	}
+	// An org sits beside repositories rather than replacing them.
+	if len(source.RoleRepos["gamedev"]) != 1 && len(source.RoleProviders["gamedev"]) != 1 {
+		t.Fatal("the repository binding beside the org was lost")
+	}
+}
+
+func TestLoadProviderRejectsUnusableOrgGraphs(t *testing.T) {
+	for name, graph := range map[string]string{
+		"undeclared org": "roles {\n role gamedev {\n use-org missing\n }\n}\n",
+		"no selector": "repositories {\n org gaming owner=\"coilyco-gaming\"\n}\n" +
+			"roles {\n role gamedev {\n use-org gaming\n }\n}\n",
+		"owner is a path": "repositories {\n org gaming owner=\"coilyco-gaming/enshrouded\" {\n" +
+			" skill \"*\"\n }\n}\nroles {\n}\n",
+		"owner missing": "repositories {\n org gaming {\n skill \"*\"\n }\n}\nroles {\n}\n",
+		"unknown property": "repositories {\n org gaming owner=\"coilyco-gaming\" path=\"x\" {\n" +
+			" skill \"*\"\n }\n}\nroles {\n}\n",
+		"invalid selector": "repositories {\n org gaming owner=\"coilyco-gaming\" {\n" +
+			" skill \"[\"\n }\n}\nroles {\n}\n",
+		"duplicate owner": "repositories {\n org one owner=\"coilyco-gaming\" {\n skill \"*\"\n }\n" +
+			" org two owner=\"coilyco-gaming\" {\n skill \"a-*\"\n }\n}\nroles {\n}\n",
+		"id collides with repository": "repositories {\n repository gaming path=\"example/gaming\"\n" +
+			" org gaming owner=\"coilyco-gaming\" {\n skill \"*\"\n }\n}\nroles {\n}\n",
+		"repeated use": "repositories {\n org gaming owner=\"coilyco-gaming\" {\n skill \"*\"\n }\n}\n" +
+			"roles {\n role gamedev {\n use-org gaming\n use-org gaming\n }\n}\n",
+		"use carries children": "repositories {\n org gaming owner=\"coilyco-gaming\" {\n skill \"*\"\n }\n}\n" +
+			"roles {\n role gamedev {\n use-org gaming {\n skill \"x\"\n }\n }\n}\n",
+	} {
+		t.Run(name, func(t *testing.T) {
+			root := makeOrgProvider(t)
+			if err := os.WriteFile(filepath.Join(root, ".agents", "roles.kdl"), []byte(graph), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			_, err := LoadSource(root)
+			if err == nil {
+				t.Fatalf("invalid org graph passed: %s", graph)
+			}
+			// A KDL syntax error would reject every fixture here without
+			// reaching the validation each one is named after.
+			if strings.Contains(err.Error(), "parse error at") {
+				t.Fatalf("fixture is malformed KDL rather than an invalid graph: %v", err)
+			}
+		})
+	}
+}
+
+// LoadSourceErr is LoadSource's error alone, for tables that assert refusal.
+func LoadSourceErr(root string) error {
+	_, err := LoadSource(root)
+	return err
 }

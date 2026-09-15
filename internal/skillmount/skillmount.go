@@ -34,6 +34,14 @@ type Catalog struct {
 	Source string
 }
 
+// Request is one skill reached by address rather than found on a root. It
+// carries the address so a collision or a warning names what was asked for.
+type Request struct {
+	Name    string
+	Path    string
+	Address string
+}
+
 // Result summarizes one convergence. Warnings retain the affected path so a
 // host operator can repair unavailable catalog entries.
 type Result struct {
@@ -61,7 +69,12 @@ func linkKey(destination, name string) string {
 	return filepath.Join(destination, name)
 }
 
-func discover(manifestPath string, loadPoints map[string]string, catalogs []Catalog) (map[string]link, []string, error) {
+func discover(
+	manifestPath string,
+	loadPoints map[string]string,
+	catalogs []Catalog,
+	requests []Request,
+) (map[string]link, []string, error) {
 	plan, err := repositoryplan.Load(manifestPath)
 	if err != nil {
 		return nil, nil, err
@@ -129,6 +142,11 @@ func discover(manifestPath string, loadPoints map[string]string, catalogs []Cata
 				return nil, nil, err
 			}
 		}
+		// Addressed skills apply after every root, because a request names one
+		// exactly and a root only offers what it happens to hold.
+		for _, request := range requests {
+			skills[request.Name] = request.Path
+		}
 		for name, target := range skills {
 			item := link{Destination: destination, Name: name, Target: target}
 			desired[linkKey(destination, name)] = item
@@ -193,6 +211,17 @@ func Apply(manifestPath string, loadPoints map[string]string, stateDir string) (
 	return ApplyWithCatalogs(manifestPath, loadPoints, stateDir, nil)
 }
 
+// ApplyWithRequests converges roots, catalogues, and skills named by address.
+func ApplyWithRequests(
+	manifestPath string,
+	loadPoints map[string]string,
+	stateDir string,
+	catalogs []Catalog,
+	requests []Request,
+) (Result, error) {
+	return apply(manifestPath, loadPoints, stateDir, catalogs, requests)
+}
+
 // ApplyWithCatalogs converges local eligible repositories plus verified
 // additional catalogs into the configured native load points.
 func ApplyWithCatalogs(
@@ -201,10 +230,20 @@ func ApplyWithCatalogs(
 	stateDir string,
 	catalogs []Catalog,
 ) (Result, error) {
+	return apply(manifestPath, loadPoints, stateDir, catalogs, nil)
+}
+
+func apply(
+	manifestPath string,
+	loadPoints map[string]string,
+	stateDir string,
+	catalogs []Catalog,
+	requests []Request,
+) (Result, error) {
 	if len(loadPoints) == 0 {
 		return Result{}, nil
 	}
-	desired, warnings, err := discover(manifestPath, loadPoints, catalogs)
+	desired, warnings, err := discover(manifestPath, loadPoints, catalogs, requests)
 	if err != nil {
 		return Result{Warnings: warnings}, err
 	}

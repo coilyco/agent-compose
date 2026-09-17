@@ -19,14 +19,17 @@ anything widely read, and it will hand a directory of markdown over if you let
 it.
 
 **Then ask what a wrong version of the change costs.** The artifact lists below
-are a proxy for consequence, and a proxy fails at its edges. This one fails in a
-particular direction: a change that is reversible, already validated, and made
-often still matches a named artifact and defers anyway. The error therefore
-lands hardest where the boundary fires most, which makes the friction a steady
-state rather than a rare tax. Deferring is not free on the other side either. It
-costs a record, a dispatch, and a handoff that can die with the receiving
-session, so a boundary firing on a reversible in-domain change has raised the
-expected cost of the mistake it exists to lower.
+are a proxy for consequence, and a proxy fails at its edges: a change that is
+reversible, already validated, and made routinely still matches a named artifact
+and defers anyway. Deferring is not free on the other side either. It costs a
+record, a dispatch, and a handoff that can die with the receiving session, so a
+boundary firing on a reversible in-domain change has raised the expected cost of
+the mistake it exists to lower.
+
+The questions below often still answer defer, and that is the point rather than
+a weakness. What changes is that the reason is stated and therefore actionable:
+"nothing would catch this" names the missing validator, where "it is a source
+file" names nothing anyone can fix.
 
 Four questions, answered before the lists below are consulted, and any one of
 them holding means defer. Whether undoing it needs more than deleting what was

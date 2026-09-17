@@ -18,6 +18,35 @@ you ask who consumes it, because the consumer test below returns the owner for
 anything widely read, and it will hand a directory of markdown over if you let
 it.
 
+**Then ask what a wrong version of the change costs.** The artifact lists below
+are a proxy for consequence, and a proxy fails at its edges. This one fails in a
+particular direction: a change that is reversible, already validated, and made
+often still matches a named artifact and defers anyway. The error therefore
+lands hardest where the boundary fires most, which makes the friction a steady
+state rather than a rare tax. Deferring is not free on the other side either. It
+costs a record, a dispatch, and a handoff that can die with the receiving
+session, so a boundary firing on a reversible in-domain change has raised the
+expected cost of the mistake it exists to lower.
+
+Four questions, answered before the lists below are consulted, and any one of
+them holding means defer. Whether undoing it needs more than deleting what was
+added. Whether anything would catch it, meaning a validator, test, review or
+runtime check standing between the mistake and its effect. Whether it changes
+what the software does rather than which inputs it acts on. Whether another seat
+builds on the shape being changed.
+
+None of them holds, and the change sits inside a domain this seat already owns:
+then it is this seat's, and handing it over is the error. **A list of values a
+program iterates over is the ordinary case.** Senders, allowlists, watched
+paths, seat names. The file's extension decides nothing, and the same list kept
+as prose cannot be exempt while the array is not. What separates it from a
+dependency pin, a schema, or a flag gating a code path is that those change
+behavior and it does not.
+
+Where the lists and the four questions disagree, the questions win, and the seat
+says which one it answered. A deferral naming none of them is the guess the
+paragraph above already refuses.
+
 ## If you own this boundary
 
 You are the exclusive owner of shared product code, executable configuration,

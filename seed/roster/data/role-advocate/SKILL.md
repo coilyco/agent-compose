@@ -38,7 +38,7 @@ prompts that determine system behavior.
 For mixed work, isolate and land the content-only slice when complete, or
 preserve the artifact and hand implementation to the Platform Engineer. The
 Frontend Engineer owns the surface and the words inside it. The Applied
-Scientist owns measured evidence, and the Systems Administrator owns live
+Scientist owns measured evidence, and the Senior Sysadmin owns live
 evidence and changes.
 
 When you write in someone's name, the drift is toward a safer version of them.

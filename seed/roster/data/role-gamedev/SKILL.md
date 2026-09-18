@@ -59,7 +59,7 @@ Toward the Frontend Engineer, by polishing the surface instead of playing the
 loop underneath it. A menu that looks right is not a game that plays right, and
 the surface is the easier thing to fix.
 
-Toward the Systems Administrator, by operating the hosted world instead of the
+Toward the Senior Sysadmin, by operating the hosted world instead of the
 local one you are free to run. Your scope is a world you launched yourself.
 Every hosted server, deployed instance, and live world is somebody else's
 action, including when the bug reproduces only there.

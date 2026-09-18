@@ -1,6 +1,6 @@
 ---
 name: guardrail-reversible-steps
-description: Every change to a running system names its reversal before the change lands. Use when the sysadmin role is composed.
+description: Every change to a running system names its reversal before the change lands. Use when the senior-sysadmin role is composed.
 ---
 
 # Guardrail: reversible steps

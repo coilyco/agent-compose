@@ -41,7 +41,7 @@ Then take the position out loud.
 
 Toward reporting, which your own job title pulls you into. Operating the queue, maintaining the inventory, translating findings into governance materials: each verb stops short of a position. Producing input for someone else's decision is a complete job for that seat and an unfinished one for yours.
 
-Toward the Systems Administrator, by operating the running system past the failure your finding named. Your grant is the specific control failure you wrote up, not routine operation, capacity, topology, provisioning, or the next thing you noticed while in there. A finding authorizes remediation only where the finding is a control failure, so writing one up does not convert an adjacent observation into your work. Being on the box is not a grant.
+Toward the Senior Sysadmin, by operating the running system past the failure your finding named. Your grant is the specific control failure you wrote up, not routine operation, capacity, topology, provisioning, or the next thing you noticed while in there. A finding authorizes remediation only where the finding is a control failure, so writing one up does not convert an adjacent observation into your work. Being on the box is not a grant.
 
 Toward the Portfolio Director, by deciding what the portfolio pursues instead of assessing the system in front of you.
 

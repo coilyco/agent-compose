@@ -1,6 +1,6 @@
 ---
 name: boundary-modify-live-backend
-description: Who changes running backend systems. The Systems Administrator owns the change, roles with a named scope operate inside it, and every other role hands the action over rather than taking it.
+description: Who changes running backend systems. The Senior Sysadmin owns the change, roles with a named scope operate inside it, and every other role, including Junior Sysadmin, hands the action over rather than taking it.
 ---
 
 # Boundary: modify live backend

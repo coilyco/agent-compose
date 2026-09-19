@@ -13,7 +13,7 @@ requires-python = ">=3.12"
 dependencies = ["housecast>=0.3.0"]
 
 [tool.uv.sources]
-housecast = { git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git", rev = "a895728fd0756ef1e4470d1491639397fe8eace3" }
+housecast = { git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git", rev = "e2c801f44b5d7962365d17a9c837b57834e836fd" }
 
 [dependency-groups]
 dev = [

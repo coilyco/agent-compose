@@ -54,10 +54,11 @@ confusions no boundary allocates.
 
 Spend adjacency slots accordingly. An edge earns its slot when it points where
 no boundary reaches: at a seat that owns none, or at a gap the allocation leaves
-open. Eleven of the twenty-two below point at a seat that owns a boundary (ten
-of twenty as of `teable:coilyco-flight-deck/agent-compose#7486`, plus
-`junior-sysadmin -> platform`, added 2026-09-16). An edge whose reason restates
-that boundary is not wrong, but it tests compliance rather than something new.
+open. Fourteen of the twenty-four below point at a seat that owns a boundary
+(eleven of twenty-two as of `junior-sysadmin`, added 2026-09-16, plus
+`admin-assist -> director` and `admin-assist -> advocate`, added 2026-09-19).
+An edge whose reason restates that boundary is not wrong, but it tests
+compliance rather than something new.
 
 ## Core Roster graph
 
@@ -73,20 +74,23 @@ advocate        -> frontend, director
 analyst         -> senior-sysadmin, director
 psych           -> analyst, director
 reporter        -> advocate, director
+admin-assist    -> director, advocate
 ```
 
-In-degree is not even. Measured across the eleven `role.yaml` files (ten
-original plus `junior-sysadmin`, added 2026-09-16 as a hands-off counterpart to
-the renamed `senior-sysadmin`), director receives four edges, advocate and
-analyst receive three, platform now receives three, and psych and reporter
-receive none. Only out-degree is enforced, in `internal/person/person.go`, so
-in-degree is an authoring observation rather than a rule.
+In-degree is not even. Measured across the twelve `role.yaml` files (ten
+original, plus `junior-sysadmin` added 2026-09-16 as a hands-off counterpart to
+the renamed `senior-sysadmin`, plus `admin-assist` added 2026-09-19 as a
+hands-off counterpart to `director`), director receives five edges, advocate
+and analyst receive four, platform receives three, and psych, reporter,
+junior-sysadmin and admin-assist receive none. Only out-degree is enforced, in
+`internal/person/person.go`, so in-degree is an authoring observation rather
+than a rule.
 
 Analyst, psych and reporter were archived on 2026-09-15 and the graph above is
 otherwise unchanged, because archiving retires a seat from selection and keeps
 everything else. So platform, senior-sysadmin and junior-sysadmin all still
 declare an edge to analyst, and out-degree still validates at two for all
-eleven. What did change is downstream: `evalkit` derives role-fit cases from
+twelve. What did change is downstream: `evalkit` derives role-fit cases from
 the live seats only, so the edges pointing at analyst still derive a case for
 platform, senior-sysadmin and junior-sysadmin, while the three archived seats
 derive none of their own.

@@ -57,3 +57,4 @@ analyst // #9190c1 // #251e3c // suspicious, tenacious
 psych // #ab9137 // #332000 // warm, protective
 reporter // #99b052 // #252602 // tenacious, outward
 junior-sysadmin // #0d9c92 // #002a36 // suspicious, empirical // twin of senior-sysadmin
+admin-assist // #da656f // #391721 // decisive, outward // twin of director

@@ -10,6 +10,14 @@ task does not become permitted by arriving through a different charter.
 Declining is a claim: reporting that you cannot reach a system you never
 attempted to reach is a guess.
 
+Not everything reachable over a network is a live backend. A single human's
+own workstation, running an application only that human owns and only that
+human's own work depends on, stays outside this boundary. Reached in front of
+the machine or reached over SSH or a tailnet is the same system, so transport
+does not promote it into one. It re-enters the boundary the moment a second
+consumer depends on it, or the person acting is not the one who owns the
+machine and its risk.
+
 ## If you own this boundary
 
 Promotion, live verification, rollback, and recovery are yours. A handoff is a

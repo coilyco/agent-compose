@@ -1,0 +1,2955 @@
+{
+  "name": "llm-cliche-candidates",
+  "rules": [
+    {
+      "id": "worth-stating",
+      "pattern": "\\bworth\\s+stating\\b",
+      "hint": "announcing plainness instead of being plain",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "WE"
+    },
+    {
+      "id": "worth-noting",
+      "pattern": "\\bworth\\s+noting\\b",
+      "hint": "if it is worth saying, say it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "WKSCE"
+    },
+    {
+      "id": "worth-mentioning",
+      "pattern": "\\bworth\\s+mentioning\\b",
+      "hint": "if it is worth saying, say it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "WE"
+    },
+    {
+      "id": "worth-pointing-out",
+      "pattern": "\\bworth\\s+pointing\\s+out\\b",
+      "hint": "if it is worth saying, say it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "W"
+    },
+    {
+      "id": "worth-highlighting",
+      "pattern": "\\bworth\\s+highlighting\\b",
+      "hint": "if it is worth saying, say it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "W"
+    },
+    {
+      "id": "important-to-note",
+      "pattern": "\\bimportant\\s+to\\s+note\\b",
+      "hint": "say the thing without ranking it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "WSCE"
+    },
+    {
+      "id": "bears-mentioning",
+      "pattern": "\\bbears\\s+mentioning\\b",
+      "hint": "say the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "cannot-be-overstated",
+      "pattern": "\\bcannot\\s+be\\s+overstated\\b",
+      "hint": "give the measure instead",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "goes-without-saying",
+      "pattern": "\\bgoes\\s+without\\s+saying\\b",
+      "hint": "then do not say it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "needless-to-say",
+      "pattern": "\\bneedless\\s+to\\s+say\\b",
+      "hint": "then do not say it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "to-be-direct",
+      "pattern": "\\bto\\s+be\\s+direct\\b",
+      "hint": "open with the answer itself",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "own"
+    },
+    {
+      "id": "to-be-honest",
+      "pattern": "\\bto\\s+be\\s+honest\\b",
+      "hint": "open with the answer itself",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "lets-be-honest",
+      "pattern": "\\blet['’]s\\s+be\\s+honest\\b",
+      "hint": "open with the answer itself",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "the-truth-is",
+      "pattern": "\\bthe\\s+truth\\s+is\\b",
+      "hint": "open with the answer itself",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "heres-the-thing",
+      "pattern": "\\bhere['’]s\\s+the\\s+thing\\b",
+      "hint": "cut the announcement",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "SCE"
+    },
+    {
+      "id": "heres-the-deal",
+      "pattern": "\\bhere['’]s\\s+the\\s+deal\\b",
+      "hint": "cut the announcement",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "SC"
+    },
+    {
+      "id": "heres-the-kicker",
+      "pattern": "\\bhere['’]s\\s+the\\s+kicker\\b",
+      "hint": "cut the announcement",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "CE"
+    },
+    {
+      "id": "make-no-mistake",
+      "pattern": "\\bmake\\s+no\\s+mistake\\b",
+      "hint": "cut the announcement",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "let-me-be-clear",
+      "pattern": "\\blet\\s+me\\s+be\\s+clear\\b",
+      "hint": "then be clear",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "own"
+    },
+    {
+      "id": "short-version-is",
+      "pattern": "\\bthe\\s+short\\s+version\\s+is\\b",
+      "hint": "open with the answer itself",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "own"
+    },
+    {
+      "id": "straight-answer",
+      "pattern": "\\ba\\s+straight\\s+answer\\b",
+      "hint": "open with the answer itself",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "own"
+    },
+    {
+      "id": "real-question-is",
+      "pattern": "\\bthe\\s+real\\s+question\\s+is\\b",
+      "hint": "ask it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "at-its-core",
+      "pattern": "\\bat\\s+its\\s+core\\b",
+      "hint": "state the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "heart-of-the-matter",
+      "pattern": "\\bthe\\s+heart\\s+of\\s+the\\s+matter\\b",
+      "hint": "state the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "let-that-sink-in",
+      "pattern": "\\blet\\s+that\\s+sink\\s+in\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "read-that-again",
+      "pattern": "\\bread\\s+that\\s+again\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "fact-of-the-matter",
+      "pattern": "\\bthe\\s+fact\\s+of\\s+the\\s+matter\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "ceremony",
+      "sources": "E"
+    },
+    {
+      "id": "fast-paced-world",
+      "pattern": "\\bin\\s+today['’]s\\s+fast-paced\\s+world\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "SCE"
+    },
+    {
+      "id": "todays-digital-age",
+      "pattern": "\\bin\\s+today['’]s\\s+digital\\s+age\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "SCE"
+    },
+    {
+      "id": "todays-world",
+      "pattern": "\\bin\\s+today['’]s\\s+world\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "C"
+    },
+    {
+      "id": "in-a-world-where",
+      "pattern": "\\bin\\s+a\\s+world\\s+where\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "SCE"
+    },
+    {
+      "id": "in-an-era-of",
+      "pattern": "\\bin\\s+an\\s+era\\s+of\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "E"
+    },
+    {
+      "id": "in-the-era-of",
+      "pattern": "\\bin\\s+the\\s+era\\s+of\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "C"
+    },
+    {
+      "id": "in-the-age-of",
+      "pattern": "\\bin\\s+the\\s+age\\s+of\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "own"
+    },
+    {
+      "id": "in-the-realm-of",
+      "pattern": "\\bin\\s+the\\s+realm\\s+of\\b",
+      "hint": "name the field",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "KSCE"
+    },
+    {
+      "id": "in-the-world-of",
+      "pattern": "\\bin\\s+the\\s+world\\s+of\\b",
+      "hint": "name the field",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "C"
+    },
+    {
+      "id": "imagine-a-world",
+      "pattern": "\\bimagine\\s+a\\s+world\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "E"
+    },
+    {
+      "id": "picture-this",
+      "pattern": "\\bpicture\\s+this\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "SCE"
+    },
+    {
+      "id": "ever-wondered",
+      "pattern": "\\bever\\s+wondered\\b",
+      "hint": "cut the scene-setting",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "SC"
+    },
+    {
+      "id": "when-it-comes-to",
+      "pattern": "\\bwhen\\s+it\\s+comes\\s+to\\b",
+      "hint": "name the subject directly",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "SE"
+    },
+    {
+      "id": "ever-evolving",
+      "pattern": "\\bever-evolving\\b",
+      "hint": "say what changed",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "SE"
+    },
+    {
+      "id": "evolving-landscape",
+      "pattern": "\\bevolving\\s+landscape\\b",
+      "hint": "say what changed",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "W"
+    },
+    {
+      "id": "digital-landscape",
+      "pattern": "\\bdigital\\s+landscape\\b",
+      "hint": "name the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "S"
+    },
+    {
+      "id": "landscape-of",
+      "pattern": "\\bthe\\s+landscape\\s+of\\b",
+      "hint": "name the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "opener",
+      "sources": "WS"
+    },
+    {
+      "id": "delve",
+      "pattern": "\\bdelve\\b",
+      "hint": "say what you looked at",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "WKSCE"
+    },
+    {
+      "id": "tapestry",
+      "pattern": "\\btapestry\\b",
+      "hint": "name the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "WSCE"
+    },
+    {
+      "id": "testament-to",
+      "pattern": "\\btestament\\s+to\\b",
+      "hint": "state the evidence",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "WSE"
+    },
+    {
+      "id": "underscore",
+      "pattern": "\\bunderscore\\b",
+      "hint": "say the effect",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "WKSE"
+    },
+    {
+      "id": "elucidate",
+      "pattern": "\\belucidate\\b",
+      "hint": "explain it",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "KS"
+    },
+    {
+      "id": "myriad",
+      "pattern": "\\bmyriad\\b",
+      "hint": "give the number",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "S"
+    },
+    {
+      "id": "plethora",
+      "pattern": "\\bplethora\\b",
+      "hint": "give the number",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "S"
+    },
+    {
+      "id": "realm",
+      "pattern": "\\brealm\\b",
+      "hint": "name the field",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "KSCE"
+    },
+    {
+      "id": "paradigm-shift",
+      "pattern": "\\bparadigm\\s+shift\\b",
+      "hint": "say what changed",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SE"
+    },
+    {
+      "id": "synergy",
+      "pattern": "\\bsynergy\\b",
+      "hint": "name the mechanism",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SE"
+    },
+    {
+      "id": "holistic",
+      "pattern": "\\bholistic\\b",
+      "hint": "say what it covers",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SE"
+    },
+    {
+      "id": "catalyze",
+      "pattern": "\\bcatalyze\\b",
+      "hint": "say what caused what",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SE"
+    },
+    {
+      "id": "juxtapose",
+      "pattern": "\\bjuxtapose\\b",
+      "hint": "say what you compared",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "KS"
+    },
+    {
+      "id": "galvanize",
+      "pattern": "\\bgalvanize\\b",
+      "hint": "say what happened",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "S"
+    },
+    {
+      "id": "epitomize",
+      "pattern": "\\bepitomize\\b",
+      "hint": "state the evidence",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "S"
+    },
+    {
+      "id": "unravel",
+      "pattern": "\\bunravel\\b",
+      "hint": "say what you found",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "S"
+    },
+    {
+      "id": "supercharge",
+      "pattern": "\\bsupercharge\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SCE"
+    },
+    {
+      "id": "spearhead",
+      "pattern": "\\bspearhead\\b",
+      "hint": "name the actor",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SE"
+    },
+    {
+      "id": "catapult",
+      "pattern": "\\bcatapult\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SC"
+    },
+    {
+      "id": "conceptualize",
+      "pattern": "\\bconceptualize\\b",
+      "hint": "say what you designed",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "S"
+    },
+    {
+      "id": "embark",
+      "pattern": "\\bembark\\b",
+      "hint": "say what happened",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SCE"
+    },
+    {
+      "id": "endeavor",
+      "pattern": "\\bendeavor\\b",
+      "hint": "name the work",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "S"
+    },
+    {
+      "id": "multifaceted",
+      "pattern": "\\bmultifaceted\\b",
+      "hint": "name the facets",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "KSE"
+    },
+    {
+      "id": "treasure-trove",
+      "pattern": "\\btreasure\\s+trove\\b",
+      "hint": "say what is in it",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "E"
+    },
+    {
+      "id": "beacon",
+      "pattern": "\\bbeacon\\b",
+      "hint": "name the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "E"
+    },
+    {
+      "id": "cornerstone",
+      "pattern": "\\bcornerstone\\b",
+      "hint": "name the dependency",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SCE"
+    },
+    {
+      "id": "deep-dive",
+      "pattern": "\\bdeep\\s+dive\\b",
+      "hint": "name what was examined",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "KCE"
+    },
+    {
+      "id": "dive-deep",
+      "pattern": "\\bdive\\s+deep\\b",
+      "hint": "name what was examined",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "C"
+    },
+    {
+      "id": "lets-dive-in",
+      "pattern": "\\blet['’]s\\s+dive\\s+in\\b",
+      "hint": "start",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SCE"
+    },
+    {
+      "id": "lets-dive-into",
+      "pattern": "\\blet['’]s\\s+dive\\s+into\\b",
+      "hint": "start",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SE"
+    },
+    {
+      "id": "lets-explore",
+      "pattern": "\\blet['’]s\\s+explore\\b",
+      "hint": "start",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SE"
+    },
+    {
+      "id": "lets-delve",
+      "pattern": "\\blet['’]s\\s+delve\\b",
+      "hint": "start",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "E"
+    },
+    {
+      "id": "seamless",
+      "pattern": "\\bseamless\\b",
+      "hint": "say what fits what",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KSE"
+    },
+    {
+      "id": "seamlessly",
+      "pattern": "\\bseamlessly\\b",
+      "hint": "say what fits what",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "cutting-edge",
+      "pattern": "\\bcutting-edge\\b",
+      "hint": "say what is new about it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "SCE"
+    },
+    {
+      "id": "bleeding-edge",
+      "pattern": "\\bbleeding-edge\\b",
+      "hint": "say what is new about it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "state-of-the-art",
+      "pattern": "\\bstate-of-the-art\\b",
+      "hint": "give the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "groundbreaking",
+      "pattern": "\\bgroundbreaking\\b",
+      "hint": "say what it broke",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKSE"
+    },
+    {
+      "id": "game-changer",
+      "pattern": "\\bgame-changer\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "SCE"
+    },
+    {
+      "id": "game-changing",
+      "pattern": "\\bgame-changing\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "SE"
+    },
+    {
+      "id": "revolutionize",
+      "pattern": "\\brevolutionize\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KSCE"
+    },
+    {
+      "id": "transformative",
+      "pattern": "\\btransformative\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KSE"
+    },
+    {
+      "id": "unprecedented",
+      "pattern": "\\bunprecedented\\b",
+      "hint": "give the precedent it beats",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "SE"
+    },
+    {
+      "id": "unparalleled",
+      "pattern": "\\bunparalleled\\b",
+      "hint": "give the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KE"
+    },
+    {
+      "id": "meticulous",
+      "pattern": "\\bmeticulous\\b",
+      "hint": "say what care was taken",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKSE"
+    },
+    {
+      "id": "meticulously",
+      "pattern": "\\bmeticulously\\b",
+      "hint": "say what care was taken",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKE"
+    },
+    {
+      "id": "intricate",
+      "pattern": "\\bintricate\\b",
+      "hint": "name the complication",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKSE"
+    },
+    {
+      "id": "intricacies",
+      "pattern": "\\bintricacies\\b",
+      "hint": "name the complication",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "W"
+    },
+    {
+      "id": "nuanced",
+      "pattern": "\\bnuanced\\b",
+      "hint": "name the nuance",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KE"
+    },
+    {
+      "id": "profound",
+      "pattern": "\\bprofound\\b",
+      "hint": "give the measure",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WSE"
+    },
+    {
+      "id": "vibrant",
+      "pattern": "\\bvibrant\\b",
+      "hint": "describe it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WSE"
+    },
+    {
+      "id": "boasts",
+      "pattern": "\\bboasts\\b",
+      "hint": "just say it has",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKSE"
+    },
+    {
+      "id": "renowned",
+      "pattern": "\\brenowned\\b",
+      "hint": "say who says so",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKE"
+    },
+    {
+      "id": "acclaimed",
+      "pattern": "\\bacclaimed\\b",
+      "hint": "say who says so",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "world-class",
+      "pattern": "\\bworld-class\\b",
+      "hint": "give the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "best-in-class",
+      "pattern": "\\bbest-in-class\\b",
+      "hint": "give the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "top-tier",
+      "pattern": "\\btop-tier\\b",
+      "hint": "give the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "industry-leading",
+      "pattern": "\\bindustry-leading\\b",
+      "hint": "give the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "invaluable",
+      "pattern": "\\binvaluable\\b",
+      "hint": "give the value",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KE"
+    },
+    {
+      "id": "indispensable",
+      "pattern": "\\bindispensable\\b",
+      "hint": "say what breaks without it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "paramount",
+      "pattern": "\\bparamount\\b",
+      "hint": "rank it against something",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "CE"
+    },
+    {
+      "id": "pivotal",
+      "pattern": "\\bpivotal\\b",
+      "hint": "say what turned",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKSE"
+    },
+    {
+      "id": "bespoke",
+      "pattern": "\\bbespoke\\b",
+      "hint": "say what was custom",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "S"
+    },
+    {
+      "id": "unwavering",
+      "pattern": "\\bunwavering\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "S"
+    },
+    {
+      "id": "must-visit",
+      "pattern": "\\bmust-visit\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "must-have",
+      "pattern": "\\bmust-have\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "own"
+    },
+    {
+      "id": "nestled",
+      "pattern": "\\bnestled\\b",
+      "hint": "say where it is",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WE"
+    },
+    {
+      "id": "in-the-heart-of",
+      "pattern": "\\bin\\s+the\\s+heart\\s+of\\b",
+      "hint": "say where it is",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WE"
+    },
+    {
+      "id": "picturesque",
+      "pattern": "\\bpicturesque\\b",
+      "hint": "describe it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "breathtaking",
+      "pattern": "\\bbreathtaking\\b",
+      "hint": "describe it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "E"
+    },
+    {
+      "id": "leverage",
+      "pattern": "\\bleverage\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKSCE"
+    },
+    {
+      "id": "unlock",
+      "pattern": "\\bunlock\\b",
+      "hint": "say what it enables",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "SCE"
+    },
+    {
+      "id": "unleash",
+      "pattern": "\\bunleash\\b",
+      "hint": "say what it enables",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "SCE"
+    },
+    {
+      "id": "unveil",
+      "pattern": "\\bunveil\\b",
+      "hint": "say what was shown",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "KSCE"
+    },
+    {
+      "id": "elevate",
+      "pattern": "\\belevate\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "KSCE"
+    },
+    {
+      "id": "empower",
+      "pattern": "\\bempower\\b",
+      "hint": "say what it permits",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "SE"
+    },
+    {
+      "id": "foster",
+      "pattern": "\\bfoster\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKSCE"
+    },
+    {
+      "id": "streamline",
+      "pattern": "\\bstreamline\\b",
+      "hint": "say what was removed",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "KSE"
+    },
+    {
+      "id": "amplify",
+      "pattern": "\\bamplify\\b",
+      "hint": "give the factor",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "SE"
+    },
+    {
+      "id": "bolster",
+      "pattern": "\\bbolster\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKSE"
+    },
+    {
+      "id": "cultivate",
+      "pattern": "\\bcultivate\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WSE"
+    },
+    {
+      "id": "underpin",
+      "pattern": "\\bunderpin\\b",
+      "hint": "name the dependency",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "E"
+    },
+    {
+      "id": "illuminate",
+      "pattern": "\\billuminate\\b",
+      "hint": "say what you found",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "KSE"
+    },
+    {
+      "id": "showcase",
+      "pattern": "\\bshowcase\\b",
+      "hint": "say what it shows",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKSE"
+    },
+    {
+      "id": "hone",
+      "pattern": "\\bhone\\b",
+      "hint": "say what improved",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "SC"
+    },
+    {
+      "id": "captivate",
+      "pattern": "\\bcaptivate\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "SC"
+    },
+    {
+      "id": "resonate",
+      "pattern": "\\bresonate\\b",
+      "hint": "say the effect",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "SCE"
+    },
+    {
+      "id": "garner",
+      "pattern": "\\bgarner\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WK"
+    },
+    {
+      "id": "moreover",
+      "pattern": "\\bmoreover\\b",
+      "hint": "connective throat-clearing",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "SE"
+    },
+    {
+      "id": "furthermore",
+      "pattern": "\\bfurthermore\\b",
+      "hint": "connective throat-clearing",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "SE"
+    },
+    {
+      "id": "consequently",
+      "pattern": "\\bconsequently\\b",
+      "hint": "connective throat-clearing",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "KSE"
+    },
+    {
+      "id": "nevertheless",
+      "pattern": "\\bnevertheless\\b",
+      "hint": "connective throat-clearing",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "SE"
+    },
+    {
+      "id": "nonetheless",
+      "pattern": "\\bnonetheless\\b",
+      "hint": "connective throat-clearing",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "E"
+    },
+    {
+      "id": "in-conclusion",
+      "pattern": "\\bin\\s+conclusion\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "WCE"
+    },
+    {
+      "id": "in-summary",
+      "pattern": "\\bin\\s+summary\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "W"
+    },
+    {
+      "id": "in-essence",
+      "pattern": "\\bin\\s+essence\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "own"
+    },
+    {
+      "id": "generally-speaking",
+      "pattern": "\\bgenerally\\s+speaking\\b",
+      "hint": "commit or give the number",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "E"
+    },
+    {
+      "id": "broadly-speaking",
+      "pattern": "\\bbroadly\\s+speaking\\b",
+      "hint": "commit or give the number",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "own"
+    },
+    {
+      "id": "in-many-ways",
+      "pattern": "\\bin\\s+many\\s+ways\\b",
+      "hint": "name the ways",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "E"
+    },
+    {
+      "id": "to-some-extent",
+      "pattern": "\\bto\\s+some\\s+extent\\b",
+      "hint": "give the extent",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "E"
+    },
+    {
+      "id": "which-is-rare",
+      "pattern": "\\bwhich\\s+is\\s+rare\\b",
+      "hint": "praise the thing, not the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "own"
+    },
+    {
+      "id": "most-people-dont",
+      "pattern": "\\bmost\\s+people\\s+don['’]t\\b",
+      "hint": "praise the thing, not the comparison",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "own"
+    },
+    {
+      "id": "great-question",
+      "pattern": "\\bgreat\\s+question\\b",
+      "hint": "answer it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "SE"
+    },
+    {
+      "id": "happy-to-help",
+      "pattern": "\\bhappy\\s+to\\s+help\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "E"
+    },
+    {
+      "id": "hope-this-helps",
+      "pattern": "\\bhope\\s+this\\s+helps\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "E"
+    },
+    {
+      "id": "feel-free-to-reach",
+      "pattern": "\\bfeel\\s+free\\s+to\\s+reach\\s+out\\b",
+      "hint": "say what to do next",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "E"
+    },
+    {
+      "id": "reach-out",
+      "pattern": "\\breach\\s+out\\b",
+      "hint": "say who contacts whom",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "own"
+    },
+    {
+      "id": "thrilled-to-announce",
+      "pattern": "\\bthrilled\\s+to\\s+announce\\b",
+      "hint": "just announce it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "E"
+    },
+    {
+      "id": "excited-to-share",
+      "pattern": "\\bexcited\\s+to\\s+share\\b",
+      "hint": "just share it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "E"
+    },
+    {
+      "id": "excited-to-announce",
+      "pattern": "\\bexcited\\s+to\\s+announce\\b",
+      "hint": "just announce it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "E"
+    },
+    {
+      "id": "humbled-and-honored",
+      "pattern": "\\bhumbled\\s+and\\s+honored\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "E"
+    },
+    {
+      "id": "as-you-know",
+      "pattern": "\\bas\\s+you\\s+know\\b",
+      "hint": "then do not say it",
+      "flags": [
+        "i"
+      ],
+      "family": "social",
+      "sources": "own"
+    },
+    {
+      "id": "circle-back",
+      "pattern": "\\bcircle\\s+back\\b",
+      "hint": "say when and about what",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "lean-into",
+      "pattern": "\\blean\\s+into\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "double-down",
+      "pattern": "\\bdouble\\s+down\\b",
+      "hint": "say what increased",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "move-the-needle",
+      "pattern": "\\bmove\\s+the\\s+needle\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "CE"
+    },
+    {
+      "id": "low-hanging-fruit",
+      "pattern": "\\blow-hanging\\s+fruit\\b",
+      "hint": "name the task",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "moving-forward",
+      "pattern": "\\bmoving\\s+forward\\b",
+      "hint": "give the date",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "take-a-step-back",
+      "pattern": "\\btake\\s+a\\s+step\\s+back\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "unpack",
+      "pattern": "\\bunpack\\b",
+      "hint": "just explain it",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "KE"
+    },
+    {
+      "id": "secret-sauce",
+      "pattern": "\\bsecret\\s+sauce\\b",
+      "hint": "name the mechanism",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "C"
+    },
+    {
+      "id": "secret-weapon",
+      "pattern": "\\bsecret\\s+weapon\\b",
+      "hint": "name the mechanism",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "C"
+    },
+    {
+      "id": "mission-critical",
+      "pattern": "\\bmission-critical\\b",
+      "hint": "say what fails without it",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "battle-tested",
+      "pattern": "\\bbattle-tested\\b",
+      "hint": "say where it ran",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "out-of-the-box",
+      "pattern": "\\bout-of-the-box\\b",
+      "hint": "say what it does unconfigured",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "enterprise-grade",
+      "pattern": "\\benterprise-grade\\b",
+      "hint": "name the property",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "plug-and-play",
+      "pattern": "\\bplug-and-play\\b",
+      "hint": "name the setup steps",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "purpose-built",
+      "pattern": "\\bpurpose-built\\b",
+      "hint": "name the purpose",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "turnkey",
+      "pattern": "\\bturnkey\\b",
+      "hint": "name the setup steps",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "value-added",
+      "pattern": "\\bvalue-added\\b",
+      "hint": "name the value",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "laser-focused",
+      "pattern": "\\blaser-focused\\b",
+      "hint": "name the focus",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "tried-and-true",
+      "pattern": "\\btried-and-true\\b",
+      "hint": "say where it ran",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "future-proof",
+      "pattern": "\\bfuture-proof\\b",
+      "hint": "name the change it survives",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "results-driven",
+      "pattern": "\\bresults-driven\\b",
+      "hint": "give the results",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "customer-centric",
+      "pattern": "\\bcustomer-centric\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "next-generation",
+      "pattern": "\\bnext-generation\\b",
+      "hint": "give the version",
+      "flags": [
+        "i"
+      ],
+      "family": "hyphen",
+      "sources": "E"
+    },
+    {
+      "id": "stands-as",
+      "pattern": "\\bstands\\s+as\\b",
+      "hint": "just say what it is",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "serves-as",
+      "pattern": "\\bserves\\s+as\\b",
+      "hint": "just say what it is",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "WK"
+    },
+    {
+      "id": "plays-a-vital-role",
+      "pattern": "\\bplays\\s+a\\s+vital\\s+role\\b",
+      "hint": "say what it does",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "plays-a-crucial-role",
+      "pattern": "\\bplays\\s+a\\s+crucial\\s+role\\b",
+      "hint": "say what it does",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "WE"
+    },
+    {
+      "id": "plays-a-key-role",
+      "pattern": "\\bplays\\s+a\\s+key\\s+role\\b",
+      "hint": "say what it does",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "key-turning-point",
+      "pattern": "\\bkey\\s+turning\\s+point\\b",
+      "hint": "say what turned",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "indelible-mark",
+      "pattern": "\\bindelible\\s+mark\\b",
+      "hint": "say what changed",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "deeply-rooted",
+      "pattern": "\\bdeeply\\s+rooted\\b",
+      "hint": "give the history",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "focal-point",
+      "pattern": "\\bfocal\\s+point\\b",
+      "hint": "name the thing",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "setting-the-stage",
+      "pattern": "\\bsetting\\s+the\\s+stage\\s+for\\b",
+      "hint": "say what followed",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "reflects-broader",
+      "pattern": "\\breflects\\s+broader\\b",
+      "hint": "name the pattern",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "valuable-insights",
+      "pattern": "\\bvaluable\\s+insights\\b",
+      "hint": "give the insight",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "WKE"
+    },
+    {
+      "id": "key-takeaways",
+      "pattern": "\\bkey\\s+takeaways\\b",
+      "hint": "give them",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "E"
+    },
+    {
+      "id": "a-wide-range-of",
+      "pattern": "\\ba\\s+wide\\s+range\\s+of\\b",
+      "hint": "give the range",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "E"
+    },
+    {
+      "id": "diverse-array",
+      "pattern": "\\bdiverse\\s+array\\b",
+      "hint": "give the count",
+      "flags": [
+        "i"
+      ],
+      "family": "signif",
+      "sources": "W"
+    },
+    {
+      "id": "studies-have-shown",
+      "pattern": "\\bstudies\\s+have\\s+shown\\b",
+      "hint": "cite one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "SE"
+    },
+    {
+      "id": "research-suggests",
+      "pattern": "\\bresearch\\s+suggests\\b",
+      "hint": "cite one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "SE"
+    },
+    {
+      "id": "experts-agree",
+      "pattern": "\\bexperts\\s+agree\\b",
+      "hint": "name one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "SE"
+    },
+    {
+      "id": "experts-argue",
+      "pattern": "\\bexperts\\s+argue\\b",
+      "hint": "name one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "W"
+    },
+    {
+      "id": "observers-have",
+      "pattern": "\\bobservers\\s+have\\b",
+      "hint": "name one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "W"
+    },
+    {
+      "id": "industry-reports",
+      "pattern": "\\bindustry\\s+reports\\b",
+      "hint": "cite one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "W"
+    },
+    {
+      "id": "some-critics-argue",
+      "pattern": "\\bsome\\s+critics\\s+argue\\b",
+      "hint": "name one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "W"
+    },
+    {
+      "id": "widely-believed",
+      "pattern": "\\bwidely\\s+believed\\b",
+      "hint": "name who believes it",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "own"
+    },
+    {
+      "id": "many-would-argue",
+      "pattern": "\\bmany\\s+would\\s+argue\\b",
+      "hint": "name one",
+      "flags": [
+        "i"
+      ],
+      "family": "vague",
+      "sources": "own"
+    },
+    {
+      "id": "has-the-ability-to",
+      "pattern": "\\bhas\\s+the\\s+ability\\s+to\\b",
+      "hint": "can",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "a-large-number-of",
+      "pattern": "\\ba\\s+large\\s+number\\s+of\\b",
+      "hint": "give the number",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "during-the-course-of",
+      "pattern": "\\bduring\\s+the\\s+course\\s+of\\b",
+      "hint": "during",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "in-close-proximity",
+      "pattern": "\\bin\\s+close\\s+proximity\\s+to\\b",
+      "hint": "near",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "for-all-intents",
+      "pattern": "\\bfor\\s+all\\s+intents\\s+and\\s+purposes\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "in-spite-of-the-fact",
+      "pattern": "\\bin\\s+spite\\s+of\\s+the\\s+fact\\b",
+      "hint": "although",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "on-a-regular-basis",
+      "pattern": "\\bon\\s+a\\s+regular\\s+basis\\b",
+      "hint": "give the interval",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "conduct-an-investigation",
+      "pattern": "\\bconduct\\s+an\\s+investigation\\b",
+      "hint": "investigate",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "provide-assistance-to",
+      "pattern": "\\bprovide\\s+assistance\\s+to\\b",
+      "hint": "help",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "make-a-decision-on",
+      "pattern": "\\bmake\\s+a\\s+decision\\s+on\\b",
+      "hint": "decide",
+      "flags": [
+        "i"
+      ],
+      "family": "filler",
+      "sources": "E"
+    },
+    {
+      "id": "at-the-end-of-the-day",
+      "pattern": "\\bat\\s+the\\s+end\\s+of\\s+the\\s+day\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "SCE"
+    },
+    {
+      "id": "all-is-said-and-done",
+      "pattern": "\\bwhen\\s+all\\s+is\\s+said\\s+and\\s+done\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "own"
+    },
+    {
+      "id": "the-bottom-line-is",
+      "pattern": "\\bthe\\s+bottom\\s+line\\s+is\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "own"
+    },
+    {
+      "id": "only-time-will-tell",
+      "pattern": "\\bonly\\s+time\\s+will\\s+tell\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "own"
+    },
+    {
+      "id": "possibilities-are-endless",
+      "pattern": "\\bthe\\s+possibilities\\s+are\\s+endless\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "own"
+    },
+    {
+      "id": "future-is-bright",
+      "pattern": "\\bthe\\s+future\\s+is\\s+bright\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "E"
+    },
+    {
+      "id": "one-thing-is-clear",
+      "pattern": "\\bone\\s+thing\\s+is\\s+clear\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "own"
+    },
+    {
+      "id": "stay-tuned",
+      "pattern": "\\bstay\\s+tuned\\b",
+      "hint": "say when",
+      "flags": [
+        "i"
+      ],
+      "family": "closer",
+      "sources": "C"
+    },
+    {
+      "id": "robust",
+      "pattern": "\\brobust\\b",
+      "hint": "name the property",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKSE"
+    },
+    {
+      "id": "comprehensive",
+      "pattern": "\\bcomprehensive\\b",
+      "hint": "say what it covers",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KSE"
+    },
+    {
+      "id": "crucial",
+      "pattern": "\\bcrucial\\b",
+      "hint": "rank it against something",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WKSE"
+    },
+    {
+      "id": "essential",
+      "pattern": "\\bessential\\b",
+      "hint": "say what breaks without it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "S"
+    },
+    {
+      "id": "vital",
+      "pattern": "\\bvital\\b",
+      "hint": "say what breaks without it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WS"
+    },
+    {
+      "id": "remarkable",
+      "pattern": "\\bremarkable\\b",
+      "hint": "give the measure",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KS"
+    },
+    {
+      "id": "exceptional",
+      "pattern": "\\bexceptional\\b",
+      "hint": "give the measure",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KS"
+    },
+    {
+      "id": "innovative",
+      "pattern": "\\binnovative\\b",
+      "hint": "say what is new",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KSE"
+    },
+    {
+      "id": "scalable",
+      "pattern": "\\bscalable\\b",
+      "hint": "give the ceiling",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "S"
+    },
+    {
+      "id": "versatile",
+      "pattern": "\\bversatile\\b",
+      "hint": "name the uses",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KS"
+    },
+    {
+      "id": "sophisticated",
+      "pattern": "\\bsophisticated\\b",
+      "hint": "name the mechanism",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "own"
+    },
+    {
+      "id": "commendable",
+      "pattern": "\\bcommendable\\b",
+      "hint": "cut it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "compelling",
+      "pattern": "\\bcompelling\\b",
+      "hint": "give the argument",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KSC"
+    },
+    {
+      "id": "formidable",
+      "pattern": "\\bformidable\\b",
+      "hint": "give the measure",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KC"
+    },
+    {
+      "id": "substantial",
+      "pattern": "\\bsubstantial\\b",
+      "hint": "give the number",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "noteworthy",
+      "pattern": "\\bnoteworthy\\b",
+      "hint": "say why",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "distinctive",
+      "pattern": "\\bdistinctive\\b",
+      "hint": "name the distinction",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "prevalent",
+      "pattern": "\\bprevalent\\b",
+      "hint": "give the frequency",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "inherent",
+      "pattern": "\\binherent\\b",
+      "hint": "say where it comes from",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "adept",
+      "pattern": "\\badept\\b",
+      "hint": "say at what",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "thorough",
+      "pattern": "\\bthorough\\b",
+      "hint": "say what was covered",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "K"
+    },
+    {
+      "id": "interplay",
+      "pattern": "\\binterplay\\b",
+      "hint": "name the interaction",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "W"
+    },
+    {
+      "id": "enduring",
+      "pattern": "\\benduring\\b",
+      "hint": "give the duration",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "WK"
+    },
+    {
+      "id": "rich",
+      "pattern": "\\brich\\b",
+      "hint": "say what is in it",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "W"
+    },
+    {
+      "id": "vast",
+      "pattern": "\\bvast\\b",
+      "hint": "give the size",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "own"
+    },
+    {
+      "id": "a-host-of",
+      "pattern": "\\ba\\s+host\\s+of\\b",
+      "hint": "give the count",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "own"
+    },
+    {
+      "id": "a-wealth-of",
+      "pattern": "\\ba\\s+wealth\\s+of\\b",
+      "hint": "give the count",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "own"
+    },
+    {
+      "id": "utilize",
+      "pattern": "\\butilize\\b",
+      "hint": "use",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "KSE"
+    },
+    {
+      "id": "facilitate",
+      "pattern": "\\bfacilitate\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "KS"
+    },
+    {
+      "id": "orchestrate",
+      "pattern": "\\borchestrate\\b",
+      "hint": "say what runs what",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "pinpoint",
+      "pattern": "\\bpinpoint\\b",
+      "hint": "say what you found",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "scrutinize",
+      "pattern": "\\bscrutinize\\b",
+      "hint": "say what you checked",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "surpass",
+      "pattern": "\\bsurpass\\b",
+      "hint": "give both numbers",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "shed-light-on",
+      "pattern": "\\bshed\\s+light\\s+on\\b",
+      "hint": "say what you found",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "usher-in",
+      "pattern": "\\busher\\s+in\\b",
+      "hint": "say what started",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "own"
+    },
+    {
+      "id": "unearth",
+      "pattern": "\\bunearth\\b",
+      "hint": "say what you found",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "own"
+    },
+    {
+      "id": "mitigate",
+      "pattern": "\\bmitigate\\b",
+      "hint": "say what was reduced",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "own"
+    },
+    {
+      "id": "necessitate",
+      "pattern": "\\bnecessitate\\b",
+      "hint": "needs",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "imperative",
+      "pattern": "\\bimperative\\b",
+      "hint": "must",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "align-with",
+      "pattern": "\\balign\\s+with\\b",
+      "hint": "say what matches what",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WK"
+    },
+    {
+      "id": "ensure",
+      "pattern": "\\bensure\\b",
+      "hint": "say what guarantees it",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WK"
+    },
+    {
+      "id": "encompass",
+      "pattern": "\\bencompass\\b",
+      "hint": "say what it covers",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKS"
+    },
+    {
+      "id": "garner",
+      "pattern": "\\bgarner\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WK"
+    },
+    {
+      "id": "hinder",
+      "pattern": "\\bhinder\\b",
+      "hint": "say what slowed",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "impede",
+      "pattern": "\\bimpede\\b",
+      "hint": "say what slowed",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "K"
+    },
+    {
+      "id": "notably",
+      "pattern": "\\bnotably\\b",
+      "hint": "say why",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "KSE"
+    },
+    {
+      "id": "arguably",
+      "pattern": "\\barguably\\b",
+      "hint": "commit or give the number",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "S"
+    },
+    {
+      "id": "pragmatic",
+      "pattern": "\\bpragmatic\\b",
+      "hint": "say what you chose",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "S"
+    },
+    {
+      "id": "actionable",
+      "pattern": "\\bactionable\\b",
+      "hint": "name the action",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "own"
+    },
+    {
+      "id": "granular",
+      "pattern": "\\bgranular\\b",
+      "hint": "give the grain",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "own"
+    },
+    {
+      "id": "best-practices",
+      "pattern": "\\bbest\\s+practices\\b",
+      "hint": "name the practice",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "own"
+    },
+    {
+      "id": "north-star",
+      "pattern": "\\bnorth\\s+star\\b",
+      "hint": "name the goal",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "own"
+    },
+    {
+      "id": "moving-parts",
+      "pattern": "\\bmoving\\s+parts\\b",
+      "hint": "name them",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "own"
+    },
+    {
+      "id": "stakeholders",
+      "pattern": "\\bstakeholders\\b",
+      "hint": "name them",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "own"
+    },
+    {
+      "id": "roadmap",
+      "pattern": "\\broadmap\\b",
+      "hint": "give the dates",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "own"
+    },
+    {
+      "id": "journey",
+      "pattern": "\\bjourney\\b",
+      "hint": "say what happened",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "CE"
+    },
+    {
+      "id": "ecosystem",
+      "pattern": "\\becosystem\\b",
+      "hint": "name the parts",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "backbone",
+      "pattern": "\\bbackbone\\b",
+      "hint": "name the dependency",
+      "flags": [
+        "i"
+      ],
+      "family": "jargon",
+      "sources": "E"
+    },
+    {
+      "id": "delve-infl",
+      "pattern": "\\bdelv(?:e|es|ed|ing)\\b",
+      "hint": "say what you looked at",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "WKSCE"
+    },
+    {
+      "id": "underscore-infl",
+      "pattern": "\\bunderscor(?:e|es|ed|ing)\\b",
+      "hint": "say the effect",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "WKSE"
+    },
+    {
+      "id": "revolutionize-infl",
+      "pattern": "\\brevolutioniz(?:e|es|ed|ing)\\b",
+      "hint": "give the delta",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KSCE"
+    },
+    {
+      "id": "leverage-infl",
+      "pattern": "\\bleverag(?:e|es|ed|ing)\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKSCE"
+    },
+    {
+      "id": "showcase-infl",
+      "pattern": "\\bshowcas(?:e|es|ed|ing)\\b",
+      "hint": "say what it shows",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKSE"
+    },
+    {
+      "id": "foster-infl",
+      "pattern": "\\bfoster(?:s|ed|ing)?\\b",
+      "hint": "use a concrete verb",
+      "flags": [
+        "i"
+      ],
+      "family": "verb",
+      "sources": "WKSCE"
+    },
+    {
+      "id": "embark-infl",
+      "pattern": "\\bembark(?:s|ed|ing)?\\b",
+      "hint": "say what happened",
+      "flags": [
+        "i"
+      ],
+      "family": "tier1",
+      "sources": "SCE"
+    },
+    {
+      "id": "not-only-but",
+      "pattern": "\\bnot only\\b[^.!?]{2,60}?\\bbut\\b",
+      "hint": "the not-only-but frame is an LLM cadence",
+      "flags": [
+        "i"
+      ],
+      "family": "reframe",
+      "sources": "W"
+    },
+    {
+      "id": "not-x-its-y",
+      "pattern": "\\b(?:it|this|that)(?:['\\u2019]s| is) not\\b[^.!?]{2,50}?[,\\-\\u2010-\\u2015]\\s*it(?:['\\u2019]s| is)\\b",
+      "hint": "the not-X-it-is-Y reframe is an LLM cadence",
+      "flags": [
+        "i"
+      ],
+      "family": "reframe",
+      "sources": "WCE"
+    },
+    {
+      "id": "not-just-but",
+      "pattern": "\\b(?:it|that|this)(?:'s| is)\\s+not just\\b[^.!?]{2,60}?\\b(?:it(?:'s| is)|but)\\b",
+      "hint": "the not-X-but-Y frame is an LLM cadence",
+      "flags": [
+        "i"
+      ],
+      "family": "reframe",
+      "sources": "WCE"
+    },
+    {
+      "id": "additionally-initial",
+      "pattern": "(?m)^\\s*(?:Additionally|Moreover|Furthermore|Overall|Ultimately|Notably)\\b",
+      "hint": "sentence-initial connective throat-clearing",
+      "flags": [
+        "i"
+      ],
+      "family": "transition",
+      "sources": "WKSE"
+    },
+    {
+      "id": "rule-of-three-adj",
+      "pattern": "\\b(\\w+ly)\\s+(\\w+),\\s+(\\w+),\\s+and\\s+(\\w+)\\b",
+      "hint": "the rule-of-three list is an LLM cadence",
+      "flags": [
+        "i"
+      ],
+      "family": "cadence",
+      "sources": "W"
+    },
+    {
+      "id": "foundational",
+      "pattern": "(?<!build-)\\bfoundational\\b(?!-software)",
+      "hint": "name the dependency",
+      "flags": [
+        "i"
+      ],
+      "family": "puffery",
+      "sources": "KS"
+    },
+    {
+      "id": "as-an-ai",
+      "pattern": "\\bas an AI\\b",
+      "hint": "assistant preamble leaked into the draft",
+      "flags": [
+        "i"
+      ],
+      "family": "leak",
+      "sources": "E"
+    },
+    {
+      "id": "knowledge-cutoff",
+      "pattern": "\\b(?:knowledge cutoff|last knowledge update)\\b",
+      "hint": "assistant preamble leaked into the draft",
+      "flags": [
+        "i"
+      ],
+      "family": "leak",
+      "sources": "E"
+    }
+  ]
+}

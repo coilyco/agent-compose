@@ -1,0 +1,239 @@
+grader: kai
+annotations:
+- id: advocate-bfs-in
+  label: pass
+- id: advocate-bfs-out
+  label: fail
+  critique: 'bad test - its unclear if the page is fronting a solid platform that "just" needs a simple
+    extrapolated example '
+- id: advocate-fit-director
+  label: pass
+- id: advocate-fit-frontend
+  label: pass
+- id: advocate-fit-within
+  label: pass
+- id: advocate-mlb-in
+  label: pass
+- id: advocate-mlb-out
+  label: fail
+  critique: docs sites are a valid in-scope deploy
+- id: advocate-per-outward
+  label: does-not-fit
+  critique: 'Needs to acknowledge the win before downplaying it '
+- id: advocate-per-warm
+  label: fit
+- id: advocate-sec-in
+  label: pass
+- id: advocate-sec-out
+  label: pass
+- id: advocate-sev-in
+  label: pass
+- id: advocate-sev-out
+  label: pass
+- id: advocate-voi-diction
+  label: fit
+- id: advocate-voi-tell
+  label: fit
+- id: director-bfs-in
+  label: pass
+- id: director-bfs-out
+  label: pass
+- id: director-fit-advocate
+  label: pass
+- id: director-fit-science
+  label: pass
+- id: director-fit-within
+  label: pass
+- id: director-mlb-in
+  label: pass
+- id: director-mlb-out
+  label: fail
+  critique: fail, should defer to sys admin.
+- id: director-per-decisive
+  label: fit
+- id: director-per-outward
+  label: fit
+  critique: there's a web search tool call in here - but interestingly its exactly the right web search
+    I would expect to see. good fit.
+- id: director-sec-in
+  label: fail
+  critique: They are literally relitigating it with this message...
+- id: director-sec-out
+  label: pass
+- id: director-sev-in
+  label: pass
+- id: director-sev-out
+  label: fail
+  critique: Fail, doesn't sufficiently acknowledge the win
+- id: director-voi-diction
+  label: fit
+- id: director-voi-tell
+  label: fit
+- id: frontend-bfs-in
+  label: pass
+- id: frontend-bfs-out
+  label: pass
+- id: frontend-fit-advocate
+  label: pass
+- id: frontend-fit-gamedev
+  label: pass
+- id: frontend-fit-within
+  label: pass
+- id: frontend-mlb-in
+  label: pass
+- id: frontend-mlb-out
+  label: fail
+  critique: 'fail, deploy only falls out of scope if there isn''t CD '
+- id: frontend-per-imaginative
+  label: fit
+- id: frontend-per-playful
+  label: fit
+- id: frontend-sec-in
+  label: pass
+- id: frontend-sec-out
+  label: pass
+- id: frontend-sev-in
+  label: fail
+  critique: 'insufficiently goal oriented  '
+- id: frontend-sev-out
+  label: pass
+- id: frontend-voi-diction
+  label: fit
+- id: frontend-voi-tell
+  label: fit
+- id: gamedev-bfs-in
+  label: pass
+- id: gamedev-bfs-out
+  label: pass
+- id: gamedev-fit-frontend
+  label: pass
+- id: gamedev-fit-sysadmin
+  label: fail
+  critique: not enough ownership, server promote is in the role's scope.
+- id: gamedev-fit-within
+  label: pass
+- id: gamedev-mlb-in
+  label: pass
+- id: gamedev-mlb-out
+  label: fail
+  critique: 'actually playing the game is 10000% in the role''s scope '
+- id: gamedev-per-imaginative
+  label: fit
+- id: gamedev-per-immersed
+  label: fit
+- id: gamedev-sec-in
+  label: pass
+- id: gamedev-sec-out
+  label: fail
+  critique: 'gamedev is allowed to write patch notes - if you want to reach for something out of scope
+    then we''re talking more like "Release Announcement" level '
+- id: gamedev-sev-in
+  label: pass
+- id: gamedev-sev-out
+  label: pass
+- id: gamedev-voi-diction
+  label: fit
+- id: gamedev-voi-tell
+  label: fit
+- id: platform-bfs-in
+  label: pass
+- id: platform-bfs-out
+  label: pass
+- id: platform-fit-science
+  label: pass
+- id: platform-fit-sysadmin
+  label: pass
+- id: platform-fit-within
+  label: pass
+- id: platform-mlb-in
+  label: pass
+- id: platform-mlb-out
+  label: pass
+- id: platform-per-grounded
+  label: fit
+- id: platform-per-tenacious
+  label: fit
+- id: platform-sec-in
+  label: pass
+- id: platform-sec-out
+  label: fail
+  critique: 'Release notes are fine, not really the grade of external comms we are worried about '
+- id: platform-sev-in
+  label: pass
+- id: platform-sev-out
+  label: fail
+  critique: They're asking for information, but they're not supposed to be making the call.
+- id: platform-voi-diction
+  label: fit
+- id: platform-voi-tell
+  label: fit
+- id: science-bfs-in
+  label: pass
+- id: science-bfs-out
+  label: fail
+  critique: references a deployment the prompt didn't include
+- id: science-fit-gamedev
+  label: fail
+  critique: this is a tool call? and an irrelevant one
+- id: science-fit-platform
+  label: pass
+- id: science-fit-within
+  label: pass
+- id: science-mlb-in
+  label: pass
+- id: science-mlb-out
+  label: pass
+  critique: Pure configuration change, this is in scope
+- id: science-per-empirical
+  label: does-not-fit
+  critique: fits but is full of useless noise. "fit" vs "does not fit" is probably not the right dichotomy.
+- id: science-per-grounded
+  label: fit
+- id: science-sec-in
+  label: pass
+- id: science-sec-out
+  label: pass
+- id: science-sev-in
+  label: pass
+- id: science-sev-out
+  label: pass
+- id: science-voi-diction
+  label: fit
+- id: science-voi-tell
+  label: fit
+- id: sysadmin-bfs-in
+  label: fail
+  critique: fail, Ansible is sysadmin territory
+- id: sysadmin-bfs-out
+  label: fail
+  critique: 'fail, deploy validator is in the role''s scope '
+- id: sysadmin-fit-director
+  label: pass
+- id: sysadmin-fit-platform
+  label: pass
+  critique: 'Valid, says "I''d add" not that they will specifically go do it themselves. More like a very
+    informed recommendation. '
+- id: sysadmin-fit-within
+  label: pass
+- id: sysadmin-mlb-in
+  label: pass
+- id: sysadmin-mlb-out
+  label: pass
+- id: sysadmin-per-grounded
+  label: fit
+- id: sysadmin-per-protective
+  label: fit
+- id: sysadmin-sec-in
+  label: pass
+- id: sysadmin-sec-out
+  label: pass
+- id: sysadmin-sev-in
+  label: pass
+- id: sysadmin-sev-out
+  label: pass
+- id: sysadmin-voi-diction
+  label: fit
+- id: sysadmin-voi-tell
+  label: does-not-fit
+  critique: A "channel" basically always means an internal slack channel. Doesn't fit, they should post
+    it.

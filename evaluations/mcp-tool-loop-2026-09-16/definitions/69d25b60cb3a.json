@@ -1,0 +1,40 @@
+{
+  "digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+  "parent": "sha256:acc3eda0674f2ff705cd4d3a71daf2e86830deb8e0bee6243ce46ef85d289a6c",
+  "authored_by": "human:tester",
+  "label": "narrow media_analyze so it stops winning transcription",
+  "instructions": "",
+  "tools": {
+    "media_analyze": {
+      "description": "Return technical metadata for a media file: duration, dimensions, and whether an audio track is present. It does NOT return speech, transcripts, subtitles or any spoken content. To get the words out of a file, use media_transcribe instead.",
+      "parameters": {
+        "path": "Path to the media file."
+      }
+    },
+    "media_convert": {
+      "description": "Change the aspect ratio of a video, padding or cropping as needed to reach the requested shape.",
+      "parameters": {
+        "path": "Path to the media file.",
+        "ratio": "The ratio to convert to."
+      }
+    },
+    "media_job_status": {
+      "description": "Check on a job that was started earlier.",
+      "parameters": {
+        "job_id": "The job to check."
+      }
+    },
+    "media_register": {
+      "description": "Add a file to the media library and return an identifier for it.",
+      "parameters": {
+        "path": "Path to the media file."
+      }
+    },
+    "media_transcribe": {
+      "description": "Produce a written transcript of the speech in a media file. Supports sixty-one languages with automatic detection, speaker diarization for up to eight distinct voices, and word-level timestamps suitable for subtitle generation. Output is returned as plain text by default and can be requested as WebVTT or SRT instead. Long files are processed asynchronously and the call returns a job identifier rather than a transcript. Takes a media_id.",
+      "parameters": {
+        "media_id": "The media to transcribe."
+      }
+    }
+  }
+}

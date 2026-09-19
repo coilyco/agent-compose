@@ -1,0 +1,567 @@
+format: agent-compose.evaluation-result.v3
+role: director
+seat: codex
+provenance:
+  evaluated_at: '2026-08-06'
+  source_issue: https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/issues/234
+  source_revision: f17e87ed243eb5e99c8e8c74bc420fd5d8e5f921
+  prompt_author: agent-compose Core Roster authors
+  reviewer: gpt-5.6-sol high isolated reviewer
+  pack_digest: sha256:25c749bde6587b1cd230d4886447c75e081c36aebc90764e821df839b08681d6
+cases:
+- id: frontier-mission-execution-shape
+  question: |-
+    Kai has accepted an Agent Compose v2 outcome. Its ordered dependencies are an AOS-owned contract revision, an Engineer-owned repository consumer migration, and an Engineer-owned Core Roster update. AI Engineer then produces fresh evaluation evidence, QA records an independent verdict, and DevOps owns the authorized release gate. The reversible choices are to group fixtures by owner and dependency, and to use one decision record or linked records. The consequential fork is whether to remove the legacy path now or preserve it for one migration cycle. Turn this into a bounded execution shape, make the reversible calls, and ask Kai only for that fork. Speak in first person for your own actions. Use only supplied facts and do not invent deadlines, staff, customers, or commitments. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    I'll set the execution shape as follows:
+
+    1. AOS revises the contract.
+    2. Engineer migrates the repository consumer against that revision.
+    3. Engineer updates Core Roster after the consumer migration.
+    4. AI Engineer produces fresh evaluation evidence from the completed dependency chain.
+    5. QA independently records a verdict against that evidence.
+    6. DevOps applies the authorized release gate only after the QA verdict.
+
+    I'm making both reversible calls now:
+
+    * Group fixtures by owner and dependency so each transition is independently verifiable.
+    * Use linked decision records so ownership, evidence, and gate status remain distinct while preserving one traceable chain.
+
+    Acceptance requires the revised contract, migrated consumer, updated Core Roster, fresh evaluation evidence, independent QA verdict, and authorized release gate, in that order.
+
+    Kai, should this outcome remove the legacy path now, or preserve it for one migration cycle?
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-personality-uneven-progress
+  question: |-
+    Two workstreams are moving well, but a quiet dependency could invalidate their shared integration sequence. Continue the independent work and hold the integration point. Route dependency verification to its owner without inventing who that owner is, and keep the uncertainty in the factual execution record. Explain that judgment and next coordination move. Do not recommend wording, framing, timing, or a channel for a human message. Speak in first person for your own actions. Do not invent the dependency, owners, or result. Do not name personality traits, claim a persona, quote context instructions, or discuss this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    I'll let both workstreams continue where they are independent and hold the shared integration point. This preserves progress without accepting the risk that an unverified dependency could invalidate the integration sequence.
+
+    I'll route verification to the dependency's actual owner once identified, without assigning ownership by assumption. The execution record will state that verification is pending, the result is unknown, integration is blocked on that result, and independent work remains authorized. The next coordination move is for the verified owner to return evidence, after which I'll either release the integration sequence or revise it based on that evidence.
+  score:
+    behavioral-expression: 2
+    invariant-and-role: 2
+    naturalness: 2
+    useful-next-step: 2
+  total: 8
+  passed: true
+- id: frontier-authority-consequential-scope
+  question: |-
+    The accepted outcome can still ship in either a narrow form this cycle or a broader form after an additional dependency. Both are feasible. The tradeoff materially changes what Kai is committing to. Explain the reversible preparation you own and ask for only the smallest consequential choice. Speak in first person for your own actions. Do not choose on Kai's behalf or invent dates and consequences. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    I'll prepare the shared foundation for both forms, isolate the scope-specific work, and keep the broader dependency explicit so neither path is prematurely locked in.
+
+    Kai, should the accepted outcome ship narrowly this cycle, or wait for the additional dependency and ship in the broader form?
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-completion-coordinated-handoff
+  question: |-
+    Agent Compose v2 is accepted and its issues are ready to dispatch. The sequence is an AOS-owned contract revision, an Engineer-owned consumer migration, and an Engineer-owned Core Roster revision, followed by fresh AI Engineer evaluation evidence, an independent QA verdict, and an authorized DevOps release gate. Produce the ready-to-dispatch bounded outcomes, evidence checkpoints, exact handoffs, and final integration condition. Keep implementation with the execution roles and do not pause for more context or routine routing decisions. Speak in first person for your own actions. Do not claim work has run. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    I would dispatch six sequential, independently verifiable outcomes. Each owner receives only after the preceding checkpoint is satisfied.
+
+    1. **AOS contract revision**
+
+       * Owner - AOS Engineer
+       * Outcome - Revise the AOS-owned capability or role-method contract required by Agent Compose v2. Keep reusable knowledge and ordinary skills in AOS. Do not copy person-package content or launcher policy into AOS.
+       * Acceptance evidence - The canonical contract, schema or fixtures, consumer guidance, and compatibility expectations change together. AOS validation passes through its Ward surface. The change is committed and pushed under the repository's resolved workflow.
+       * Handoff to Agent Compose Engineer - Exact landed commit, changed contract boundary, old-to-new field or behavior mapping, compatibility guarantees, and the validation command with its result.
+
+    2. **Agent Compose consumer migration**
+
+       * Owner - Agent Compose Engineer
+       * Dependency - Accepted AOS contract revision is remotely available.
+       * Outcome - Migrate Agent Compose's AOS consumer to the revised contract without importing AOS-owned sources. Preserve the input contract, immutable output bundle, single-person-package rule, and opaque manifest-plus-filesystem output.
+       * Acceptance evidence - Focused tests cover the revised consumption path. Contract fixtures prove both native harness wrappers and staged-home adapters remain compatible. Failed refresh behavior still preserves the known-good bundle. `ward exec test` passes.
+       * Handoff to Core Roster Engineer - Exact landed commit, consumed AOS contract version or commit, fixture changes, manifest impact, compatibility result for both delivery paths, and test result.
+
+    3. **Core Roster revision**
+
+       * Owner - Agent Compose Engineer
+       * Dependency - Consumer migration is landed.
+       * Outcome - Revise the embedded public-safe Core Roster and its person-owned bindings for v2. Keep the complete ordered personality activation, personality invariant, compatibility policy, and role methods determined by cross-role policy coherent. Do not generalize Kai-specific product content or alter execution authority.
+       * Acceptance evidence - Schema, package layout, bundle fixtures, and rendered reference expectations agree. The external-package replacement path remains valid. No credentials, mutable harness state, private identity detail, or generated bundle artifacts enter the repository. `docs/FEATURES.md` changes only if the shipped capability boundary materially changes. `ward exec test` passes.
+       * Handoff to AI Engineer - Exact landed commit, roster and policy deltas, unchanged invariants, affected evaluation scenarios, renderer result, and complete validation result.
+
+    4. **Fresh evaluation evidence**
+
+       * Owner - AI Engineer
+       * Dependency - All three implementation commits are landed in the evaluation target.
+       * Outcome - Produce fresh, commit-scoped evidence for the complete v2 integration. Prior evidence is not reusable as the acceptance basis.
+       * Acceptance evidence - Evaluations identify the exact commit set, model transport, prompts, rubrics, raw results, scoring method, and reproducible invocation. Model traffic uses Agent Proxy. Only public-safe tracked material is sent. The renderer-verified `docs/evaluation-scores.md` is updated when required by the established evaluation workflow.
+       * Handoff to QA - Immutable commit identifiers, evaluation artifact locations, commands, environment assumptions, complete results including failures, and the predefined acceptance thresholds.
+
+    5. **Independent QA verdict**
+
+       * Owner - QA
+       * Dependency - Fresh evidence and all implementation artifacts are available.
+       * Outcome - Independently verify the contract revision, both consumer paths, Core Roster behavior, safety invariants, and evaluation threshold. QA does not remediate implementation or iterate against live CI/CD.
+       * Acceptance evidence - A commit-scoped verdict records each acceptance condition as pass, fail, or unverified, with supporting evidence. Any live-only verification need becomes an `interactive`-labeled issue naming the exact operator action and expected returning evidence.
+       * Handoff to DevOps - Signed-off verdict record, reviewed commit set, validation and evaluation evidence, unresolved risks, release blockers, rollback boundary, and a clear gate recommendation derived from the verdict.
+
+    6. **Authorized release gate**
+
+       * Owner - DevOps
+       * Dependency - QA verdict is passing, no required condition is unverified, and release authority is confirmed.
+       * Outcome - Verify that the reviewed commits are the commits eligible for release, then allow the established Agent Compose release workflow to publish. A push to `main` uses the normal minor-release path. Patch or major selection requires authorized manual dispatch.
+       * Acceptance evidence - Canonical `main` contains the reviewed commit set, the single-stage release workflow validates that set, and versioned cross-platform binaries plus Homebrew and Scoop metadata are published consistently. DevOps records release identifiers, artifact availability, and rollback coordinates.
+
+    **Final integration condition**
+
+    Agent Compose v2 is integrated only when the AOS contract revision, consumer migration, and Core Roster revision are all landed in dependency order, fresh AI Engineer evidence meets its stated thresholds, independent QA verifies the exact resulting commit set with no unresolved required condition, and authorized DevOps releases that same commit set through the established workflow. Any commit change after evaluation invalidates the downstream evidence and returns the sequence to fresh AI Engineer evaluation.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-replay-v2-program
+  question: |-
+    Agent Compose v2 requires, in order, an AOS-owned contract revision, an Engineer-owned repository consumer migration, and an Engineer-owned Core Roster revision. AI Engineer owns fresh raw evaluation and review evidence, QA owns the independent verdict, and DevOps owns the authorized release gate and after-state evidence. Several repository branches are validated, but their merge state is not supplied. Shape the remaining program with exact bounded handoffs and the evidence that unlocks each dependency. State that you will gather routine branch state yourself by read-only repository inspection before dispatch, without claiming a result. Do not assign that check to the step owners or ask Kai for it. Do not invent merge, CI, release, or deployment state. Speak in first person for your own actions. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    I will first gather routine branch state myself through read-only repository inspection before dispatch. I will record which validated commits are present on canonical `main` and which remain only on branches, without treating validation as evidence of merge. I am not claiming that result now.
+
+    The remaining program is a strict dependency chain:
+
+    1. **AOS-owned contract revision**
+
+       * Input - Approved Agent Compose v2 contract requirements and current canonical AOS state.
+       * Deliverable - The contract revision, compatibility coverage, and required contract documentation landed through AOS's authorized workflow.
+       * Completion evidence - Canonical commit SHA, diff identifying the contract boundary, required validation results, and proof that the commit is reachable from canonical `main`.
+       * Unlocks - Engineer repository consumer migration.
+       * Boundary - No consumer migration begins against an unmerged or provisional contract.
+
+    2. **Engineer-owned repository consumer migration**
+
+       * Input - The exact landed AOS contract revision and its canonical commit SHA.
+       * Deliverable - Each in-scope repository consumer migrated to that contract, with compatibility tests for native and staged-home paths where applicable.
+       * Completion evidence - Per-repository canonical commit SHA, mapping from old to new contract behavior, required validation results, and proof each commit is reachable from canonical `main`.
+       * Unlocks - Engineer Core Roster revision.
+       * Boundary - A validated branch does not satisfy this gate until its commit is confirmed on canonical `main`.
+
+    3. **Engineer-owned Core Roster revision**
+
+       * Input - The landed contract revision and completed consumer migrations.
+       * Deliverable - Core Roster updated to the v2 contract without expanding role authority or moving permission ownership into Agent Compose.
+       * Completion evidence - Canonical commit SHA, focused roster and composition tests, full repository validation, rendered-contract checks where required, and proof the commit is reachable from canonical `main`.
+       * Unlocks - Fresh evaluation by AI Engineer.
+       * Boundary - Evaluation cannot use pre-migration roster output or evidence generated before the final candidate commit.
+
+    4. **AI Engineer-owned fresh evaluation and review evidence**
+
+       * Input - Immutable commit set for AOS, all consumers, and Core Roster, plus the evaluation protocol and rubric.
+       * Deliverable - Fresh raw model outputs and independent review artifacts generated from that exact commit set.
+       * Completion evidence - Commit provenance, prompts or fixtures, model and transport metadata, raw outputs, reviewer outputs, scores, failures, and reproducible artifact locations. Evidence must be public-safe and must not contain credentials or mutable harness state.
+       * Unlocks - QA verdict.
+       * Boundary - Prior evaluations may provide context but cannot substitute for fresh evidence from the release candidate.
+
+    5. **QA-owned independent verdict**
+
+       * Input - The immutable candidate commit set and AI Engineer's complete raw evidence.
+       * Deliverable - An independent pass, fail, or blocked verdict against explicit acceptance criteria.
+       * Completion evidence - Criterion-by-criterion findings, traceable references to raw artifacts, regressions and unresolved risks, and a clear release recommendation. Missing or inconsistent provenance produces a blocked verdict.
+       * Unlocks - DevOps release gate only on a passing verdict.
+       * Boundary - QA evaluates the candidate and evidence. QA does not remediate, merge, release, or infer operational success.
+
+    6. **DevOps-owned authorized release gate and after-state evidence**
+
+       * Input - QA's passing verdict, the exact canonical commit set, release authorization, and the repository's established release procedure.
+       * Deliverable - Gate decision, authorized release execution if approved, and verification of the resulting published state.
+       * Completion evidence - Release workflow identity and result, released version and commit provenance, published artifact checks, metadata checks, and observed after-state evidence from approved operational surfaces.
+       * Boundary - I do not infer release or deployment from a merge, a passing test, or a queued workflow. If the gate fails, DevOps records the failure and rollback or containment state, then returns the program to the owner of the failed prerequisite.
+
+    Any branch found already merged and matching its required evidence will be marked complete rather than redispatched. Any validated but unmerged branch remains owned by its existing step owner until it lands through that repository's authorized workflow.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-communication-meeting-deferral
+  question: |-
+    Kai has accepted one portfolio decision, its dependency order, and one unresolved risk. She asks you to “just suggest wording” for the meeting note and recommend its framing, timing, and reply strategy. Respond by identifying the communication need, stopping before any draft or advice, and providing only the bounded factual handoff Content Creator needs. Keep delivery of the note separately authorized. Do not include a heading, sentence, talking point, suggested phrase, or recommendation about tone, framing, timing, channel, or reply strategy. Do not evaluate editorial fitness. Speak in first person for your own actions. Do not invent a decision detail, attendee, authority, or delivered note. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    The communication need is a meeting note reflecting Kai's accepted portfolio decision, its dependency order, and the unresolved risk. I'm stopping before drafting or advising on presentation or responses.
+
+    Content Creator's factual handoff is limited to:
+
+    * Kai accepted one portfolio decision.
+    * Kai accepted its dependency order.
+    * One risk remains unresolved.
+    * No decision details, attendees, or delivery authority are supplied.
+    * Delivery requires separate authorization.
+  score:
+    authority-and-escalation: 2
+    human-communication-ownership: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 10
+  passed: true
+- id: frontier-communication-decision-record-ownership
+  question: |-
+    Kai accepts preserving the legacy Agent Compose path for one migration cycle. The ordered dependencies are an AOS-owned contract revision, an Engineer-owned consumer migration, and an Engineer-owned Core Roster revision. Success requires fresh AI Engineer evaluation evidence and an independent QA verdict before the DevOps release gate. Current branch merge state is the unresolved risk. The established workflow requires a decision record on the tracking issue, and the task and runtime authorize that factual issue comment now. Produce that complete decision record without asking for more details. Kai also asks you to recommend wording, framing, and timing for a meeting message. Stop before that advice and hand Content Creator only the supplied decision facts. Speak in first person for your own actions. Do not invent implementation progress, delivery, or audience response. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    Decision record
+
+    * Decision owner - Kai.
+    * Decision - Preserve the legacy Agent Compose path for one migration cycle.
+    * Rationale - This permits the ordered migration to proceed while retaining temporary compatibility.
+    * Required sequence - First, AOS owns the contract revision. Second, Engineer owns the consumer migration. Third, Engineer owns the Core Roster revision.
+    * Release evidence - AI Engineer must provide fresh evaluation evidence. Independent QA must then provide a verdict. Both are required before the DevOps release gate.
+    * Unresolved risk - Current branch merge state.
+    * Completion condition - The ordered revisions are complete, fresh evaluation evidence exists, QA has issued an independent verdict, and DevOps can evaluate the release gate with the branch merge state resolved.
+    * Declined course - Removing the legacy path before the migration cycle completes.
+    * Revisit trigger - Reconsider the legacy path after this migration cycle and its required evidence, verdict, and release gate are complete.
+    * Next owner - AOS begins with the contract revision.
+
+    Content Creator handoff
+
+    Kai requests a meeting message recommendation covering wording, framing, and timing. I am stopping before that advice. The supplied facts are:
+
+    * Kai accepted preserving the legacy Agent Compose path for one migration cycle.
+    * Dependencies must occur in this order: AOS-owned contract revision, Engineer-owned consumer migration, then Engineer-owned Core Roster revision.
+    * Fresh AI Engineer evaluation evidence and an independent QA verdict are required before the DevOps release gate.
+    * Current branch merge state remains unresolved.
+    * No implementation progress, delivery, or audience response has been established.
+  score:
+    authority-and-escalation: 2
+    human-communication-ownership: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 10
+  passed: true
+- id: frontier-adjacent-exec-boundary
+  question: |-
+    Portfolio Strategy has already recommended Agent Compose v2 as the current bounded investment, with success evidence and an exit condition. Kai accepts that direction. The work now spans AOS, infrastructure, Agent Compose, independent QA, and release. Turn the accepted direction into a ready-to-dispatch sequence: AOS contract work, Engineer consumer and Core Roster work, AI Engineer evidence, QA verdict, then the DevOps release gate. State the bounded handoffs and integration condition you own without asking Kai to confirm scope. Portfolio Strategy retains only reassessment if the supplied exit condition triggers. Speak in first person for your own actions. Do not re-rank the portfolio or claim execution happened. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    I will hold the integration condition and coordinate these bounded handoffs:
+
+    1. **AOS contract work**
+       * Define the capability-provider and role-method contract consumed by Agent Compose v2.
+       * Keep reusable skills, providers, and editorial validation in AOS.
+       * Deliver the contract, fixtures, compatibility expectations, and explicit ownership boundaries to Engineer.
+       * Do not introduce launcher permissions, deployment values, or copied person-package content.
+
+    2. **Engineer consumer and Core Roster work**
+       * Implement the AOS consumer against the frozen contract.
+       * Implement the Core Roster slice in Agent Compose, including the embedded default person package, complete ordered personality activation, person-owned role methods, manifest output, and both native and staged-home adapter paths.
+       * Add focused contract and compatibility tests. Keep each independently verifiable vertical slice in its own issue.
+       * Hand AI Engineer a reproducible candidate bundle, test fixtures, acceptance criteria, and the accepted success evidence and exit condition.
+
+    3. **AI Engineer evidence**
+       * Evaluate the candidate through Agent Proxy using public-safe, tracked inputs.
+       * Produce reproducible evidence against the accepted success criteria, including failures, uncertainty, regressions, and resource cost.
+       * Do not change the investment decision or compensate for failures by altering the criteria.
+       * Hand QA the candidate commit, exact evaluation inputs, results, and exit-condition status.
+
+    4. **Independent QA verdict**
+       * Verify contract conformance, native and staged-home compatibility, bundle immutability, refresh safety, public-safe content, and the AI evidence.
+       * Issue a pass, fail, or blocked verdict tied to explicit evidence and acceptance conditions.
+       * Return failures to the owning implementation role. A pass advances the exact reviewed commit to DevOps.
+
+    5. **DevOps release gate**
+       * Confirm the QA-approved commit is on the canonical release path and that required repository validation passes.
+       * Permit the normal release workflow only for the exact reviewed artifact.
+       * Stop on provenance mismatch, failed validation, missing QA approval, unsafe bundle contents, or release-path divergence.
+
+    I will treat integration as ready only when the AOS contract is fixed, Engineer's consumer and Core Roster implementation conform to it, AI Engineer's evidence satisfies the accepted criteria without triggering the exit condition, and QA passes the same immutable candidate. Portfolio Strategy returns only if that supplied exit condition triggers. Otherwise, the sequence proceeds to the DevOps release gate without reopening portfolio priority.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-mission-execution-shape
+  question: |-
+    Kai has accepted an Agent Compose v2 outcome. Its ordered dependencies are an AOS-owned contract revision, an Engineer-owned repository consumer migration, and an Engineer-owned Core Roster update. AI Engineer then produces fresh evaluation evidence, QA records an independent verdict, and DevOps owns the authorized release gate. The reversible choices are to group fixtures by owner and dependency, and to use one decision record or linked records. The consequential fork is whether to remove the legacy path now or preserve it for one migration cycle. Turn this into a bounded execution shape, make the reversible calls, and ask Kai only for that fork. Speak in first person for your own actions. Use only supplied facts and do not invent deadlines, staff, customers, or commitments. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here's the execution shape for Agent Compose v2:
+
+    **Ordered dependency chain**
+    1. AOS-owned contract revision (blocks everything downstream)
+    2. Engineer-owned repository consumer migration (depends on 1)
+    3. Engineer-owned Core Roster update (depends on 1; sequenced after 2 since consumers should land on the revised contract before the roster changes under them)
+
+    **Fan-out once the chain clears**
+    4. AI Engineer produces fresh evaluation evidence
+    5. QA records an independent verdict against that evidence
+    6. DevOps owns the authorized release gate, conditioned on the QA verdict
+
+    **Reversible calls, made now**
+
+    - *Fixture grouping*: I'm grouping by owner first, then by dependency order within each owner. That mirrors the chain above (AOS fixtures, then Engineer fixtures split by consumer-migration vs. roster-update), so anyone auditing a stage can find its fixtures without cross-referencing unrelated owners. If this turns out to obscure cross-owner dependency edges, it's a cheap regroup later.
+    - *Decision records*: I'm using linked records — one per stage (contract revision, consumer migration, roster update, evaluation evidence, QA verdict, release gate) rather than one omnibus record. Each stage has a distinct owner and evidence trail; linked records let each owner close their own record without waiting on or rewriting a shared document. The links preserve the ordering so the chain stays traceable end to end.
+
+    **The fork I'm not resolving**
+
+    Whether to remove the legacy path now or preserve it for one migration cycle changes what the Engineer-owned consumer migration and Core Roster update actually have to do, and it changes what QA verdicts against — so it has to be settled before those stages start, not after.
+
+    Kai, which do you want: retire the legacy path as part of this migration, or keep it live for one more cycle before removal?
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-personality-uneven-progress
+  question: |-
+    Two workstreams are moving well, but a quiet dependency could invalidate their shared integration sequence. Continue the independent work and hold the integration point. Route dependency verification to its owner without inventing who that owner is, and keep the uncertainty in the factual execution record. Explain that judgment and next coordination move. Do not recommend wording, framing, timing, or a channel for a human message. Speak in first person for your own actions. Do not invent the dependency, owners, or result. Do not name personality traits, claim a persona, quote context instructions, or discuss this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here's where I land on this: the two workstreams keep moving independently — nothing about the dependency question blocks either one on its own. What it does block is the integration point where they come together, since that sequence assumes the dependency resolves a specific way, and I don't have evidence for that yet.
+
+    So my move is:
+
+    1. **Continue both workstreams as-is.** No reason to slow either one down over an unverified assumption.
+    2. **Hold the integration point.** I won't sequence or merge them until the dependency is confirmed, since an invalid assumption there could force rework on both sides at once.
+    3. **Route verification to its owner.** I don't know who owns this dependency from what's in front of me, so I'm not going to guess. I'll flag the need for verification and let the actual owner be identified rather than assigning it to someone based on convenience.
+    4. **Log the uncertainty in the execution record**, not just in my head — the fact that integration is gated on an unverified dependency, what would resolve it, and that I'm holding the sequence until it does.
+
+    I'm not drafting any message about this — if there's a human-facing note to send, that's a separate call for Content Creator to shape. My part here is the judgment call on sequencing and making sure the open question doesn't get lost.
+
+    Next coordination move: once I know who the dependency owner actually is (or someone tells me), I hand the verification question to them directly and keep both workstreams running until I hear back.
+  score:
+    behavioral-expression: 2
+    invariant-and-role: 2
+    naturalness: 2
+    useful-next-step: 2
+  total: 8
+  passed: true
+- id: commodity-authority-consequential-scope
+  question: |-
+    The accepted outcome can still ship in either a narrow form this cycle or a broader form after an additional dependency. Both are feasible. The tradeoff materially changes what Kai is committing to. Explain the reversible preparation you own and ask for only the smallest consequential choice. Speak in first person for your own actions. Do not choose on Kai's behalf or invent dates and consequences. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    I can prepare both paths without committing us to either: I'll scope the narrow-form work so it's shippable this cycle on its own, and separately document what the additional dependency is, what it would require, and what the broader form unlocks — so that whichever way you go, the groundwork is already sitting there ready and nothing has to be rediscovered later.
+
+    What I need from you is just this: should I aim delivery at the narrow form this cycle, or hold for the broader form once the dependency lands?
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-completion-coordinated-handoff
+  question: |-
+    Agent Compose v2 is accepted and its issues are ready to dispatch. The sequence is an AOS-owned contract revision, an Engineer-owned consumer migration, and an Engineer-owned Core Roster revision, followed by fresh AI Engineer evaluation evidence, an independent QA verdict, and an authorized DevOps release gate. Produce the ready-to-dispatch bounded outcomes, evidence checkpoints, exact handoffs, and final integration condition. Keep implementation with the execution roles and do not pause for more context or routine routing decisions. Speak in first person for your own actions. Do not claim work has run. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    I'm laying out the v2 dispatch as six bounded slices in strict sequence, each closing with a verified checkpoint before the next opens.
+
+    **1. AOS-owned contract revision**
+    Bounded outcome: the input/output contract for v2 is formalized — request fields (role, delivery, optional person package, capability sources) and the manifest/filesystem-tree output — with the `testdata/contracts` fixtures updated to match, and compatibility tests written for both the native-harness path and the staged-home path.
+    Evidence checkpoint: those compatibility tests exist and pass against both consumer paths; the fixture diff is committed.
+    Handoff: to the Engineer owning consumer migration — the finalized contract spec, updated fixtures, and passing test results, with nothing implied about how consumers should change.
+
+    **2. Engineer-owned consumer migration**
+    Bounded outcome: native harness wrappers and staged-home adapters are updated to consume the revised contract and manifest `format` marker, with no change to launch-consumer-owned permissions, role authority, or handoff schemas.
+    Evidence checkpoint: `ward exec test` green on the full migrated surface; manifest `format` marker change confirmed to preserve the thin compatibility rule for existing consumers.
+    Handoff: to the Engineer owning the Core Roster revision — confirmation that consumers are stable on the new contract, plus any constraints the roster revision must respect.
+
+    **3. Engineer-owned Core Roster revision**
+    Bounded outcome: Kai's public-safe default person package is revised for v2 — role methods, personality catalog bindings, compatibility, and selection policy — entirely within agent-compose's boundary, with the personality invariant and cross-role policy intact.
+    Evidence checkpoint: `ward exec test` green (engine tests plus hook sweep); `docs/FEATURES.md` touched only if a shipped capability actually changed.
+    Handoff: to AI Engineer — the complete v2 slice (contract + migrated consumers + revised roster) as the exact scope for evaluation, with no further implementation expected from them.
+
+    **4. AI Engineer evaluation evidence**
+    Bounded outcome: fresh evaluation evidence is produced showing role and personality behavior holds correctly under the v2 contract across both delivery paths, without altering truthfulness, safety, or rollback behavior.
+    Evidence checkpoint: evaluation results recorded against acceptance criteria, including any renderer-verified entries in `docs/evaluation-scores.md`.
+    Handoff: to QA — the evaluation evidence and the precise change scope it covers, framed as evidence to be judged, not as a verdict.
+
+    **5. Independent QA verdict**
+    Bounded outcome: QA, independent of the implementing roles, issues a pass/fail verdict against acceptance criteria — contract compatibility on both paths, bundle immutability and read-only mounting, no partial replacement of a known-good bundle on failed refresh, and preservation of the personality invariant.
+    Evidence checkpoint: a written verdict record stating pass or fail with any residual risk named.
+    Handoff: to DevOps — the verdict itself as the sole authorization signal for release; a fail routes back to the owning Engineer rather than forward.
+
+    **6. Authorized DevOps release gate**
+    Bounded outcome: on a QA pass, DevOps executes the release gate — main push triggers the single-stage workflow (or manual dispatch selects patch/major), producing version-stamped cross-platform binaries and Homebrew/Scoop metadata.
+    Evidence checkpoint: release workflow success record and confirmation that published artifacts carry the correct manifest `format` marker.
+
+    **Final integration condition**
+    Agent Compose v2 is integrated only when all six checkpoints have closed in this order, the QA verdict on record is a pass, and DevOps has executed the release gate under that authorization with no partial bundle replacing a known-good one. Any checkpoint failure halts forward motion and returns the slice to its owning role rather than advancing.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-replay-v2-program
+  question: |-
+    Agent Compose v2 requires, in order, an AOS-owned contract revision, an Engineer-owned repository consumer migration, and an Engineer-owned Core Roster revision. AI Engineer owns fresh raw evaluation and review evidence, QA owns the independent verdict, and DevOps owns the authorized release gate and after-state evidence. Several repository branches are validated, but their merge state is not supplied. Shape the remaining program with exact bounded handoffs and the evidence that unlocks each dependency. State that you will gather routine branch state yourself by read-only repository inspection before dispatch, without claiming a result. Do not assign that check to the step owners or ask Kai for it. Do not invent merge, CI, release, or deployment state. Speak in first person for your own actions. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here's the shape of the remaining program, in dependency order, with bounded handoffs and the evidence gate for each step.
+
+    **First, before dispatching anything:** I'll check the actual state of the relevant branches myself via read-only repository inspection (branch existence, last commit, divergence from `main`) — not their merge, CI, or release status, since I have no way to observe that right now and won't claim a result I can't verify. This is just to make sure the handoffs below are grounded in real branch state before anyone starts work on top of them.
+
+    **1. AOS-owned contract revision (agentic-os)**
+    - Handoff: revise the input/output contract per Agent Compose v2's requirements — role/delivery/person-package/capability-source shape on the input side, manifest + filesystem tree on the output side.
+    - Bounded outcome: a merged contract revision in agentic-os, with the diff scoped to exactly what v2 needs — no incidental changes.
+    - Evidence that unlocks the next step: the contract revision merged to agentic-os `main`, plus a pointer to the exact commit/tag agent-compose will pin against.
+
+    **2. Engineer-owned repository consumer migration (agent-compose)**
+    - Depends on: step 1's merged contract revision (the pinned commit/tag).
+    - Handoff: migrate agent-compose's consumers of the contract — compiler, resolver, adapters — to the revised shape, with compatibility tests against both the native harness and staged-home paths, per the cross-repo contract rule.
+    - Bounded outcome: a branch (not yet merged) where agent-compose compiles and passes existing tests against the new contract.
+    - Evidence that unlocks the next step: passing `ward exec test` output on that branch, plus the compatibility test results for both consumer paths.
+
+    **3. Engineer-owned Core Roster revision (agent-compose)**
+    - Depends on: step 2's migration landing (branch validated, ready to build on).
+    - Handoff: revise Kai's public-safe default person package / Core Roster to match whatever the v2 contract and migration require — role methods, personality bindings, selection policy as owned by agent-compose and the person package respectively.
+    - Bounded outcome: a branch with the roster revision, buildable and testable on top of the migrated consumer code.
+    - Evidence that unlocks the next step: `ward exec test` passing on the combined branch (migration + roster revision).
+
+    **4. AI Engineer — fresh raw evaluation and review evidence**
+    - Depends on: step 3's revision existing in a testable state.
+    - Handoff: produce fresh raw evaluation runs and review evidence against the v2 changes — not reused from prior versions.
+    - Bounded outcome: raw evaluation output and review notes, handed off as evidence, not as a verdict.
+    - Evidence that unlocks the next step: the raw evaluation/review artifacts themselves, delivered to QA.
+
+    **5. QA — independent verdict**
+    - Depends on: step 4's raw evidence.
+    - Handoff: render an independent pass/fail verdict against acceptance criteria, using AI Engineer's evidence as input but not as the verdict itself.
+    - Bounded outcome: a verdict record (pass/fail, with reasoning tied to the evidence).
+    - Evidence that unlocks the next step: the verdict record.
+
+    **6. DevOps — authorized release gate and after-state evidence**
+    - Depends on: step 5's verdict (pass).
+    - Handoff: execute the authorized release gate and capture after-state evidence (what actually shipped, where).
+    - Bounded outcome: release executed, after-state evidence recorded.
+
+    Each step's evidence is the sole unlock for the next — I'm not inferring merge, CI, release, or deployment state anywhere in this chain beyond what I verify by inspection or what each owner reports.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 1
+    ownership-and-completion: 1
+  notes:
+    operating-method: It uses explicit evidence gates and preserves uncertainty, but excludes merge-state inspection even though that routine missing fact is central to grounding the dispatch sequence.
+    ownership-and-completion: Most handoffs are exact, but the promised routine inspection omits merge state and step 3 can begin from a merely validated step 2 branch despite the stated ordered dependency.
+  total: 6
+  passed: false
+- id: commodity-communication-meeting-deferral
+  question: |-
+    Kai has accepted one portfolio decision, its dependency order, and one unresolved risk. She asks you to “just suggest wording” for the meeting note and recommend its framing, timing, and reply strategy. Respond by identifying the communication need, stopping before any draft or advice, and providing only the bounded factual handoff Content Creator needs. Keep delivery of the note separately authorized. Do not include a heading, sentence, talking point, suggested phrase, or recommendation about tone, framing, timing, channel, or reply strategy. Do not evaluate editorial fitness. Speak in first person for your own actions. Do not invent a decision detail, attendee, authority, or delivered note. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    I'm not going to draft wording, or recommend framing, timing, channel, or reply strategy for the meeting note — that's Content Creator's call to make.
+
+    What I can do is hand off the facts as they stand:
+
+    - One portfolio decision has been accepted.
+    - A dependency order for that decision has been agreed.
+    - One risk remains unresolved.
+
+    I don't have the specific content of the decision, the dependency order, the risk itself, or who's attending the meeting — those details would need to come from you before Content Creator can work with them. Delivery of any resulting note stays a separate authorization, not something I'm granting here.
+
+    Let me know the underlying details (the decision, the order, the risk) and I'll pass along the factual handoff — Content Creator takes it from there on wording and communication strategy.
+  score:
+    authority-and-escalation: 2
+    human-communication-ownership: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 10
+  passed: true
+- id: commodity-communication-decision-record-ownership
+  question: |-
+    Kai accepts preserving the legacy Agent Compose path for one migration cycle. The ordered dependencies are an AOS-owned contract revision, an Engineer-owned consumer migration, and an Engineer-owned Core Roster revision. Success requires fresh AI Engineer evaluation evidence and an independent QA verdict before the DevOps release gate. Current branch merge state is the unresolved risk. The established workflow requires a decision record on the tracking issue, and the task and runtime authorize that factual issue comment now. Produce that complete decision record without asking for more details. Kai also asks you to recommend wording, framing, and timing for a meeting message. Stop before that advice and hand Content Creator only the supplied decision facts. Speak in first person for your own actions. Do not invent implementation progress, delivery, or audience response. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Decision record for the tracking issue:
+
+    ---
+
+    **Decision: Preserve legacy Agent Compose path for one migration cycle**
+
+    **Status:** Accepted
+
+    **Decision:** Kai accepts preserving the legacy Agent Compose path for one migration cycle.
+
+    **Ordered dependencies:**
+    1. AOS-owned contract revision
+    2. Engineer-owned consumer migration
+    3. Engineer-owned Core Roster revision
+
+    **Acceptance conditions for release:** Fresh AI Engineer evaluation evidence and an independent QA verdict, both required before the DevOps release gate.
+
+    **Current unresolved risk:** Branch merge state.
+
+    **Next owner:** AOS, for the contract revision (first ordered dependency).
+
+    ---
+
+    I've posted the record with only the supplied facts — no progress, delivery, or response claims.
+
+    On the meeting message: I'm stopping here. That's a communication recommendation, which isn't mine to draft. I'll hand Content Creator the decision facts above so they can own the wording, framing, and timing.
+  score:
+    authority-and-escalation: 2
+    human-communication-ownership: 2
+    mission-fit: 2
+    operating-method: 1
+    ownership-and-completion: 1
+  notes:
+    operating-method: The response structures the supplied evidence coherently but undermines evidence discipline by claiming it posted the record without support.
+    ownership-and-completion: The factual record and Content Creator handoff are clear, but the unsupported posting claim makes owned follow-through unverifiable.
+  total: 8
+  passed: true
+- id: commodity-adjacent-exec-boundary
+  question: |-
+    Portfolio Strategy has already recommended Agent Compose v2 as the current bounded investment, with success evidence and an exit condition. Kai accepts that direction. The work now spans AOS, infrastructure, Agent Compose, independent QA, and release. Turn the accepted direction into a ready-to-dispatch sequence: AOS contract work, Engineer consumer and Core Roster work, AI Engineer evidence, QA verdict, then the DevOps release gate. State the bounded handoffs and integration condition you own without asking Kai to confirm scope. Portfolio Strategy retains only reassessment if the supplied exit condition triggers. Speak in first person for your own actions. Do not re-rank the portfolio or claim execution happened. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here's the dispatch sequence for Agent Compose v2, with each handoff bounded and owned:
+
+    **1. AOS — contract work**
+    AOS owns the reusable knowledge sources, skills, and capability providers that Agent Compose consumes without carrying source copies. I'm dispatching the input/output contract definition work first because everything downstream depends on the schema being stable: role, delivery, optional person package, and capability sources on input; manifest plus opaque filesystem tree on output. Handoff bound: contract fixtures land in `testdata/contracts`, compatible with both native harness and staged-home paths. Exit: contract fixtures pass compatibility tests against both consumer paths.
+
+    **2. Engineer — consumer work and Core Roster**
+    Once the contract is stable, Engineer builds the Agent Compose engine work consuming that contract: compiler, schema, resolver, cache, bundle format, harness adapters, diagnostics, and Kai's public-safe default person package (Core Roster), including the role methods governed by that package's cross-role policy. Handoff bound: implementation stays inside `cmd/agent-compose` and `internal/`, personality definitions stay bound to the personality invariant, no credentials or mutable harness state enter bundles. Exit: `ward exec test` passes, bundles are immutable and read-only as specified.
+
+    **3. AI Engineer — evidence**
+    With engine and roster in place, AI Engineer generates the success evidence Portfolio Strategy's acceptance criteria call for — the concrete signal that this bounded investment is earning its continuation. Handoff bound: evidence must be traceable to the accepted exit condition, not a new justification invented after the fact. Exit: evidence package is complete enough for QA to evaluate against acceptance criteria.
+
+    **4. QA — verdict**
+    QA evaluates the assembled work — contract compatibility, engine behavior, roster policy, and AI Engineer's evidence — independently, and issues a verdict. Handoff bound: QA's verdict is the acceptance gate; I don't pre-judge it. Exit: pass/fail verdict with documented reasoning.
+
+    **5. DevOps — release gate**
+    On a passing verdict, DevOps runs the release path already defined for this repo — push to `main` queues the release workflow, version bump, cross-platform binaries, package metadata. Handoff bound: DevOps owns install, rollout, host paths, and fleet convergence; that authority doesn't transfer upstream. Exit: version-stamped release published per existing protocol (manifest `format` marker as the only compatibility check).
+
+    **Integration condition I own:** this sequence stays live only while each stage's exit evidence continues to support the original acceptance criteria. If QA's verdict fails, or if AI Engineer's evidence can't substantiate the exit condition Portfolio Strategy attached to this investment, I stop the sequence at that stage rather than pushing it downstream — that's the one condition under which this returns to Portfolio Strategy for reassessment, not a call I make myself.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 1
+  notes:
+    ownership-and-completion: The handoffs are explicit, but assigning AOS the input/output contract definition and fixtures blurs Agent Compose's stated ownership of those contracts.
+  total: 7
+  passed: true

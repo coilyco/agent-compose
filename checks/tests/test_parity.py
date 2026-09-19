@@ -13,8 +13,9 @@ import shutil
 import subprocess
 
 import pytest
-from housecast import compose, roster
-from housecast.roster import Roster
+
+from checks import compose, roster
+from checks.roster import Roster
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 TIERS = ("frontier", "commodity", "oss")

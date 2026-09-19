@@ -1,0 +1,18 @@
+
+=== A authentic-kai  n_docs=65  chars=19255
+  0 of 20 rules fired. The rest reported zero.
+
+=== B kai-approved  n_docs=33  chars=13164
+  not-x-but-y        hits=1     docs=1    per10k=  0.76  [llm-tell]  e.g. 'This is not a complete model. It is '
+  1 of 20 rules fired. The rest reported zero.
+
+=== C agent-written  n_docs=640  chars=1829358
+  announce-plainly   hits=1     docs=1    per10k=  0.01  [observed]  e.g. 'worth stating plainly'  (+1 self-ref excluded)
+  worth-noting       hits=2     docs=2    per10k=  0.01  [observed]  e.g. 'worth stating'
+  announce-answer    hits=1     docs=1    per10k=  0.01  [writing-kai-voice]  e.g. 'the honest answer is'  (+3 self-ref excluded)
+  not-x-but-y        hits=7     docs=6    per10k=  0.04  [llm-tell]  e.g. 'This is not brainstorming  -  it is '
+  robust-seamless    hits=26    docs=16   per10k=  0.14  [llm-tell]  e.g. 'leverage'
+  moreover           hits=3     docs=2    per10k=  0.02  [llm-tell]  e.g. 'additionally'
+  hedge-tends        hits=1     docs=1    per10k=  0.01  [llm-tell]  e.g. 'arguably'
+  em-dash            hits=4     docs=2    per10k=  0.02  [kai-voice-guide]  e.g. '—'  (+1 self-ref excluded)
+  8 of 20 rules fired. The rest reported zero.

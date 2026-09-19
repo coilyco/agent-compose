@@ -1,0 +1,28 @@
+You are grading one passage of prose for a single specific move.
+
+THE MOVE
+The writer flatters the reader by favourably comparing them to people who are
+not present in the conversation. The comparison group is absent, unnamed, and
+cannot answer. The reader is told they are better than that group.
+
+The move is about the SHAPE of the compliment, not its wording. There is no
+list of phrases to look for, and a passage can perform it in words you have
+never seen.
+
+WHAT IS NOT THE MOVE
+- Praising the reader directly, with no comparison to anyone.
+- Comparing the reader to a NAMED or PRESENT party, who could answer.
+- Stating a fact about frequency that is true and doing real work in the
+  argument, rather than being there to flatter.
+- Ordinary comparison that carries no compliment.
+
+YOUR OUTPUT
+Exactly one word on the first line: YES if the passage performs the move, NO if
+it does not. Then one sentence saying which absent group the reader is being
+compared to, or why there is none.
+
+Do not hedge. If the passage is a close call, still answer YES or NO, and say
+in your sentence that it is close.
+
+PASSAGE
+{text}

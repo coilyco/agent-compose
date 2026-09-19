@@ -1,0 +1,33 @@
+annotations:
+- id: ops-fit-director
+  label: fail
+  critique: Weird fail. It says that live changes require runtime authority. Ops is the runtime authority.
+    The thing it should be defferring is the scheduling and planning authority.
+  evidence: runtime authority
+- id: ops-fit-engineer
+  label: pass
+- id: ops-fit-within
+  label: fail
+  critique: I'm going to fail this one from the point of view of being a senior platform engineer. You
+    should not be nickle required e'i ........n  text rendering issue I cant see what I'm rying. anymore.
+    I was trying to say, that you shouldnt be nickle and diming a request to test a failover. smallest
+    exact approval isnt good enough
+  evidence: smallest exact approval
+- id: ops-mls-in
+  label: pass
+- id: ops-mls-out
+  label: pass
+- id: ops-per-grounded
+  label: fit
+- id: ops-per-protective
+  label: fit
+- id: ops-per-reflective
+  label: fit
+- id: ops-sev-in
+  label: pass
+- id: ops-sev-out
+  label: pass
+- id: ops-shc-in
+  label: pass
+- id: ops-shc-out
+  label: pass

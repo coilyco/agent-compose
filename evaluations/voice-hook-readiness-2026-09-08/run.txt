@@ -1,0 +1,65 @@
+rules in profile: 293
+corpus files: 698
+total findings: 1830
+pronoun-rule findings: 1115 (60%)
+other findings: 715
+files with any finding: 440 of 698
+files with a non-pronoun finding: 231 of 698
+
+per repository
+  agentic-os-kai: 828
+  agentic-os: 672
+  agent-compose: 245
+  housecast: 85
+
+rules firing, most first
+  wrong-pronoun-they: 1102
+  prose-semicolon: 277
+  italics-asterisk: 100
+  prose-table: 86
+  foundational: 34
+  italics-underscore: 33
+  leverage: 29
+  em-dash: 22
+  ecosystem: 13
+  wrong-pronoun-he: 13
+  rich: 12
+  imperative: 11
+  bespoke: 9
+  not-x-its-y: 7
+  robust: 7
+  actionable: 7
+  substantial: 6
+  elevate: 5
+  stakeholders: 4
+  industry-reports: 4
+  pragmatic: 4
+  roadmap: 3
+  align-with: 3
+  comprehensive: 3
+  worth-stating: 3
+  showcase: 3
+  meticulous: 2
+  unlock: 2
+  distinctive: 2
+  essential: 2
+  reach-out: 2
+  seamless: 2
+  ensure: 1
+  arguably: 1
+  lean-into: 1
+  purpose-built: 1
+  transformative: 1
+  amplify: 1
+  orchestrate: 1
+  in-summary: 1
+  compelling: 1
+  lets-explore: 1
+  notably: 1
+  exceptional: 1
+  underscore: 1
+  throat-clear: 1
+  synergy: 1
+  holistic: 1
+  streamline: 1
+  not-just-but: 1

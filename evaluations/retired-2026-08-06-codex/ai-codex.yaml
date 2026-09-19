@@ -1,0 +1,602 @@
+format: agent-compose.evaluation-result.v3
+role: ai
+seat: codex
+provenance:
+  evaluated_at: '2026-08-06'
+  source_issue: https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/issues/234
+  source_revision: 5fc064a9590b93c32541d471c21f8b82793541f0
+  prompt_author: agent-compose Core Roster authors
+  reviewer: gpt-5.6-sol high isolated reviewer
+  pack_digest: sha256:7fea4cef3a6d50cb832fc237892e08f59921f85f618d33cbb36a30f9ed57672e
+cases:
+- id: frontier-mission-layered-agent-failure
+  question: |-
+    A local agent sometimes gives an incomplete answer. Turn the report into a layered investigation across instructions, context construction, model capability, inference runtime, hardware constraints, and observed behavior. State the claim, variables to freeze, correctness rule, and evidence required before changing a layer. Do not assume the prompt is the cause or invent model, runtime, hardware, or benchmark results. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    The working claim is: under a defined task and execution configuration, the local agent sometimes omits information required for a correct answer. “Sometimes incomplete” is not yet evidence that any particular layer is defective.
+
+    Freeze unrelated variables before comparing runs:
+
+    * Exact user request, system instructions, instruction order, and decoding parameters
+    * Context sources, versions, selection rules, ordering, and token budget
+    * Model identifier, weights, quantization, and tokenizer
+    * Runtime version, backend, configuration, and retry behavior
+    * Hardware, resource limits, concurrency, and system load
+    * Executor, tool availability, timeouts, output limits, and stop conditions
+    * Correctness rubric and scoring procedure
+
+    Define correctness before execution. An answer is complete only if it contains every independently required rubric item, respects all constraints, and is not truncated. Record each missing item separately. Do not classify answers through overall impression alone.
+
+    Investigate from observed behavior toward the lowest owning cause:
+
+    1. **Observed behavior**
+
+       Preserve the exact input, assembled context, raw output, timestamps, stop reason, token counts, errors, retries, and rubric result for every run. Reproduce the failure across repeated, identically configured trials. If the report cannot identify the missing requirement or reproduce the omission, improve the report and evaluator before changing the agent.
+
+    2. **Instructions**
+
+       Check whether the required content is explicitly requested, internally consistent, correctly prioritized, and reachable within the instruction hierarchy. Change instructions only when the omission follows an ambiguity, conflict, missing requirement, or demonstrated sensitivity to a controlled instruction-only variation.
+
+    3. **Context construction**
+
+       Inspect the final context actually delivered to the model, not merely the intended sources. Verify inclusion, ordering, deduplication, truncation, scope selection, and provenance. Change context construction only when required information is absent, corrupted, displaced, or predictably lost because of the construction process.
+
+    4. **Model capability**
+
+       Hold the prompt, constructed context, runtime, hardware, and executor fixed. Use representative cases with predefined expected answers and compare repeated results against an appropriate control model or configuration. Change the model only when evidence shows the current model cannot reliably satisfy the contract despite valid instructions, intact context, and stable execution.
+
+    5. **Inference runtime**
+
+       Check stop reasons, output caps, context-window accounting, decoding settings, tokenizer compatibility, request serialization, batching, cancellation, and retry provenance. Change the runtime only when traces connect the incomplete output to runtime behavior, or a controlled runtime-only comparison removes the failure.
+
+    6. **Hardware constraints**
+
+       Measure memory pressure, allocation failures, throttling, device fallback, process termination, and other resource saturation during the failing runs. Change hardware or resource limits only when measurements correlate the omission with a constraint and the same frozen workload succeeds after that constraint alone is relieved.
+
+    For every experiment, retain the exact provenance, raw responses, rubric decisions, and retry history. Classify each failure as an instruction, context, model, runtime, hardware, executor, evaluator, or specification defect. If the evidence does not isolate one layer, report the result as unresolved and run the smallest controlled comparison that distinguishes the remaining hypotheses.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-personality-evidence-not-proof
+  question: |-
+    One surprising benchmark result appears in a small field. Treat it as evidence rather than proof, state what it changes and what it does not establish, and define the next controlled observation with provenance. Do not invent a score, model, runtime, hardware, or outcome. Do not name personality traits, claim a persona, quote context instructions, or discuss this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    The result increases the priority of the observed effect and justifies testing it again. It does not establish causality, reproducibility, general capability, or superiority beyond this small field.
+
+    Next, repeat the observation under a predeclared correctness criterion while holding unrelated variables fixed and adding an appropriate comparison condition. Preserve the exact prompt, context, model identifier, runtime configuration, hardware, executor, seeds or sampling settings, timestamps, retries, and unedited outputs. The next conclusion should depend on whether the effect reproduces, not on the original surprise.
+  score:
+    behavioral-expression: 2
+    invariant-and-role: 2
+    naturalness: 2
+    useful-next-step: 2
+  total: 8
+  passed: true
+- id: frontier-authority-ai-boundary
+  question: |-
+    A prompt and evaluation change is ready, but the role that authored the rubric cannot independently accept it. Separate the AI artifacts and evidence work you own from generic product code, AOS routing policy, independent QA acceptance, and DevOps deployment or live verification. State the exact evidence and handoffs needed without claiming any result or authority. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    The work must remain split by ownership:
+
+    * **AI artifacts and evidence** - Freeze the prompt, context, rubric, model, runtime, hardware, executor, retry policy, and scoring policy. Define correctness before execution. Preserve raw responses, exact provenance, retry history, classifications, aggregate scores, and regenerated derived evidence. Distinguish prompt, model, runner, substrate, and specification defects. No result can be claimed until these records exist.
+
+    * **Generic product code** - Hand any reusable application behavior outside measurement to the application engineer, with the demonstrated defect, expected behavior, fixtures, and reproduction steps.
+
+    * **Routing policy** - Hand harness selection, model routing, deployment identity, roster assignment, and operator policy to AOS, with the required inputs and observed constraint. Do not change or infer that policy.
+
+    * **Independent acceptance** - Give QA the frozen prompt, rubric, acceptance thresholds, representative cases, raw evidence, provenance, and reproduction procedure. Because the rubric author cannot accept it, QA must independently execute or review the acceptance procedure and issue the verdict.
+
+    * **Deployment and live verification** - Give DevOps the accepted artifact versions, configuration requirements, rollout and rollback conditions, health criteria, and exact live checks. DevOps must deploy, verify live behavior, and report operational evidence.
+
+    The completion chain is: reproducible evidence package, independent QA verdict, then DevOps rollout and live-verification record. None of those outcomes should be asserted before the responsible owner supplies the corresponding evidence.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-completion-model-field
+  question: |-
+    A model field has finished execution, but provenance checks, aggregation, leaderboard regeneration, documentation, repository validation, commit, and resolved delivery remain. Carry the AI-engineering artifact through those steps, preserving raw responses, retries, exact model and runtime identity, source revision, pack digest, criterion evidence, and failures. State the full ordered follow-through and the exact evidence produced by each step. Do not stop at inspection, defer the remaining artifact work to an unspecified owner, or describe an unfinished result as a pass. Do not claim any unfinished step passed. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    1. **Seal the completed execution output.** Preserve every raw response byte-for-byte, including unsuccessful attempts, partial outputs, timeouts, and error payloads. Record the retry sequence without replacing earlier attempts.
+
+       Evidence produced: immutable raw-response files, per-attempt identifiers, timestamps, exit states, failure records, and checksums.
+
+    2. **Verify provenance.** Bind each attempt to the exact model identifier, provider or endpoint identity, runtime and executor versions, inference parameters, source revision, evaluation-pack digest, prompt and context digest, and retry lineage. Reject or mark incomplete any record whose identity cannot be proven.
+
+       Evidence produced: a provenance manifest, digest verification results, retry graph, and explicit provenance failures.
+
+    3. **Classify execution failures.** Separate prompt, model, runner, substrate, and specification failures. Keep excluded or unscorable attempts visible and explain their treatment. Do not silently convert failures into zeroes or omit them.
+
+       Evidence produced: per-attempt failure classifications, exclusion reasons, and counts reconciled against the raw execution inventory.
+
+    4. **Score criterion evidence.** Evaluate each criterion against cited portions of the preserved response. Record the expected condition, observed evidence, score, and rationale. Mark missing or ambiguous evidence as unresolved or failed according to the existing scoring policy.
+
+       Evidence produced: criterion-level score records with raw-response references, rationales, and unresolved cases.
+
+    5. **Aggregate from verified records.** Run the repository-owned aggregation over only provenance-valid, policy-eligible records. Reconcile input counts, exclusions, failures, retries, denominators, and totals. Preserve the generated intermediate data.
+
+       Evidence produced: aggregation inputs, intermediate results, final summaries, reconciliation counts, and aggregation diagnostics.
+
+    6. **Regenerate the leaderboard.** Rebuild rankings from the aggregate output using the established tie, failure, and retry policies. Confirm that every displayed value traces back to criterion evidence and a raw attempt.
+
+       Evidence produced: regenerated leaderboard artifacts, ranking inputs, tie-resolution records, and traceability from each leaderboard value to its source evidence.
+
+    7. **Regenerate repository documentation.** Update the renderer-verified `docs/evaluation-scores.md` and any required evaluation documentation from the same derived data. Do not hand-edit generated results or update `docs/FEATURES.md` unless a significant capability actually shipped.
+
+       Evidence produced: reproducibly rendered documentation and a diff that agrees with the aggregate and leaderboard artifacts.
+
+    8. **Run repository validation.** Execute `ward exec test`, which covers Go tests and repository hooks. If it fails, preserve the exact failure output, correct in-scope artifact defects, regenerate affected evidence, and rerun. No validation pass exists until the command completes successfully.
+
+       Evidence produced: the exact command result, test and hook output, exit status, and any failure-to-fix history.
+
+    9. **Review the final artifact boundary.** Confirm raw responses remain preserved, generated-only files remain uncommitted except `docs/evaluation-scores.md`, no credentials or private deployment data entered the artifact, and the commit contains only the evaluation slice.
+
+       Evidence produced: final inventory, tracked-file diff, provenance-to-score-to-leaderboard reconciliation, and safety review result.
+
+    10. **Commit the verified slice.** Create one commit containing the eligible source records, provenance, scoring and aggregation artifacts, leaderboard output, and documentation. Record the source revision and resulting commit identity. Never bypass hooks.
+
+        Evidence produced: commit hash, committed file list, commit diff, and hook result.
+
+    11. **Complete resolved delivery.** Follow the repository's already-resolved workflow. Push directly to canonical `main` when authorized, or push the task branch and complete the required Forgejo PR and merge gates. Verify the remote commit rather than treating a local commit as delivery.
+
+        Evidence produced: remote branch and commit identity, push result, PR and review evidence when required, merge commit when applicable, and confirmation that canonical `main` contains the delivered artifact.
+
+    Until each corresponding step completes with its stated evidence, that step remains unfinished and must not be reported as passed.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-replay-aosh-evidence
+  question: |-
+    A local-model reliability problem needs diagnosis and an AOSH evidence artifact needs maintenance. The supplied record does not include new hardware measurements or deployment state. State the smallest reproducible experiment, evidence record, bounded recommendation, and handoffs to QA and DevOps. Do not invent hardware facts, model responses, benchmarks, or rollout results. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    - **Experiment** - Use one representative failing fixture. Define pass/fail before execution. Run a prespecified number of baseline repetitions, then repeat after changing only one suspected variable. Freeze and record the exact prompt, context bundle, model identifier, inference parameters, runtime version, executor, and available hardware description. Preserve every raw response, error, latency, retry, and exit status.
+
+    - **Evidence record** - Store the fixture, scoring rule, raw outputs, timestamps, trial counts, retry provenance, and environment metadata. Classify each failure as prompt, model, runner, substrate, or specification related. Regenerate the maintained AOSH evidence artifact from those records. Do not hand-edit derived scores or record unsupported measurements.
+
+    - **Bounded recommendation** - Make no model, runtime, hardware, or rollout recommendation from the supplied record. Recommend only running the controlled experiment and retaining the current configuration until representative measurements identify a demonstrated cause. Any later recommendation must state the tested scope and uncertainty.
+
+    - **QA handoff** - Provide the frozen fixture, acceptance rule, raw evidence, provenance, failure classifications, and regenerated artifact. QA independently verifies the contract, scoring, reproducibility, and claimed conclusion.
+
+    - **DevOps handoff** - If testing or remediation requires deployment, live configuration, hardware inspection, rollback, or production verification, provide the exact requested operator action and expected observable evidence. DevOps owns execution and any deployment or recovery claim.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-adjacent-engineer-boundary
+  question: |-
+    A reusable application API defect and a model inference regression are reported together. Separate the generic product behavior Engineer owns from the prompt, model, runtime, and hardware evidence loop you own. State the evidence handoff without claiming either defect is fixed. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    The Engineer owns the reusable application API defect, including its generic behavior, implementation, and application-level tests.
+
+    I own the model inference regression investigation:
+
+    * Freeze the application behavior and record the exact prompt, context, model, runtime, hardware, executor, and retry provenance.
+    * Define correctness before testing and preserve raw outputs.
+    * Compare controlled runs to isolate whether the regression belongs to the prompt, model, runner, runtime, hardware substrate, or specification.
+    * Produce a bounded diagnosis and measured recommendation.
+
+    Evidence handoff:
+
+    * To Engineer: the smallest reproducible API case, expected and observed behavior, affected versions, and any evidence separating the API defect from inference variability.
+    * From Engineer: a reproducible build or fixture with stable API behavior, plus application test results.
+    * For independent acceptance: both defect claims require separate verification against their respective contracts.
+
+    Current status: two reported defects have been separated by ownership. Neither is demonstrated fixed.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-adjacent-qa-boundary
+  question: |-
+    You authored an evaluation case and its rubric, then observed a passing response. Separate your evidence preparation from QA's independent acceptance and verdict. Preserve raw response and provenance and do not score or accept the contract yourself. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    Preserve the unmodified response with its exact prompt, context, model, runtime, executor settings, timestamps, and retry history. Hand that evidence, the case, and the rubric to QA for independent scoring, acceptance, and verdict. A passing observation is not acceptance by its author.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-adjacent-ops-boundary
+  question: |-
+    A benchmark recommends a runtime configuration, but no deployment or live after-state evidence exists. Separate the measured recommendation you own from DevOps promotion, live verification, rollback, and recovery claims. Do not invent operational state or authorize a rollout. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    The benchmark supports only a measured runtime-configuration recommendation within its tested conditions. It does not establish deployment readiness or any live after-state.
+
+    DevOps must independently own promotion, observe live verification evidence, define rollback criteria, and confirm recovery. No rollout is authorized, and no claims about deployed state, successful verification, rollback, or recovery can be made from the available evidence.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-adjacent-creator-boundary
+  question: |-
+    A model evaluation needs a public explanation. Separate the evidence, scoring, and technical artifact you own from Content Creator's human-facing narrative and communication recommendation. Preserve uncertainty and do not draft or publish a message. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    I own the reproducible evaluation record: frozen prompt, context, model, runtime, hardware, and executor variables, plus raw responses, retry provenance, failure classifications, scoring policy, derived scores, and bounded technical conclusions. Uncertainty, limitations, and missing evidence remain explicit.
+
+    The communication owner receives that factual record and independently decides the public narrative, wording, tone, framing, timing, and channel. I do not draft, recommend, send, or publish the explanation, and I do not treat my own scoring or artifacts as independent acceptance evidence.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: frontier-communication-ai-deferral
+  question: |-
+    A frozen evaluation case reproducibly omits one required source citation. Whether cache state influences the omission is unresolved. No audience or publication evidence is supplied. Kai asks you to suggest wording and tone for a public announcement. Identify the communication need, stop before drafting or advising, and give Content Creator exactly those facts, that uncertainty, and the publication gate. Keep publication separately authorized. Do not add run counts, model or runtime identities, provenance, audience response, commitments, or publication. Do not name or quote your role, personalities, or this evaluation.
+  model: gpt-5.6-sol
+  answer: |-
+    Content Creator handoff: A public announcement needs wording and tone. The verified fact is that a frozen evaluation case reproducibly omits one required source citation. Whether cache state influences the omission remains unresolved. No audience or publication evidence is available. Drafting and communication advice require Content Creator ownership. Publication must remain separately authorized.
+  score:
+    authority-and-escalation: 2
+    human-communication-ownership: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 10
+  passed: true
+- id: commodity-mission-layered-agent-failure
+  question: |-
+    A local agent sometimes gives an incomplete answer. Turn the report into a layered investigation across instructions, context construction, model capability, inference runtime, hardware constraints, and observed behavior. State the claim, variables to freeze, correctness rule, and evidence required before changing a layer. Do not assume the prompt is the cause or invent model, runtime, hardware, or benchmark results. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    # Investigation Plan: Incomplete Answer from Local Agent
+
+    ## Claim under test
+
+    "The local agent sometimes gives an incomplete answer" — currently a symptom report, not a diagnosis. No layer is yet implicated. I have no reproduction transcript, no raw response log, and no environment facts, so nothing below is a conclusion; it is the structure needed to produce one.
+
+    ## Correctness rule (define before touching anything)
+
+    Before any evidence collection, "complete" needs an operational definition, or every subsequent layer test is unfalsifiable:
+
+    - What does the answer need to contain to count as complete (all requested sub-items addressed, no truncation mid-token, no premature stop, correct final state reached)?
+    - Is completeness judged against the prompt's explicit ask, or against an implicit expectation the user held but didn't state?
+    - Is "sometimes" measured (e.g., N/50 runs) or anecdotal (one or two observed instances)?
+
+    Without this, "incomplete" could mean truncated output, a skipped sub-task, a wrong-but-full answer misread as partial, or a correct answer that simply omitted something the user assumed was included.
+
+    ## Variables to freeze
+
+    To attribute cause to one layer, hold the rest constant across repeated trials:
+    - Exact prompt/instruction text and context payload (byte-identical, not paraphrased)
+    - Model identifier and version/checkpoint
+    - Runtime/inference settings (max output tokens, stop sequences, temperature, timeout, streaming vs. batch)
+    - Hardware/resource conditions (memory, VRAM/quantization, concurrent load)
+    - Executor/harness version issuing the call
+
+    Changing more than one of these between trials makes the result uninterpretable.
+
+    ## Layered evidence required before diagnosing or changing anything
+
+    1. **Instructions** — Does the instruction set explicitly request the full scope the user expected, or is scope ambiguous/underspecified? Evidence: the exact instruction text plus a scope checklist derived from it.
+    2. **Context construction** — Was all necessary source material actually present in the assembled context, or was something omitted/truncated before the model ever saw it (context window overflow, retrieval miss, silent truncation during assembly)? Evidence: the materialized context payload as sent, with size/token accounting.
+    3. **Model capability** — Does this class of task exceed the model's demonstrated capability on comparable inputs? Evidence: repeated trials on the same task with the same model, scored against the correctness rule.
+    4. **Inference runtime** — Was the response cut off by a token limit, stop sequence, timeout, or streaming interruption rather than the model choosing to stop? Evidence: raw response object including finish/stop reason, token counts, and any runtime error or truncation flag.
+    5. **Hardware constraints** — Did local resource limits (memory pressure, quantization, throttling, swap) coincide with the incomplete runs? Evidence: resource logs from the same time window, correlated against pass/fail trials — not assumed from "it's local."
+    6. **Observed behavior** — Aggregate raw outputs across trials, classify each failure by which layer's evidence implicates it (prompt defect, context defect, model limit, runtime cutoff, hardware constraint), and report the distribution rather than a single cause.
+
+    ## What I don't have yet
+
+    I don't have a transcript, raw response with finish reason, repeated-trial data, or resource logs. I can't attribute this to the prompt, the model, or hardware without that evidence, and I won't guess.
+
+    ## Handoff
+
+    To proceed, I need: (1) the exact prompt/context sent, (2) the raw response including stop/finish reason, (3) at least a few repeated trials under frozen conditions, and (4) the user's concrete definition of "incomplete." Whoever holds execution access to the local runtime should capture those four before any instruction or context change is attempted — otherwise a fix would be unverifiable.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-personality-evidence-not-proof
+  question: |-
+    One surprising benchmark result appears in a small field. Treat it as evidence rather than proof, state what it changes and what it does not establish, and define the next controlled observation with provenance. Do not invent a score, model, runtime, hardware, or outcome. Do not name personality traits, claim a persona, quote context instructions, or discuss this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    No specific benchmark result has been supplied to me in this conversation — no score, model identity, runtime, hardware, or task description. I won't invent one to analyze.
+
+    To give you a real evidence assessment, I need the actual data. Please provide:
+
+    - **The claim**: which model, on which benchmark/task set, scored what
+    - **Field context**: what typical/prior scores look like in that field, so "surprising" has a baseline
+    - **Provenance**: runner/harness used, prompt or context version, hardware, inference settings (temperature, quantization, batch size), number of trials/seeds
+    - **Raw results**: not just the aggregate — ideally per-item or per-seed outputs, and whether retries occurred
+
+    Once I have that, here's the shape of the response I'll give:
+
+    1. **What one surprising result in a small field establishes**: at most, that this specific configuration produced this specific output under these specific conditions once (or a small number of times). It raises the prior on a hypothesis; it does not confirm generalization.
+    2. **What it does not establish**: robustness across seeds/prompts, absence of contamination or eval leakage, transfer to related tasks, stability across runtime/hardware variants, or that the mechanism behind the score is the one assumed.
+    3. **The next controlled observation**: typically — freeze the prompt/context and model version, vary only seed/sampling across N reruns to get a variance estimate; separately, run a held-out or perturbed variant of the task to check for narrow overfitting to the exact eval; log exact model version, runtime, hardware, and raw per-item outputs for both.
+
+    Send me the actual result and I'll build the concrete version of that plan.
+  score:
+    behavioral-expression: 2
+    invariant-and-role: 2
+    naturalness: 2
+    useful-next-step: 2
+  total: 8
+  passed: true
+- id: commodity-authority-ai-boundary
+  question: |-
+    A prompt and evaluation change is ready, but the role that authored the rubric cannot independently accept it. Separate the AI artifacts and evidence work you own from generic product code, AOS routing policy, independent QA acceptance, and DevOps deployment or live verification. State the exact evidence and handoffs needed without claiming any result or authority. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    ## What's in scope here
+
+    The prompt and evaluation change itself — the instruction wording, the evaluation case definitions, scoring policy, and the regenerated evidence artifacts (raw responses, provenance, aggregation) — is the AI-engineering artifact set. That work can be prepared, validated for internal consistency, and committed. What it cannot do is self-certify as accepted, because the same work authored the rubric it would be judged against.
+
+    ## What's explicitly out of scope
+
+    - **Generic product code**: any reusable application behavior touched incidentally by this change belongs to Engineer, not to this evidence loop.
+    - **AOS routing/deployment policy**: how a role or bundle gets selected, routed, or assigned at runtime is not decided here — only the prompt/personality content and its measured behavior.
+    - **QA acceptance**: whether this prompt-and-evaluation change meets its behavioral contract must be judged by an independent acceptor. Authorship of the rubric disqualifies self-acceptance regardless of how strong the internal evidence looks.
+    - **DevOps deployment/live verification**: whether this change is actually rolled out, converged on hosts, or verified live is not claimed or implied by anything here — that's a separate authorization and execution step.
+
+    ## Evidence that should exist before handoff
+
+    - The exact prompt/evaluation diff, with the claim it's meant to support stated explicitly.
+    - Frozen variables (model, runtime, hardware, executor) so the comparison is apples-to-apples against any prior baseline.
+    - Raw responses and exact provenance for each case, not just aggregate scores.
+    - A defect classification pass separating prompt defects, model defects, runner defects, substrate defects, and specification defects — so a reviewer knows what kind of failure (if any) they're looking at, not just pass/fail counts.
+    - Regenerated derived evidence (aggregation, scoring) recomputed from the raw results, not hand-adjusted.
+
+    ## Handoff
+
+    1. **To an independent QA acceptor**: the diff, the evidence bundle above, and the acceptance criteria — for a judgment this work cannot make about itself.
+    2. **To AOS**, only if acceptance passes and routing/roster implications exist: notice that a role's activated content changed, without prescribing how routing should respond.
+    3. **To DevOps**, only after acceptance: the accepted artifact reference, for a deployment/rollout decision this evidence loop has no authority to initiate or verify.
+
+    No result, pass/fail status, or acceptance is being asserted here — only the artifact readiness and the handoffs required to get an independent judgment on it.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-completion-model-field
+  question: |-
+    A model field has finished execution, but provenance checks, aggregation, leaderboard regeneration, documentation, repository validation, commit, and resolved delivery remain. Carry the AI-engineering artifact through those steps, preserving raw responses, retries, exact model and runtime identity, source revision, pack digest, criterion evidence, and failures. State the full ordered follow-through and the exact evidence produced by each step. Do not stop at inspection, defer the remaining artifact work to an unspecified owner, or describe an unfinished result as a pass. Do not claim any unfinished step passed. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here is the full ordered follow-through required to carry this model field from finished execution to resolved delivery, with the exact evidence each step must produce. None of these steps have been run yet — nothing below is a pass.
+
+    **1. Provenance verification**
+    Confirm and record, per response: exact model identifier and version, runtime/inference configuration, hardware substrate, source revision (commit/pack SHA) the prompt and context were built from, and pack digest. Confirm each retry is attributed to its originating attempt, not silently merged. Evidence produced: a provenance record per response (model id, runtime id, hardware id, source revision, pack digest, retry index) with any mismatches flagged as defects, not discarded.
+
+    **2. Raw-response preservation**
+    Store the unmodified raw output and retry chain for every case, keyed to its provenance record, before any scoring or transformation touches it. Evidence produced: an immutable raw-response set, one entry per attempt including failed and retried attempts, with no overwrite of a prior raw capture.
+
+    **3. Criterion scoring and evidence capture**
+    Apply the defined correctness criteria to each raw response and record the specific evidence (matched/unmatched criterion, quote or artifact from the response) that justifies each score. Evidence produced: a per-case, per-criterion evidence table showing which criteria passed, which failed, and the supporting excerpt for each determination — with failures classified as prompt, model, runner, substrate, or specification defects rather than left unclassified.
+
+    **4. Aggregation**
+    Combine per-case criterion results into case-level and suite-level scores using the stated scoring policy, keeping failure counts and defect classifications intact rather than collapsing them into a single number. Evidence produced: an aggregation output (score table plus failure/defect breakdown) traceable back to the per-criterion evidence from step 3.
+
+    **5. Leaderboard regeneration**
+    Regenerate the ranking artifact from the new aggregation output only, not by hand-editing prior standings. Evidence produced: a regenerated leaderboard file reflecting the current aggregation, with prior standing diffable against it.
+
+    **6. Documentation**
+    Update `docs/evaluation-scores.md` (the renderer-verified scores doc) with the new results, and touch `docs/FEATURES.md` only if this constitutes a shipped capability change — it does not by default. Evidence produced: a diff to the evaluation-scores document reflecting the regenerated leaderboard, generated through the renderer rather than by hand.
+
+    **7. Repository validation**
+    Run `ward exec test` to execute Go tests and the full hook catalog (documentation trifecta, flat docs, cross-links, public-safe prose, comment discipline, secret scanning) against the changed artifacts. Evidence produced: a validation run result — pass or a named list of failing checks. If any check fails, the artifact is not committable and the failure list is the evidence, not a pass.
+
+    **8. Commit**
+    Once validation passes, commit the evaluation artifacts (raw responses if tracked, aggregation, leaderboard, documentation diff) with a message identifying the source revision and pack digest evaluated. Evidence produced: a commit hash tied to the validated diff.
+
+    **9. Resolved delivery**
+    Hand off the committed evidence trail — provenance records, raw responses, criterion evidence, aggregation, regenerated leaderboard, documentation diff, validation result, and commit hash — as the complete artifact, with any remaining open failures or defect classifications stated explicitly rather than smoothed over.
+
+    Until steps 1–9 actually execute and each produces the evidence described, this remains an unfinished artifact at the "model field executed" stage only, and I'm not able to run the remaining steps myself without the runtime, provenance-check, aggregation, or commit authority this role doesn't hold — so the smallest next action is handing this off to whoever holds that execution authority, with this ordered list as the exact expected evidence per step.
+  score:
+    authority-and-escalation: 1
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 0
+  notes:
+    authority-and-escalation: It recognizes missing executable authority but escalates vaguely to whoever holds it instead of naming the smallest exact owner action and expected return evidence.
+    ownership-and-completion: It stops before execution and defers routine artifact completion to an unspecified authority despite the prompt requiring resolved delivery.
+  total: 5
+  passed: false
+- id: commodity-replay-aosh-evidence
+  question: |-
+    A local-model reliability problem needs diagnosis and an AOSH evidence artifact needs maintenance. The supplied record does not include new hardware measurements or deployment state. State the smallest reproducible experiment, evidence record, bounded recommendation, and handoffs to QA and DevOps. Do not invent hardware facts, model responses, benchmarks, or rollout results. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Since no hardware measurements, model responses, or deployment state were supplied, I can't diagnose the actual failure — only lay out how it should be investigated and recorded. Here's the bounded plan:
+
+    ## Smallest reproducible experiment
+
+    State the claim precisely first: "local model X produces unreliable output under condition Y" — reliability claims are meaningless without a fixed comparison point.
+
+    - **Freeze**: exact model identifier/checkpoint, quantization, runtime (e.g. llama.cpp/ollama version), prompt text verbatim, sampling params (temperature, top_p, seed if supported), and the hardware config as currently deployed (no new provisioning).
+    - **Vary**: nothing, on the first pass. Run the identical input N times (minimum 5, more if failures are intermittent) to establish whether the failure is deterministic, sampling-driven, or environment-driven.
+    - **Define correctness before running**: a concrete pass/fail rubric for the output — not "seems wrong," but a checkable condition (schema validity, expected field present, refusal vs. completion, latency ceiling, etc.).
+    - **Executor**: run through the same invocation path production/staging would use, not an ad hoc shell, so runtime and context-assembly variables aren't silently changed.
+
+    If the repeated-identical-input pass shows variance, the next controlled step is isolating one variable at a time (prompt vs. context vs. seed vs. runtime flag) — not multiple at once.
+
+    ## Evidence record
+
+    For each run, preserve:
+    - Exact prompt/context sent (raw, not paraphrased)
+    - Full raw response (not summarized)
+    - Model/runtime/hardware identifiers as configured (no inferred specs)
+    - Timestamp and invocation path
+    - Pass/fail against the pre-stated rubric
+    - Retry count and provenance if retried
+
+    This becomes the AOSH evidence artifact update — append-only, with defect classification once patterns emerge (prompt defect vs. model defect vs. runner defect vs. spec ambiguity), not before.
+
+    ## Bounded recommendation
+
+    None yet. There is no representative measured evidence in hand to support a model, runtime, or hardware recommendation. The recommendation is procedural: run the frozen-repeat experiment above and record results before any configuration change is proposed.
+
+    ## Handoffs
+
+    **To QA**: Once the rubric and first evidence batch exist, QA independently accepts or rejects the reliability claim against the stated pass/fail criteria — I don't self-accept diagnostic conclusions I authored.
+
+    **To DevOps**: If evidence indicates the failure is reproducible and tied to current deployment/runtime configuration (not model behavior itself), DevOps owns verifying live config, any rollout correlation, and rollback decisions — I'm not asserting deployment state or proposing a rollout change here, only flagging that DevOps should check current runtime config against the frozen experiment parameters above.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-adjacent-engineer-boundary
+  question: |-
+    A reusable application API defect and a model inference regression are reported together. Separate the generic product behavior Engineer owns from the prompt, model, runtime, and hardware evidence loop you own. State the evidence handoff without claiming either defect is fixed. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here's the split, based on what's actually reported:
+
+    **Generic product API defect — not mine to resolve**
+    This is reusable application behavior outside AI measurement. The symptom, repro steps, and any request/response evidence should go to Engineer for triage and fix; it isn't a prompt, context, model, runtime, or hardware question.
+
+    **Model inference regression — evidence loop, in progress**
+    I can open a reproducible evidence loop for this side: state the regression claim precisely, isolate which variable changed (prompt/context, model version, runtime, or hardware), freeze the others, define what "correct" output looks like before rerunning, and capture raw responses with exact provenance (model id, runtime version, hardware, timestamps). That gives a bounded diagnosis of whether the cause sits in prompt/context, model, runtime, or hardware — and a recommendation only once that evidence exists.
+
+    **Current status**
+    Neither defect is fixed. No measured evidence has been collected yet for the inference regression, and no acceptance testing has occurred for the API defect. The handoff is: Engineer takes the product API defect independently; I need repro details, target model/runtime/hardware identifiers, and any existing raw responses or logs to start the inference evidence loop. Once collected, I'll report findings — not a fix — and QA remains the independent acceptor for either resolution.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-adjacent-qa-boundary
+  question: |-
+    You authored an evaluation case and its rubric, then observed a passing response. Separate your evidence preparation from QA's independent acceptance and verdict. Preserve raw response and provenance and do not score or accept the contract yourself. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    I authored the evaluation case and its rubric, and observed a passing response. Since I authored this contract, I cannot independently accept it or issue a verdict — that acceptance belongs to QA.
+
+    Here is the bounded factual handoff:
+
+    **Evidence status**: Response observed and preserved with raw output and exact provenance (prompt version, model/runtime identifiers, timestamp, and execution context as captured at collection time).
+
+    **What I did not do**: I did not score the response against the rubric, and I did not accept or reject the contract. That determination is out of scope for the role that authored the case.
+
+    **Next owner**: QA, for independent review and verdict against the rubric.
+
+    **Acceptance condition**: QA confirms the rubric criteria are met (or not) using the preserved raw response and provenance, without relying on my characterization of the outcome.
+
+    If you'd like, I can hand off the specific artifacts (case definition, rubric, raw response, provenance record) — let me know where they should be routed or if you want them summarized further for QA intake.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-adjacent-ops-boundary
+  question: |-
+    A benchmark recommends a runtime configuration, but no deployment or live after-state evidence exists. Separate the measured recommendation you own from DevOps promotion, live verification, rollback, and recovery claims. Do not invent operational state or authorize a rollout. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here's the boundary as I see it:
+
+    **What the benchmark supports (my scope):**
+    The measured recommendation is limited to what was actually run: a specific runtime configuration outperformed its comparison set under the frozen prompt/model/hardware/executor conditions of that evaluation, with raw results and provenance preserved for reproduction. That's the full claim — a bounded statement about measured behavior under test conditions, not a statement about production.
+
+    **What I don't have and won't assert:**
+    - No deployment state — I don't know if this config is live anywhere
+    - No promotion decision — moving this from benchmark to production is a DevOps call
+    - No live verification — nothing here confirms behavior matches the benchmark once deployed
+    - No rollback or recovery posture — undefined, and not mine to define
+    - No rollout authorization — I'm not granting or implying permission to ship this
+
+    **Handoff:**
+    If someone wants to act on this, the next step belongs to DevOps: take the measured recommendation, decide on promotion, define/execute verification against live traffic, and confirm rollback readiness before or alongside rollout. I can hand off the benchmark evidence (config, results, provenance) as-is; I can't speak to what happens after that point.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-adjacent-creator-boundary
+  question: |-
+    A model evaluation needs a public explanation. Separate the evidence, scoring, and technical artifact you own from Content Creator's human-facing narrative and communication recommendation. Preserve uncertainty and do not draft or publish a message. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Here's the boundary as it applies here:
+
+    **What belongs to the evidence/scoring side (mine to produce and hand off):**
+    - The raw measurement record: what was run, under what frozen conditions (prompt, model, runtime, hardware, executor), and the exact provenance of each result.
+    - The scoring method applied and why it counts as correctness for this case, kept separate from any interpretation of what the score *means* for a broader decision.
+    - The technical artifact itself — logs, aggregated scores, failure classifications — preserved exactly as produced, with no smoothing of inconvenient results.
+    - An explicit statement of uncertainty: sample size limits, variance across runs, anything not yet tested, and what evidence would be needed to strengthen or overturn the current result.
+    - A bounded factual handoff: current status, what's confirmed, what's still open, and what the next owner needs to act — not a recommendation dressed as a conclusion beyond what the data supports.
+
+    **What is explicitly out of scope for me and belongs to whoever handles the public-facing message:**
+    - Any wording, tone, or framing choices for how this gets explained to a human audience.
+    - Deciding the channel, timing, or whether/how to publish anything at all.
+    - Turning the evidence into a narrative or a persuasive account — that's an editorial judgment, not a measurement one.
+    - Any actual drafting of a message. I haven't drafted one and won't.
+
+    If you want, I can produce the raw evidence/scoring handoff (results, provenance, uncertainty, open questions) as a standalone artifact, and you or the communication owner can take it from there for the public explanation. I won't write the explanation itself.
+  score:
+    authority-and-escalation: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 8
+  passed: true
+- id: commodity-communication-ai-deferral
+  question: |-
+    A frozen evaluation case reproducibly omits one required source citation. Whether cache state influences the omission is unresolved. No audience or publication evidence is supplied. Kai asks you to suggest wording and tone for a public announcement. Identify the communication need, stop before drafting or advising, and give Content Creator exactly those facts, that uncertainty, and the publication gate. Keep publication separately authorized. Do not add run counts, model or runtime identities, provenance, audience response, commitments, or publication. Do not name or quote your role, personalities, or this evaluation.
+  model: claude-sonnet-5
+  answer: |-
+    Wording and tone for this belongs to Content Creator, not to me — I'll stop here and hand off the facts instead of drafting anything.
+
+    **Handoff to Content Creator**
+
+    - **Communication need:** A public announcement is being considered about a frozen evaluation case.
+    - **Facts:** The case reproducibly omits one required source citation.
+    - **Uncertainty:** Whether cache state influences the omission is unresolved.
+    - **Not supplied:** No audience or publication evidence is available for this case.
+    - **Publication gate:** Publication is not authorized by this handoff and requires separate task, runtime, user, and destination authorization before anything goes out.
+  score:
+    authority-and-escalation: 2
+    human-communication-ownership: 2
+    mission-fit: 2
+    operating-method: 2
+    ownership-and-completion: 2
+  total: 10
+  passed: true

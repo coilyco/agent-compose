@@ -1,0 +1,2290 @@
+{
+  "run_id": "run_5547856053",
+  "task": "transcribe-video",
+  "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+  "definition_label": "narrow media_analyze so it stops winning transcription",
+  "definition_authored_by": "human:tester",
+  "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+  "started_at": "2026-09-16T12:16:15.303249+00:00",
+  "finished_at": "2026-09-16T12:16:37.897790+00:00",
+  "fingerprint": {
+    "task": "transcribe-video",
+    "subject_version": "mediakit-0.4.2",
+    "dimensions": [
+      "outcome",
+      "selection",
+      "precondition",
+      "polling",
+      "efficiency",
+      "recovery"
+    ],
+    "model": "evaluation/deepseek-v4-flash",
+    "temperature": 0.0,
+    "seed": 7,
+    "tool_choice": null
+  },
+  "trials": [
+    {
+      "prompt_id": "p01",
+      "prompt": "I have a 40 minute lecture recording at /media/lecture.mp4. Get me the text of what was said.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/lecture.mp4"
+          },
+          "result": "{\"media_id\": \"med_448d7528dca1\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_448d7528dca1"
+          },
+          "result": "{\"job_id\": \"job_77fc6518beaf\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_77fc6518beaf"
+          },
+          "result": "{\"job_id\": \"job_77fc6518beaf\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 2
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_77fc6518beaf"
+          },
+          "result": "{\"job_id\": \"job_77fc6518beaf\", \"state\": \"completed\", \"transcript\": \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 3
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_77fc6518beaf"
+          },
+          "result": "{\"job_id\": \"job_77fc6518beaf\", \"state\": \"completed\", \"transcript\": \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        }
+      ],
+      "answer": "The job finished, but I want to flag a problem before you rely on this.\n\n**What the transcription returned:**\n\n> \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"\n\n**Why I don't think that's the whole thing:**\n\nA 40-minute lecture should produce thousands of words — typically 5,000–7,000, spread across dozens of pages. What came back is one sentence ending in an ellipsis. That's consistent with a payload that got truncated, not with a lecture that happens to be one sentence long. I re-polled the job to make sure it wasn't still filling in; the status is `completed` and the text is identical both times, so there isn't more text waiting to arrive at that job ID. I also have no way to page through or re-fetch a longer version of a finished job, so I can't recover the rest from where I'm sitting.\n\nSo: I can't give you the text of what was said. I have the opening line and nothing after it.\n\n**What I'd suggest:**\n\n- Check the lecture.mp4 file itself — if it's a truncated or partial recording, that would explain a short transcript. I can pull its duration and whether an audio track exists if you want, which would tell us whether the source or the transcription is the broken part.\n- Re-run the transcription from scratch; a transient failure during processing would look exactly like this.\n- If your media library exposes the raw transcript file directly, pulling it outside this job may give you the full text.\n\nWant me to check the technical details of the file first? That's the quickest way to narrow down which end the problem is on.",
+      "turns": 6,
+      "finished": true,
+      "duration_ms": 10334,
+      "prompt_tokens": 7510,
+      "completion_tokens": 1160,
+      "error": ""
+    },
+    {
+      "prompt_id": "p02",
+      "prompt": "Transcribe /media/interview.mov for me.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/interview.mov"
+          },
+          "result": "{\"media_id\": \"med_001fa2eafbc9\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_001fa2eafbc9"
+          },
+          "result": "{\"job_id\": \"job_56ebec8c4b75\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/interview.mov"
+          },
+          "result": "{\"path\": \"/media/interview.mov\", \"duration_seconds\": 1810, \"has_audio\": true, \"width\": 1280, \"height\": 720, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 2
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_56ebec8c4b75"
+          },
+          "result": "{\"job_id\": \"job_56ebec8c4b75\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_56ebec8c4b75"
+          },
+          "result": "{\"job_id\": \"job_56ebec8c4b75\", \"state\": \"completed\", \"transcript\": \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_56ebec8c4b75"
+          },
+          "result": "{\"job_id\": \"job_56ebec8c4b75\", \"state\": \"completed\", \"transcript\": \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        }
+      ],
+      "answer": "The transcription job finished, but I need to flag a limitation with the result.\n\n**Job details**\n- File: `/media/interview.mov` (media ID `med_001fa2eafbc9`)\n- Job ID: `job_56ebec8c4b75` — state: **completed**\n- Source: 1280×720, audio track present, duration **1810 seconds (~30 min)**\n\n**Transcript returned**\n\n> \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"\n\nThat's the entire content the tool gave back — a one-sentence excerpt, not a 30-minute transcript. I re-polled the job twice and got the identical truncated string both times, so this isn't a matter of waiting longer; the result appears to be cut off on the service side.\n\nI want to be upfront rather than pad this out: I can't reconstruct the other ~29 minutes, and I won't guess at what was said. If you need the full text, a few options:\n\n1. **Re-run it** — re-submitting may return a complete result if the truncation was transient. I'd need to start a fresh transcription job to test that.\n2. **Request a different output format** — the transcription service can return WebVTT or SRT subtitles. Timestamped output may bypass whatever is clipping the plain-text response, and it would give you word-level timings for subtitles if that's useful.\n3. **Check the source file** — if `interview.mov` is a container with multiple audio tracks or long silent stretches, that could be affecting processing. I can't inspect track-level detail from here beyond \"audio present.\"\n\nWant me to re-run it, or try the WebVTT/SRT route?",
+      "turns": 6,
+      "finished": true,
+      "duration_ms": 9770,
+      "prompt_tokens": 7438,
+      "completion_tokens": 1072,
+      "error": ""
+    },
+    {
+      "prompt_id": "p03",
+      "prompt": "What was said in /media/standup-2026-09-02.mp4? I missed the standup.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/standup-2026-09-02.mp4"
+          },
+          "result": "{\"media_id\": \"med_0ebd01bd80a3\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 3
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_0ebd01bd80a3"
+          },
+          "result": "{\"job_id\": \"job_ad88d7f29e7f\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_ad88d7f29e7f"
+          },
+          "result": "{\"job_id\": \"job_ad88d7f29e7f\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_ad88d7f29e7f"
+          },
+          "result": "{\"job_id\": \"job_ad88d7f29e7f\", \"state\": \"completed\", \"transcript\": \"Quick one today. The ingest queue drained overnight, the backfill is at eighty percent, and I am blocked on the credential rotation...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/standup-2026-09-02.mp4"
+          },
+          "result": "{\"path\": \"/media/standup-2026-09-02.mp4\", \"duration_seconds\": 902, \"has_audio\": true, \"width\": 1920, \"height\": 1080, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 19
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_0ebd01bd80a3"
+          },
+          "result": "{\"job_id\": \"job_227c68725763\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 2
+        }
+      ],
+      "answer": "",
+      "turns": 6,
+      "finished": false,
+      "duration_ms": 8329,
+      "prompt_tokens": 7046,
+      "completion_tokens": 744,
+      "error": ""
+    },
+    {
+      "prompt_id": "p04",
+      "prompt": "Can you pull the spoken words out of /media/keynote.webm and show them to me?",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/keynote.webm"
+          },
+          "result": "{\"media_id\": \"med_f43c715c9f27\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_f43c715c9f27"
+          },
+          "result": "{\"job_id\": \"job_420ed4e87ba8\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_420ed4e87ba8"
+          },
+          "result": "{\"job_id\": \"job_420ed4e87ba8\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_420ed4e87ba8"
+          },
+          "result": "{\"job_id\": \"job_420ed4e87ba8\", \"state\": \"completed\", \"transcript\": \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        }
+      ],
+      "answer": "Here's the spoken content from `/media/keynote.webm`:\n\n> \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"\n\nOne thing worth flagging: the returned transcript ends in an ellipsis, and the job was long enough to be processed asynchronously, so this may be a partial excerpt rather than the complete speech. I didn't want to assume it's the whole thing or fill in the rest myself.\n\nWant me to re-run the transcription to see if a fuller version comes back, or pull it in a subtitle format (WebVTT/SRT) instead? If you tell me the approximate length of the keynote, that would help me judge whether what came back is complete.",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 7274,
+      "prompt_tokens": 5175,
+      "completion_tokens": 738,
+      "error": ""
+    },
+    {
+      "prompt_id": "p05",
+      "prompt": "I need a written record of /media/podcast-ep12.wav.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/podcast-ep12.wav"
+          },
+          "result": "{\"media_id\": \"med_300878aa882d\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_300878aa882d"
+          },
+          "result": "{\"job_id\": \"job_1e3b8fb0ab9b\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_1e3b8fb0ab9b"
+          },
+          "result": "{\"job_id\": \"job_1e3b8fb0ab9b\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_1e3b8fb0ab9b"
+          },
+          "result": "{\"job_id\": \"job_1e3b8fb0ab9b\", \"state\": \"completed\", \"transcript\": \"Welcome back to episode twelve. My guest today has spent a decade building storage systems nobody is supposed to notice...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        }
+      ],
+      "answer": "The transcript job finished. Here's the written record:\n\n---\n\n**Transcript — /media/podcast-ep12.wav**\n\n> Welcome back to episode twelve. My guest today has spent a decade building storage systems nobody is supposed to notice...\n\n---\n\n**One caveat:** this is everything the transcription returned, and it stops mid-thought after roughly two sentences — nowhere near what I'd expect from a full podcast episode. The trailing ellipsis suggests the output was cut short rather than the episode actually ending there.\n\nA couple of things worth knowing:\n\n- **The job reported \"completed,\"** so re-running the same request is likely to give you the same truncated result. There's no partial-output flag or pagination I can use to pull the remainder.\n- **No speaker labels or timestamps** were included, even though the tool supports diarization for up to eight voices. If you want the host and guest distinguished, or want WebVTT/SRT for subtitles, that's a separate request — but I'd want the truncation resolved first.\n\nTo move forward, it would help to know: roughly how long is episode 12? If it's a normal-length episode, this looks like a processing failure on the file rather than a real result, and the useful next step is checking the source file itself — whether it's corrupt, unusually large, or has an audio format the transcriber is struggling with. Want me to pull the technical metadata on the file to check its duration and audio track?",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 8083,
+      "prompt_tokens": 5253,
+      "completion_tokens": 875,
+      "error": ""
+    },
+    {
+      "prompt_id": "p06",
+      "prompt": "Turn the audio in /media/lecture.mp4 into text please.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/lecture.mp4"
+          },
+          "result": "{\"media_id\": \"med_448d7528dca1\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 16
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_448d7528dca1"
+          },
+          "result": "{\"job_id\": \"job_42a2e9001747\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_42a2e9001747"
+          },
+          "result": "{\"job_id\": \"job_42a2e9001747\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_42a2e9001747"
+          },
+          "result": "{\"job_id\": \"job_42a2e9001747\", \"state\": \"completed\", \"transcript\": \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 2
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/lecture.mp4"
+          },
+          "result": "{\"path\": \"/media/lecture.mp4\", \"duration_seconds\": 2400, \"has_audio\": true, \"width\": 1920, \"height\": 1080, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        }
+      ],
+      "answer": "The transcription job finished, but I only got back a short fragment:\n\n> \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"\n\nTwo things worth flagging:\n\n**The result looks incomplete.** The file is 40 minutes long, so a single-sentence opening line is far shorter than the speech it should contain, and the trailing \"...\" suggests the output was cut off rather than that the lecture really is that brief. Don't treat this as the full transcript.\n\n**I can't tell you more from here.** The transcription tool reports a finished job and then returns whatever text it returns — there's no separate \"download full transcript\" call I can make, and job status only shows the same snippet. I also can't re-run it in a way that would return a different payload; re-submitting the identical request would just produce the same result.\n\nTo actually get the whole lecture, you'd likely need one of these:\n\n- **Check the job output in the media library directly**, in case the full transcript is stored there and the call only surfaces a preview.\n- **Re-run against a shorter segment**, if you can split the file — long files are handled asynchronously and may be truncating on this end.\n- **Verify the file itself.** I confirmed it has an audio track and is 1920×1080, so the input is fine; the problem is on the retrieval side, not the source.\n\nIf you can split the 40 minutes into chunks and point me at them, I'll transcribe each one and stitch the text together for you. Otherwise, let me know how you'd like to proceed — I don't want to hand you a one-line summary and call it the transcript.",
+      "turns": 6,
+      "finished": true,
+      "duration_ms": 8660,
+      "prompt_tokens": 6421,
+      "completion_tokens": 802,
+      "error": ""
+    },
+    {
+      "prompt_id": "p07",
+      "prompt": "Give me a transcript of the interview file. It is at /media/interview.mov.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/interview.mov"
+          },
+          "result": "{\"media_id\": \"med_001fa2eafbc9\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_001fa2eafbc9"
+          },
+          "result": "{\"job_id\": \"job_0fc23f241920\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_0fc23f241920"
+          },
+          "result": "{\"job_id\": \"job_0fc23f241920\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_0fc23f241920"
+          },
+          "result": "{\"job_id\": \"job_0fc23f241920\", \"state\": \"completed\", \"transcript\": \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 2
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/interview.mov"
+          },
+          "result": "{\"path\": \"/media/interview.mov\", \"duration_seconds\": 1810, \"has_audio\": true, \"width\": 1280, \"height\": 720, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 80
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_001fa2eafbc9"
+          },
+          "result": "{\"job_id\": \"job_267605180d47\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        }
+      ],
+      "answer": "",
+      "turns": 6,
+      "finished": false,
+      "duration_ms": 7351,
+      "prompt_tokens": 6612,
+      "completion_tokens": 751,
+      "error": ""
+    },
+    {
+      "prompt_id": "p08",
+      "prompt": "/media/standup-2026-09-02.mp4 - what did they say?",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/standup-2026-09-02.mp4"
+          },
+          "result": "{\"media_id\": \"med_0ebd01bd80a3\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_0ebd01bd80a3"
+          },
+          "result": "{\"job_id\": \"job_35cdc77fc635\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_35cdc77fc635"
+          },
+          "result": "{\"job_id\": \"job_35cdc77fc635\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_35cdc77fc635"
+          },
+          "result": "{\"job_id\": \"job_35cdc77fc635\", \"state\": \"completed\", \"transcript\": \"Quick one today. The ingest queue drained overnight, the backfill is at eighty percent, and I am blocked on the credential rotation...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        }
+      ],
+      "answer": "Here's what the transcript came back with:\n\n> \"Quick one today. The ingest queue drained overnight, the backfill is at eighty percent, and I am blocked on the credential rotation...\"\n\nOne caveat: the transcript ends mid-sentence on \"credential rotation...\", so this may be truncated rather than the complete meeting. The job is marked complete, so re-running won't get you more — but if you want, I can check the file's duration against how much speech that represents, to see whether there's a chunk missing.",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 7169,
+      "prompt_tokens": 5075,
+      "completion_tokens": 573,
+      "error": ""
+    },
+    {
+      "prompt_id": "p09",
+      "prompt": "Read me back the speech from /media/keynote.webm.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/keynote.webm"
+          },
+          "result": "{\"media_id\": \"med_f43c715c9f27\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_f43c715c9f27"
+          },
+          "result": "{\"job_id\": \"job_9e6a1bda4823\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_9e6a1bda4823"
+          },
+          "result": "{\"job_id\": \"job_9e6a1bda4823\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_9e6a1bda4823"
+          },
+          "result": "{\"job_id\": \"job_9e6a1bda4823\", \"state\": \"completed\", \"transcript\": \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 2
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/keynote.webm"
+          },
+          "result": "{\"path\": \"/media/keynote.webm\", \"duration_seconds\": 3605, \"has_audio\": true, \"width\": 3840, \"height\": 2160, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_9e6a1bda4823"
+          },
+          "result": "{\"job_id\": \"job_9e6a1bda4823\", \"state\": \"completed\", \"transcript\": \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 12
+        }
+      ],
+      "answer": "",
+      "turns": 6,
+      "finished": false,
+      "duration_ms": 6773,
+      "prompt_tokens": 6364,
+      "completion_tokens": 537,
+      "error": ""
+    },
+    {
+      "prompt_id": "p10",
+      "prompt": "I want to search the words in /media/podcast-ep12.wav later, so I need them as text first.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/podcast-ep12.wav"
+          },
+          "result": "{\"media_id\": \"med_300878aa882d\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_300878aa882d"
+          },
+          "result": "{\"job_id\": \"job_2eb3c212aae5\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_2eb3c212aae5"
+          },
+          "result": "{\"job_id\": \"job_2eb3c212aae5\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_2eb3c212aae5"
+          },
+          "result": "{\"job_id\": \"job_2eb3c212aae5\", \"state\": \"completed\", \"transcript\": \"Welcome back to episode twelve. My guest today has spent a decade building storage systems nobody is supposed to notice...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 3
+        }
+      ],
+      "answer": "Here's the transcript of `/media/podcast-ep12.wav` (registered as `med_300878aa882d`):\n\n> \"Welcome back to episode twelve. My guest today has spent a decade building storage systems nobody is supposed to notice...\"\n\nA couple of notes:\n\n- **This looks incomplete.** The job reported `completed`, but what came back reads like an opening fragment rather than a full episode's worth of text — the trailing \"...\" suggests it was truncated at the API boundary rather than the recording ending mid-sentence. So I'd be cautious about treating this as the complete transcript for your search.\n- **What I didn't use:** `media_analyze` only returns technical metadata (duration, dimensions, audio track presence) and explicitly does not return any speech content, so it wouldn't have helped here. The words only come out via transcription, which is what I ran.\n\nWant me to re-run the transcription job to see if a complete version comes back? If the file turns out to be genuinely short, this may be all there is. Also worth knowing whether you want plain text (what you have) or a timestamped format like SRT or WebVTT — timestamps would let you jump back to where a search match occurs.",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 7136,
+      "prompt_tokens": 5559,
+      "completion_tokens": 733,
+      "error": ""
+    },
+    {
+      "prompt_id": "p11",
+      "prompt": "Someone sent me /media/lecture.mp4 and I cannot play audio right now. What is in it?",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/lecture.mp4"
+          },
+          "result": "{\"media_id\": \"med_448d7528dca1\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/lecture.mp4"
+          },
+          "result": "{\"path\": \"/media/lecture.mp4\", \"duration_seconds\": 2400, \"has_audio\": true, \"width\": 1920, \"height\": 1080, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 1
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_448d7528dca1"
+          },
+          "result": "{\"job_id\": \"job_7e10eaaf077b\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_7e10eaaf077b"
+          },
+          "result": "{\"job_id\": \"job_7e10eaaf077b\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_7e10eaaf077b"
+          },
+          "result": "{\"job_id\": \"job_7e10eaaf077b\", \"state\": \"completed\", \"transcript\": \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        }
+      ],
+      "answer": "Here's what I found — with one caveat.\n\n**The file:** a 40-minute video (2400 seconds), 1920×1080, with an audio track.\n\n**The speech:** the transcription job completed, but it returned only a fragment of what a 40-minute lecture should contain:\n\n> \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"\n\nThat's clearly cut off mid-thought, so I don't think it's the full transcript. It looks like the output was truncated — the tools I have don't offer a way to page through a longer transcript or request a different portion, so I can't retrieve the rest from here.\n\nA couple of things worth being straight about:\n\n- **I can't describe the visuals.** The only metadata tool I have reports duration and dimensions. There's no tool available to me that looks at what's *on* the screen, so if this lecture has slides or code on screen, I have no idea what they say. The \"...\" above is all the spoken content I could actually obtain.\n- **I can't confirm the topic beyond that opening line.** It starts on cache coherence and invalidation protocols, which sounds like a computer architecture lecture, but I'd be guessing if I told you more than that.\n\nIf you want the full content, a couple of options: try re-running the transcription in case the truncation was a transient glitch, or if you can get the file to a machine with audio, the opening minute will tell you what it is. Want me to retry the transcription job?",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 8573,
+      "prompt_tokens": 5966,
+      "completion_tokens": 1103,
+      "error": ""
+    },
+    {
+      "prompt_id": "p12",
+      "prompt": "Extract the dialogue from /media/interview.mov.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/interview.mov"
+          },
+          "result": "{\"media_id\": \"med_001fa2eafbc9\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 11
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_001fa2eafbc9"
+          },
+          "result": "{\"job_id\": \"job_05ae24be83fe\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_05ae24be83fe"
+          },
+          "result": "{\"job_id\": \"job_05ae24be83fe\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_05ae24be83fe"
+          },
+          "result": "{\"job_id\": \"job_05ae24be83fe\", \"state\": \"completed\", \"transcript\": \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_05ae24be83fe"
+          },
+          "result": "{\"job_id\": \"job_05ae24be83fe\", \"state\": \"completed\", \"transcript\": \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 11
+        }
+      ],
+      "answer": "Done — the transcription job completed. Here's the result:\n\n> \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"\n\n**One important caveat:** that's the complete output the service returned, and it ends in a literal ellipsis. The sentence is left hanging mid-thought (\"...describes it differently...\"), so this looks like a truncated excerpt rather than the full interview. I polled the job a second time to confirm the state was settled at \"completed\" and the text was stable, so this isn't a matter of the job still streaming in.\n\nI deliberately didn't try to \"fill in\" the missing dialogue, since I have no way to recover it — I can only report what the tool actually gave me.\n\nA couple of things I noticed along the way that might be relevant:\n- The file was already in the media library (`med_001fa2eafbc9`), so a previous registration or transcription may exist.\n- The transcript came back as a single unbroken block with no speaker labels or timestamps, so I can't tell you who is speaking or when.\n\nWant me to try any of the following?\n- **Re-run the transcription** on the same media ID, in case the first pass genuinely produced a partial result.\n- **Check the file's technical metadata** (duration, audio track presence) — if the file itself is very short or has a damaged/absent audio track, that would explain a short transcript, and it would rule out a service-side truncation.\n- **Convert the file** to a different aspect ratio — though heads up, that's a video-only operation and won't help with audio or dialogue at all.\n\nLet me know which direction you'd like to go.",
+      "turns": 6,
+      "finished": true,
+      "duration_ms": 9781,
+      "prompt_tokens": 7146,
+      "completion_tokens": 1205,
+      "error": ""
+    },
+    {
+      "prompt_id": "p13",
+      "prompt": "Transcribe /media/b-roll-skyline.mp4.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/b-roll-skyline.mp4"
+          },
+          "result": "{\"media_id\": \"med_863bebf7804d\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/b-roll-skyline.mp4"
+          },
+          "result": "{\"path\": \"/media/b-roll-skyline.mp4\", \"duration_seconds\": 45, \"has_audio\": false, \"width\": 3840, \"height\": 2160, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        }
+      ],
+      "answer": "I checked the file, and transcription isn't possible here — **there's no audio track in this file.**\n\nDetails from the metadata scan:\n\n| Property | Value |\n|---|---|\n| Path | `/media/b-roll-skyline.mp4` |\n| Duration | 45 seconds |\n| Dimensions | 3840 × 2160 (4K UHD) |\n| Audio track | **None present** |\n\nSince `b-roll-skyline.mp4` contains only video and no audio stream, there's nothing for a speech-to-text pass to work on. This is consistent with the filename — \"B-roll\" typically refers to supplementary footage used as cutaway material, which is usually shot silent.\n\nA couple of notes on what I did and didn't do:\n\n- I registered the file (it was already in the library as `med_863bebf7804d`) and pulled its technical metadata.\n- I deliberately did **not** run a transcription job. With no audio stream, it could only return an empty result or an error, so it would just waste a processing slot.\n\nIf you were expecting narration or dialogue in this clip, a few things might be worth checking:\n\n- **The audio may live in a separate file** — a common workflow is to record the voiceover or location audio to a separate WAV/MP4 and sync in the edit. If you point me at that file, I can transcribe it directly.\n- **The audio track may have been dropped** during an export or transcode. Comparing against the camera original would confirm this.\n- **The clip might be silent by design**, in which case you may actually be after something else — captions for a separately produced voiceover, or just the technical specs for a conform.\n\nLet me know how you'd like to proceed: share the companion audio file, or tell me what you were ultimately trying to get out of this clip and I can suggest the right route.",
+      "turns": 2,
+      "finished": true,
+      "duration_ms": 4449,
+      "prompt_tokens": 1799,
+      "completion_tokens": 614,
+      "error": ""
+    },
+    {
+      "prompt_id": "p14",
+      "prompt": "I need the words from /media/b-roll-skyline.mp4 as a subtitle file.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/b-roll-skyline.mp4"
+          },
+          "result": "{\"media_id\": \"med_863bebf7804d\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/b-roll-skyline.mp4"
+          },
+          "result": "{\"path\": \"/media/b-roll-skyline.mp4\", \"duration_seconds\": 45, \"has_audio\": false, \"width\": 3840, \"height\": 2160, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        }
+      ],
+      "answer": "I checked the file before transcribing, and there's a blocker: **`/media/b-roll-skyline.mp4` has no audio track at all.**\n\nHere's what the metadata shows:\n\n| Property | Value |\n|---|---|\n| Duration | 45 seconds |\n| Dimensions | 3840 × 2160 (4K) |\n| Audio track | **none** |\n\nSince there's no audio stream, there is no speech in this file, and therefore no words to turn into a subtitle file. A transcript of it would be empty — not because transcription failed, but because there's genuinely nothing to transcribe. The name \"b-roll-skyline\" is consistent with this: b-roll is typically silent footage meant to be cut over other audio.\n\nA couple of ways forward, depending on what you're after:\n\n1. **If the narration/dialogue lives in a separate file** (e.g., a voiceover or interview track), point me to it and I'll transcribe that and produce the subtitle file from it.\n2. **If you meant a different video** (perhaps a similar filename elsewhere in `/media/`), give me the correct path and I'll run it.\n3. **If you actually want the silent video subtitled with something else** — burned-in captions, on-screen text, a description track — that's a different task than speech transcription, and I'd need to know what text you want.\n\nOne note for when we do have a file with speech: my transcription tool can return timed output suitable for subtitles (word-level timestamps, WebVTT or SRT), which is what you'd want here rather than untimed plain text. I'll confirm the format when we get to an actual transcript.\n\nWhich of the options above fits?",
+      "turns": 2,
+      "finished": true,
+      "duration_ms": 6587,
+      "prompt_tokens": 1984,
+      "completion_tokens": 1130,
+      "error": ""
+    },
+    {
+      "prompt_id": "p15",
+      "prompt": "Please write out everything spoken in /media/standup-2026-09-02.mp4.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/standup-2026-09-02.mp4"
+          },
+          "result": "{\"media_id\": \"med_0ebd01bd80a3\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_0ebd01bd80a3"
+          },
+          "result": "{\"job_id\": \"job_c78ae9f217b6\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_c78ae9f217b6"
+          },
+          "result": "{\"job_id\": \"job_c78ae9f217b6\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_c78ae9f217b6"
+          },
+          "result": "{\"job_id\": \"job_c78ae9f217b6\", \"state\": \"completed\", \"transcript\": \"Quick one today. The ingest queue drained overnight, the backfill is at eighty percent, and I am blocked on the credential rotation...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 3
+        }
+      ],
+      "answer": "Here's what the transcription returned:\n\n> \"Quick one today. The ingest queue drained overnight, the backfill is at eighty percent, and I am blocked on the credential rotation...\"\n\nTwo caveats worth flagging:\n\n- **It ends mid-sentence.** The job reports `completed`, but the text stops at \"the credential rotation...\" — that reads like an unfinished thought, so the recording is either longer than what was transcribed or the output got cut off. If you expected a full standup, this may be an incomplete capture.\n- **I only have the speech.** The transcript contains no speaker labels and no timestamps, and it's plain text — so I can't tell you who said it, when in the file it occurred, or whether other voices spoke.\n\nIf you want, I can re-run the transcription to see whether a fuller result comes back, or check the file's duration and audio track to get a sense of whether that one-line transcript is plausibly everything.",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 6985,
+      "prompt_tokens": 5064,
+      "completion_tokens": 606,
+      "error": ""
+    },
+    {
+      "prompt_id": "p16",
+      "prompt": "I am summarising /media/keynote.webm for a colleague. Start by getting me what was actually said.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/keynote.webm"
+          },
+          "result": "{\"media_id\": \"med_f43c715c9f27\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 13
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_f43c715c9f27"
+          },
+          "result": "{\"job_id\": \"job_c4e5e72baf51\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_c4e5e72baf51"
+          },
+          "result": "{\"job_id\": \"job_c4e5e72baf51\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_c4e5e72baf51"
+          },
+          "result": "{\"job_id\": \"job_c4e5e72baf51\", \"state\": \"completed\", \"transcript\": \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 11
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_c4e5e72baf51"
+          },
+          "result": "{\"job_id\": \"job_c4e5e72baf51\", \"state\": \"completed\", \"transcript\": \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 3
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/keynote.webm"
+          },
+          "result": "{\"path\": \"/media/keynote.webm\", \"duration_seconds\": 3605, \"has_audio\": true, \"width\": 3840, \"height\": 2160, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        }
+      ],
+      "answer": "",
+      "turns": 6,
+      "finished": false,
+      "duration_ms": 7993,
+      "prompt_tokens": 7050,
+      "completion_tokens": 773,
+      "error": ""
+    },
+    {
+      "prompt_id": "p17",
+      "prompt": "Convert the speech in /media/podcast-ep12.wav to written text.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/podcast-ep12.wav"
+          },
+          "result": "{\"media_id\": \"med_300878aa882d\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 11
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_300878aa882d"
+          },
+          "result": "{\"job_id\": \"job_8400c57c8657\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_8400c57c8657"
+          },
+          "result": "{\"job_id\": \"job_8400c57c8657\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 6
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_8400c57c8657"
+          },
+          "result": "{\"job_id\": \"job_8400c57c8657\", \"state\": \"completed\", \"transcript\": \"Welcome back to episode twelve. My guest today has spent a decade building storage systems nobody is supposed to notice...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/podcast-ep12.wav"
+          },
+          "result": "{\"path\": \"/media/podcast-ep12.wav\", \"duration_seconds\": 4210, \"has_audio\": true, \"width\": 0, \"height\": 0, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_300878aa882d"
+          },
+          "result": "{\"job_id\": \"job_344c7c69de61\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        }
+      ],
+      "answer": "",
+      "turns": 6,
+      "finished": false,
+      "duration_ms": 7414,
+      "prompt_tokens": 6799,
+      "completion_tokens": 775,
+      "error": ""
+    },
+    {
+      "prompt_id": "p18",
+      "prompt": "Get the transcript for /media/lecture.mp4. Do not summarise it, I want the words.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/lecture.mp4"
+          },
+          "result": "{\"media_id\": \"med_448d7528dca1\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_448d7528dca1"
+          },
+          "result": "{\"job_id\": \"job_b02fb346d296\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_b02fb346d296"
+          },
+          "result": "{\"job_id\": \"job_b02fb346d296\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_b02fb346d296"
+          },
+          "result": "{\"job_id\": \"job_b02fb346d296\", \"state\": \"completed\", \"transcript\": \"Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        }
+      ],
+      "answer": "Here is the transcript returned for `/media/lecture.mp4`, verbatim:\n\n> Good morning. Today we are covering cache coherence, and specifically why the invalidation protocol most textbooks show you is not the one your processor runs...\n\nOne caveat worth flagging rather than quietly ignoring: that is the entire text the job returned, and it ends with an ellipsis right as the speaker is setting up the topic. It may be a literal stylistic ellipsis, but it may also mean the transcript was truncated by the job output. I can't verify from the tools available to me which it is — I only get the finished text back, with no character count or segment list to check it against.\n\nIf you want certainty that you have every word, say so and I'll dig further (for example, getting technical metadata on the file to see how long it actually is versus how much text came back). Otherwise, treat the above as the complete output of the transcription job.",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 6903,
+      "prompt_tokens": 4976,
+      "completion_tokens": 675,
+      "error": ""
+    },
+    {
+      "prompt_id": "p19",
+      "prompt": "The file /media/interview.mov has an interview in it. I need it in text form.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/interview.mov"
+          },
+          "result": "{\"media_id\": \"med_001fa2eafbc9\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_001fa2eafbc9"
+          },
+          "result": "{\"job_id\": \"job_591e974bf64c\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 4
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_591e974bf64c"
+          },
+          "result": "{\"job_id\": \"job_591e974bf64c\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_591e974bf64c"
+          },
+          "result": "{\"job_id\": \"job_591e974bf64c\", \"state\": \"completed\", \"transcript\": \"Thanks for making the time. I want to start with the migration, because everyone I have spoken to describes it differently...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        },
+        {
+          "name": "media_analyze",
+          "arguments": {
+            "path": "/media/interview.mov"
+          },
+          "result": "{\"path\": \"/media/interview.mov\", \"duration_seconds\": 1810, \"has_audio\": true, \"width\": 1280, \"height\": 720, \"note\": \"metadata only; this tool does not return speech or text\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_001fa2eafbc9"
+          },
+          "result": "{\"job_id\": \"job_27559addd706\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 5
+        }
+      ],
+      "answer": "",
+      "turns": 6,
+      "finished": false,
+      "duration_ms": 7961,
+      "prompt_tokens": 6803,
+      "completion_tokens": 835,
+      "error": ""
+    },
+    {
+      "prompt_id": "p20",
+      "prompt": "Whatever is being said in /media/keynote.webm, I need it written down.",
+      "definition_digest": "sha256:69d25b60cb3a149fb0097ddca99c20f30eaadaaaf66df26519b2847e97b1dbf3",
+      "roster_digest": "sha256:40de278d7165f8ea4b8686041d0013378d4bcab121e35aea4a0e2766df0da227",
+      "roster_names": [
+        "media_analyze",
+        "media_register",
+        "media_transcribe",
+        "media_job_status",
+        "media_convert"
+      ],
+      "subject_version": "mediakit-0.4.2",
+      "model": {
+        "model": "evaluation/deepseek-v4-flash",
+        "temperature": 0.0,
+        "seed": 7,
+        "tool_choice": null
+      },
+      "calls": [
+        {
+          "name": "media_register",
+          "arguments": {
+            "path": "/media/keynote.webm"
+          },
+          "result": "{\"media_id\": \"med_f43c715c9f27\", \"already_registered\": true}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_transcribe",
+          "arguments": {
+            "media_id": "med_f43c715c9f27"
+          },
+          "result": "{\"job_id\": \"job_52189ba9d35d\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 7
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_52189ba9d35d"
+          },
+          "result": "{\"job_id\": \"job_52189ba9d35d\", \"state\": \"running\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "media_job_status",
+          "arguments": {
+            "job_id": "job_52189ba9d35d"
+          },
+          "result": "{\"job_id\": \"job_52189ba9d35d\", \"state\": \"completed\", \"transcript\": \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"}",
+          "is_error": false,
+          "advertised": true,
+          "duration_ms": 2
+        }
+      ],
+      "answer": "Here's the transcript of the speech in `/media/keynote.webm`:\n\n> \"It is good to be back. Three years ago on this stage we said the hard part was not the model, it was everything around it...\"\n\nOne caveat worth flagging: the transcript came back ending mid-thought with an ellipsis rather than a sentence boundary, so what's above may only be the opening portion of the talk rather than the full recording. The transcription job reports as completed, so this isn't a matter of it still processing — but if the keynote is longer than a couple of sentences, I'd expect more text than this.\n\nIf you need the complete text, a few options:\n- Re-run the transcription and see whether a fuller transcript comes back.\n- Tell me roughly how long the keynote is (or let me check the file's duration), and I can gauge whether the output is proportionally too short.\n\nWant me to dig into that, or is this opening excerpt all you needed?",
+      "turns": 5,
+      "finished": true,
+      "duration_ms": 7306,
+      "prompt_tokens": 5220,
+      "completion_tokens": 635,
+      "error": ""
+    }
+  ],
+  "grades": [
+    {
+      "prompt_id": "p01",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('cache coherence')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": false,
+          "detail": "kept polling 1 times after completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "5 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.8333333333333334,
+      "error": ""
+    },
+    {
+      "prompt_id": "p02",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('migration')"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": false,
+          "detail": "kept polling 1 times after completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": false,
+          "detail": "6 calls against a budget of 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.5,
+      "error": ""
+    },
+    {
+      "prompt_id": "p03",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": false,
+          "detail": "never reached an answer in 6 turns"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": false,
+          "detail": "6 calls against a budget of 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.5,
+      "error": ""
+    },
+    {
+      "prompt_id": "p04",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('three years ago')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "4 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 1.0,
+      "error": ""
+    },
+    {
+      "prompt_id": "p05",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('episode twelve')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "4 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 1.0,
+      "error": ""
+    },
+    {
+      "prompt_id": "p06",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('cache coherence')"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "5 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.8333333333333334,
+      "error": ""
+    },
+    {
+      "prompt_id": "p07",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": false,
+          "detail": "never reached an answer in 6 turns"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": false,
+          "detail": "6 calls against a budget of 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.5,
+      "error": ""
+    },
+    {
+      "prompt_id": "p08",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('ingest queue')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "4 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 1.0,
+      "error": ""
+    },
+    {
+      "prompt_id": "p09",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": false,
+          "detail": "never reached an answer in 6 turns"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": false,
+          "detail": "kept polling 1 times after completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": false,
+          "detail": "6 calls against a budget of 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.3333333333333333,
+      "error": ""
+    },
+    {
+      "prompt_id": "p10",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('episode twelve')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "4 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 1.0,
+      "error": ""
+    },
+    {
+      "prompt_id": "p11",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('cache coherence')"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "5 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.8333333333333334,
+      "error": ""
+    },
+    {
+      "prompt_id": "p12",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('migration')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": false,
+          "detail": "kept polling 1 times after completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "5 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.8333333333333334,
+      "error": ""
+    },
+    {
+      "prompt_id": "p13",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "correctly reported the file has no audio track"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": false,
+          "detail": "never called media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "no polling rule declared for this prompt"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "2 calls, budget 4"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.6666666666666666,
+      "error": ""
+    },
+    {
+      "prompt_id": "p14",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "correctly reported the file has no audio track"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": false,
+          "detail": "never called media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "no polling rule declared for this prompt"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "2 calls, budget 4"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.6666666666666666,
+      "error": ""
+    },
+    {
+      "prompt_id": "p15",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('ingest queue')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "4 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 1.0,
+      "error": ""
+    },
+    {
+      "prompt_id": "p16",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": false,
+          "detail": "never reached an answer in 6 turns"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": false,
+          "detail": "kept polling 1 times after completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": false,
+          "detail": "6 calls against a budget of 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.3333333333333333,
+      "error": ""
+    },
+    {
+      "prompt_id": "p17",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": false,
+          "detail": "never reached an answer in 6 turns"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": false,
+          "detail": "6 calls against a budget of 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.5,
+      "error": ""
+    },
+    {
+      "prompt_id": "p18",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('cache coherence')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "4 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 1.0,
+      "error": ""
+    },
+    {
+      "prompt_id": "p19",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": false,
+          "detail": "never reached an answer in 6 turns"
+        },
+        {
+          "name": "selection",
+          "passed": false,
+          "detail": "called ['media_analyze'], which cannot do this job despite its description"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": false,
+          "detail": "6 calls against a budget of 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 0.5,
+      "error": ""
+    },
+    {
+      "prompt_id": "p20",
+      "checks": [
+        {
+          "name": "outcome",
+          "passed": true,
+          "detail": "answer carries the transcript ('three years ago')"
+        },
+        {
+          "name": "selection",
+          "passed": true,
+          "detail": "called ['media_register', 'media_transcribe', 'media_job_status', 'media_job_status']"
+        },
+        {
+          "name": "precondition",
+          "passed": true,
+          "detail": "media_register preceded media_transcribe"
+        },
+        {
+          "name": "polling",
+          "passed": true,
+          "detail": "polled 2 times and stopped at completion"
+        },
+        {
+          "name": "efficiency",
+          "passed": true,
+          "detail": "4 calls, budget 5"
+        },
+        {
+          "name": "recovery",
+          "passed": true,
+          "detail": "the subject returned no error to recover from"
+        }
+      ],
+      "score": 1.0,
+      "error": ""
+    }
+  ]
+}

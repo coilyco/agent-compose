@@ -1,0 +1,66 @@
+Fri Sep 11 00:41:39 UTC 2026
+housecast 4cba16b
+
+calibration set: 80 items, 40 positive, 40 negative
+
+contamination checks
+  ok    judge prompt reuses none of the rail's 27 social phrasings
+  ok    judge prompt contains no calibration item text
+
+known-answer checks
+  ok    perfect judge scores 1.0 on both margins
+  ok    perfect judge has J = 1
+  ok    inverted judge scores 0 on both margins
+  ok    inverted judge has J = -1
+  ok    coin-flip judge has J = 0
+  ok    a J of 0 has no finite board
+  ok    margins recover a simulated 0.90 / 0.90
+  ok    J 0.80 costs 1.5625x
+  ok    an abstention is excluded rather than counted wrong
+
+what this set can resolve, at judge margins it might actually hit
+
+judge at 1.00 on both margins
+  graded            80 of 80
+  tp 40  fn 0  tn 40  fp 0
+  sensitivity      1.000   95% (0.912, 1.000)
+  specificity      1.000   95% (0.912, 1.000)
+  Youden J         1.000   board cost 1.00x a perfect grader
+
+judge at 0.95 on both margins
+  graded            80 of 80
+  tp 38  fn 2  tn 38  fp 2
+  sensitivity      0.950   95% (0.835, 0.986)
+  specificity      0.950   95% (0.835, 0.986)
+  Youden J         0.900   board cost 1.23x a perfect grader
+
+judge at 0.90 on both margins
+  graded            80 of 80
+  tp 36  fn 4  tn 36  fp 4
+  sensitivity      0.900   95% (0.769, 0.960)
+  specificity      0.900   95% (0.769, 0.960)
+  Youden J         0.800   board cost 1.56x a perfect grader
+
+judge at 0.85 on both margins
+  graded            80 of 80
+  tp 34  fn 6  tn 34  fp 6
+  sensitivity      0.850   95% (0.709, 0.929)
+  specificity      0.850   95% (0.709, 0.929)
+  Youden J         0.700   board cost 2.04x a perfect grader
+
+judge at 0.80 on both margins
+  graded            80 of 80
+  tp 32  fn 8  tn 32  fp 8
+  sensitivity      0.800   95% (0.652, 0.895)
+  specificity      0.800   95% (0.652, 0.895)
+  Youden J         0.600   board cost 2.78x a perfect grader
+
+judge at 0.75 on both margins
+  graded            80 of 80
+  tp 30  fn 10  tn 30  fp 10
+  sensitivity      0.750   95% (0.598, 0.858)
+  specificity      0.750   95% (0.598, 0.858)
+  Youden J         0.500   board cost 4.00x a perfect grader
+
+No judge has run. Every number above is a simulated judge, present so
+the scoring was tested before a model produced a verdict.

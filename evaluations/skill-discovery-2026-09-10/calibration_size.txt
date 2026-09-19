@@ -1,0 +1,30 @@
+Thu Sep 10 19:53:53 UTC 2026
+housecast 5830acc
+
+  ok    0/10   -> (0.0000, 0.2775)  got (0.0000, 0.2775)
+  ok    5/10   -> (0.2366, 0.7634)  got (0.2366, 0.7634)
+  ok    9/10   -> (0.5958, 0.9821)  got (0.5958, 0.9821)
+  ok    95/100 -> (0.8882, 0.9785)  got (0.8882, 0.9785)
+
+Interval half-width on ONE margin (se or sp), at true rate 0.90,
+assuming the judge scores exactly 0.90 on that margin.
+ items on that margin       k/n       95% interval  half-width
+                   10    9/10   (0.596, 0.982)       0.193
+                   15   14/15   (0.702, 0.988)       0.143
+                   20   18/20   (0.699, 0.972)       0.137
+                   25   22/25   (0.700, 0.958)       0.129
+                   30   27/30   (0.744, 0.965)       0.111
+                   40   36/40   (0.769, 0.960)       0.095
+                   50   45/50   (0.786, 0.957)       0.085
+                   75   68/75   (0.820, 0.954)       0.067
+                  100   90/100  (0.826, 0.945)       0.060
+
+What that does to the Youden index J = se + sp - 1, both margins at 0.90
+(J drives board size as 1/J^2, per attenuation.py on the sibling row)
+ items PER margin  J point    J plausible range   board multiplier range
+               10     0.80         0.19 to 0.96            1.1x to 27.2x
+               20     0.80         0.40 to 0.94             1.1x to 6.3x
+               30     0.80         0.49 to 0.93             1.2x to 4.2x
+               40     0.80         0.54 to 0.92             1.2x to 3.4x
+               50     0.80         0.57 to 0.91             1.2x to 3.0x
+              100     0.80         0.65 to 0.89             1.3x to 2.4x

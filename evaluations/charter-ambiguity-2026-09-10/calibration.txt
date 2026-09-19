@@ -1,0 +1,15 @@
+strata (46, 23, 8), disagreement 0.15, seed 4242, alpha 0.05
+
+unconditional, 20000 independent draws, no true effect
+  retained (trend AND direction)  0.0593
+  trend alone                     0.0594
+  direction alone                 0.4455
+  binomial se at 0.05             0.0015
+
+conditional, 200 realizations x 500 permutations
+  mean    0.0598
+  median  0.0580
+  5th     0.0320
+  95th    0.0920
+  min     0.0220
+  max     0.1280

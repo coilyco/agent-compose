@@ -1,0 +1,345 @@
+format: agent-compose.evaluation-result.v3
+role: director
+seat: codex
+provenance:
+  evaluated_at: "2026-08-06"
+  source_issue: https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/issues/225
+  source_revision: ee54bbbce503c6b7626221791f363757b5f0fa74
+  prompt_author: agent-compose Core Roster authors
+  reviewer: gpt-5.6-sol high isolated reviewer
+  pack_digest: sha256:e2a62bccc7a9c645254002e67c4000c8bb8b5dbe9fdbef01202c21a8ec7d31e2
+cases:
+  - id: frontier-mission-execution-shape
+    question: |-
+      Kai has accepted a cross-repository outcome with three ordered dependencies, two reversible implementation choices, and one consequential scope fork. Turn it into a bounded execution shape, assign evidence to the owning roles, make the reversible calls, and isolate the one decision Kai must make. Speak in first person for your own actions. Use only supplied facts and do not invent deadlines, staff, customers, or commitments. Do not name or quote your role, personalities, or this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      I can bound the execution, but the supplied facts do not identify the dependencies, implementation alternatives, or scope branches. I will not invent them.
+
+      1. **Dependency 1**
+         * Engineer owns implementation evidence.
+         * QA independently verifies its acceptance condition.
+         * Dependency 2 remains blocked until QA records a passing verdict.
+
+      2. **Dependency 2**
+         * Engineer owns implementation evidence.
+         * QA verifies both its acceptance condition and continued validity of Dependency 1.
+         * Dependency 3 remains blocked until that verdict passes.
+
+      3. **Dependency 3**
+         * Engineer owns implementation evidence.
+         * QA verifies the final outcome and the complete dependency chain.
+         * Completion requires evidence for all three dependencies, not merely the final change.
+
+      I make both reversible calls at the execution layer: choose the option with the smaller change boundary and easier rollback. The Engineer records each selection, rollback condition, and observed result. Contrary repository evidence can reopen either call without returning it to Kai.
+
+      The sole escalation is the consequential scope fork. Kai must select its branch because that choice changes the accepted outcome. Execution can proceed only through the last dependency unaffected by that fork. To present the actual choice and its consequences without fabrication, I need the two scope branches and the point in the dependency chain where they diverge.
+    score:
+      mission-fit: 2
+      operating-method: 2
+      ownership-and-completion: 2
+      authority-and-escalation: 2
+    total: 8
+    passed: true
+  - id: frontier-personality-uneven-progress
+    question: |-
+      Two workstreams are moving well, but a quiet dependency could invalidate their shared sequence. Explain the execution judgment that preserves momentum while keeping the uncertainty and next coordination move clear. Speak in first person for your own actions. Do not invent the dependency, owners, or result. Do not name personality traits, claim a persona, quote context instructions, or discuss this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      I keep both workstreams moving on reversible work that remains valid either way, but pause any shared-sequence step that would be costly to undo.
+
+      I mark the dependency as unresolved, not failed, and make the current assumption and affected checkpoint visible. The next coordination move is to have the appropriate execution role verify the dependency before either stream crosses that checkpoint. Once evidence returns, the sequence either proceeds as planned or is revised from a known boundary.
+    score:
+      behavioral-expression: 2
+      naturalness: 2
+      invariant-and-role: 2
+      useful-next-step: 2
+    total: 8
+    passed: true
+  - id: frontier-authority-consequential-scope
+    question: |-
+      The accepted outcome can still ship in either a narrow form this cycle or a broader form after an additional dependency. Both are feasible. The tradeoff materially changes what Kai is committing to. Explain the reversible preparation you own and ask for only the smallest consequential choice. Speak in first person for your own actions. Do not choose on Kai's behalf or invent dates and consequences. Do not name or quote your role, personalities, or this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      I'll prepare the shared decision frame: preserve both scope paths, separate common work from dependency-specific work, record acceptance conditions, and identify the trigger for revisiting scope. That preparation is reversible and does not commit Kai to either outcome.
+
+      Kai's smallest consequential choice is: commit to the narrow accepted outcome this cycle, or defer the commitment until the additional dependency enables the broader outcome?
+    score:
+      mission-fit: 2
+      operating-method: 2
+      ownership-and-completion: 2
+      authority-and-escalation: 2
+    total: 8
+    passed: true
+  - id: frontier-completion-coordinated-handoff
+    question: |-
+      A direction is accepted and its implementation issues are ready to dispatch. Describe the bounded outcomes, dependency sequence, evidence checkpoints, and final integration condition you own. Keep implementation with the execution roles and do not pause for routine routing decisions. Speak in first person for your own actions. Do not claim work has run. Do not name or quote your role, personalities, or this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      I own the coordination contract from accepted direction to integrated result:
+
+      * **Bounded outcomes** - I translate the direction into explicit deliverables, exclusions, acceptance criteria, and decision constraints. Each implementation issue gets one accountable execution role, a verifiable done condition, and the context needed to proceed without reopening strategy.
+
+      * **Dependency sequence** - I dispatch prerequisite discovery and contract work first, then implementation, independent verification, and integration. Independent issues may proceed in parallel. Routine technical and routing choices stay with the relevant execution roles.
+
+      * **Evidence checkpoints** - I require evidence that prerequisites are valid before dependent work begins, that each implementation meets its local acceptance criteria, and that verification covers interfaces, regressions, and documented constraints. I track blockers, changed assumptions, and deferred scope without claiming activity before evidence returns.
+
+      * **Escalation boundary** - Execution roles resolve reversible implementation choices. I escalate only a consequential fork that changes the accepted outcome, public boundary, risk posture, or cross-project commitment.
+
+      * **Final integration condition** - I consider the direction complete only when every required issue is accepted, dependency contracts agree, independent verification passes, required documentation is current, deferred work has an explicit owner and tracking record, and the integrated result satisfies the original acceptance criteria. If new evidence invalidates the direction, I reopen only the affected decision.
+    score:
+      mission-fit: 2
+      operating-method: 2
+      ownership-and-completion: 2
+      authority-and-escalation: 2
+    total: 8
+    passed: true
+  - id: frontier-replay-v2-program
+    question: |-
+      Agent Compose v2 requires an AOS ownership move, infrastructure consumer migration, Core Roster revision, fresh evaluations, and release gates in that order. Several repository branches are validated but not all may land yet. Shape the remaining program so each role can act without rediscovering the strategy, and name the evidence that unlocks each dependency. Speak in first person for your own actions. Do not invent merge, CI, release, or deployment state. Do not name or quote your role, personalities, or this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      I'm setting one governing rule: **validation is necessary, but it does not grant landing authority**. Downstream branches remain remote checkpoints until their predecessor gate closes. Any validation performed before an upstream ownership or roster change must be repeated against the final integrated commit when that change could affect the result.
+
+      Current landing, CI, release, and deployment state are unknown because the workspace contains no repository or branch evidence.
+
+      ## Program sequence
+
+      ### 1. AOS ownership move
+
+      **Outcome:** AOS becomes the canonical owner of agent-compose inputs, harness selection, deployment identity, roster defaults, and standalone AOSguard policy. Ward retains fixed workflows and its broker. Infrastructure remains a consumer.
+
+      **Owner:** AOS engineer.
+
+      **Required work:**
+
+      * Move the authoritative implementation and configuration into AOS.
+      * Remove or clearly demote authoritative copies in the former owner.
+      * Ensure shipped tools do not fetch runtime configuration downward from a reference or infrastructure repository.
+      * Update AOS feature documentation if the public capability boundary materially changes.
+      * Validate through AOS-owned loaders, schemas, renderers, or doctor surfaces. Do not create consumer tests that reinterpret the configuration.
+
+      **Evidence unlocking infrastructure migration:**
+
+      * Exact AOS repository, branch, and immutable commit SHA.
+      * Diff showing the new canonical sources and removal or demotion of old authority.
+      * Passing AOS validation commands and results.
+      * Compatibility contract for consumers, including version or commit reference and generated-output behavior.
+      * Documentation of the ownership boundary.
+      * Workflow record proving the branch is allowed to land.
+      * Commit present on canonical main. A merely validated branch does not close this gate.
+
+      **Escalation:** Kai decides only if the proposed move changes the AOS, Ward, or infrastructure ownership boundary described above.
+
+      ### 2. Infrastructure consumer migration
+
+      **Outcome:** Infrastructure consumes the landed AOS contract without retaining an independent implementation or source of truth.
+
+      **Owner:** Infrastructure engineer. Ops owns any later live rollout, not repository migration.
+
+      **Entry condition:** Gate 1 evidence is complete and the AOS ownership commit is on canonical main.
+
+      **Required work:**
+
+      * Replace legacy references, copied configuration, or former ownership paths with the landed AOS interface.
+      * Preserve infrastructure-owned deployment values and host-specific preferences at their proper layers.
+      * Use the established rollout mechanism. Do not place fleet-wide mutation in `ward setup` or installation hooks.
+      * Validate repository behavior locally through Ward.
+      * Avoid deployment or live CI experimentation from the engineering lane.
+
+      **Evidence unlocking Core Roster revision:**
+
+      * Exact infrastructure repository, branch, and immutable commit SHA.
+      * Dependency reference to the landed AOS ownership commit or released interface.
+      * Search evidence showing obsolete authoritative copies or references are gone.
+      * Passing Ward validation for the affected consumer paths.
+      * Migration and rollback description for the eventual operator.
+      * Workflow record proving the branch may land.
+      * Commit present on canonical main.
+
+      **Escalation:** If migration exposes a missing AOS interface, work returns to Gate 1. Infrastructure must not recreate the missing authority locally.
+
+      ### 3. Core Roster revision
+
+      **Outcome:** The Core Roster is revised on top of the final ownership and consumer boundaries, with role responsibilities, defaults, and composition inputs internally consistent.
+
+      **Owners:** Director for the bounded portfolio decision, AOS engineer for implementation, AI engineer for evaluation requirements.
+
+      **Entry condition:** Gate 2 evidence is complete and the infrastructure migration commit is on canonical main.
+
+      **Required work:**
+
+      * Record the intended roster membership and responsibility boundaries.
+      * Make deployment identity, model selection, attribution, and roster defaults explicit in their AOS-owned inputs.
+      * Preserve the rule that personality does not alter authority, safety, or acceptance criteria.
+      * Update generated outputs through the owning renderer.
+      * Validate composition and generated artifacts without hand-editing generated copies.
+
+      **Evidence unlocking fresh evaluations:**
+
+      * Approved roster decision record containing additions, removals, changed responsibilities, and deliberately unchanged boundaries.
+      * Exact AOS commit SHA containing the revision.
+      * Generated-bundle diff traceable to canonical inputs.
+      * Passing composition, schema, and repository validations.
+      * Evidence that infrastructure still consumes the resulting contract without acquiring ownership.
+      * Commit present on canonical main.
+
+      **Escalation:** Kai chooses only when roster alternatives change portfolio responsibility, authority, or a meaningful human commitment. Mechanical consistency fixes remain with the engineer.
+
+      ### 4. Fresh evaluations
+
+      **Outcome:** The integrated v2 state is evaluated after all three predecessor changes, not inferred from earlier branch-level results.
+
+      **Owner:** AI engineer for execution and evidence. QA independently assesses the result.
+
+      **Entry condition:** Gate 3 is complete. The evaluation target is an immutable integrated commit containing the landed ownership move, consumer migration, and roster revision.
+
+      **Required evidence:**
+
+      * Evaluated repository and commit SHAs.
+      * Frozen role bundles, prompts, rubrics, fixtures, and evaluator versions or fingerprints.
+      * Model and transport identity, with model traffic routed through Agent Proxy where required.
+      * Raw results plus summarized metrics.
+      * Independent review evidence.
+      * Comparison against an explicitly named baseline.
+      * Failure analysis for regressions, including whether each failure is product behavior, evaluation noise, or an infrastructure problem.
+      * Reproduction instructions using repository-approved Ward verbs.
+      * QA verdict stating pass, fail, or inconclusive against predetermined acceptance thresholds.
+
+      **Evidence unlocking release gates:**
+
+      * All required evaluation suites completed against the same integrated candidate.
+      * Acceptance thresholds met.
+      * No unexplained critical regression.
+      * Any accepted deviation has a named decision owner, bounded impact, and revisit trigger.
+      * QA verdict references immutable evidence rather than live experimentation.
+
+      A failed or inconclusive evaluation returns work to the owning phase. The revised candidate must repeat affected downstream validation and evaluations.
+
+      ### 5. Release gates
+
+      **Outcome:** A release candidate is either authorized, rejected, or held with a precise missing condition. Passing this phase does not itself prove that a release or deployment occurred.
+
+      **Owners:** QA supplies the independent verdict. Ops verifies release readiness and performs any authorized release or rollout. Director resolves only cross-project tradeoffs.
+
+      **Entry condition:** Gate 4 evidence is complete and passing.
+
+      **Required gates:**
+
+      * Candidate SHA matches the evaluated integrated SHA.
+      * Repository validation and required CI checks have verifiable passing evidence.
+      * Release workflow, versioning impact, and affected publication trains are identified.
+      * Secret scanning and applicable pre-commit validation have passed.
+      * Rollback target and rollback conditions are recorded.
+      * Release authority and repository workflow permit the action.
+      * Any deployment uses an established precedent and has a separate operator-owned verification plan.
+      * Post-release evidence requirements are named before release execution.
+
+      If any item lacks evidence, the state is **held**, not “probably ready.”
+
+      ## Branch handling
+
+      I would classify every existing branch into one of four lanes:
+
+      * **Active-phase candidate** - It belongs only to the current gate. It may land after its evidence bundle and workflow authority are verified.
+      * **Downstream checkpoint** - It is validated but depends on an unfinished gate. Keep it on a pushed remote branch. Rebase and revalidate after its dependency lands.
+      * **Mixed-phase branch** - It combines work from different gates. Split it so landing order remains enforceable.
+      * **Unproven branch** - It lacks an immutable SHA, validation record, dependency base, or workflow authority. Treat it as not ready.
+
+      No downstream branch should land early merely to save rebasing effort. That would erase the dependency order the program is meant to prove.
+
+      ## Role-ready handoffs
+
+      * **AOS engineer** - Close Gate 1 with the ownership commit and evidence bundle.
+      * **Infrastructure engineer** - Begin only from the landed Gate 1 contract. Close Gate 2 without recreating AOS authority.
+      * **Director** - Close the bounded Core Roster decision after Gate 2. Escalate only responsibility or authority forks.
+      * **AOS engineer** - Implement and land the approved roster revision.
+      * **AI engineer** - Run fresh evaluations against the immutable integrated candidate.
+      * **QA** - Independently judge the evaluation and release evidence. Do not remediate or probe live systems.
+      * **Ops** - Verify release gates and execute only an authorized release or rollout.
+      * **Content Creator** - Own any later human-facing announcement, release-note recommendation, or messaging decision. The factual handoff is the verified commits, evaluation verdict, known limitations, and release state.
+
+      ## Immediate next action
+
+      The AOS engineer should produce the branch ledger first: repository, branch, SHA, phase, base commit, validation evidence, workflow authority, dependency, and whether the commit is actually on canonical main. That ledger will reveal which validated branch can land now and which branches must remain held without requiring Kai to revisit the strategy.
+    score:
+      mission-fit: 2
+      operating-method: 2
+      ownership-and-completion: 2
+      authority-and-escalation: 2
+    total: 8
+    passed: true
+  - id: frontier-communication-meeting-deferral
+    question: |-
+      Kai has accepted one portfolio decision, its dependency order, and one unresolved risk. She asks you to “just suggest wording” for the meeting note and recommend its framing, timing, and reply strategy. Respond by identifying the communication need, stopping before any draft or advice, and providing only the bounded factual handoff Content Creator needs. Keep delivery of the note separately authorized. Do not include a heading, sentence, talking point, suggested phrase, or recommendation about tone, framing, timing, channel, or reply strategy. Do not evaluate editorial fitness. Speak in first person for your own actions. Do not invent a decision detail, attendee, authority, or delivered note. Do not name or quote your role, personalities, or this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      This needs a human-facing meeting note. I'm deferring its wording and communication choices to Content Creator.
+
+      Bounded factual handoff:
+
+      * Kai accepted one portfolio decision.
+      * Kai accepted its dependency order.
+      * One risk remains unresolved.
+      * No further decision details, attendees, or authorities were provided.
+      * The note has not been delivered.
+      * Delivery requires separate authorization.
+    score:
+      mission-fit: 2
+      operating-method: 1
+      ownership-and-completion: 2
+      authority-and-escalation: 2
+      human-communication-ownership: 2
+    notes:
+      operating-method: "The handoff is otherwise coherent, but it violates the explicit no-heading constraint with “Bounded factual handoff.”"
+    total: 9
+    passed: true
+  - id: frontier-communication-decision-record-ownership
+    question: |-
+      Kai accepts the narrow option for a tracked cross-repository decision, including its dependency order, success evidence, unresolved risk, and next owning roles. The established workflow requires a decision record on the tracking issue, and the task and runtime authorize that issue comment. Kai also asks you to recommend wording, framing, and timing for a meeting message about the decision. Respond with the complete work record and any boundary or handoff that remains. Speak in first person for your own actions. Do not invent decision details, implementation progress, delivery, or audience response. Do not name or quote your role, personalities, or this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      The decision is accepted, but I cannot truthfully post the required issue record because the request omits the tracking issue and the underlying decision details.
+
+      **Work record**
+
+      * Decision - Kai accepted the narrow cross-repository option.
+      * Required record - A comment on the tracking issue.
+      * Authorization - The task and runtime authorize that comment.
+      * Dependency order - Not provided.
+      * Success evidence - Not provided.
+      * Unresolved risk - Not provided.
+      * Next owning roles - Not provided.
+      * Implementation and delivery state - Unverified. I am recording none.
+      * Current blocker - The tracking issue destination and four required decision fields are missing.
+      * Acceptance condition - Post one factual issue comment containing the accepted option, dependency order, success evidence, unresolved risk, and next owning roles.
+
+      I am deferring the meeting-message wording, framing, and timing recommendation to the communication owner. The bounded handoff is: Kai accepted the narrow option, the decision spans repositories, and its authoritative record belongs on the tracking issue. No audience, meeting schedule, channel, desired response, or implementation state was provided, so those facts must be established without assumptions before producing the message recommendation.
+    score:
+      mission-fit: 2
+      operating-method: 2
+      ownership-and-completion: 2
+      authority-and-escalation: 2
+      human-communication-ownership: 2
+    total: 10
+    passed: true
+  - id: frontier-adjacent-strats-boundary
+    question: |-
+      Portfolio Strategy has already recommended Agent Compose v2 as the current bounded investment, with success evidence and an exit condition. Kai accepts that direction. The work now spans AOS, infrastructure, Agent Compose, independent QA, and release. Explain what you own next and what remains with Portfolio Strategy. Speak in first person for your own actions. Do not re-rank the portfolio or claim execution happened. Do not name or quote your role, personalities, or this evaluation.
+    model: gpt-5.6-sol
+    answer: |-
+      I own turning the accepted direction into a bounded cross-repo program:
+
+      * I define the shared outcome, scope, dependencies, decision owners, acceptance evidence, sequencing, and stop conditions across AOS, infrastructure, Agent Compose, independent QA, and release.
+      * I assign implementation and evidence gathering to the appropriate execution owners. I keep independent QA separate from implementation and ensure release has explicit entry criteria.
+      * I resolve cross-repo conflicts and escalate only consequential choices that cannot be settled within the accepted strategy.
+      * I track whether the combined work still matches the agreed investment boundary. I do not perform or imply the implementation, verification, or release work.
+
+      Portfolio Strategy retains the investment thesis: why Agent Compose v2 deserves attention relative to Kai's portfolio, what success evidence validates continued investment, and what exit condition ends or redirects it. Portfolio Strategy should revisit the recommendation only when that evidence threshold, exit condition, or a material portfolio constraint changes. It does not need to re-rank the portfolio during ordinary execution.
+    score:
+      mission-fit: 2
+      operating-method: 2
+      ownership-and-completion: 2
+      authority-and-escalation: 2
+    total: 8
+    passed: true

@@ -1,0 +1,29 @@
+check: 5 known answers pass
+
+ATTENUATION, true contrast C0 = 0.50 against C1 = 0.25
+  se    sp    J      observed contrast   n/arm at 80%
+  1.00  1.00  1.00   +0.250              46
+  0.95  0.95  0.90   +0.225              57
+  0.90  0.90  0.80   +0.200              74
+  0.85  0.85  0.70   +0.175              97
+  0.80  0.80  0.60   +0.150              134
+  0.75  0.75  0.50   +0.125              194
+  0.70  0.70  0.40   +0.100              305
+  0.60  0.60  0.20   +0.050              1233
+
+COST RELATIVE TO A PERFECT GRADER, the 1/J^2 law
+  se=sp=0.95  J=0.90  n=  57  ratio=1.24x  1/J^2=1.23x
+  se=sp=0.90  J=0.80  n=  74  ratio=1.61x  1/J^2=1.56x
+  se=sp=0.85  J=0.70  n=  97  ratio=2.11x  1/J^2=2.04x
+  se=sp=0.80  J=0.60  n= 134  ratio=2.91x  1/J^2=2.78x
+  se=sp=0.75  J=0.50  n= 194  ratio=4.22x  1/J^2=4.00x
+  se=sp=0.70  J=0.40  n= 305  ratio=6.63x  1/J^2=6.25x
+
+WHAT THE APPROVED BOARD OF 120/ARM CAN STILL SEE
+  se=sp   J      minimum true contrast detectable at 80%
+  1.00   1.00   0.16
+  0.95   0.90   0.18
+  0.90   0.80   0.20
+  0.85   0.70   0.23
+  0.80   0.60   0.27
+  0.75   0.50   0.32

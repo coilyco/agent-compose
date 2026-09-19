@@ -19,8 +19,9 @@ from typing import Any
 
 import pytest
 import yaml
-from housecast import roster
-from housecast.roster import Roster
+
+from checks import roster
+from checks.roster import Roster
 
 GO_DATA = pathlib.Path(__file__).resolve().parents[2] / "seed" / "roster" / "data"
 

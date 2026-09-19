@@ -1,0 +1,56 @@
+Thu Sep 10 19:40:44 UTC 2026
+housecast 8e5e888
+
+known-answer checks
+  ok    md Write is clause 1
+  ok    py Write is not clause 1
+  ok    md Edit is clause 1
+  ok    Artifact publish is clause 2
+  ok    Artifact read is not clause 2
+  ok    gmail draft is clause 2
+  ok    forgejo PR is clause 2
+  ok    bare -m is not clause 3
+  ok    heredoc -F is clause 3
+  ok    two -m is clause 3
+  ok    multiline -m is clause 3
+  ok    git status is not clause 3
+
+corpus stamp: 882 transcripts
+
+clause incidence, separately
+  clause 1  .md Write/Edit        162   18.4% of corpus
+  clause 2  outward channel       207   23.5% of corpus
+  clause 3  commit with body      388   44.0% of corpus
+
+DENOMINATOR A - clause 1 alone (strictest, advocate-preferred)
+  sessions in denominator                  162   (18.4% of corpus)
+  loaded any writing-* skill                 4   rate 0.025
+  loaded any voice-family skill (wider)      5   rate 0.031
+  loaded writing-kai-voice specifically      3   rate 0.019
+  loaded ANY skill at all                  120   rate 0.741
+
+DENOMINATOR B - clauses 1 OR 2 OR 3 (union, as specified)
+  sessions in denominator                  440   (49.9% of corpus)
+  loaded any writing-* skill                12   rate 0.027
+  loaded any voice-family skill (wider)     15   rate 0.034
+  loaded writing-kai-voice specifically      4   rate 0.009
+  loaded ANY skill at all                  281   rate 0.639
+
+NEGATIVE CONTROL - sessions matching no clause
+
+  (a prose skill here would mean the denominator misses prose work)
+  sessions in denominator                  442   (50.1% of corpus)
+  loaded any writing-* skill                 4   rate 0.009
+  loaded any voice-family skill (wider)      4   rate 0.009
+  loaded writing-kai-voice specifically      1   rate 0.002
+  loaded ANY skill at all                   75   rate 0.170
+
+by seat, denominator A
+  Engineer                   writing-*   0/18   0.000   wider   0/18   0.000
+  Platform Engineer          writing-*   0/14   0.000   wider   0/14   0.000
+  DevOps                     writing-*   0/12   0.000   wider   0/12   0.000
+  Developer Advocate         writing-*   2/11   0.182   wider   3/11   0.273
+  Frontend Engineer          writing-*   1/11   0.091   wider   1/11   0.091
+  Applied Scientist          writing-*   0/9    0.000   wider   0/9    0.000
+  Portfolio Director         writing-*   0/7    0.000   wider   0/7    0.000
+  Systems Administrator      writing-*   0/6    0.000   wider   0/6    0.000

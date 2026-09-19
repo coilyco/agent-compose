@@ -1,0 +1,26 @@
+{
+  "name": "llm-catchphrase-candidates",
+  "note": "Candidate battery under measurement. Not shipped. Rails marked source=writing-kai-voice already exist as prose in that skill.",
+  "rules": [
+    {"id": "announce-plainly",  "src": "observed",  "pattern": "\\b(?:worth|let me be|to be|speaking|put(?:ting)? it|stating this|state this|say(?:ing)? this)\\s+(?:stating\\s+)?(?:plainly|blunt|blunt(?:ly)?|frank(?:ly)?|direct(?:ly)?|honest(?:ly)?|clear(?:ly)?)\\b", "hint": "announce nothing, just say it"},
+    {"id": "worth-noting",      "src": "observed",  "pattern": "\\b(?:it(?:'s| is)\\s+)?worth\\s+(?:noting|stating|mentioning|pointing out|saying|highlighting|calling out)\\b", "hint": "if it is worth saying, say it"},
+    {"id": "announce-answer",   "src": "writing-kai-voice", "pattern": "\\b(?:so here(?:'s| is) a straight answer|to be direct|the short version is|the honest answer is|let(?:'s| us) be honest|honestly,)", "hint": "open with the answer itself"},
+    {"id": "flatter-rare",      "src": "writing-kai-voice", "pattern": "\\b(?:which is rare|most people don'?t|unlike most|that(?:'s| is) rare|rare(?:ly)? do(?:es)? (?:anyone|someone|people))\\b", "hint": "praise the thing, not the comparison"},
+    {"id": "not-x-but-y",       "src": "llm-tell", "pattern": "\\b(?:It(?:'s| is)|That(?:'s| is)|This is) not (?:just |merely |simply |only )?(?:about )?[^.,;]{2,40}[,.]? (?:it(?:'s| is)|but) ", "hint": "the not-X-but-Y frame is an LLM cadence"},
+    {"id": "delve",             "src": "llm-tell", "pattern": "\\b(?:delve|delving) into\\b", "hint": "say what you looked at"},
+    {"id": "dive-deep",         "src": "llm-tell", "pattern": "\\b(?:deep dive|dive deep|let(?:'s| us) dive|dives? into)\\b", "hint": "name the thing examined"},
+    {"id": "unpack",            "src": "llm-tell", "pattern": "\\b(?:let(?:'s| us) unpack|unpack(?:ing)? (?:this|that|the))\\b", "hint": "just explain it"},
+    {"id": "testament",         "src": "llm-tell", "pattern": "\\b(?:is|stands as|serves as) a testament to\\b", "hint": "state the evidence"},
+    {"id": "landscape",         "src": "llm-tell", "pattern": "\\b(?:ever-(?:changing|evolving)|rapidly evolving|the landscape of|in today(?:'s)? (?:fast-paced|digital|modern))\\b", "hint": "cut the scene-setting"},
+    {"id": "crucial-essential", "src": "llm-tell", "pattern": "\\bit(?:'s| is) (?:crucial|essential|important|vital) to (?:note|remember|understand|recognize|recognise)\\b", "hint": "say the thing without ranking it"},
+    {"id": "navigate",          "src": "llm-tell", "pattern": "\\bnavigat(?:e|ing) the (?:complex|complexit|challeng|landscape|world|nuance)", "hint": "name the actual difficulty"},
+    {"id": "game-changer",      "src": "llm-tell", "pattern": "\\b(?:game[- ]?chang(?:er|ing)|revolutioniz(?:e|es|ing)|paradigm shift|cutting[- ]edge|state[- ]of[- ]the[- ]art)\\b", "hint": "say what changed"},
+    {"id": "robust-seamless",   "src": "llm-tell", "pattern": "\\b(?:robust|seamless(?:ly)?|leverag(?:e|es|ing)|holistic|synerg(?:y|ies|istic)|streamlin(?:e|ed|ing))\\b", "hint": "use a concrete verb"},
+    {"id": "moreover",          "src": "llm-tell", "pattern": "\\b(?:Moreover|Furthermore|Additionally|In conclusion|Overall,|That said,|In essence)\\b", "hint": "connective throat-clearing"},
+    {"id": "journey",           "src": "llm-tell", "pattern": "\\b(?:on (?:a|this|my|our) journey|the journey (?:of|to)|embark(?:ing)? on)\\b", "hint": "say what happened"},
+    {"id": "at-the-end",        "src": "llm-tell", "pattern": "\\b(?:at the end of the day|when all is said and done|the bottom line is)\\b", "hint": "cut it"},
+    {"id": "resonate",          "src": "llm-tell", "pattern": "\\b(?:resonate(?:s|d)? with|speaks volumes|underscore(?:s|d)? the)\\b", "hint": "say the effect"},
+    {"id": "hedge-tends",       "src": "llm-tell", "pattern": "\\b(?:tends? to be|seems? to be|arguably|generally speaking|broadly speaking|in principle)\\b", "hint": "commit or give the number"},
+    {"id": "em-dash",           "src": "kai-voice-guide", "pattern": "—", "hint": "replace with ' - ' (already shipped, included as positive control)"}
+  ]
+}

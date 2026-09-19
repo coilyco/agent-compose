@@ -1,0 +1,296 @@
+Thu Sep 10 19:29:57 UTC 2026
+housecast 46b37e2
+
+known-answer checks
+  ok    label parsed
+  ok    skill parsed
+  ok    skill precedes publish
+  ok    publish precedes skill
+  ok    read is not a publish
+
+corpus stamp
+  transcripts scanned          882
+  tool calls                   145686
+  Skill invocations            1072
+  distinct skills invoked      199
+  transcripts with any Skill   356
+  transcripts with a role tag  533
+
+==================================================================
+A. artifact-design - hard denominator, machine-checkable trigger
+   rule: MUST load before writing the file Artifact publishes
+==================================================================
+  sessions publishing an Artifact      123
+  loaded artifact-design at all         101   rate 0.821
+  loaded it BEFORE the first publish    101   rate 0.821
+
+==================================================================
+B. role skill - hard denominator, mandatory by the identity card
+   rule: load the selected role skill before acting
+==================================================================
+  role slug          loaded  sessions    rate
+  role-director          21        95   0.221
+  role-sysadmin          14        60   0.233
+  role-science           10        58   0.172
+  role-advocate          13        53   0.245
+  role-platform           7        50   0.140
+  role-frontend           9        45   0.200
+  role-engineer           1        34   0.029
+  role-ops               12        28   0.429
+  role-gamedev            1        23   0.043
+  role-exec               7        12   0.583
+  role-ai                 4        11   0.364
+  role-tpm                6         8   0.750
+  role-qa                 1         2   0.500
+  POOLED                106       479   0.221
+
+  unmapped role labels, excluded rather than guessed:
+      13  Agentic Platform Engineer
+      12  Developer Platform Engineer
+       6  Content Creator
+       6  Design Engineer
+       5  Designer
+       5  Frontend Design Engineer
+       3  Agent Evaluation Engineer
+       2  Evaluation Engineer
+       2  AI Underwriter
+
+==================================================================
+C. negative controls
+==================================================================
+  C1. session size does not explain the role rate
+      min tool calls  loaded  sessions    rate
+                   0     106       479   0.221
+                   5     106       432   0.245
+                  10     106       428   0.248
+                  20     105       414   0.254
+                  50      96       382   0.251
+                 100      80       324   0.247
+
+  C2. among sessions that loaded ANY skill: 106/261 = 0.406
+
+  C3. artifact sessions load more skills generally: mean 2.63 vs 0.99
+      so a skill-specific effect must beat that inflation:
+      probe                                 publish            other
+      artifact-design                101/123  0.821     0/759  0.000
+      artifact-capabilities           29/123  0.236     1/759  0.001
+      role-science                     3/123  0.024     7/759  0.009
+      role-director                    5/123  0.041    17/759  0.022
+      coding-core-git-workflow         0/123  0.000    18/759  0.024
+      writing-kai-voice                1/123  0.008     4/759  0.005
+
+==================================================================
+D. the writing family, which is the family under discussion
+==================================================================
+      12  writing-email
+       5  writing-kai-voice
+       2  writing-social-technical
+       1  writing-system-improvement-vocab
+    total writing-* invocations 20 across 882 transcripts
+
+    Developer Advocate   any writing-* skill  11/53   = 0.208   (skill-loading sessions 37)
+    Portfolio Director   any writing-* skill   0/84   = 0.000   (skill-loading sessions 46)
+    Content Creator      any writing-* skill   3/6    = 0.500   (skill-loading sessions 5)
+
+==================================================================
+E. full per-skill invocation counts
+==================================================================
+      101  artifact-design
+       40  boundary-build-foundational-software
+       38  boundary-seek-external-validation
+       30  artifact-capabilities
+       28  personality-grounded
+       26  personality-outward
+       24  boundary-modify-live-backend
+       23  role-ops
+       22  role-director
+       21  boundary-suggest-external-comms
+       21  personality-decisive
+       21  kai-job-search
+       20  personality-protective
+       18  coding-core-git-workflow
+       15  kai-career
+       14  role-sysadmin
+       14  personality-warm
+       13  role-platform
+       13  personality-meticulous
+       13  role-tpm
+       13  role-advocate
+       12  writing-email
+       11  change-deploy-repo
+       11  personality-skeptical
+       11  personality-reflective
+       11  role-frontend
+       10  role-science
+       10  personality-tenacious
+       10  repo-sirens-echo
+        9  role-engineer
+        9  role-devrel
+        9  kai-evaluation-stack
+        9  kai-design-language
+        9  tooling-gmail
+        8  role-ai
+        8  boundary-modify-live-system
+        7  personality-curious
+        7  role-qa
+        7  lore-person-pyladies-agent-evals-2026
+        7  role-exec
+        6  lore-method-topic-authority
+        6  personality-empirical
+        6  ops-investigation-forgejo-runner-failure
+        6  boundary-suggest-human-comms
+        6  role-design
+        6  tooling-issue-prioritization
+        6  deploy-sirens-echo
+        6  personality-playful
+        6  personality-imaginative
+        6  personality-diplomatic
+        6  personality-bold
+        5  claude-api
+        5  checkin
+        5  lore-person-tech-intersections-2027
+        5  lore-project-portfolio
+        5  lore-project-sirens-configurations
+        5  kai-comfyui-agentic
+        5  change-infrastructure
+        5  tooling-comfyui-backend
+        5  writing-kai-voice
+        5  repo-agent-proxy
+        4  lore-self-business-disposition
+        4  personal-preference-colors
+        4  repo-mcp-beaver
+        4  personality-editorial
+        4  artifact-diagramming
+        4  kai-bio-surface
+        4  repo-eco-app
+        4  design-system
+        4  mcp-tools-eco
+        4  repo-agent-compose
+        4  machine-kai-tower-3026
+        3  ops-investigation-disk-pressure
+        3  lore-self-career-direction
+        3  role-creator
+        3  personal-preference-animals
+        3  repo-ward-mcp
+        3  dataviz
+        3  lore-project-attested-bundles
+        3  lore-project-sirens-deep-identity-eval
+        3  kai-comfyui-art-direction
+        3  lore-method-agent-eval
+        3  lore-stack-agent-systems
+        3  tooling-aos-eval
+        3  kai-tower-access
+        3  update-config
+        3  deploy-teable
+        3  o11y-gatus
+        3  kai-linkedin-voice
+        3  repo-ward
+        3  mcp-tools-sirens-deep-owl-glass
+        3  o11y-signoz
+        3  lore-self-compensation
+        3  lore-rule-avoid-list
+        3  tooling-terminal-recording
+        2  lore-self-contracting-offers
+        2  writing-social-technical
+        2  personal-preference-games
+        2  repo-cli-guard
+        2  personal-preference-books
+        2  personality-nurturing
+        2  kai-design-system
+        2  lore-self-adu-financing
+        2  lore-project-saas-wedges
+        2  lore-method-funnel-denominator
+        2  personality-candid
+        2  tooling-issue-decomposition
+        2  lore-self-current-life-context
+        2  role-eval
+        2  tooling-boundary-conformance
+        2  lore-stack-cross-machine-session-aggregation
+        2  eval-role-live-ops
+        2  repo-galaxy-gen
+        2  tooling-skill-authoring
+        2  coding-core-supply-chain-audit
+        2  kai-voice-guide-linter
+        2  repository-index
+        2  personal-preference-social
+        2  kai-tech-prefs
+        2  tooling-forgejo-issue-counts
+        2  lore-career-positioning
+        2  lore-method-live-session-logistics
+        2  eco-server-setup
+        2  terminal-browser
+        2  tooling-ffmpeg
+        2  kai-linkedin-video
+        2  tooling-triage-cascade
+        2  forgejo-admin
+        2  machine-kai-ser8
+        2  mcp-tools-teable
+        2  repo-website
+        1  writing-system-improvement-vocab
+        1  coilysiren-portfolio
+        1  tooling-aterm-splitscreen
+        1  personal-preference-shows
+        1  personal-preference-movies
+        1  personal-preference-fabrication
+        1  personal-preferences
+        1  personal-preference-anime
+        1  repo-reddit-mcp
+        1  lore-self-outreach-surface
+        1  lore-person-ed-ropple
+        1  ingress-none
+        1  repo-umbra
+        1  mcp-tools-tailnet-coilyco-teable
+        1  tooling-eval-adversarial-verification
+        1  lore-person-temporal-vibe-check-2026
+        1  lore-stack-git-pull-verification
+        1  tooling-gpg-ssm
+        1  coding-rust
+        1  tooling-agent-workflows
+        1  tooling-frontend-cognitive-walkthrough
+        1  ingress-public-authed
+        1  deploy-authelia
+        1  tooling-cross-repo-infra
+        1  repo-factory-game-v3
+        1  tooling-tailscale
+        1  lore-self-credential-legibility
+        1  lore-self-interview-execution
+        1  deploy-docker-registry
+        1  tooling-issue-triage
+        1  kai-brew-release
+        1  lore-method-pkm-landscape
+        1  kai-public-repos
+        1  personality-suspicious
+        1  role-underwriter
+        1  lore-self-employer-code-retention
+        1  lore-rule-disclosure-gradient
+        1  guardrail-house-tone
+        1  lore-temporal-vibe-check-2026
+        1  lore-credential-legibility
+        1  lore-temporal
+        1  coding-csharp
+        1  ops-social-discord
+        1  lore-stack-browser-automation-guardrails
+        1  guardrail-reversible-steps
+        1  lore-self-financial-baseline
+        1  tooling-pm-program-decomposition
+        1  tooling-designer-interaction-shaping
+        1  repo-inbox
+        1  lore-project-housecast-attest
+        1  repo-voice-corpus
+        1  lore-interview-execution
+        1  lore-disclosure-gradient
+        1  role-gamedev
+        1  guardrail-provable-results
+        1  tooling-tpm-product-brainstorming
+        1  tooling-comfyui-compatibility
+        1  gem-inline-probe
+        1  mcp-tools-local-coilyco-playwright-science
+        1  deploy-node-stats-mcp
+        1  machine-kai-server
+        1  coilyco-evaluation-stack
+        1  coding-go
+        1  coding-javascript-react
+        1  tooling-ops-live-remediation
+        1  deploy-atlas
+        1  token-minting
+        1  tooling-aosguard

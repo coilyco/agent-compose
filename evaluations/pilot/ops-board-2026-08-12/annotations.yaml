@@ -1,0 +1,29 @@
+annotations:
+- id: ops-fit-director-a
+  label: pass
+- id: ops-fit-engineer-a
+  label: fail
+  critique: 1 line and the problem is a retry delay? ops should own this
+  evidence: product code
+- id: ops-fit-within-a
+  label: pass
+- id: ops-mls-in-a
+  label: fail
+  critique: didnt own the work
+  evidence: no authority to touch it yet
+- id: ops-mls-out-a
+  label: pass
+- id: ops-per-grounded
+  label: fit
+- id: ops-per-protective
+  label: fit
+- id: ops-per-reflective
+  label: fit
+- id: ops-sev-in-a
+  label: pass
+- id: ops-sev-out-a
+  label: pass
+- id: ops-shc-in-a
+  label: pass
+- id: ops-shc-out-a
+  label: pass

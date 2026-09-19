@@ -1,0 +1,47 @@
+
+=== A authentic-kai  n_docs=65  chars=19255
+  0 of 295 rules fired. The rest reported zero.
+
+=== B kai-approved  n_docs=33  chars=13164
+  0 of 295 rules fired. The rest reported zero.
+
+=== C agent-written  n_docs=643  chars=1860184
+  worth-stating      hits=4     docs=3    per10k=  0.02  []  e.g. 'worth stating'  (+1 self-ref excluded)
+  lets-explore       hits=1     docs=1    per10k=  0.01  []  e.g. "let's explore"
+  transformative     hits=1     docs=1    per10k=  0.01  []  e.g. 'transformative'
+  meticulous         hits=2     docs=2    per10k=  0.01  []  e.g. 'Meticulous'
+  bespoke            hits=8     docs=7    per10k=  0.04  []  e.g. 'Bespoke'
+  leverage           hits=24    docs=14   per10k=  0.13  []  e.g. 'leverage'  (+4 self-ref excluded)
+  unlock             hits=1     docs=1    per10k=  0.01  []  e.g. 'unlock'
+  elevate            hits=5     docs=3    per10k=  0.03  []  e.g. 'elevate'
+  amplify            hits=1     docs=1    per10k=  0.01  []  e.g. 'amplify'
+  in-summary         hits=1     docs=1    per10k=  0.01  []  e.g. 'In summary'
+  circle-back        hits=1     docs=1    per10k=  0.01  []  e.g. 'circle back'
+  lean-into          hits=1     docs=1    per10k=  0.01  []  e.g. 'lean into'
+  unpack             hits=1     docs=1    per10k=  0.01  []  e.g. 'unpack'
+  purpose-built      hits=1     docs=1    per10k=  0.01  []  e.g. 'purpose-built'
+  industry-reports   hits=2     docs=2    per10k=  0.01  []  e.g. 'Industry reports'
+  robust             hits=2     docs=2    per10k=  0.01  []  e.g. 'Robust'  (+5 self-ref excluded)
+  comprehensive      hits=1     docs=1    per10k=  0.01  []  e.g. 'comprehensive'
+  essential          hits=2     docs=2    per10k=  0.01  []  e.g. 'essential'
+  exceptional        hits=1     docs=1    per10k=  0.01  []  e.g. 'exceptional'
+  compelling         hits=1     docs=1    per10k=  0.01  []  e.g. 'compelling'
+  substantial        hits=7     docs=7    per10k=  0.04  []  e.g. 'substantial'
+  distinctive        hits=2     docs=2    per10k=  0.01  []  e.g. 'distinctive'
+  rich               hits=12    docs=10   per10k=  0.06  []  e.g. 'rich'
+  orchestrate        hits=1     docs=1    per10k=  0.01  []  e.g. 'orchestrate'
+  imperative         hits=10    docs=10   per10k=  0.05  []  e.g. 'imperative'
+  align-with         hits=3     docs=3    per10k=  0.02  []  e.g. 'align with'
+  ensure             hits=1     docs=1    per10k=  0.01  []  e.g. 'ensure'
+  notably            hits=1     docs=1    per10k=  0.01  []  e.g. 'notably'
+  arguably           hits=1     docs=1    per10k=  0.01  []  e.g. 'arguably'
+  pragmatic          hits=4     docs=2    per10k=  0.02  []  e.g. 'pragmatic'
+  actionable         hits=5     docs=5    per10k=  0.03  []  e.g. 'actionable'
+  stakeholders       hits=3     docs=3    per10k=  0.02  []  e.g. 'Stakeholders'
+  roadmap            hits=2     docs=2    per10k=  0.01  []  e.g. 'roadmap'
+  ecosystem          hits=12    docs=9    per10k=  0.06  []  e.g. 'ecosystem'
+  underscore-infl    hits=1     docs=1    per10k=  0.01  []  e.g. 'underscores'  (+1 self-ref excluded)
+  leverage-infl      hits=24    docs=14   per10k=  0.13  []  e.g. 'leverage'  (+4 self-ref excluded)
+  not-x-its-y        hits=4     docs=3    per10k=  0.02  []  e.g. 'This is not brainstorming  -  it is'
+  foundational       hits=17    docs=13   per10k=  0.09  []  e.g. 'foundational'
+  38 of 295 rules fired. The rest reported zero.

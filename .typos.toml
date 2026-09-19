@@ -5,3 +5,10 @@
 mis = "mis"
 unparseable = "unparseable"
 RTO = "RTO"
+
+# evaluations/** and challenges.yaml (carried from housecast, agent-compose#7929
+# follow-up) are run evidence and derived challenge prompts respectively, not
+# authored prose: job ids, hashes, and hostnames inside them are not typos to
+# correct.
+[files]
+extend-exclude = ["evaluations/**", "challenges.yaml"]

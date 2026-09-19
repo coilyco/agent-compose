@@ -1,0 +1,50 @@
+check: 4 known answers pass
+
+CLOSED FORM, n per arm for 80% power, one-sided alpha 0.05
+  base   lift    C1     n/arm
+  0.40  -0.10  0.30     281
+  0.40  -0.15  0.25     120
+  0.40  -0.25  0.15      39
+  0.40  -0.35  0.05      17
+  0.50  -0.10  0.40     305
+  0.50  -0.15  0.35     134
+  0.50  -0.25  0.25      46
+  0.50  -0.35  0.15      22
+  0.60  -0.10  0.50     305
+  0.60  -0.15  0.45     136
+  0.60  -0.25  0.35      49
+  0.60  -0.35  0.25      24
+
+EXACT (Fisher, simulated), power at the sizes a run might buy
+  n/arm   C0    C1    power
+     20  0.50  0.25   0.373
+     20  0.50  0.35   0.148
+     20  0.50  0.40   0.085
+     30  0.50  0.25   0.524
+     30  0.50  0.35   0.217
+     30  0.50  0.40   0.122
+     40  0.50  0.25   0.670
+     40  0.50  0.35   0.289
+     40  0.50  0.40   0.156
+     60  0.50  0.25   0.855
+     60  0.50  0.35   0.465
+     60  0.50  0.40   0.262
+     80  0.50  0.25   0.932
+     80  0.50  0.35   0.536
+     80  0.50  0.40   0.288
+    120  0.50  0.25   0.988
+    120  0.50  0.35   0.724
+    120  0.50  0.40   0.423
+
+MINIMUM DETECTABLE EFFECT at 80% power, base C0 = 0.50
+  n= 20  MDE = 0.39 points
+  n= 30  MDE = 0.33 points
+  n= 40  MDE = 0.29 points
+  n= 60  MDE = 0.24 points
+  n= 80  MDE = 0.21 points
+  n=120  MDE = 0.17 points
+
+NULL CALIBRATION, no true effect
+  n= 30  false-positive rate = 0.0252
+  n= 60  false-positive rate = 0.0394
+  n=120  false-positive rate = 0.0394

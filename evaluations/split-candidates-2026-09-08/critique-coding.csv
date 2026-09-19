@@ -1,0 +1,15 @@
+case,half,label,disputes,ruling,note
+advocate-bfs-out,out,fail,design,keep,"label defended, but the response gives a run command where the target asks for a definition with an acceptance condition"
+advocate-mlb-out,out,fail,design,void,"label defended: role-advocate excludes deploy and live verification, and a docs site is a production surface"
+frontend-mlb-out,out,fail,design,pending,"label defended, but the target names a sysadmin handover that role-sysadmin gives to platform under CD. See housecast#7311"
+gamedev-mlb-out,out,fail,design,void,label defended as role-gamedev's own worked example about a bug that reproduces only on the hosted server
+gamedev-sec-out,out,fail,design,void,"label defended: role-gamedev names the patch announcement and store description as outside"
+platform-sec-out,out,fail,design,void,"label defended: boundary-suggest-external-comms lists a release note in the outside set"
+sysadmin-bfs-out,out,fail,design,void,label defended as boundary-build-foundational-software's own named example about shared validators
+director-mlb-out,out,fail,model,keep,should defer to sysadmin and did not
+director-sev-out,out,fail,model,keep,does not sufficiently acknowledge the win
+platform-sev-out,out,fail,model,keep,asks for information but makes the call
+science-bfs-out,out,fail,model,keep,references a deployment the prompt did not include
+director-sec-in,in,fail,model,keep,relitigates the decision in the message
+frontend-sev-in,in,fail,model,keep,insufficiently goal oriented
+sysadmin-bfs-in,in,fail,model,keep,Ansible is sysadmin territory so it wrongly let go

@@ -19,8 +19,9 @@ import subprocess
 import sys
 
 import pytest
-from housecast import roster
-from housecast.roster import Roster
+
+from checks import roster
+from checks.roster import Roster
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
 COMPOSER = REPO_ROOT / "scripts" / "compose-bundles.py"

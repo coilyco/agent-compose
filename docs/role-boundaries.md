@@ -101,14 +101,14 @@ until an independently reviewed re-run.
 
 ## Core Roster boundaries
 
-Each slug names the behavior that moves. Every boundary reaches all eleven seats and exactly one owns it, so a missing seat is a defect. The rest split per boundary. Archiving a seat does not drop it from a boundary, so analyst, psych and reporter still appear below. Sysadmin split into senior-sysadmin and junior-sysadmin on 2026-09-17 (#500); junior defers every boundary like any other non-owning role.
+Each slug names the behavior that moves. Every boundary reaches all twelve seats and exactly one owns it, so a missing seat is a defect. The rest split per boundary. Archiving a seat does not drop it from a boundary, so analyst, psych and reporter still appear below. Sysadmin split into senior-sysadmin and junior-sysadmin on 2026-09-17 (#500); junior defers every boundary like any other non-owning role. Admin-assist, added 2026-09-19 as a hands-off counterpart to director, defers every boundary the same way: it shapes and moves tracker records directly, but that is ordinary work under the director's own charter rather than a boundary grant, so it takes no scope on any of the four.
 
 Two boundaries were deleted on 2026-09-15 with the seats that owned them: `hold-emotional-weight`, owned by psych, and `study-an-unmet-party`, owned by reporter. Neither behavior is allocated now, so no seat defers it and no seat owns it.
 
-* `modify-live-backend`, owner senior-sysadmin - scoped for platform, gamedev, and analyst, who run CI and local environments, run a world they launched themselves, and remediate the specific control failure they already wrote up. Deferred by advocate, director, frontend, science, psych, reporter, and junior-sysadmin.
-* `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by analyst, director, platform, psych, reporter, science, senior-sysadmin, and junior-sysadmin.
-* `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime the system under assessment answers to. Deferred by frontend, gamedev, psych, reporter, science, senior-sysadmin, and junior-sysadmin.
-* `build-foundational-software`, owner platform - scoped for senior-sysadmin, junior-sysadmin, and science, who write estate configuration and measurement instruments. Deferred by advocate, analyst, director, frontend, gamedev, psych, and reporter.
+* `modify-live-backend`, owner senior-sysadmin - scoped for platform, gamedev, and analyst, who run CI and local environments, run a world they launched themselves, and remediate the specific control failure they already wrote up. Deferred by advocate, director, frontend, science, psych, reporter, junior-sysadmin, and admin-assist.
+* `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by analyst, director, platform, psych, reporter, science, senior-sysadmin, junior-sysadmin, and admin-assist.
+* `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime the system under assessment answers to. Deferred by frontend, gamedev, psych, reporter, science, senior-sysadmin, junior-sysadmin, and admin-assist.
+* `build-foundational-software`, owner platform - scoped for senior-sysadmin, junior-sysadmin, and science, who write estate configuration and measurement instruments. Deferred by advocate, analyst, director, frontend, gamedev, psych, reporter, and admin-assist.
 
 ## See also
 

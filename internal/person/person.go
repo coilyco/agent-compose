@@ -1063,9 +1063,6 @@ func validateCorePersonalityMelds(p *Person) error {
 				personalitiesPerRole,
 			)
 		}
-		for _, name := range role.Personalities {
-			usage[name]++
-		}
 		favorite := role.FavoriteColor
 		if err := color.Legible(favorite); err != nil {
 			return fmt.Errorf("core role %q favorite color: %w", roleName, err)
@@ -1083,9 +1080,12 @@ func validateCorePersonalityMelds(p *Person) error {
 				return fmt.Errorf("core role %q does not actually share colors with its twin %q",
 					roleName, role.ColorTwin)
 			}
-			// A twin sits out of the distinctness checks below on purpose: it
-			// is meant to collide with its twin, not to be told apart from it.
+			// A twin sits out of the checks below on purpose, usage cap included:
+			// it is meant to collide with its twin, not to be told apart from it.
 			continue
+		}
+		for _, name := range role.Personalities {
+			usage[name]++
 		}
 		if existing, ok := colors[favorite]; ok {
 			return fmt.Errorf(

@@ -149,6 +149,29 @@ func TestColorTwinSharesColorsAndValidates(t *testing.T) {
 		}
 	})
 
+	t.Run("twin carrying its source's meld stays under the usage cap", func(t *testing.T) {
+		p, err := Load()
+		if err != nil {
+			t.Fatal(err)
+		}
+		twin := p.Roles["admin-assist"]
+		if twin.ColorTwin != "director" {
+			t.Fatalf("shipped roster no longer twins admin-assist to director")
+		}
+		if strings.Join(twin.Personalities, ",") != strings.Join(p.Roles["director"].Personalities, ",") {
+			t.Fatalf("twin meld = %v, source = %v", twin.Personalities, p.Roles["director"].Personalities)
+		}
+		if err := validateCorePersonalityMelds(p); err != nil {
+			t.Fatalf("a twin's meld counted against the usage cap: %v", err)
+		}
+		// Negative control: without the twin link the same role must fail a whole-roster gate.
+		twin.ColorTwin = ""
+		p.Roles["admin-assist"] = twin
+		if err := validateCorePersonalityMelds(p); err == nil {
+			t.Fatalf("a non-twin repeating the director's meld passed every whole-roster gate")
+		}
+	})
+
 	t.Run("twin naming a missing role is rejected", func(t *testing.T) {
 		p, err := Load()
 		if err != nil {

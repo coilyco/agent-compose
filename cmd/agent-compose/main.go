@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/fs"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strings"
 
@@ -32,6 +33,7 @@ import (
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/resolver"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roster"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/skillaudit"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/statusline"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/telemetry"
 )
@@ -246,6 +248,22 @@ func main() {
 						Flags:       []cli.Flag{&cli.BoolFlag{Name: "json", Usage: "emit agent-compose.catalog.v1 JSON"}}, Action: runCatalogExpressions,
 					},
 				},
+			},
+			{
+				Name:  "skills",
+				Usage: "inspect the skill directories a session may load",
+				Commands: []*cli.Command{{
+					Name:  "audit",
+					Usage: "report each skill two load roots both offer, and whether the copies match",
+					Description: "Reads the real home, the session home, and the repo skill directory at " +
+						"the working directory and every ancestor, or only the --root directories. " +
+						"Exits 1 when a name has differing content in two roots. Changes nothing.",
+					Flags: []cli.Flag{&cli.StringSliceFlag{
+						Name:  "root",
+						Usage: "audit only this skill directory, repeatable, replacing discovery",
+					}},
+					Action: runSkillsAudit,
+				}},
 			},
 			{
 				Name:      "describe",
@@ -485,6 +503,32 @@ func runConfigValidate(_ context.Context, cmd *cli.Command) error {
 		return err
 	}
 	return cascade.ValidateSources(cfg)
+}
+
+// runSkillsAudit asks os/user for the real home because $HOME is the session
+// home inside a native shadow, which is the case this verb exists to compare.
+func runSkillsAudit(_ context.Context, cmd *cli.Command) error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	sessionHome, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	realHome := sessionHome
+	if current, err := user.Current(); err == nil && current.HomeDir != "" {
+		realHome = current.HomeDir
+	}
+	report, err := skillaudit.Audit(skillaudit.Roots(cmd.StringSlice("root"), realHome, sessionHome, cwd))
+	if err != nil {
+		return err
+	}
+	report.Write(os.Stdout)
+	if report.Count(skillaudit.Divergent) > 0 {
+		return cli.Exit("", 1)
+	}
+	return nil
 }
 
 func runBundleExport(_ context.Context, cmd *cli.Command) error {

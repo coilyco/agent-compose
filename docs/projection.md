@@ -77,6 +77,36 @@ after the transaction, then validate and wrap the selected load points. See
 [staged-home.md](staged-home.md). Agent-compose does not emit that handoff
 manifest or receive its authority.
 
+## Auditing loaded roots
+
+`agent-compose skills audit` is read-only. It names each skill that two load
+roots both offer and says whether the copies match, so a stale copy beside a
+current one does not go unnoticed. The rule in
+[skill-catalogues.md](skill-catalogues.md) covers source catalogues before
+projection. This covers the directories a session loads from after it.
+
+With no flags it reads the skill directories this registry declares:
+
+* The home layout under the real home, taken from the account database because
+  `$HOME` is the session home inside a native shadow.
+* The home layout under `$HOME`, when that differs from the real home.
+* The repo layout at the working directory and at every ancestor.
+
+`--root <dir>` is repeatable and replaces discovery. A directory reached twice,
+by path or by symlink, is read once, and an absent candidate is counted, not
+listed. Names held by two or more roots are hashed with the catalogue rule's
+digest, so CRLF against LF matches and a symlinked skill compares by target.
+
+* **divergent** - content differs, exit 1. Each copy prints its path, `SKILL.md`
+  size and mtime, and a short digest, with the earlier one marked `older`. That
+  mark comes from mtime and does not say which copy a harness prefers.
+* **unverified** - a copy could not be hashed, such as a skill holding a
+  symlink. The reason prints and the run still exits 0.
+* **identical** - one line per name.
+
+It does not compare a root to the roster source of record, which needs the
+compose-added frontmatter accounted for.
+
 ## See also
 
 * [bundle-protocol.md](bundle-protocol.md) - the tree projection consumes.

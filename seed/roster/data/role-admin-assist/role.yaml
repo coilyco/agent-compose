@@ -49,7 +49,7 @@ outro:
   clean: Filed, and the gate is handed over.
   failure: It stalled here. Nothing outward went out.
 identity:
-  name: Nerissa
+  name: Nessa
   pronouns: they
 agents:
   - harness: claude

@@ -247,6 +247,17 @@ func main() {
 						Description: "JSON items are the stable expression strings.",
 						Flags:       []cli.Flag{&cli.BoolFlag{Name: "json", Usage: "emit agent-compose.catalog.v1 JSON"}}, Action: runCatalogExpressions,
 					},
+					{
+						Name: "snapshot", Usage: "emit the complete person snapshot (agent-compose.person-snapshot.v3)",
+						Description: "The full public person boundary BuildSnapshot exports: role_order, roles " +
+							"(display_name, purpose, boundaries, scoped_boundaries, adjacents, acts, personalities, " +
+							"identity, seats), boundary_order, boundaries (with owner), personalities, guardrails, " +
+							"expressions. Self-describing (carries its own format/schema_version), so it is written " +
+							"as-is rather than wrapped in the catalog.v1 envelope. The cross-repo hand-off other " +
+							"tooling projects a person.json from - housecast#8041.",
+						Flags:  append(personCatalogFlags(false), &cli.StringFlag{Name: "out", Usage: "write to this path instead of stdout"}),
+						Action: runCatalogSnapshot,
+					},
 				},
 			},
 			{
@@ -767,6 +778,32 @@ func runCatalogExpressions(_ context.Context, cmd *cli.Command) error {
 	}
 	expressions := person.ExpressionVocabulary()
 	return writeCatalog(expressions, cmd.Bool("json"), strings.Join(expressions, "\n")+"\n")
+}
+
+// Unwrapped by writeCatalog's catalog.v1 envelope: the snapshot already
+// carries its own format and schema_version.
+func runCatalogSnapshot(_ context.Context, cmd *cli.Command) error {
+	if err := rejectCatalogArgs(cmd); err != nil {
+		return err
+	}
+	p, _, err := loadSelectedPersonWithLibraries(cmd.String("person-source"), cmd.StringSlice("personality-library"))
+	if err != nil {
+		return err
+	}
+	snapshot, err := person.BuildSnapshot(p)
+	if err != nil {
+		return err
+	}
+	raw, err := json.MarshalIndent(snapshot, "", "  ")
+	if err != nil {
+		return err
+	}
+	raw = append(raw, '\n')
+	if out := cmd.String("out"); out != "" {
+		return os.WriteFile(out, raw, 0o644)
+	}
+	_, err = os.Stdout.Write(raw)
+	return err
 }
 
 func runOverlay(_ context.Context, cmd *cli.Command) error {

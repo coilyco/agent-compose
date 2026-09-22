@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"io"
 	"os"
@@ -715,6 +716,7 @@ func TestCatalogVerbsRejectAPositionalTheyDoNotRead(t *testing.T) {
 		"seats":         runCatalogSeats,
 		"boundaries":    runCatalogBoundaries,
 		"expressions":   runCatalogExpressions,
+		"snapshot":      runCatalogSnapshot,
 	} {
 		t.Run(name, func(t *testing.T) {
 			cmd := &cli.Command{Name: name, Action: action}
@@ -733,6 +735,62 @@ func TestCatalogVerbsRejectAPositionalTheyDoNotRead(t *testing.T) {
 	}
 	if err := clean.Run(context.Background(), []string{"roles"}); err != nil {
 		t.Fatalf("no positional must stay allowed: %v", err)
+	}
+}
+
+// housecast#8041: evalkit.roster projects an annotator view off exactly
+// these fields, so a regression here is a regression there too.
+func TestCatalogSnapshotCarriesWhatEvalkitRosterReads(t *testing.T) {
+	out := filepath.Join(t.TempDir(), "snapshot.json")
+	cmd := &cli.Command{
+		Name:   "snapshot",
+		Flags:  append(personCatalogFlags(false), &cli.StringFlag{Name: "out"}),
+		Action: runCatalogSnapshot,
+	}
+	if err := cmd.Run(context.Background(), []string{"snapshot", "--out", out}); err != nil {
+		t.Fatal(err)
+	}
+
+	raw, err := os.ReadFile(out)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var snapshot map[string]any
+	if err := json.Unmarshal(raw, &snapshot); err != nil {
+		t.Fatalf("snapshot is not valid JSON: %v", err)
+	}
+	if got := snapshot["format"]; got != person.SnapshotFormat {
+		t.Errorf("format = %v, want %v", got, person.SnapshotFormat)
+	}
+
+	order, ok := snapshot["role_order"].([]any)
+	if !ok || len(order) == 0 {
+		t.Fatalf("role_order missing or empty: %v", snapshot["role_order"])
+	}
+	roles, ok := snapshot["roles"].(map[string]any)
+	if !ok {
+		t.Fatalf("roles missing or not an object: %v", snapshot["roles"])
+	}
+	role, ok := roles["admin-assist"].(map[string]any)
+	if !ok {
+		t.Fatalf("roles[admin-assist] missing: %v", roles)
+	}
+	for _, key := range []string{"display_name", "purpose", "boundaries", "acts", "adjacents", "personalities"} {
+		if _, ok := role[key]; !ok {
+			t.Errorf("roles[admin-assist] is missing %q, which evalkit/roster.py reads", key)
+		}
+	}
+
+	boundaries, ok := snapshot["boundaries"].(map[string]any)
+	if !ok {
+		t.Fatalf("boundaries missing or not an object: %v", snapshot["boundaries"])
+	}
+	modify, ok := boundaries["modify-live-backend"].(map[string]any)
+	if !ok {
+		t.Fatalf("boundaries[modify-live-backend] missing: %v", boundaries)
+	}
+	if owner, _ := modify["owner"].(string); owner != "senior-sysadmin" {
+		t.Errorf("boundaries[modify-live-backend].owner = %q, want senior-sysadmin", owner)
 	}
 }
 

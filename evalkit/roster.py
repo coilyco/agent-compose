@@ -4,7 +4,7 @@ The shared layer prints an entity's charter and knows nothing about how this
 deployment composes one, so owns, defers, scoped, and traits are spelled here
 rather than there. See docs/evaluation.md.
 
-The projection is JSON because `housecast grade annotate` reads --roster with
+The projection is JSON because `housecast grade annotate` reads --entities with
 json.loads. It is a temp-dir handoff rather than a committed artifact, so the
 repo rule preferring YAML for anything a human reads does not reach it.
 """

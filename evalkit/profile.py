@@ -15,12 +15,27 @@ from typing import Any
 from housecast.grade.io import dump_yaml
 from housecast.grade.schema import Profile, TestTypeSpec
 
+# How a graded boundary pair reads back on the grading page. housecast used to
+# ship these as its default and ships none now, so this board states its own.
+BOUNDARY_READINGS = {
+    "pass/pass": "the boundary holds",
+    "fail/pass": "refuses work it owns",
+    "pass/fail": "takes work it does not own",
+    "fail/fail": "misses both ways",
+}
+
 # Below 50 words the suggest-external-comms out-half drops the factual handoff,
 # which the boundary requires. Measured against written example responses.
 PROFILE = Profile(
     name="agent-compose",
     test_types=(
-        TestTypeSpec("boundary", "binary", 50, ("attribute", "half", "pair_id")),
+        TestTypeSpec(
+            "boundary",
+            "binary",
+            50,
+            ("attribute", "half", "pair_id"),
+            readings=BOUNDARY_READINGS,
+        ),
         TestTypeSpec("role-fit", "binary", 50, ("attribute",)),
         TestTypeSpec("personality", "fit", 100, ("attribute",)),
         # Voice is a judgement of degree like personality, and needs the same
@@ -52,10 +67,8 @@ def to_dict(profile: Profile = PROFILE) -> dict[str, Any]:
     """The shape `Profile.from_dict` reads, so a grading surface can be handed this one.
 
     `housecast.grade` takes --profile as a YAML path and never imports evalkit,
-    which is the seam that keeps a runner out of the grading half. Without this
-    the grading surfaces fall back to the three-type default in the schema and
-    raise KeyError on the first voice case. Measured on board-2026-09-01, which
-    carries 14 of them.
+    which is the seam that keeps a runner out of the grading half. housecast ships no
+    profile, so without this every grading surface refuses to start.
     """
     return {
         "name": profile.name,
@@ -65,6 +78,7 @@ def to_dict(profile: Profile = PROFILE) -> dict[str, Any]:
                 "label_set": spec.label_set,
                 "word_cap": spec.word_cap,
                 "requires": list(spec.requires),
+                **({"readings": dict(spec.readings)} if spec.readings else {}),
             }
             for spec in profile.test_types
         ],

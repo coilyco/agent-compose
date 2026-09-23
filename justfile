@@ -127,9 +127,10 @@ evalkit-run *ARGS:
 evalkit-view *ARGS:
     @uv run inspect view --log-dir .evalkit/logs "$@"
 
-# Project a committed run into a display payload, one way only.
+# Project a committed run into a display payload, one way only, under this board's profile.
 evalkit-export *ARGS:
-    @uv run housecast grade export "$@"
+    @mkdir -p .evalkit && uv run python -m evalkit.profile --out .evalkit/profile.yaml
+    @uv run housecast grade export --profile .evalkit/profile.yaml "$@"
 
 # Read an Inspect eval log and build the dataset the annotator grades.
 evalkit-filter *ARGS:
@@ -151,7 +152,7 @@ evalkit-annotate *ARGS:
 evalkit-profile *ARGS:
     @uv run python -m evalkit.profile "$@"
 
-# Project the roster as entities.json, the --roster a grading surface takes.
+# Project the roster as entities.json, the --entities a grading surface takes.
 evalkit-entities *ARGS:
     @sh scripts/eval-entities.sh "$@"
 

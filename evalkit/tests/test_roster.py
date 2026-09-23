@@ -1,4 +1,4 @@
-"""The annotator reads --roster with json.loads, so the projection must be JSON."""
+"""The annotator reads --entities with json.loads, so the projection must be JSON."""
 
 from __future__ import annotations
 

@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-housecast = { git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git", rev = "77fbd669976f08e2885db13e7e7071c9eee680a0" }
+housecast = { git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git", rev = "ff1e624ddfab8feaa51aed4af693e662b1c35e3a" }
 
 [dependency-groups]
 dev = [

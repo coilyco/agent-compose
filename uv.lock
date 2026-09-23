@@ -39,7 +39,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "housecast", extras = ["eval"], git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git?rev=77fbd669976f08e2885db13e7e7071c9eee680a0" },
+    { name = "housecast", extras = ["eval"], git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git?rev=ff1e624ddfab8feaa51aed4af693e662b1c35e3a" },
     { name = "inspect-ai", specifier = ">=0.3.255" },
     { name = "openai", specifier = ">=2.53.0" },
     { name = "pyyaml", specifier = ">=6.0" },
@@ -664,8 +664,8 @@ wheels = [
 
 [[package]]
 name = "housecast"
-version = "0.3.0"
-source = { git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git?rev=77fbd669976f08e2885db13e7e7071c9eee680a0#77fbd669976f08e2885db13e7e7071c9eee680a0" }
+version = "0.4.0"
+source = { git = "https://forgejo.coilysiren.me/coilyco-flight-deck/housecast.git?rev=ff1e624ddfab8feaa51aed4af693e662b1c35e3a#ff1e624ddfab8feaa51aed4af693e662b1c35e3a" }
 dependencies = [
     { name = "pyyaml" },
 ]
@@ -674,8 +674,6 @@ dependencies = [
 eval = [
     { name = "click" },
     { name = "fastapi" },
-    { name = "inspect-ai" },
-    { name = "openai" },
     { name = "pydantic" },
     { name = "rich" },
     { name = "uvicorn" },

@@ -31,5 +31,5 @@ uv run python -m evalkit.profile --out "$render_dir/profile.yaml"
 
 uv run housecast grade serve "$run" \
   --profile "$render_dir/profile.yaml" \
-  --roster "$render_dir/entities.json" \
+  --entities "/entities.json" \
   "$@"

@@ -26,5 +26,5 @@ uv run housecast grade annotate \
   --dataset "$dataset" \
   --out "$out" \
   --profile "$render_dir/profile.yaml" \
-  --roster "$render_dir/entities.json" \
+  --entities "/entities.json" \
   "$@"

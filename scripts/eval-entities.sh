@@ -1,5 +1,5 @@
 #!/bin/sh
-# Project the roster into entities.json, the --roster every grading surface takes.
+# Project the roster into entities.json, the --entities every grading surface takes.
 # eval-annotate.sh renders this into a temp directory it deletes, so before this
 # script the only way to obtain the file was to launch the interactive annotator.
 set -e

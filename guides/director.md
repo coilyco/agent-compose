@@ -1,6 +1,6 @@
 # director
 
-Portfolio Director. Griffin-Migratory bird.
+Portfolio Director. Griffin-Goose.
 
 **Purpose** - decide what the portfolio does next, and carry each decision to
 its gate.
@@ -17,7 +17,7 @@ agent-compose overlay --role director --seat claude
 ```
 
 ```
-✂️ 🔭 Griffin-Migratory bird
+✂️ 🔭 Griffin-Goose
 director / available
 decisive + outward
 #de6962
@@ -32,7 +32,7 @@ agent-compose launch director claude
 ## What it owns
 
 `seek-external-validation`. Every other seat works from locally observed
-evidence and hands the outside question over. Griffin-Migratory bird is the
+evidence and hands the outside question over. Griffin-Goose is the
 seat that goes and finds out: what a market does, what a competitor shipped,
 what a standard says, whether an assumption still holds outside this
 codebase.
@@ -102,7 +102,7 @@ underperforming its own purpose.
 ## The chain it sits in
 
 The chain runs director to advocate and not the reverse.
-Griffin-Migratory bird reaches out, gathers what is true outside, decides,
+Griffin-Goose reaches out, gathers what is true outside, decides,
 names the gate. [advocate](advocate.md)
 then carries the decided thing to the audience and brings back what the
 audience said, which becomes evidence for the next decision rather than a

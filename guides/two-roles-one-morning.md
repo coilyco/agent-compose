@@ -135,7 +135,7 @@ other's answer.
 
 ## 5. What you get back
 
-<span class="creature" data-role="director" data-seat="griffin-migratory-bird">Griffin-Migratory bird, the director</span>
+<span class="creature" data-role="director" data-seat="griffin-migratory-bird">Griffin-Goose, the director</span>
 
 ```
 Four roles scored since Friday.
@@ -157,7 +157,7 @@ Only the first fits two hours. The second is a decision from you rather
 than work from me.
 ```
 
-<span class="creature" data-role="advocate" data-seat="red-panda-migratory-bird">Red panda-Migratory bird, the advocate</span>
+<span class="creature" data-role="advocate" data-seat="red-panda-migratory-bird">Panda-Goose, the advocate</span>
 
 ```
 Two people are owed something.

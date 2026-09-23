@@ -25,7 +25,7 @@ rather than only in the issue.
 ## Composition engine
 
 * `agent-compose compose` turns a KDL request into an immutable bundle.
-* `roster:core` describes 10 seats and 11 personalities, three [archived](role-selection.md)
+* `roster:core` describes 13 seats and 11 personalities, three [archived](role-selection.md)
   on 2026-09-15: refused by the resolver, keeping their charter, art and edges. Each seat
   melds two traits, and every boundary reaches all ten, exactly one as owner.
   [Role briefings](role-briefings.md) own each charter.

@@ -58,3 +58,4 @@ psych // #ab9137 // #332000 // warm, protective
 reporter // #99b052 // #252602 // tenacious, outward
 junior-sysadmin // #0d9c92 // #002a36 // protective, grounded // twin of senior-sysadmin
 manager // #da656f // #391721 // decisive, outward // twin of director
+access-sysadmin // #0d9c92 // #002a36 // protective, grounded // twin of senior-sysadmin

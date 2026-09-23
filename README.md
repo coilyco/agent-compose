@@ -16,17 +16,20 @@ authority attached to it. You can read and diff every file before a run, and
 
 ## The roster
 
-`roster:core` is the zero-config default. It describes ten seats and offers seven,
+`roster:core` is the zero-config default. It describes thirteen seats and offers ten,
 because three are [archived](docs/role-selection.md). Each one answers to its own
 creature (no pronoun - a seat is not a person), a charter, and a meld of two
 personality traits that shape how it writes and what it reaches for first.
 
 - 🪢🪨 **Beetle-Ruminant** - Platform Engineer - builds and lands the foundational software the rest of the estate is built on. Tenacious and grounded.
 - 🛡️🪨 **Sea turtle-Ruminant** - Systems Administrator - operates the real hosted systems and release surfaces. Protective and grounded.
+- 🛡️🪨 **Sea turtle-Ruminant** - Junior Sysadmin - diagnoses hosted systems and hands mutating commands to the human. Protective and grounded.
+- 🛡️🪨 **Sea turtle-Ruminant** - Access Sysadmin - owns agent permission and harness configuration values across the estate. Protective and grounded; launches on Codex or Goose.
 - 🧪🪨 **Amphibian-Ruminant** - Applied Scientist - measures how agents, models, and inference actually behave on real hardware. Empirical and grounded.
 - 🎨🌈 **Imp-Dragonfly** - Frontend Engineer - shapes and builds the surfaces a person navigates. Playful and imaginative.
 - 🤿🌈 **Cetacean-Dragonfly** - Game Developer - ships playable games, the code and the assets and the build that carries both. Immersed and imaginative.
 - ✂️🔭 **Griffin-Migratory bird** - Portfolio Director - decides what the portfolio does next, and carries each decision to its gate. Decisive and outward.
+- ✂️🔭 **Griffin-Migratory bird** - Project Manager - keeps the tracker true and hands decisions to the director. Decisive and outward.
 - 🕯️🔭 **Red panda-Migratory bird** - Developer Advocate - turns real work and audience evidence into accurate content and informed commitments. Warm and outward.
 - 🪞🪢 **Snake-Beetle** - AI Risk Analyst - **archived** - assessed whether an AI system was fit to ship, named the exclusions, and stood behind the file that proved it. Suspicious and tenacious.
 - 🕯️🛡️ **Red panda-Sea turtle** - Behavioral Psychologist - **archived** - stayed with what a person actually brought, and named the thing they were steering around before offering relief. Warm and protective.
@@ -34,7 +37,7 @@ personality traits that shape how it writes and what it reaches for first.
 
 The catalogue lists eleven traits. Five belong to one seat alone (🪞 suspicious,
 ✂️ decisive, 🧪 empirical, 🤿 immersed, 🎨 playful) and six are bonds two or more
-seats share: 🪨 grounded across the three builders, 🌈 imaginative across the two
+seats share: 🪨 grounded across the builders and sysadmin twins, 🌈 imaginative across the two
 makers, and 🔭 outward, 🪢 tenacious, 🕯️ warm and 🛡️ protective across the rest.
 
 Each personality carries a color, an emblem, a motif, and a body written in
@@ -152,9 +155,6 @@ MIT. See [LICENSE](LICENSE).
 - [docs/FEATURES.md](docs/FEATURES.md) - inventory of what ships today.
 - [docs/architecture.md](docs/architecture.md) - the composition boundary.
 - [docs/ownership.md](docs/ownership.md) - who owns which boundary, and why.
-- [docs/role-selection.md](docs/role-selection.md) - role-scoped providers and assigned bundles.
-- [docs/identity.md](docs/identity.md) - names, emblems, bodies, and how a voice melds.
-- [docs/personality.md](docs/personality.md) - the personality catalog and palette.
 - [docs/evaluation.md](docs/evaluation.md) - the generator, subject, and grader split.
 - [docs/release.md](docs/release.md) - the automatic Forgejo release pipeline.
 - [justfile](justfile) - development recipes.

@@ -40,7 +40,7 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 			t.Errorf("role %q briefing has %d paragraphs, want at least three", roleName, got)
 		}
 		if len(role.Seats) < 2 {
-			t.Errorf("role %q has %d seats, want at least claude and codex", roleName, len(role.Seats))
+			t.Errorf("role %q has %d seats, want at least two", roleName, len(role.Seats))
 		}
 		if role.Identity == nil || role.Identity.Name == "" {
 			t.Errorf("role %q identity is incomplete: %+v", roleName, role.Identity)
@@ -61,7 +61,14 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 				t.Errorf("role %q seat %q redefines identity: %+v", roleName, seat.Selector(), seat)
 			}
 		}
-		for _, harness := range []string{"claude", "codex"} {
+		wantHarnesses := []string{"claude", "codex"}
+		if roleName == "access-sysadmin" {
+			wantHarnesses = []string{"codex", "goose"}
+			if _, exists := seats["claude"]; exists {
+				t.Errorf("role %q must not offer a claude seat", roleName)
+			}
+		}
+		for _, harness := range wantHarnesses {
 			seat, exists := seats[harness]
 			if !exists || seat.Name != role.Identity.Name {
 				t.Errorf("role %q %s seat is incomplete: %+v", roleName, harness, seat)
@@ -171,6 +178,9 @@ func TestColorTwinSharesColorsAndValidates(t *testing.T) {
 		}
 		if p.Roles["junior-sysadmin"].ColorTwin != "senior-sysadmin" {
 			t.Fatalf("shipped roster no longer twins junior-sysadmin to senior-sysadmin")
+		}
+		if p.Roles["access-sysadmin"].ColorTwin != "senior-sysadmin" {
+			t.Fatalf("shipped roster no longer twins access-sysadmin to senior-sysadmin")
 		}
 		if p.Roles["junior-sysadmin"].FavoriteColor != p.Roles["senior-sysadmin"].FavoriteColor {
 			t.Fatalf("twin favorite = %q, source = %q",

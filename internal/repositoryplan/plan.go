@@ -14,6 +14,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+
 	"gopkg.in/yaml.v3"
 )
 
@@ -80,6 +82,12 @@ func Load(filename string) (Plan, error) {
 	if err := plan.Validate(); err != nil {
 		return Plan{}, fmt.Errorf("repository plan %s: %w", filename, err)
 	}
+	// A plan written before a role rename keys its roles by the retired slug.
+	canonical := make(map[string][]Selection, len(plan.Roles))
+	for role, selections := range plan.Roles {
+		canonical[roleslug.Canonical(role)] = append(canonical[roleslug.Canonical(role)], selections...)
+	}
+	plan.Roles = canonical
 	return plan, nil
 }
 
@@ -244,7 +252,7 @@ func validHexSuffix(value string, start, length int) bool {
 }
 
 func (p Plan) ForRole(role string) ([]Selection, error) {
-	selections, ok := p.Roles[strings.TrimSpace(role)]
+	selections, ok := p.Roles[roleslug.Canonical(role)]
 	if !ok {
 		roles := make([]string, 0, len(p.Roles))
 		for candidate := range p.Roles {

@@ -18,9 +18,9 @@ boundaries:
   - seek-external-validation
   - suggest-external-comms
 adjacents:
-  - role: advocate
+  - role: dev-advocate
     reason: writing the approach instead of deciding whether there should be one
-  - role: director
+  - role: prod-director
     reason: deciding what the portfolio does about the party instead of establishing who the party is
 voice:
   summary: gives the sourced fact, then marks its own inference as inference, then the verdict in one clause

@@ -59,13 +59,13 @@ func (e env) config(t *testing.T, body string) {
 			t.Fatal(err)
 		}
 		roles := `roles {
-    role science {}
-    role advocate {}
-    role frontend {}
-    role director {}
-    role platform {}
+    role scientist {}
+    role dev-advocate {}
+    role frontend-eng {}
+    role prod-director {}
+    role platform-eng {}
     role sysadmin {}
-    role gamedev {}
+    role game-dev {}
 }
 `
 		if err := os.WriteFile(filepath.Join(root, ".agents", "roles.kdl"), []byte(roles), 0o644); err != nil {
@@ -179,7 +179,7 @@ func TestUnifiedRoleProviderGraphRendersStrictEligibility(t *testing.T) {
     }
 }
 roles {
-    role platform {
+    role platform-eng {
         use-repository hardware
     }
 }
@@ -196,7 +196,7 @@ roles {
 	if err != nil {
 		t.Fatal(err)
 	}
-	providers := manifest.Roles["platform"]
+	providers := manifest.Roles["platform-eng"]
 	canonicalHardware, err := canonicalPath(hardware)
 	if err != nil {
 		t.Fatal(err)
@@ -224,8 +224,8 @@ func TestGlobalRepositoryAppearsInEveryRoleAndResidency(t *testing.T) {
     global lore
 }
 roles {
-    role platform {}
-    role science {}
+    role platform-eng {}
+    role scientist {}
 }
 `)
 	e.config(t, "sources:\n  - "+source+"\noperating_context:\n  - example/aosk\n")
@@ -236,7 +236,7 @@ roles {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, role := range []string{"platform", "science"} {
+	for _, role := range []string{"platform-eng", "scientist"} {
 		if !containsSelection(manifest.Roles[role], "example/lore") {
 			t.Fatalf("global repository missing from %s selections: %+v", role, manifest.Roles[role])
 		}
@@ -262,14 +262,14 @@ func TestUnifiedRoleProviderGraphFailsClosed(t *testing.T) {
 			return writeTrustedRoleGraph(t, e, "example/aosk", `repositories {
     repository hardware path="example/hardware" { skill "machine-*" }
 }
-roles { role platform { use-repository hardware } }
+roles { role platform-eng { use-repository hardware } }
 `)
 		},
 		"provider cycle": func(t *testing.T, e env) string {
 			return writeTrustedRoleGraph(t, e, "example/aosk", `repositories {
     repository self path="example/aosk" { skill "*" }
 }
-roles { role platform { use-repository self } }
+roles { role platform-eng { use-repository self } }
 `)
 		},
 	} {
@@ -291,14 +291,14 @@ func TestImportedProviderGraphDoesNotRecursivelyWidenEligibility(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(hardware, ".agents", "roles.kdl"), []byte(`repositories {
     repository recursive path="example/recursive" { skill "*" }
 }
-roles { role platform { use-repository recursive } }
+roles { role platform-eng { use-repository recursive } }
 `), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	source := writeTrustedRoleGraph(t, e, "example/aosk", `repositories {
     repository hardware path="example/hardware" { skill compute-stack }
 }
-roles { role platform { use-repository hardware } }
+roles { role platform-eng { use-repository hardware } }
 `)
 	e.config(t, "sources:\n  - "+source+"\noperating_context:\n  - example/aosk\n")
 	if code, out, errOut := e.run(t, false); code != 0 {
@@ -308,7 +308,7 @@ roles { role platform { use-repository hardware } }
 	if err != nil {
 		t.Fatal(err)
 	}
-	if providers := manifest.Roles["platform"]; len(providers) != 2 || providers[1].Name != "hardware" {
+	if providers := manifest.Roles["platform-eng"]; len(providers) != 2 || providers[1].Name != "hardware" {
 		t.Fatalf("imported graph widened eligibility: %+v", providers)
 	}
 }
@@ -782,10 +782,10 @@ func TestRoleBindingSelectorReachesTheRepositoryPlan(t *testing.T) {
     }
 }
 roles {
-    role platform {
+    role platform-eng {
         use-repository lore
     }
-    role advocate {
+    role dev-advocate {
         use-repository lore {
             skill "lore-self-*"
         }
@@ -816,14 +816,14 @@ roles {
 		return repositoryplan.Selection{}
 	}
 
-	advocate := find("advocate")
+	advocate := find("dev-advocate")
 	if !slices.Equal(advocate.BindingSkills, []string{"lore-self-*"}) {
 		t.Fatalf("advocate binding selector = %+v", advocate)
 	}
 	if !slices.Equal(advocate.Skills, []string{"lore-*"}) {
 		t.Fatalf("advocate must keep the definition selector intact: %+v", advocate)
 	}
-	if platform := find("platform"); platform.BindingSkills != nil {
+	if platform := find("platform-eng"); platform.BindingSkills != nil {
 		t.Fatalf("platform must carry no binding selector: %+v", platform)
 	}
 	for _, selection := range manifest.Residency {

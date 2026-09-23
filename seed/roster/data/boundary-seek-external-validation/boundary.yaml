@@ -1,7 +1,7 @@
 boundary: seek-external-validation
 order: 3
 skill: boundary-seek-external-validation
-owner: director
+owner: prod-director
 summary: Portfolio Director reaches outside the local frame, other roles work from locally observed evidence
 acts:
   - side: own

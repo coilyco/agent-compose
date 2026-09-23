@@ -11,10 +11,10 @@ Each person profile owns one ordinary role skill. KDL keeps compact identity dat
 A role fragment binds a stable skill id:
 
 ```kdl
-role "director" {
+role "prod-director" {
     display-name "Portfolio Director"
     purpose "Decide what the portfolio does next, and carry each decision to its gate."
-    skill "role-director"
+    skill "role-prod-director"
     personality "decisive" "outward"
 }
 ```
@@ -43,28 +43,28 @@ behavioral content stays equivalent without emitting unusable pointers.
 
 Role skills define identity and the feedback loop a role owns. Capability
 providers define task methods. Ward and guarded runtime policy define
-executable authority. Developer Advocate (`advocate`) owns every recommendation
+executable authority. Developer Advocate (`dev-advocate`) owns every recommendation
 about communication addressed outward, including wording, tone, framing,
 timing, channel, reply strategy, and editorial fitness. Other roles retain
 mechanical records and defer only for recommendations, and two hold a named
 scope over the words inside an artifact they own. External action still
-requires task, runtime, and user authorization. Platform Engineer (`platform`)
+requires task, runtime, and user authorization. Platform Engineer (`platform-eng`)
 owns foundational software. Systems Administrator (`sysadmin`) owns controlled
 running-system change, live verification, and rollback. Applied Scientist
-(`science`) stays read-only around running backends unless the runtime grants an
+(`scientist`) stays read-only around running backends unless the runtime grants an
 enforced disposable fixture mode. No role skill grants commands, credentials,
 mounts, network access, deployment, model selection, or permission.
 
-Frontend Engineer (`frontend`) owns the surface a person navigates and builds
+Frontend Engineer (`frontend-eng`) owns the surface a person navigates and builds
 it as well as shapes it: responsive presentation, components, tokens, static
 assets, semantic structure, focus treatment, metadata, empty states, and the
 route, rendering, accessibility, and navigation tests that hold them. Business
 rules, state machines, runtime data, APIs, persistence, permissions,
 migrations, and shared tooling are foundational software and return to
-platform. `advocate` may land content-only repository changes, including
+platform. `dev-advocate` may land content-only repository changes, including
 human-facing literals embedded in code. That exception requires unchanged
 control flow, state, schemas, structured contracts, and executable behavior.
-Portfolio Director (`director`) owns code review as a gate decision, so a defect
+Portfolio Director (`prod-director`) owns code review as a gate decision, so a defect
 returns to the owning seat with evidence rather than with a patch.
 
 ## Role methods
@@ -78,8 +78,8 @@ policy and would become misleading if copied into a general knowledge provider.
 Declare method ids in the owning role fragment:
 
 ```kdl
-role "science" {
-    skill "role-science"
+role "scientist" {
+    skill "role-scientist"
     method "science-fixture-suite"
 }
 ```

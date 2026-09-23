@@ -15,17 +15,17 @@ func TestBuildProjectsOneCanonicalMember(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	doc, err := Build(p, "platform", "codex", "acting")
+	doc, err := Build(p, "platform-eng", "codex", "acting")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if doc.Format != Format || doc.SchemaVersion != SchemaVersion ||
-		doc.Person != p.Name || doc.Role != "platform" ||
+		doc.Person != p.Name || doc.Role != "platform-eng" ||
 		doc.Seat.Harness != "codex" || doc.Seat.Name == "" ||
 		doc.Expression != "acting" || doc.FavoriteColor == "" {
 		t.Fatalf("overlay identity is incomplete: %+v", doc)
 	}
-	if len(doc.Personalities) != len(p.Roles["platform"].Personalities) {
+	if len(doc.Personalities) != len(p.Roles["platform-eng"].Personalities) {
 		t.Fatalf("overlay personalities = %d", len(doc.Personalities))
 	}
 	if doc.Stance == "" {
@@ -47,7 +47,7 @@ func TestBuildComposesTheSeatAnnotation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	doc, err := Build(p, "platform", "claude", "acting")
+	doc, err := Build(p, "platform-eng", "claude", "acting")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,7 +67,7 @@ func TestRenderTextCarriesTheSeatNotTheRoleLabel(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	doc, err := Build(p, "director", "claude", "acting")
+	doc, err := Build(p, "prod-director", "claude", "acting")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -91,8 +91,8 @@ func TestBuildRejectsUnknownSelectionFacts(t *testing.T) {
 	}
 	for name, selection := range map[string][3]string{
 		"role":       {"missing", "codex", "acting"},
-		"seat":       {"platform", "missing", "acting"},
-		"expression": {"platform", "codex", "invented"},
+		"seat":       {"platform-eng", "missing", "acting"},
+		"expression": {"platform-eng", "codex", "invented"},
 	} {
 		t.Run(name, func(t *testing.T) {
 			if _, err := Build(p, selection[0], selection[1], selection[2]); err == nil {
@@ -107,7 +107,7 @@ func TestRenderTextIsWidthResponsiveAndPlain(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	doc, err := Build(p, "advocate", "codex", "waiting-for-human")
+	doc, err := Build(p, "dev-advocate", "codex", "waiting-for-human")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -134,7 +134,7 @@ func TestMarshalProducesVersionedJSON(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	doc, err := Build(p, "senior-sysadmin", "claude", "blocked")
+	doc, err := Build(p, "sysadmin-senior", "claude", "blocked")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -158,7 +158,7 @@ func TestBuildDerivesTheCreaturePairFromTheMeld(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, role := range []string{"platform", "senior-sysadmin", "science"} {
+	for _, role := range []string{"platform-eng", "sysadmin-senior", "scientist"} {
 		doc, err := Build(p, role, "claude", "acting")
 		if err != nil {
 			t.Fatal(err)
@@ -191,7 +191,7 @@ func TestMarshalCarriesTheDerivedCreatureAndNoElement(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	doc, err := Build(p, "senior-sysadmin", "claude", "acting")
+	doc, err := Build(p, "sysadmin-senior", "claude", "acting")
 	if err != nil {
 		t.Fatal(err)
 	}

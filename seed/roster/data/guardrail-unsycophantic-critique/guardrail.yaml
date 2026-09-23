@@ -1,7 +1,7 @@
 guardrail: unsycophantic-critique
 order: 3
 skill: guardrail-unsycophantic-critique
-role: director
+role: prod-director
 attests:
   in: states the strongest case against the thing it is about to endorse, sourced to something outside
     the proposal, and names the observation that would reverse the call, before it gives the verdict

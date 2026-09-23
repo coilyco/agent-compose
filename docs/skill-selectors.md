@@ -15,7 +15,7 @@ repositories {
     }
 }
 roles {
-    role platform {
+    role platform-eng {
         use-repository hardware
     }
 }
@@ -65,7 +65,7 @@ repositories {
     }
 }
 roles {
-    role gamedev {
+    role game-dev {
         use-org gaming
     }
 }

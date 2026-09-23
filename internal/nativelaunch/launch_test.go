@@ -63,7 +63,7 @@ func writeProvider(t *testing.T, root string, withRole bool) {
 	writeFile(
 		t,
 		filepath.Join(root, ".agents", "roles.kdl"),
-		"roles {\n    role frontend {\n        composed-skill design-method\n    }\n}\n",
+		"roles {\n    role frontend-eng {\n        composed-skill design-method\n    }\n}\n",
 	)
 }
 
@@ -95,7 +95,7 @@ func writeEligibilityManifest(t *testing.T, path string, input testRepositoryPla
 	}
 	inputs := map[string]bool{defaultSource: true}
 	roles := map[string][]repositoryplan.Selection{}
-	for _, role := range []string{"science", "advocate", "frontend", "gamedev", "platform", "senior-sysadmin", "director"} {
+	for _, role := range []string{"scientist", "dev-advocate", "frontend-eng", "game-dev", "platform-eng", "sysadmin-senior", "prod-director"} {
 		for _, path := range basePaths {
 			roles[role] = append(roles[role], selection(path, "operating-context", defaultSource, "test operating context"))
 		}
@@ -217,7 +217,7 @@ func TestRefreshProjectsAssignedRoleBundleForEveryNativeHarness(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	designer := profile.Roles["frontend"]
+	designer := profile.Roles["frontend-eng"]
 
 	cases := map[string]struct {
 		instructions string
@@ -232,7 +232,7 @@ func TestRefreshProjectsAssignedRoleBundleForEveryNativeHarness(t *testing.T) {
 		t.Run(harness, func(t *testing.T) {
 			target := t.TempDir()
 			result, err := Refresh(Options{
-				Role:      "frontend",
+				Role:      "frontend-eng",
 				Harness:   harness,
 				CWD:       projects,
 				TargetDir: target,
@@ -246,19 +246,19 @@ func TestRefreshProjectsAssignedRoleBundleForEveryNativeHarness(t *testing.T) {
 				t.Fatalf("default model tier = %q, want frontier", result.ModelTier)
 			}
 			if result.Composition == nil ||
-				result.Composition.Resolution.Request.Role != "frontend" {
+				result.Composition.Resolution.Request.Role != "frontend-eng" {
 				t.Fatalf("composition result does not retain the assigned role: %+v", result.Composition)
 			}
 			instructions, err := os.ReadFile(filepath.Join(target, tc.instructions))
 			if err != nil {
 				t.Fatal(err)
 			}
-			if !strings.Contains(string(instructions), "assigned you the `frontend` role") {
+			if !strings.Contains(string(instructions), "assigned you the `frontend-eng` role") {
 				t.Fatalf("assigned role missing from instructions:\n%s", instructions)
 			}
 			skills := []string{
 				"ordinary",
-				"role-frontend",
+				"role-frontend-eng",
 				"design-method",
 			}
 			for _, name := range designer.Personalities {
@@ -272,10 +272,10 @@ func TestRefreshProjectsAssignedRoleBundleForEveryNativeHarness(t *testing.T) {
 			if _, err := os.Stat(filepath.Join(
 				target,
 				tc.skills,
-				"role-platform",
+				"role-platform-eng",
 				"SKILL.md",
 			)); !os.IsNotExist(err) {
-				t.Errorf("inactive role-platform entered the bundle: %v", err)
+				t.Errorf("inactive role-platform-eng entered the bundle: %v", err)
 			}
 		})
 	}
@@ -292,7 +292,7 @@ func TestRefreshEmitsClaudeLaunchIdentity(t *testing.T) {
 	writeManifest(t, manifest, projects, provider)
 
 	result, err := Refresh(Options{
-		Role:      "frontend",
+		Role:      "frontend-eng",
 		Harness:   "claude",
 		CWD:       projects,
 		TargetDir: t.TempDir(),
@@ -317,8 +317,8 @@ func TestRefreshEmitsClaudeLaunchIdentity(t *testing.T) {
 	if err := json.Unmarshal(raw, &settings); err != nil {
 		t.Fatal(err)
 	}
-	if settings.Theme != "custom:aos-frontend" {
-		t.Errorf("theme = %q, want custom:aos-frontend", settings.Theme)
+	if settings.Theme != "custom:aos-frontend-eng" {
+		t.Errorf("theme = %q, want custom:aos-frontend-eng", settings.Theme)
 	}
 	if len(settings.SpinnerVerbs.Verbs) == 0 {
 		t.Error("settings fragment carries no spinner verbs")
@@ -341,7 +341,7 @@ func TestRefreshWithholdsSettingsFromOtherHarnesses(t *testing.T) {
 	for _, harness := range []string{"codex", "goose", "opencode"} {
 		t.Run(harness, func(t *testing.T) {
 			result, err := Refresh(Options{
-				Role:      "frontend",
+				Role:      "frontend-eng",
 				Harness:   harness,
 				CWD:       projects,
 				TargetDir: t.TempDir(),
@@ -379,7 +379,7 @@ func TestRefreshDefaultsToFrontierModelTier(t *testing.T) {
 	writeManifest(t, manifest, projects, provider)
 
 	result, err := Refresh(Options{
-		Role:      "frontend",
+		Role:      "frontend-eng",
 		Harness:   "goose",
 		CWD:       projects,
 		TargetDir: t.TempDir(),
@@ -401,7 +401,7 @@ func TestRefreshAcceptsCanonicalModelTierAndRejectsUnknownTier(t *testing.T) {
 	manifest := filepath.Join(t.TempDir(), "repository-plan.yaml")
 	writeManifest(t, manifest, projects, provider)
 	options := Options{
-		Role:      "frontend",
+		Role:      "frontend-eng",
 		Harness:   "codex",
 		ModelTier: schema.ModelTierCommodity,
 		CWD:       projects,
@@ -434,7 +434,7 @@ func TestRefreshRequiresRoleComposedProvider(t *testing.T) {
 	writeManifest(t, manifest, projects, provider)
 
 	_, err := Refresh(Options{
-		Role:      "frontend",
+		Role:      "frontend-eng",
 		Harness:   "codex",
 		CWD:       projects,
 		TargetDir: t.TempDir(),
@@ -465,7 +465,7 @@ func TestRoleProvidersStayScopedAcrossNativeAndStagedHomes(t *testing.T) {
 		Defaults:     []string{base},
 		Harnesses:    map[string][]string{},
 		RoleProviders: map[string][]testRoleProvider{
-			"senior-sysadmin": {
+			"sysadmin-senior": {
 				{Path: infrastructure, Required: true, Name: "infrastructure", DeclaredBy: "example/aosk"},
 				{Path: deploy, Required: true, Name: "deploy", DeclaredBy: "example/aosk"},
 				{Path: missingOptional, Name: "optional", DeclaredBy: "example/aosk"},
@@ -475,7 +475,7 @@ func TestRoleProvidersStayScopedAcrossNativeAndStagedHomes(t *testing.T) {
 	out := filepath.Join(t.TempDir(), "bundles")
 	results := map[string]*Result{}
 	targets := map[string]string{}
-	for _, role := range []string{"senior-sysadmin", "platform"} {
+	for _, role := range []string{"sysadmin-senior", "platform-eng"} {
 		target := t.TempDir()
 		targets[role] = target
 		result, err := Refresh(Options{
@@ -492,26 +492,26 @@ func TestRoleProvidersStayScopedAcrossNativeAndStagedHomes(t *testing.T) {
 		results[role] = result
 		for _, skill := range []string{"infrastructure-ops", "deploy-ops"} {
 			_, err := os.Stat(filepath.Join(target, ".agents", "skills", skill, "SKILL.md"))
-			if role == "senior-sysadmin" && err != nil {
+			if role == "sysadmin-senior" && err != nil {
 				t.Errorf("ops native bundle omitted %s: %v", skill, err)
 			}
-			if role == "platform" && !os.IsNotExist(err) {
+			if role == "platform-eng" && !os.IsNotExist(err) {
 				t.Errorf("engineer native bundle leaked %s: %v", skill, err)
 			}
 		}
 	}
 
-	for _, role := range []string{"senior-sysadmin", "platform"} {
+	for _, role := range []string{"sysadmin-senior", "platform-eng"} {
 		staged := t.TempDir()
 		if _, err := project.ProjectScoped(results[role].BundleDir, "claude", staged, project.ScopeHome); err != nil {
 			t.Fatal(err)
 		}
 		for _, skill := range []string{"infrastructure-ops", "deploy-ops"} {
 			_, err := os.Stat(filepath.Join(staged, ".claude", "skills", skill, "SKILL.md"))
-			if role == "senior-sysadmin" && err != nil {
+			if role == "sysadmin-senior" && err != nil {
 				t.Errorf("staged Ops home omitted %s: %v", skill, err)
 			}
-			if role == "platform" && !os.IsNotExist(err) {
+			if role == "platform-eng" && !os.IsNotExist(err) {
 				t.Errorf("staged Engineer home leaked %s: %v", skill, err)
 			}
 		}
@@ -532,14 +532,14 @@ func TestRoleProvidersStayScopedAcrossNativeAndStagedHomes(t *testing.T) {
 		}
 	}
 	for _, source := range []string{"example--infrastructure", "example--deploy"} {
-		selected := providerReport(t, results["senior-sysadmin"], source)
+		selected := providerReport(t, results["sysadmin-senior"], source)
 		if selected.Category != resolver.ProviderCategoryRole ||
 			selected.Scope != "role" ||
 			selected.Outcome != resolver.OutcomeSelected ||
 			selected.Skills != 1 || selected.ContextBytes == 0 || selected.ApproximateTokens == 0 {
 			t.Fatalf("selected role provider %s report = %+v", source, selected)
 		}
-		excluded := providerReport(t, results["platform"], source)
+		excluded := providerReport(t, results["platform-eng"], source)
 		if excluded.Category != resolver.ProviderCategoryRole ||
 			excluded.Scope != "role" ||
 			excluded.Outcome != resolver.OutcomeExcluded ||
@@ -548,27 +548,27 @@ func TestRoleProvidersStayScopedAcrossNativeAndStagedHomes(t *testing.T) {
 		}
 	}
 
-	selectedWhy, err := describe.Why(results["senior-sysadmin"].BundleDir, "skill:infrastructure-ops", describe.Options{})
+	selectedWhy, err := describe.Why(results["sysadmin-senior"].BundleDir, "skill:infrastructure-ops", describe.Options{})
 	if err != nil || !strings.Contains(
 		selectedWhy,
-		"role \"senior-sysadmin\" -> provider \"infrastructure\" declared by example/aosk -> selected catalogue",
+		"role \"sysadmin-senior\" -> provider \"infrastructure\" declared by example/aosk -> selected catalogue",
 	) {
 		t.Fatalf("selected role-provider why = %q, err=%v", selectedWhy, err)
 	}
-	excludedWhy, err := describe.Why(results["platform"].BundleDir, "skill:infrastructure-ops", describe.Options{})
-	if err != nil || !strings.Contains(excludedWhy, "not selected role \"platform\"") {
+	excludedWhy, err := describe.Why(results["platform-eng"].BundleDir, "skill:infrastructure-ops", describe.Options{})
+	if err != nil || !strings.Contains(excludedWhy, "not selected role \"platform-eng\"") {
 		t.Fatalf("excluded role-provider why = %q, err=%v", excludedWhy, err)
 	}
 	if !strings.Contains(excludedWhy, "provider: role-provider/role") ||
 		!strings.Contains(excludedWhy, "context: 0 skills, 0 bytes, approximately 0 tokens") {
 		t.Fatalf("excluded role-provider budget missing from why output: %q", excludedWhy)
 	}
-	optionalWhy, err := describe.Why(results["senior-sysadmin"].BundleDir, "source:example--optional", describe.Options{})
+	optionalWhy, err := describe.Why(results["sysadmin-senior"].BundleDir, "source:example--optional", describe.Options{})
 	if err != nil || !strings.Contains(optionalWhy, "optional role provider") {
 		t.Fatalf("optional missing provider why = %q, err=%v", optionalWhy, err)
 	}
 	pointerWhy, err := describe.Why(
-		results["senior-sysadmin"].BundleDir,
+		results["sysadmin-senior"].BundleDir,
 		"skill:repo-infrastructure",
 		describe.Options{},
 	)
@@ -578,7 +578,7 @@ func TestRoleProvidersStayScopedAcrossNativeAndStagedHomes(t *testing.T) {
 		!strings.Contains(pointerWhy, "outcome: shadowed") {
 		t.Fatalf("ordinary pointer and role-provider provenance = %q, err=%v", pointerWhy, err)
 	}
-	described, err := describe.Bundle(results["platform"].BundleDir, describe.Options{All: true})
+	described, err := describe.Bundle(results["platform-eng"].BundleDir, describe.Options{All: true})
 	if err != nil ||
 		!strings.Contains(described, "example--infrastructure") ||
 		!strings.Contains(described, "(role-provider/role)") ||
@@ -607,7 +607,7 @@ func TestRoleProviderSelectorsMatchAcrossNativeAndStagedHarnesses(t *testing.T) 
 		Defaults:     []string{base},
 		Harnesses:    map[string][]string{},
 		RoleProviders: map[string][]testRoleProvider{
-			"frontend": {{
+			"frontend-eng": {{
 				Path:     hardware,
 				Required: true,
 				Skills:   []string{"compute-stack", "machine-*"},
@@ -628,7 +628,7 @@ func TestRoleProviderSelectorsMatchAcrossNativeAndStagedHarnesses(t *testing.T) 
 		t.Run(harness, func(t *testing.T) {
 			target := t.TempDir()
 			result, err := Refresh(Options{
-				Role:      "frontend",
+				Role:      "frontend-eng",
 				Harness:   harness,
 				CWD:       projects,
 				TargetDir: target,
@@ -683,11 +683,11 @@ func TestMissingRequiredRoleProviderFailsExplicitly(t *testing.T) {
 		Defaults:     []string{base},
 		Harnesses:    map[string][]string{},
 		RoleProviders: map[string][]testRoleProvider{
-			"senior-sysadmin": {{Path: missing, Required: true}},
+			"sysadmin-senior": {{Path: missing, Required: true}},
 		},
 	})
 	_, err := Refresh(Options{
-		Role:      "senior-sysadmin",
+		Role:      "sysadmin-senior",
 		Harness:   "codex",
 		CWD:       projects,
 		TargetDir: t.TempDir(),
@@ -722,7 +722,7 @@ func TestRefreshProjectsIntoRuntimeHomeAtGlobalLoadPoints(t *testing.T) {
 		t.Run(harness, func(t *testing.T) {
 			home, target := t.TempDir(), t.TempDir()
 			result, err := Refresh(Options{
-				Role:        "frontend",
+				Role:        "frontend-eng",
 				Harness:     harness,
 				CWD:         projects,
 				TargetDir:   target,
@@ -740,10 +740,10 @@ func TestRefreshProjectsIntoRuntimeHomeAtGlobalLoadPoints(t *testing.T) {
 			if err != nil {
 				t.Fatalf("instructions missing from the runtime home: %v", err)
 			}
-			if !strings.Contains(string(instructions), "assigned you the `frontend` role") {
+			if !strings.Contains(string(instructions), "assigned you the `frontend-eng` role") {
 				t.Fatalf("assigned role missing from instructions:\n%s", instructions)
 			}
-			skill := filepath.Join(home, filepath.FromSlash(tc.skills), "role-frontend", "SKILL.md")
+			skill := filepath.Join(home, filepath.FromSlash(tc.skills), "role-frontend-eng", "SKILL.md")
 			if _, err := os.Stat(skill); err != nil {
 				t.Errorf("role skill missing from the runtime home: %v", err)
 			}
@@ -771,7 +771,7 @@ func TestRefreshLeadsInstructionsWithTheOperatingBase(t *testing.T) {
 
 	const base = "# Agent instructions\n\nPronouns stay she/her."
 	if _, err := Refresh(Options{
-		Role:          "frontend",
+		Role:          "frontend-eng",
 		Harness:       "claude",
 		CWD:           projects,
 		TargetDir:     t.TempDir(),
@@ -820,7 +820,7 @@ func TestRefreshKeepsTheAppendixBehindTheLastRosterCard(t *testing.T) {
 	base := "# Agent instructions\n\nPronouns stay she/her.\n\n" + card
 	const tail = "<!-- appendix: agent-compose.yaml entry 1 -->\n## Checkin dashboard\n\nRead the dashboard first."
 	if _, err := Refresh(Options{
-		Role:              "frontend",
+		Role:              "frontend-eng",
 		Harness:           "claude",
 		CWD:               projects,
 		TargetDir:         t.TempDir(),
@@ -867,13 +867,13 @@ func TestRefreshWarnsOnAnAppendixRoleTheRosterDoesNotDefine(t *testing.T) {
 	writeManifest(t, manifest, projects, provider)
 
 	result, err := Refresh(Options{
-		Role:          "frontend",
+		Role:          "frontend-eng",
 		Harness:       "claude",
 		CWD:           projects,
 		TargetDir:     t.TempDir(),
 		RuntimeHome:   t.TempDir(),
 		OperatingBase: "# Agent instructions\n\nPronouns stay she/her.",
-		AppendixRoles: []string{"archivist", "frontend"},
+		AppendixRoles: []string{"archivist", "frontend-eng"},
 		PlanPath:      manifest,
 		OutDir:        filepath.Join(t.TempDir(), "bundles"),
 	})
@@ -887,7 +887,7 @@ func TestRefreshWarnsOnAnAppendixRoleTheRosterDoesNotDefine(t *testing.T) {
 		if strings.Contains(w, `"archivist"`) {
 			named = true
 		}
-		if strings.Contains(w, `"frontend"`) {
+		if strings.Contains(w, `"frontend-eng"`) {
 			t.Errorf("warned about a role the roster defines: %q", w)
 		}
 	}
@@ -907,7 +907,7 @@ func TestRefreshOmitsTheOperatingBaseWithoutARuntimeHome(t *testing.T) {
 	target := t.TempDir()
 
 	if _, err := Refresh(Options{
-		Role:      "frontend",
+		Role:      "frontend-eng",
 		Harness:   "claude",
 		CWD:       projects,
 		TargetDir: target,
@@ -946,6 +946,36 @@ func TestJoinTraitsKeepsTheSerialCommaOffATwoTraitMeld(t *testing.T) {
 			t.Parallel()
 			if got := joinTraits(tc.traits); got != tc.want {
 				t.Fatalf("joinTraits(%v) = %q, want %q", tc.traits, got, tc.want)
+			}
+		})
+	}
+}
+
+// A provider roles.kdl still naming a retired slug binds to the renamed role,
+// whichever slug launches. teable:coilyco-flight-deck/agent-compose#8086.
+func TestRefreshBindsAProviderRoleStillNamedByItsRetiredSlug(t *testing.T) {
+	projects := filepath.Join(t.TempDir(), "projects")
+	provider := filepath.Join(projects, "coilyco-flight-deck", "agentic-os")
+	writeProvider(t, provider, true)
+	writeFile(t, filepath.Join(provider, ".agents", "roles.kdl"),
+		"roles {\n    role frontend {\n        composed-skill design-method\n    }\n}\n")
+	manifest := filepath.Join(t.TempDir(), "repository-plan.yaml")
+	writeManifest(t, manifest, projects, provider)
+	for _, role := range []string{"frontend-eng", "frontend"} {
+		t.Run(role, func(t *testing.T) {
+			target := t.TempDir()
+			result, err := Refresh(Options{
+				Role: role, Harness: "claude", CWD: projects, TargetDir: target,
+				PlanPath: manifest, OutDir: filepath.Join(t.TempDir(), "bundles"),
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got := result.Composition.Resolution.Request.Role; got != "frontend-eng" {
+				t.Fatalf("resolved role = %q, want frontend-eng", got)
+			}
+			if _, err := os.Stat(filepath.Join(target, ".claude", "skills", "design-method", "SKILL.md")); err != nil {
+				t.Fatalf("provider skill bound under the retired slug is missing: %v", err)
 			}
 		})
 	}

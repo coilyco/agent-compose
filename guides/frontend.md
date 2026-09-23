@@ -14,7 +14,7 @@ frontier.
 Print the seat before you read about it:
 
 ```sh
-agent-compose overlay --role frontend --seat claude
+agent-compose overlay --role frontend-eng --seat claude
 ```
 
 ```
@@ -41,7 +41,7 @@ The tool will tell you this itself, which is worth preferring over the
 paragraph above:
 
 ```sh
-agent-compose bundle materialize --role frontend --harness claude --out ./bundles
+agent-compose bundle materialize --role frontend-eng --harness claude --out ./bundles
 agent-compose describe ./bundles/bcd4c42bd7029183
 agent-compose verify ./bundles/bcd4c42bd7029183
 ```
@@ -49,10 +49,10 @@ agent-compose verify ./bundles/bcd4c42bd7029183
 ```
 bundle bcd4c42bd7029183 // frontend/playful+imaginative // native-skills // 7145 body bytes
 profile
-  ✓ boundary suggest-external-comms       role "frontend" holds within a scope boundary
-  ✓ boundary build-foundational-software  role "frontend" defers boundary
-  ✓ boundary modify-live-backend          role "frontend" defers boundary
-  ✓ boundary seek-external-validation     role "frontend" defers boundary
+  ✓ boundary suggest-external-comms       role "frontend-eng" holds within a scope boundary
+  ✓ boundary build-foundational-software  role "frontend-eng" defers boundary
+  ✓ boundary modify-live-backend          role "frontend-eng" defers boundary
+  ✓ boundary seek-external-validation     role "frontend-eng" defers boundary
 
 bundle verified: 9 skills // 13 files
 ```

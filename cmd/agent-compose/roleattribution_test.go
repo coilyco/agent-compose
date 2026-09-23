@@ -8,10 +8,10 @@ import (
 )
 
 func TestRoleAttributionEnvNamesTheRole(t *testing.T) {
-	env := roleAttributionEnv("director")
-	want := launch.AttributionRoleEnv + "=director"
+	env := roleAttributionEnv("prod-director")
+	want := launch.AttributionRoleEnv + "=prod-director"
 	if !slices.Contains(env, want) {
-		t.Fatalf("roleAttributionEnv(director) = %v, want it to contain %q", env, want)
+		t.Fatalf("roleAttributionEnv(prod-director) = %v, want it to contain %q", env, want)
 	}
 }
 
@@ -27,7 +27,7 @@ func TestAnUnknownRoleAttributesNothing(t *testing.T) {
 
 func TestEveryDeployedRoleRoundTrips(t *testing.T) {
 	for _, role := range []string{
-		"platform", "sysadmin", "science", "frontend", "gamedev", "director", "advocate",
+		"platform-eng", "sysadmin", "scientist", "frontend-eng", "game-dev", "prod-director", "dev-advocate",
 	} {
 		env := roleAttributionEnv(role)
 		if len(env) != 1 || env[0] != launch.AttributionRoleEnv+"="+role {

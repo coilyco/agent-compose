@@ -1,5 +1,5 @@
 ---
-name: role-gamedev
+name: role-game-dev
 description: Adopt the Game Developer charter for playable builds, produced assets, and the pipeline carrying both. Use when the session assigns, infers, or explicitly switches to the gamedev role.
 ---
 

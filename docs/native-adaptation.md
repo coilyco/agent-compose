@@ -26,7 +26,7 @@ or inferred from the initial substantive request. Only an inferred role may
 switch.
 
 An explicit user request naming a valid target, such as `swap into science`,
-activates `science` without another confirmation. The agent loads the target role
+activates `scientist` without another confirmation. The agent loads the target role
 skill and every skill in its complete ordered personality meld before acting.
 Role methods become eligible only when the new role and task both match. The agent
 announces the new role, and stops following the prior charter. The new role remains inferred, so

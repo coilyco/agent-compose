@@ -18,7 +18,7 @@ func shortIDRefresh(t *testing.T) *Result {
 	writeManifest(t, manifest, projects, provider)
 
 	result, err := Refresh(Options{
-		Role:      "frontend",
+		Role:      "frontend-eng",
 		Harness:   "claude",
 		CWD:       projects,
 		TargetDir: t.TempDir(),

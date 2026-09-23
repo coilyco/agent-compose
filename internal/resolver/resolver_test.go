@@ -14,7 +14,7 @@ func testPerson() *person.Person {
 	p := &person.Person{
 		Name: "kai",
 		Roles: map[string]person.Role{
-			"platform": {
+			"platform-eng": {
 				Purpose:       "Build.",
 				Briefing:      "You are an engineer.\n\nFinish the complete repository workflow.",
 				Personalities: []string{"tenacious", "grounded"},
@@ -39,7 +39,7 @@ func testPerson() *person.Person {
 
 func testRequest(delivery string) *schema.Request {
 	return &schema.Request{
-		Role: "platform", Delivery: delivery,
+		Role: "platform-eng", Delivery: delivery,
 	}
 }
 
@@ -76,7 +76,7 @@ func TestResolveSelectsPersonalityAndOrdinarySkills(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(res.Skills) != 4 ||
-		res.Skills[0].ID != "role-platform" ||
+		res.Skills[0].ID != "role-platform-eng" ||
 		res.Skills[1].ID != "personality-tenacious" ||
 		res.Skills[2].ID != "personality-grounded" ||
 		res.Skills[3].ID != "fixture-review" {
@@ -85,7 +85,7 @@ func TestResolveSelectsPersonalityAndOrdinarySkills(t *testing.T) {
 	if res.FavoriteColor == "" {
 		t.Fatal("expected a melded favorite color")
 	}
-	if res.RoleBriefing != testPerson().Roles["platform"].Briefing {
+	if res.RoleBriefing != testPerson().Roles["platform-eng"].Briefing {
 		t.Fatalf("role briefing = %q", res.RoleBriefing)
 	}
 	var selected, briefingSelected bool
@@ -93,7 +93,7 @@ func TestResolveSelectsPersonalityAndOrdinarySkills(t *testing.T) {
 		if d.Subject == "skill:fixture-review" && d.Outcome == OutcomeSelected {
 			selected = true
 		}
-		if d.Subject == "skill:role-platform" &&
+		if d.Subject == "skill:role-platform-eng" &&
 			d.Source == "person:kai" &&
 			d.Outcome == OutcomeSelected {
 			briefingSelected = true
@@ -150,12 +150,12 @@ func TestResolveRejectsUnsupportedRoleModelTier(t *testing.T) {
 		t.Fatal(err)
 	}
 	oss := &schema.Request{
-		Role:      "director",
+		Role:      "prod-director",
 		Delivery:  schema.DeliveryNativeSkills,
 		ModelTier: schema.ModelTierOSS,
 	}
 	if _, err := Resolve(oss, p, nil, nil); err == nil ||
-		err.Error() != `role "director" does not support model tier "oss"` {
+		err.Error() != `role "prod-director" does not support model tier "oss"` {
 		t.Fatalf("OSS Executive Strategist error = %v", err)
 	}
 
@@ -178,7 +178,7 @@ func TestResolveComposesOnlyTheActiveRolesSkills(t *testing.T) {
 		}
 	}
 	src.RoleSkills = map[string][]schema.ContentRef{
-		"platform": {{
+		"platform-eng": {{
 			ID: "coding-shape-cli", Path: "coding-shape-cli", EntryPoint: "COMPOSED.md",
 		}},
 		"writer": {{
@@ -228,12 +228,12 @@ func TestResolveIgnoresComposedSkillsBoundToUndefinedRoles(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	// "director" is staged by the provider but absent from this roster.
+	// "prod-director" is staged by the provider but absent from this roster.
 	src.RoleSkills = map[string][]schema.ContentRef{
-		"platform": {{
+		"platform-eng": {{
 			ID: "coding-shape-cli", Path: "coding-shape-cli", EntryPoint: "COMPOSED.md",
 		}},
-		"director": {{
+		"prod-director": {{
 			ID:         "tooling-ceo-platform-strategy",
 			Path:       "tooling-ceo-platform-strategy",
 			EntryPoint: "COMPOSED.md",
@@ -270,7 +270,7 @@ func TestResolveIgnoresComposedSkillsBoundToUndefinedRoles(t *testing.T) {
 
 func TestResolveStillRejectsAnUndefinedRequestedRole(t *testing.T) {
 	src := makeSource(t, "aos", nil)
-	req := &schema.Request{Role: "director", Delivery: schema.DeliveryNativeSkills}
+	req := &schema.Request{Role: "prod-director", Delivery: schema.DeliveryNativeSkills}
 	_, err := Resolve(req, testPerson(), []*schema.Source{src}, nil)
 	if err == nil || !strings.Contains(err.Error(), "not defined") {
 		t.Fatalf("expected the requested role to stay fail-closed, got %v", err)
@@ -288,13 +288,13 @@ func TestResolveWarnsAndTracesOverlappingComposedSkillSelectors(t *testing.T) {
 	}
 	selectors := []string{"*writing*", "*voice*"}
 	src.RoleSkills = map[string][]schema.ContentRef{
-		"platform": {{
+		"platform-eng": {{
 			ID: "writing-kai-voice", Path: "writing-kai-voice",
 			EntryPoint: "COMPOSED.md", Selectors: selectors,
 		}},
 	}
 	src.SelectorOverlaps = []schema.SelectorOverlap{{
-		Role: "platform", Skill: "writing-kai-voice", Selectors: selectors,
+		Role: "platform-eng", Skill: "writing-kai-voice", Selectors: selectors,
 	}}
 
 	res, err := Resolve(
@@ -394,7 +394,7 @@ func TestResolveValidationFailures(t *testing.T) {
 		t.Fatalf("expected unknown role failure, got %v", err)
 	}
 	broken := testPerson()
-	broken.Roles["platform"] = person.Role{
+	broken.Roles["platform-eng"] = person.Role{
 		Purpose: "Build.", Briefing: "Build from evidence.\n\nValidate the result.",
 		Personalities: []string{"missing"},
 	}
@@ -494,9 +494,9 @@ func TestResolveShadowsCopiesThatDifferOnlyByLineEnding(t *testing.T) {
 func TestResolveRefusesAnArchivedRole(t *testing.T) {
 	src := makeSource(t, "aos", nil)
 	p := testPerson()
-	role := p.Roles["platform"]
+	role := p.Roles["platform-eng"]
 	role.Archived = true
-	p.Roles["platform"] = role
+	p.Roles["platform-eng"] = role
 
 	_, err := Resolve(testRequest(schema.DeliveryNativeSkills), p, []*schema.Source{src}, nil)
 	if err == nil || !strings.Contains(err.Error(), "archived") {

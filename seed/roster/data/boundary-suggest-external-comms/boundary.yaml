@@ -1,7 +1,7 @@
 boundary: suggest-external-comms
 order: 2
 skill: boundary-suggest-external-comms
-owner: advocate
+owner: dev-advocate
 summary: Developer Advocate recommends communication addressed outward, other roles keep their own factual records
 acts:
   - side: own

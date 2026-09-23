@@ -14,7 +14,7 @@ well as frontier, so it is one of the cheaper seats to run at volume.
 Print the seat before you read about it:
 
 ```sh
-agent-compose overlay --role platform --seat claude
+agent-compose overlay --role platform-eng --seat claude
 ```
 
 ```
@@ -44,7 +44,7 @@ The tool will tell you this itself, which is worth preferring over the
 paragraph above:
 
 ```sh
-agent-compose bundle materialize --role platform --harness claude --out ./bundles
+agent-compose bundle materialize --role platform-eng --harness claude --out ./bundles
 agent-compose describe ./bundles/370611824b4480cd
 agent-compose verify ./bundles/370611824b4480cd
 ```
@@ -52,10 +52,10 @@ agent-compose verify ./bundles/370611824b4480cd
 ```
 bundle 370611824b4480cd // platform/tenacious+grounded // native-skills // 7624 body bytes
 profile
-  ✓ boundary build-foundational-software  role "platform" owns boundary
-  ✓ boundary modify-live-backend          role "platform" holds within a scope boundary
-  ✓ boundary seek-external-validation     role "platform" holds within a scope boundary
-  ✓ boundary suggest-external-comms       role "platform" defers boundary
+  ✓ boundary build-foundational-software  role "platform-eng" owns boundary
+  ✓ boundary modify-live-backend          role "platform-eng" holds within a scope boundary
+  ✓ boundary seek-external-validation     role "platform-eng" holds within a scope boundary
+  ✓ boundary suggest-external-comms       role "platform-eng" defers boundary
 
 bundle verified: 9 skills // 13 files
 ```

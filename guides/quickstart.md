@@ -124,10 +124,10 @@ In the repository you named, write `.agents/roles.kdl`:
 
 ```kdl
 roles {
-    role "platform" {
+    role "platform-eng" {
         composed-skill "widget-method"
     }
-    role "science" {
+    role "scientist" {
         composed-skill "widget-method"
     }
 }
@@ -137,7 +137,7 @@ This is the step people skip, and it is the one that decides which seats exist
 here. A role absent from this file cannot be launched in this repository, even
 though `catalog roles` lists it, because the roster says a seat is possible and
 `roles.kdl` says it is offered. Ask for one you did not declare and you get
-`repository plan has no role "science", available roles: platform`.
+`repository plan has no role "scientist", available roles: platform-eng`.
 
 A role body may stay empty. `composed-skill` names a directory under
 `.agents/composed/<name>/COMPOSED.md`, which is repository doctrine only that
@@ -180,7 +180,7 @@ against a roster they were never measured on.
 When you have decided, assign the role instead and carry one:
 
 ```sh
-agent-compose bundle materialize --role science --harness claude --out ./bundles
+agent-compose bundle materialize --role scientist --harness claude --out ./bundles
 agent-compose launch science claude
 ```
 

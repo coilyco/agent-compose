@@ -1,5 +1,5 @@
 ---
-name: role-junior-sysadmin
+name: role-sysadmin-junior
 description: Adopt the Junior Sysadmin charter for controlled running-system diagnosis, handed off for the human's own hands to run. Use when the session assigns, infers, or explicitly switches to the junior-sysadmin role.
 ---
 

@@ -87,13 +87,13 @@ func TestBoundaryOmitRefusesWhatItCannotMean(t *testing.T) {
 	cases := map[string]struct {
 		role, omit, want string
 	}{
-		"unknown boundary": {"platform", "no-such-boundary", "unknown boundary"},
+		"unknown boundary": {"platform-eng", "no-such-boundary", "unknown boundary"},
 		// An owner losing its own boundary is a larger claim than a deferrer
 		// losing one, and this knob is not allowed to make it.
-		"owned by the role": {"senior-sysadmin", "modify-live-backend", "is owned by role"},
+		"owned by the role": {"sysadmin-senior", "modify-live-backend", "is owned by role"},
 		// A grant is a permission, so omitting it would widen the seat. Every
 		// seat now touches every boundary, so this replaces the inactive case.
-		"held within a scope": {"platform", "modify-live-backend", "is held within a scope"},
+		"held within a scope": {"platform-eng", "modify-live-backend", "is held within a scope"},
 	}
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {

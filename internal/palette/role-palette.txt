@@ -46,15 +46,15 @@ the L/chroma push above never actually had to ship.
 Closest accent pair: 0.0810
 Closest background pair: 0.0319
 
-platform // #709b62 // #0e2b14 // tenacious, grounded
-senior-sysadmin // #0d9c92 // #002a36 // protective, grounded
-science // #14d5b8 // #002c27 // empirical, grounded
-frontend // #ee7eea // #321a31 // playful, imaginative
-gamedev // #3b82ff // #11243e // immersed, imaginative
-director // #da656f // #391721 // decisive, outward
-advocate // #f7a060 // #3a1a0e // warm, outward
+platform-eng // #709b62 // #0e2b14 // tenacious, grounded
+sysadmin-senior // #0d9c92 // #002a36 // protective, grounded
+scientist // #14d5b8 // #002c27 // empirical, grounded
+frontend-eng // #ee7eea // #321a31 // playful, imaginative
+game-dev // #3b82ff // #11243e // immersed, imaginative
+prod-director // #da656f // #391721 // decisive, outward
+dev-advocate // #f7a060 // #3a1a0e // warm, outward
 analyst // #9190c1 // #251e3c // suspicious, tenacious
 psych // #ab9137 // #332000 // warm, protective
 reporter // #99b052 // #252602 // tenacious, outward
-junior-sysadmin // #0d9c92 // #002a36 // protective, grounded // twin of senior-sysadmin
-manager // #da656f // #391721 // decisive, outward // twin of director
+sysadmin-junior // #0d9c92 // #002a36 // protective, grounded // twin of sysadmin-senior
+prod-manager // #da656f // #391721 // decisive, outward // twin of prod-director

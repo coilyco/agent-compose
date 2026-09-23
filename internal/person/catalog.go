@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/fs"
 	"path"
+
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
 )
 
 type PersonalityCatalogEntry struct {
@@ -120,6 +122,7 @@ func (p *Person) RoleCatalog() ([]RoleCatalogEntry, error) {
 }
 
 func (p *Person) SeatCatalog(roleFilter string) ([]SeatCatalogEntry, error) {
+	roleFilter = roleslug.Canonical(roleFilter)
 	roleNames := p.RoleOrder
 	if roleFilter != "" {
 		if _, ok := p.Roles[roleFilter]; !ok {

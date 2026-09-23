@@ -84,7 +84,7 @@ func seatBundleFixture(t *testing.T, role, name string) string {
 // projection above its cwd, so the walk found nothing and whoami said nothing.
 func TestWhoamiAnswersFromTheSessionBundleWithNoProjectionInReach(t *testing.T) {
 	t.Setenv(agentid.SessionEnv, "kj58")
-	t.Setenv(launch.SessionBundleEnv, seatBundleFixture(t, "platform", "Angie"))
+	t.Setenv(launch.SessionBundleEnv, seatBundleFixture(t, "platform-eng", "Angie"))
 	t.Setenv(launch.SessionLayoutEnv, "claude")
 	got, err := Whoami(Options{})
 	if err != nil {
@@ -97,8 +97,8 @@ func TestWhoamiAnswersFromTheSessionBundleWithNoProjectionInReach(t *testing.T) 
 
 // Two roles on one host resolved to whichever projection converged last.
 func TestWhoamiKeepsConcurrentSessionsApart(t *testing.T) {
-	platform := seatBundleFixture(t, "platform", "Angie")
-	director := seatBundleFixture(t, "director", "Portia")
+	platform := seatBundleFixture(t, "platform-eng", "Angie")
+	director := seatBundleFixture(t, "prod-director", "Portia")
 	for _, tc := range []struct{ bundleDir, want string }{
 		{platform, "Angie"},
 		{director, "Portia"},
@@ -119,7 +119,7 @@ func TestWhoamiKeepsConcurrentSessionsApart(t *testing.T) {
 // --target is an inspection request, so it still reports what sits at that path.
 func TestWhoamiTargetStillInspectsAProjection(t *testing.T) {
 	t.Setenv(agentid.SessionEnv, "")
-	t.Setenv(launch.SessionBundleEnv, seatBundleFixture(t, "director", "Portia"))
+	t.Setenv(launch.SessionBundleEnv, seatBundleFixture(t, "prod-director", "Portia"))
 	t.Setenv(launch.SessionLayoutEnv, "claude")
 	got, err := Whoami(Options{Target: shortIDFixture(t)})
 	if err != nil {
@@ -133,7 +133,7 @@ func TestWhoamiTargetStillInspectsAProjection(t *testing.T) {
 // A half-set binding is not a binding, so the walk still runs.
 func TestWhoamiIgnoresAnIncompleteBinding(t *testing.T) {
 	t.Setenv(agentid.SessionEnv, "")
-	t.Setenv(launch.SessionBundleEnv, seatBundleFixture(t, "director", "Portia"))
+	t.Setenv(launch.SessionBundleEnv, seatBundleFixture(t, "prod-director", "Portia"))
 	t.Setenv(launch.SessionLayoutEnv, "")
 	got, err := Whoami(Options{Target: t.TempDir()})
 	if err != nil {
@@ -225,7 +225,7 @@ func TestWhoamiJSONSuppressesWithoutAProjection(t *testing.T) {
 // side of a roster change from the other, which is the whole point.
 func TestFingerprintChangesWithTheComposition(t *testing.T) {
 	base := bundle.Manifest{
-		Role: "science", RoleSkill: "role-science", RoleSkillDigest: "sha256:aa",
+		Role: "scientist", RoleSkill: "role-scientist", RoleSkillDigest: "sha256:aa",
 		ModelTier: "frontier", Personalities: []string{"empirical"},
 		Content: []bundle.ContentDigest{{ID: "roster:core", Digest: "sha256:bb"}},
 	}
@@ -234,7 +234,7 @@ func TestFingerprintChangesWithTheComposition(t *testing.T) {
 		t.Fatal("fingerprint is not deterministic")
 	}
 	for name, mutate := range map[string]func(*bundle.Manifest){
-		"role":        func(m *bundle.Manifest) { m.Role = "platform" },
+		"role":        func(m *bundle.Manifest) { m.Role = "platform-eng" },
 		"role skill":  func(m *bundle.Manifest) { m.RoleSkillDigest = "sha256:cc" },
 		"model tier":  func(m *bundle.Manifest) { m.ModelTier = "commodity" },
 		"personality": func(m *bundle.Manifest) { m.Personalities = []string{"grounded"} },

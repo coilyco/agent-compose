@@ -13,7 +13,7 @@ and looks past the current repository for the thing that would settle it.
 Print the seat before you read about it:
 
 ```sh
-agent-compose overlay --role director --seat claude
+agent-compose overlay --role prod-director --seat claude
 ```
 
 ```
@@ -44,7 +44,7 @@ The tool will tell you this itself, which is worth preferring over the
 paragraph above:
 
 ```sh
-agent-compose bundle materialize --role director --harness claude --out ./bundles
+agent-compose bundle materialize --role prod-director --harness claude --out ./bundles
 agent-compose describe ./bundles/58759c3535a7cbfe
 agent-compose verify ./bundles/58759c3535a7cbfe
 ```
@@ -52,10 +52,10 @@ agent-compose verify ./bundles/58759c3535a7cbfe
 ```
 bundle 58759c3535a7cbfe // director/decisive+outward // native-skills // 7404 body bytes
 profile
-  ✓ boundary seek-external-validation     role "director" owns boundary
-  ✓ boundary build-foundational-software  role "director" defers boundary
-  ✓ boundary modify-live-backend          role "director" defers boundary
-  ✓ boundary suggest-external-comms       role "director" defers boundary
+  ✓ boundary seek-external-validation     role "prod-director" owns boundary
+  ✓ boundary build-foundational-software  role "prod-director" defers boundary
+  ✓ boundary modify-live-backend          role "prod-director" defers boundary
+  ✓ boundary suggest-external-comms       role "prod-director" defers boundary
 
 bundle verified: 9 skills // 13 files
 ```

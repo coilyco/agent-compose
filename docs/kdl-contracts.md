@@ -12,7 +12,7 @@ external capability sources:
 compose {
     person-policy "external-only"
     person-source "person"
-    role "platform"
+    role "platform-eng"
     model-tier "commodity"
     delivery "native-skills"
     source "aos-public" root="agentic-os" required=#true
@@ -42,11 +42,11 @@ repositories {
     }
 }
 roles {
-    role "platform" {
+    role "platform-eng" {
         use-repository hardware
         composed-skill "coding-*"
     }
-    role "advocate" {
+    role "dev-advocate" {
         use-repository hardware {
             skill "machine-laptop-*"
         }

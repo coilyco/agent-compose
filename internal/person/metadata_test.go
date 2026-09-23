@@ -104,11 +104,11 @@ func TestRenderRoleTranscriptIncludesCompleteSelectedMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	got, err := p.RenderRoleTranscript("platform", "#90a66a", RoleTranscriptOptions{Expanded: true})
+	got, err := p.RenderRoleTranscript("platform-eng", "#90a66a", RoleTranscriptOptions{Expanded: true})
 	if err != nil {
 		t.Fatal(err)
 	}
-	role := p.Roles["platform"]
+	role := p.Roles["platform-eng"]
 	personalityMetadata := strings.Index(got, "personality metadata")
 	rendererExpressions := strings.Index(got, "renderer expressions:")
 	roleMetadata := strings.Index(got, "role metadata")
@@ -120,7 +120,7 @@ func TestRenderRoleTranscriptIncludesCompleteSelectedMetadata(t *testing.T) {
 	for _, want := range []string{
 		"role metadata",
 		"roster: core // provided by: roster:core",
-		"role: platform",
+		"role: platform-eng",
 		"purpose: " + role.Purpose,
 		"agent identity: " + role.Identity.Name,
 		"personalities: " + strings.Join(role.Personalities, " // "),
@@ -176,9 +176,9 @@ func TestRenderRoleTranscriptUsesCanonicalColors(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	role := p.Roles["platform"]
+	role := p.Roles["platform-eng"]
 	favoriteColor := role.FavoriteColor
-	trueColor, err := p.RenderRoleTranscript("platform", favoriteColor, RoleTranscriptOptions{
+	trueColor, err := p.RenderRoleTranscript("platform-eng", favoriteColor, RoleTranscriptOptions{
 		Color: true, TrueColor: true, Expanded: true,
 	})
 	if err != nil {
@@ -197,7 +197,7 @@ func TestRenderRoleTranscriptUsesCanonicalColors(t *testing.T) {
 			t.Errorf("truecolor transcript missing %q:\n%q", want, trueColor)
 		}
 	}
-	fallback, err := p.RenderRoleTranscript("platform", favoriteColor, RoleTranscriptOptions{
+	fallback, err := p.RenderRoleTranscript("platform-eng", favoriteColor, RoleTranscriptOptions{
 		Color: true, Expanded: true,
 	})
 	if err != nil {
@@ -241,11 +241,11 @@ func TestRenderRoleTranscriptKeepsTheDefaultTerse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	terse, err := p.RenderRoleTranscript("platform", "#90a66a", RoleTranscriptOptions{})
+	terse, err := p.RenderRoleTranscript("platform-eng", "#90a66a", RoleTranscriptOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	role := p.Roles["platform"]
+	role := p.Roles["platform-eng"]
 	briefingOpener := strings.SplitN(strings.TrimSpace(role.Briefing), "\n", 2)[0]
 	for _, unwanted := range []string{
 		"briefing:",
@@ -259,7 +259,7 @@ func TestRenderRoleTranscriptKeepsTheDefaultTerse(t *testing.T) {
 	first := p.Personalities[role.Personalities[0]]
 	for _, want := range []string{
 		"role metadata",
-		"role: platform",
+		"role: platform-eng",
 		"personalities: " + strings.Join(role.Personalities, " // "),
 		"personality metadata",
 		first.Emblem.Name(),
@@ -270,7 +270,7 @@ func TestRenderRoleTranscriptKeepsTheDefaultTerse(t *testing.T) {
 			t.Errorf("terse transcript missing %q:\n%s", want, terse)
 		}
 	}
-	expanded, err := p.RenderRoleTranscript("platform", "#90a66a", RoleTranscriptOptions{Expanded: true})
+	expanded, err := p.RenderRoleTranscript("platform-eng", "#90a66a", RoleTranscriptOptions{Expanded: true})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -290,8 +290,8 @@ func TestIdentityCardNamesWhatTheLoadListOmits(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	role := p.Roles["platform"]
-	got, err := p.RenderRoleIdentityCard("platform", "#90a66a", role.Boundaries)
+	role := p.Roles["platform-eng"]
+	got, err := p.RenderRoleIdentityCard("platform-eng", "#90a66a", role.Boundaries)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -299,11 +299,11 @@ func TestIdentityCardNamesWhatTheLoadListOmits(t *testing.T) {
 	if !strings.Contains(doctrine, "summary is not the operative text") {
 		t.Errorf("doctrine section does not say the summaries are not the doctrine:\n%s", doctrine)
 	}
-	named := append([]string{p.RoleSkillID("platform")}, p.boundarySkillIDs(role.Boundaries)...)
+	named := append([]string{p.RoleSkillID("platform-eng")}, p.boundarySkillIDs(role.Boundaries)...)
 	for _, name := range role.Personalities {
 		named = append(named, p.Personalities[name].Skill)
 	}
-	sizes, total := p.skillBodySizes("platform", named)
+	sizes, total := p.skillBodySizes("platform-eng", named)
 	if len(sizes) != len(named) {
 		t.Fatalf("sized %d of %d named skills: %v", len(sizes), len(named), sizes)
 	}

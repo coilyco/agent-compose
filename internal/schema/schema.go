@@ -9,6 +9,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+
 	kdl "github.com/calico32/kdl-go"
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
@@ -864,6 +866,8 @@ func parseRoleGraph(path string, composed map[string]string) (roleGraph, error) 
 		if err != nil {
 			return roleGraph{}, fmt.Errorf("provider role bindings %s: %w", providerRolesPath, err)
 		}
+		// A retired and a current spelling of one role collide here on purpose.
+		role = roleslug.Canonical(role)
 		if len(roleNode.Properties()) > 0 {
 			return roleGraph{}, fmt.Errorf("provider role %q: role accepts no properties", role)
 		}

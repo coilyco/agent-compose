@@ -7,6 +7,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/treehash"
@@ -140,6 +142,7 @@ func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, mi
 		}
 	}
 	sources = append([]*schema.Source{personSource}, sources...)
+	req.Role = roleslug.Canonical(req.Role)
 
 	role, ok := p.Roles[req.Role]
 	if !ok {

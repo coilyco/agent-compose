@@ -1,7 +1,7 @@
 // Single-seat deployment with nobody to hand work to. The boundaries named
 // are deferrals the role can drop; its scoped build grant is not.
 compose {
-    role "science"
+    role "scientist"
     delivery "native-skills"
     boundary-omit "modify-live-backend" "suggest-external-comms" "seek-external-validation"
     source "aos-public" declaration="source-public.kdl" required=#true

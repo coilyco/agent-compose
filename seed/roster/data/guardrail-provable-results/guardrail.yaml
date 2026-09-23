@@ -1,7 +1,7 @@
 guardrail: provable-results
 order: 1
 skill: guardrail-provable-results
-role: science
+role: scientist
 attests:
   in: pastes the command that produced the claim and that command's output beside it, tagged MEASURED,
     so a reader can check it without rerunning anything

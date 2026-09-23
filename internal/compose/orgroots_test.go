@@ -46,7 +46,7 @@ func orgSource(owner string, patterns ...string) *schema.Source {
 		Orgs: map[string]schema.OrgDefinition{
 			"gaming": {ID: "gaming", Owner: owner, Skills: patterns},
 		},
-		RoleOrgs: map[string][]schema.OrgUse{"gamedev": {{Org: "gaming"}}},
+		RoleOrgs: map[string][]schema.OrgUse{"game-dev": {{Org: "gaming"}}},
 	}
 }
 
@@ -62,7 +62,7 @@ func TestOrgRootsExpandsOneRootPerContributingCatalogue(t *testing.T) {
 		catalogueSource(t, "https://forgejo.example.test/coilyco-gaming/enshrouded/.agents/skills@main", ens),
 	)
 
-	roots, err := OrgRoots("gamedev", []*schema.Source{orgSource("coilyco-gaming", "sirens-game-*")}, set)
+	roots, err := OrgRoots("game-dev", []*schema.Source{orgSource("coilyco-gaming", "sirens-game-*")}, set)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -121,19 +121,19 @@ func TestOrgRootsFailsClosed(t *testing.T) {
 	set := buildSet(t,
 		catalogueSource(t, "https://forgejo.example.test/coilyco-gaming/eco-ops/.agents/skills@main", eco))
 
-	if _, err := OrgRoots("gamedev", []*schema.Source{orgSource("coilyco-absent", "*")}, set); err == nil {
+	if _, err := OrgRoots("game-dev", []*schema.Source{orgSource("coilyco-absent", "*")}, set); err == nil {
 		t.Fatal("an org with no catalogue in the compiled set expanded")
 	}
-	if _, err := OrgRoots("gamedev", []*schema.Source{orgSource("coilyco-gaming", "nothing-*")}, set); err == nil {
+	if _, err := OrgRoots("game-dev", []*schema.Source{orgSource("coilyco-gaming", "nothing-*")}, set); err == nil {
 		t.Fatal("a selector matching nothing expanded")
 	}
 	// No compiled set means no org roots, rather than a guess.
-	roots, err := OrgRoots("gamedev", []*schema.Source{orgSource("coilyco-gaming", "*")}, nil)
+	roots, err := OrgRoots("game-dev", []*schema.Source{orgSource("coilyco-gaming", "*")}, nil)
 	if err != nil || len(roots) != 0 {
 		t.Fatalf("roots = %+v err = %v", roots, err)
 	}
 	// A role that uses no org gets none.
-	roots, err = OrgRoots("platform", []*schema.Source{orgSource("coilyco-gaming", "*")}, set)
+	roots, err = OrgRoots("platform-eng", []*schema.Source{orgSource("coilyco-gaming", "*")}, set)
 	if err != nil || len(roots) != 0 {
 		t.Fatalf("unrelated role got org roots: %+v %v", roots, err)
 	}
@@ -149,7 +149,7 @@ func TestOrgRootComposesIntoARenderedBundle(t *testing.T) {
 	set := buildSet(t,
 		catalogueSource(t, "https://forgejo.example.test/coilyco-gaming/enshrouded/.agents/skills@main", ens))
 
-	roots, err := OrgRoots("gamedev", []*schema.Source{orgSource("coilyco-gaming", "sirens-game-*")}, set)
+	roots, err := OrgRoots("game-dev", []*schema.Source{orgSource("coilyco-gaming", "sirens-game-*")}, set)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -158,7 +158,7 @@ func TestOrgRootComposesIntoARenderedBundle(t *testing.T) {
 	}
 
 	result, err := RunRoots(
-		&schema.Request{Role: "gamedev", Delivery: schema.DeliveryNativeSkills},
+		&schema.Request{Role: "game-dev", Delivery: schema.DeliveryNativeSkills},
 		roots,
 		t.TempDir(),
 		Options{},

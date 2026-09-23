@@ -109,7 +109,7 @@ func TestBoundaryActsFollowTheSideTheSeatHolds(t *testing.T) {
 			}
 		}
 	}
-	card, err := p.RenderRoleIdentityCard("platform", "#9c8b31", []string{"seek-external-validation"})
+	card, err := p.RenderRoleIdentityCard("platform-eng", "#9c8b31", []string{"seek-external-validation"})
 	if err != nil {
 		t.Fatal(err)
 	}

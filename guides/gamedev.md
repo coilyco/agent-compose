@@ -13,7 +13,7 @@ about it, and judges by what the loop feels like from inside.
 Print the seat before you read about it:
 
 ```sh
-agent-compose overlay --role gamedev --seat claude
+agent-compose overlay --role game-dev --seat claude
 ```
 
 ```
@@ -39,7 +39,7 @@ The tool will tell you this itself, which is worth preferring over the
 paragraph above:
 
 ```sh
-agent-compose bundle materialize --role gamedev --harness claude --out ./bundles
+agent-compose bundle materialize --role game-dev --harness claude --out ./bundles
 agent-compose describe ./bundles/0fa273eb460142e2
 agent-compose verify ./bundles/0fa273eb460142e2
 ```
@@ -47,10 +47,10 @@ agent-compose verify ./bundles/0fa273eb460142e2
 ```
 bundle 0fa273eb460142e2 // gamedev/immersed+imaginative // native-skills // 7523 body bytes
 profile
-  ✓ boundary modify-live-backend          role "gamedev" holds within a scope boundary
-  ✓ boundary suggest-external-comms       role "gamedev" holds within a scope boundary
-  ✓ boundary build-foundational-software  role "gamedev" defers boundary
-  ✓ boundary seek-external-validation     role "gamedev" defers boundary
+  ✓ boundary modify-live-backend          role "game-dev" holds within a scope boundary
+  ✓ boundary suggest-external-comms       role "game-dev" holds within a scope boundary
+  ✓ boundary build-foundational-software  role "game-dev" defers boundary
+  ✓ boundary seek-external-validation     role "game-dev" defers boundary
 
 bundle verified: 9 skills // 13 files
 ```

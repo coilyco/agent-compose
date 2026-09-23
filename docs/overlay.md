@@ -12,7 +12,7 @@ Supply a role, harness seat, and renderer state:
 ```sh
 agent-compose overlay \
   --person-source ./person \
-  --role platform \
+  --role platform-eng \
   --seat codex \
   --expression acting
 ```

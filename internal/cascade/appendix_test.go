@@ -79,7 +79,7 @@ func TestFileAppendixStripsFrontmatterAndAbsolutizesLinks(t *testing.T) {
 
 func TestRoleScopedAppendixSkipsTheRoleLessLoadPoint(t *testing.T) {
 	e, sources := appendixEnv(t)
-	e.config(t, sources+"appendix:\n  - text: |\n      Global block.\n  - roles: [platform, sysadmin]\n    text: |\n      Platform block.\n")
+	e.config(t, sources+"appendix:\n  - text: |\n      Global block.\n  - roles: [platform-eng, sysadmin]\n    text: |\n      Platform block.\n")
 	if code, _, errOut := e.run(t, false); code != 0 {
 		t.Fatalf("run failed: %d %s", code, errOut)
 	}
@@ -95,17 +95,17 @@ func TestRoleScopedAppendixSkipsTheRoleLessLoadPoint(t *testing.T) {
 	if err != nil {
 		t.Fatalf("load config: %v", err)
 	}
-	base, err := OperatingBase(cfg, "claude", "platform")
+	base, err := OperatingBase(cfg, "claude", "platform-eng")
 	if err != nil {
 		t.Fatalf("operating base: %v", err)
 	}
 	if !strings.Contains(base, "Platform block.") || !strings.Contains(base, "Global block.") {
-		t.Fatalf("platform base missing a bound block:\n%s", base)
+		t.Fatalf("platform-eng base missing a bound block:\n%s", base)
 	}
-	if !strings.Contains(base, "<!-- appendix: agent-compose.yaml entry 2 (roles: platform, sysadmin) -->") {
+	if !strings.Contains(base, "<!-- appendix: agent-compose.yaml entry 2 (roles: platform-eng, sysadmin) -->") {
 		t.Fatalf("role-scoped fence does not name its roles:\n%s", base)
 	}
-	other, err := OperatingBase(cfg, "claude", "frontend")
+	other, err := OperatingBase(cfg, "claude", "frontend-eng")
 	if err != nil {
 		t.Fatalf("operating base: %v", err)
 	}
@@ -118,11 +118,11 @@ func TestLoadConfigRejectsMalformedAppendixEntries(t *testing.T) {
 	e := newEnv(t)
 	for name, body := range map[string]string{
 		"both text and path": "appendix:\n  - text: hi\n    path: ./block.md\n",
-		"neither":            "appendix:\n  - roles: [platform]\n",
+		"neither":            "appendix:\n  - roles: [platform-eng]\n",
 		"blank text":         "appendix:\n  - text: \"   \"\n",
 		"upper-case role":    "appendix:\n  - text: hi\n    roles: [Platform]\n",
 		"empty role":         "appendix:\n  - text: hi\n    roles: [\"\"]\n",
-		"repeated role":      "appendix:\n  - text: hi\n    roles: [platform, platform]\n",
+		"repeated role":      "appendix:\n  - text: hi\n    roles: [platform-eng, platform-eng]\n",
 		"unknown key":        "appendix:\n  - text: hi\n    harnesses: [claude]\n",
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -155,14 +155,14 @@ func TestMissingAppendixPathWarnsOnRunAndFailsOnCheck(t *testing.T) {
 
 func TestVerboseLayoutNamesEveryAppendixDestination(t *testing.T) {
 	e, sources := appendixEnv(t)
-	e.config(t, sources+"appendix:\n  - text: |\n      Global block.\n  - roles: [platform]\n    text: |\n      Platform block.\n")
+	e.config(t, sources+"appendix:\n  - text: |\n      Global block.\n  - roles: [platform-eng]\n    text: |\n      Platform block.\n")
 	code, out, errOut := e.run(t, false)
 	if code != 0 {
 		t.Fatalf("run failed: %d %s", code, errOut)
 	}
 	for _, want := range []string{
 		"layout  <!-- appendix: agent-compose.yaml entry 1 --> => every composed output",
-		"layout  <!-- appendix: agent-compose.yaml entry 2 (roles: platform) --> => role bundles: platform",
+		"layout  <!-- appendix: agent-compose.yaml entry 2 (roles: platform-eng) --> => role bundles: platform-eng",
 	} {
 		if !strings.Contains(out, want) {
 			t.Fatalf("verbose layout missing %q:\n%s", want, out)

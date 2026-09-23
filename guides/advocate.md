@@ -16,7 +16,7 @@ not need a frontier model.
 Print the seat before you read about it:
 
 ```sh
-agent-compose overlay --role advocate --seat claude
+agent-compose overlay --role dev-advocate --seat claude
 ```
 
 ```
@@ -47,7 +47,7 @@ The tool will tell you this itself, which is worth preferring over the
 paragraph above:
 
 ```sh
-agent-compose bundle materialize --role advocate --harness claude --out ./bundles
+agent-compose bundle materialize --role dev-advocate --harness claude --out ./bundles
 agent-compose describe ./bundles/4b5f4342f04aa6d1
 agent-compose verify ./bundles/4b5f4342f04aa6d1
 ```
@@ -55,10 +55,10 @@ agent-compose verify ./bundles/4b5f4342f04aa6d1
 ```
 bundle 4b5f4342f04aa6d1 // advocate/warm+outward // native-skills // 7321 body bytes
 profile
-  ✓ boundary suggest-external-comms       role "advocate" owns boundary
-  ✓ boundary seek-external-validation     role "advocate" holds within a scope boundary
-  ✓ boundary build-foundational-software  role "advocate" defers boundary
-  ✓ boundary modify-live-backend          role "advocate" defers boundary
+  ✓ boundary suggest-external-comms       role "dev-advocate" owns boundary
+  ✓ boundary seek-external-validation     role "dev-advocate" holds within a scope boundary
+  ✓ boundary build-foundational-software  role "dev-advocate" defers boundary
+  ✓ boundary modify-live-backend          role "dev-advocate" defers boundary
 
 bundle verified: 9 skills // 13 files
 ```

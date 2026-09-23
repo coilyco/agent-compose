@@ -49,7 +49,7 @@ func TestMarshalProducesDeterministicYAML(t *testing.T) {
 			Policy:   PolicyInput{Path: PolicyPath, SHA256: fixtureDigest},
 		}},
 		Roles: map[string][]Selection{
-			"platform": {{
+			"platform-eng": {{
 				Identity: "example/context",
 				Path:     context,
 				Source:   "example/aosk",
@@ -86,6 +86,49 @@ func TestMarshalProducesDeterministicYAML(t *testing.T) {
 	} {
 		if !strings.Contains(string(first), want) {
 			t.Fatalf("rendered plan missing %q:\n%s", want, first)
+		}
+	}
+}
+
+// A plan written by a binary that predates a role rename still resolves the
+// current slug. teable:coilyco-flight-deck/agent-compose#8086.
+func TestLoadKeysARetiredRoleSlugByItsCurrentSlug(t *testing.T) {
+	projectsRoot := filepath.Join(t.TempDir(), "projects")
+	plan := Plan{
+		Format:       Format,
+		ProjectsRoot: projectsRoot,
+		Inputs: []Input{{
+			Identity: "example/aosk",
+			Revision: fixtureRevision,
+			Policy:   PolicyInput{Path: PolicyPath, SHA256: fixtureDigest},
+		}},
+		Roles: map[string][]Selection{
+			"science": {{
+				Identity: "example/context",
+				Path:     filepath.Join(projectsRoot, "example", "context"),
+				Source:   "example/aosk",
+				Scope:    "global",
+				Reason:   "selected globally by repository policy",
+			}},
+		},
+		Residency: []Selection{},
+	}
+	raw, err := Marshal(plan)
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(t.TempDir(), "repository-plan.yaml")
+	if err := os.WriteFile(path, raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	loaded, err := Load(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, role := range []string{"scientist", "science"} {
+		selections, err := loaded.ForRole(role)
+		if err != nil || len(selections) != 1 {
+			t.Fatalf("ForRole(%q) = %v, %v; want the one selection", role, selections, err)
 		}
 	}
 }

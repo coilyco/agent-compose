@@ -17,9 +17,9 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	ai := p.Roles["science"]
+	ai := p.Roles["scientist"]
 	for _, method := range ai.Methods {
-		if raw, ok := p.RoleMethodDefinition("science", method); !ok ||
+		if raw, ok := p.RoleMethodDefinition("scientist", method); !ok ||
 			!strings.Contains(string(raw), "\nname: "+method+"\n") {
 			t.Errorf("AI role method %q is missing or mismatched", method)
 		}
@@ -85,9 +85,9 @@ func TestValidateCoreBoundariesRejectsUnbalancedRoster(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		role := p.Roles["platform"]
+		role := p.Roles["platform-eng"]
 		role.Personalities = append(role.Personalities, "immersed")
-		p.Roles["platform"] = role
+		p.Roles["platform-eng"] = role
 		if err := validateCorePersonalityMelds(p); err == nil ||
 			!strings.Contains(err.Error(), "want exactly 2") {
 			t.Fatalf("slot-count validation error = %v", err)
@@ -100,9 +100,9 @@ func TestValidateCoreBoundariesRejectsUnbalancedRoster(t *testing.T) {
 			t.Fatal(err)
 		}
 		// grounded bonds three seats already, so a fourth binding tips it.
-		role := p.Roles["frontend"]
+		role := p.Roles["frontend-eng"]
 		role.Personalities[1] = "grounded"
-		p.Roles["frontend"] = role
+		p.Roles["frontend-eng"] = role
 		if err := validateCorePersonalityMelds(p); err == nil ||
 			!strings.Contains(err.Error(), "want at most three") {
 			t.Fatalf("usage validation error = %v", err)
@@ -116,9 +116,9 @@ func TestValidateCoreBoundariesRejectsUnbalancedRoster(t *testing.T) {
 		}
 		// Two roles melding the same personalities land on the same anchor, so
 		// the spread step can only separate them by twice the drift cap.
-		role := p.Roles["director"]
-		role.Personalities = append([]string(nil), p.Roles["advocate"].Personalities...)
-		p.Roles["director"] = role
+		role := p.Roles["prod-director"]
+		role.Personalities = append([]string(nil), p.Roles["dev-advocate"].Personalities...)
+		p.Roles["prod-director"] = role
 		if err := p.ResolveFavoriteColors(); err != nil {
 			t.Fatal(err)
 		}
@@ -169,16 +169,16 @@ func TestColorTwinSharesColorsAndValidates(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if p.Roles["junior-sysadmin"].ColorTwin != "senior-sysadmin" {
+		if p.Roles["sysadmin-junior"].ColorTwin != "sysadmin-senior" {
 			t.Fatalf("shipped roster no longer twins junior-sysadmin to senior-sysadmin")
 		}
-		if p.Roles["junior-sysadmin"].FavoriteColor != p.Roles["senior-sysadmin"].FavoriteColor {
+		if p.Roles["sysadmin-junior"].FavoriteColor != p.Roles["sysadmin-senior"].FavoriteColor {
 			t.Fatalf("twin favorite = %q, source = %q",
-				p.Roles["junior-sysadmin"].FavoriteColor, p.Roles["senior-sysadmin"].FavoriteColor)
+				p.Roles["sysadmin-junior"].FavoriteColor, p.Roles["sysadmin-senior"].FavoriteColor)
 		}
-		if p.Roles["junior-sysadmin"].Background != p.Roles["senior-sysadmin"].Background {
+		if p.Roles["sysadmin-junior"].Background != p.Roles["sysadmin-senior"].Background {
 			t.Fatalf("twin background = %q, source = %q",
-				p.Roles["junior-sysadmin"].Background, p.Roles["senior-sysadmin"].Background)
+				p.Roles["sysadmin-junior"].Background, p.Roles["sysadmin-senior"].Background)
 		}
 		// A twin colliding with its own source is the point, not a violation.
 		if err := validateCorePersonalityMelds(p); err != nil {
@@ -220,14 +220,14 @@ func TestColorTwinSharesColorsAndValidates(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		junior := p.Roles["junior-sysadmin"]
+		junior := p.Roles["sysadmin-junior"]
 		junior.Personalities = []string{"suspicious", "empirical"}
-		p.Roles["junior-sysadmin"] = junior
-		if got := twinMeldMismatches(p); len(got) != 1 || !strings.HasPrefix(got[0], "junior-sysadmin") {
+		p.Roles["sysadmin-junior"] = junior
+		if got := twinMeldMismatches(p); len(got) != 1 || !strings.HasPrefix(got[0], "sysadmin-junior") {
 			t.Fatalf("a drifted twin was reported as %v", got)
 		}
-		twinMeldExemptions["junior-sysadmin"] = "test only"
-		defer delete(twinMeldExemptions, "junior-sysadmin")
+		twinMeldExemptions["sysadmin-junior"] = "test only"
+		defer delete(twinMeldExemptions, "sysadmin-junior")
 		if got := twinMeldMismatches(p); len(got) != 0 {
 			t.Fatalf("an exempted twin was still reported: %v", got)
 		}
@@ -238,9 +238,9 @@ func TestColorTwinSharesColorsAndValidates(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		role := p.Roles["platform"]
+		role := p.Roles["platform-eng"]
 		role.ColorTwin = "no-such-role"
-		p.Roles["platform"] = role
+		p.Roles["platform-eng"] = role
 		if err := p.ResolveFavoriteColors(); err == nil ||
 			!strings.Contains(err.Error(), "is not defined") {
 			t.Fatalf("missing-twin error = %v", err)
@@ -252,12 +252,12 @@ func TestColorTwinSharesColorsAndValidates(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		platform := p.Roles["platform"]
-		platform.ColorTwin = "science"
-		p.Roles["platform"] = platform
-		science := p.Roles["science"]
-		science.ColorTwin = "director"
-		p.Roles["science"] = science
+		platform := p.Roles["platform-eng"]
+		platform.ColorTwin = "scientist"
+		p.Roles["platform-eng"] = platform
+		science := p.Roles["scientist"]
+		science.ColorTwin = "prod-director"
+		p.Roles["scientist"] = science
 		if err := p.ResolveFavoriteColors(); err != nil {
 			t.Fatal(err)
 		}
@@ -649,7 +649,7 @@ func TestPersonSourceBindsAIOnlyRoleMethods(t *testing.T) {
 		}
 	}
 	for roleName, role := range p.Roles {
-		if roleName != "science" && len(role.Methods) != 0 {
+		if roleName != "scientist" && len(role.Methods) != 0 {
 			t.Errorf("role %q owns methods, which only the AI role may declare", roleName)
 		}
 	}
@@ -701,7 +701,7 @@ func TestLoadDirectoryKeepsExternalPersonIndependent(t *testing.T) {
 	if _, ok := p.Roles["builder"]; !ok {
 		t.Fatalf("external person omitted builder role: %+v", p.RoleOrder)
 	}
-	if _, inherited := p.Roles["platform"]; inherited {
+	if _, inherited := p.Roles["platform-eng"]; inherited {
 		t.Fatal("external person inherited the embedded engineer role")
 	}
 	src, err := Source(p)
@@ -918,9 +918,9 @@ func TestRosterProseFloorsRejectAThinnedEntry(t *testing.T) {
 		t.Fatal(err)
 	}
 	source := p.source
-	role := p.Roles["platform"]
+	role := p.Roles["platform-eng"]
 	role.Briefing = "Too short."
-	p.Roles["platform"] = role
+	p.Roles["platform-eng"] = role
 	if err := validateRosterProseFloors(source, p); err == nil ||
 		!strings.Contains(err.Error(), "minimum is") {
 		t.Fatalf("thinned role body error = %v", err)

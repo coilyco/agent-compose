@@ -78,7 +78,7 @@ func TestCoreLibraryCrossesPersonalitiesOnly(t *testing.T) {
 	if p.Name != "example" || p.ProviderID() != "person:example" {
 		t.Fatalf("core admission changed package identity: %q %q", p.Name, p.ProviderID())
 	}
-	for _, role := range []string{"platform", "science", "sysadmin", "director"} {
+	for _, role := range []string{"platform-eng", "scientist", "sysadmin", "prod-director"} {
 		if _, inherited := p.Roles[role]; inherited {
 			t.Fatalf("core admission leaked role %q", role)
 		}

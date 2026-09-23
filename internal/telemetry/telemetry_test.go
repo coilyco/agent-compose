@@ -8,7 +8,7 @@ import (
 var endpoint = &Config{OTLPMetricsEndpoint: "http://collector.example:4318/v1/metrics"}
 
 func TestEnabledExportsMetricsOnlyWithSeatAndShadow(t *testing.T) {
-	plan := Environment(endpoint, "claude", "platform", "yx46", "")
+	plan := Environment(endpoint, "claude", "platform-eng", "yx46", "")
 	want := map[string]string{
 		"CLAUDE_CODE_ENABLE_TELEMETRY":        "1",
 		"OTEL_METRICS_EXPORTER":               "otlp",
@@ -16,7 +16,7 @@ func TestEnabledExportsMetricsOnlyWithSeatAndShadow(t *testing.T) {
 		"OTEL_TRACES_EXPORTER":                "none",
 		"OTEL_EXPORTER_OTLP_METRICS_ENDPOINT": endpoint.OTLPMetricsEndpoint,
 		"OTEL_EXPORTER_OTLP_METRICS_PROTOCOL": DefaultProtocol,
-		"OTEL_RESOURCE_ATTRIBUTES":            "seat=platform,shadow=yx46",
+		"OTEL_RESOURCE_ATTRIBUTES":            "seat=platform-eng,shadow=yx46",
 	}
 	for name, value := range want {
 		if plan.Set[name] != value {
@@ -33,9 +33,9 @@ func TestEnabledExportsMetricsOnlyWithSeatAndShadow(t *testing.T) {
 
 func TestKillSwitchAndMissingEndpointClearEverything(t *testing.T) {
 	for name, plan := range map[string]Plan{
-		"kill switch": Environment(endpoint, "claude", "platform", "yx46", "OFF"),
-		"no endpoint": Environment(&Config{}, "claude", "platform", "yx46", ""),
-		"no config":   Environment(nil, "claude", "platform", "", ""),
+		"kill switch": Environment(endpoint, "claude", "platform-eng", "yx46", "OFF"),
+		"no endpoint": Environment(&Config{}, "claude", "platform-eng", "yx46", ""),
+		"no config":   Environment(nil, "claude", "platform-eng", "", ""),
 	} {
 		if len(plan.Set) != 0 {
 			t.Errorf("%s sets %v", name, plan.Set)
@@ -47,7 +47,7 @@ func TestKillSwitchAndMissingEndpointClearEverything(t *testing.T) {
 }
 
 func TestOtherHarnessesAreUntouched(t *testing.T) {
-	if plan := Environment(endpoint, "codex", "platform", "yx46", ""); len(plan.Set)+len(plan.Unset) != 0 {
+	if plan := Environment(endpoint, "codex", "platform-eng", "yx46", ""); len(plan.Set)+len(plan.Unset) != 0 {
 		t.Fatalf("codex plan = %+v", plan)
 	}
 }

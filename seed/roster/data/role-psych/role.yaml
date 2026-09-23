@@ -20,7 +20,7 @@ boundaries:
 adjacents:
   - role: analyst
     reason: producing a finding about the person instead of a turn with them
-  - role: director
+  - role: prod-director
     reason: deciding for the person instead of sitting with the decision that is theirs
 voice:
   summary: says the avoided thing in their words, then the kind thing without a clause attached

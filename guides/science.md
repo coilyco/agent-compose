@@ -14,7 +14,7 @@ evidence under it.
 Print the seat before you read about it:
 
 ```sh
-agent-compose overlay --role science --seat claude
+agent-compose overlay --role scientist --seat claude
 ```
 
 ```
@@ -44,7 +44,7 @@ The tool will tell you this itself, which is worth preferring over the
 paragraph above:
 
 ```sh
-agent-compose bundle materialize --role science --harness claude --out ./bundles
+agent-compose bundle materialize --role scientist --harness claude --out ./bundles
 agent-compose describe ./bundles/2f34a234d7775894
 agent-compose verify ./bundles/2f34a234d7775894
 ```
@@ -52,10 +52,10 @@ agent-compose verify ./bundles/2f34a234d7775894
 ```
 bundle 2f34a234d7775894 // science/empirical+grounded // native-skills // 7174 body bytes
 profile
-  ✓ boundary build-foundational-software  role "science" holds within a scope boundary
-  ✓ boundary modify-live-backend          role "science" defers boundary
-  ✓ boundary seek-external-validation     role "science" defers boundary
-  ✓ boundary suggest-external-comms       role "science" defers boundary
+  ✓ boundary build-foundational-software  role "scientist" holds within a scope boundary
+  ✓ boundary modify-live-backend          role "scientist" defers boundary
+  ✓ boundary seek-external-validation     role "scientist" defers boundary
+  ✓ boundary suggest-external-comms       role "scientist" defers boundary
 
 bundle verified: 9 skills // 13 files
 ```

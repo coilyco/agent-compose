@@ -104,7 +104,7 @@ EOF
 
 cat >"$provider_dir/.agents/roles.kdl" <<'EOF'
 roles {
-    role frontend {
+    role frontend-eng {
         composed-skill design-method
     }
 }
@@ -180,7 +180,7 @@ skill_state="$state_dir/skill-mounts.json"
 for path in "$roster_table" "$roster_override" "$roster_body" "$person_snapshot" "$composed" \
   "$repository_plan" "$skill_state" \
   "$load_points/CLAUDE.md" "$load_points/skills/coding-go/SKILL.md" \
-  "$load_points/skills/role-platform/SKILL.md" \
+  "$load_points/skills/role-platform-eng/SKILL.md" \
   "$load_points/skills/personality-tenacious/SKILL.md"; do
   assert_file "$path"
 done
@@ -242,7 +242,7 @@ if ! (
 fi
 
 assert_contains "$role_output" "role metadata"
-assert_contains "$role_output" "role: frontend"
+assert_contains "$role_output" "role: frontend-eng"
 assert_contains "$role_output" "personality: imaginative"
 assert_contains "$role_output" "fake codex <--version>"
 for routine in \
@@ -256,12 +256,12 @@ for routine in \
 done
 for path in \
   "$launch_target/AGENTS.md" \
-  "$launch_target/.agents/skills/role-frontend/SKILL.md" \
+  "$launch_target/.agents/skills/role-frontend-eng/SKILL.md" \
   "$launch_target/.agents/skills/personality-imaginative/SKILL.md" \
   "$launch_target/.agents/skills/design-method/SKILL.md"; do
   assert_file "$path"
 done
-assert_contains "$launch_target/AGENTS.md" '`frontend` role'
+assert_contains "$launch_target/AGENTS.md" '`frontend-eng` role'
 printf 'smoke: assigned native role and composed skill projection... ok\n'
 show_transcript "native role launch" "$role_output"
 
@@ -282,7 +282,7 @@ assert_contains "$verbose_output" "agent-compose: assigned frontend to codex"
 assert_contains "$verbose_output" "cascade outputs="
 assert_contains "$verbose_output" "sources:"
 assert_contains "$verbose_output" "trace:"
-assert_contains "$verbose_output" "role: frontend"
+assert_contains "$verbose_output" "role: frontend-eng"
 printf 'smoke: AGENT_COMPOSE_VERBOSE restores the routine status... ok\n'
 show_transcript "verbose native role launch" "$verbose_output"
 

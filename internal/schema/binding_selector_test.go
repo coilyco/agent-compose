@@ -61,10 +61,10 @@ const bindingGraph = `repositories {
 }
 
 roles {
-    role platform {
+    role platform-eng {
         use-repository lore
     }
-    role advocate {
+    role dev-advocate {
         use-repository lore {
             skill "lore-self-*"
             skill "lore-rule-*"
@@ -76,11 +76,11 @@ roles {
 func TestBindingSelectorParsedOntoTheUse(t *testing.T) {
 	source := loadBindingSource(t, bindingGraph)
 
-	platform := source.RoleProviders["platform"]
+	platform := source.RoleProviders["platform-eng"]
 	if len(platform) != 1 || platform[0].Skills != nil {
 		t.Fatalf("platform binding must carry no selector, got %+v", platform)
 	}
-	advocate := source.RoleProviders["advocate"]
+	advocate := source.RoleProviders["dev-advocate"]
 	if len(advocate) != 1 ||
 		!slices.Equal(advocate[0].Skills, []string{"lore-self-*", "lore-rule-*"}) {
 		t.Fatalf("advocate binding selector = %+v", advocate)
@@ -91,7 +91,7 @@ func TestBindingSelectorNarrowsAndLeavesOtherRolesAlone(t *testing.T) {
 	definition := []string{"lore-*"}
 
 	narrowed := loadBindingSource(t, bindingGraph)
-	binding := narrowed.RoleProviders["advocate"][0].Skills
+	binding := narrowed.RoleProviders["dev-advocate"][0].Skills
 	if err := SelectOrdinarySkills(narrowed, definition, binding); err != nil {
 		t.Fatal(err)
 	}
@@ -108,7 +108,7 @@ func TestBindingSelectorNarrowsAndLeavesOtherRolesAlone(t *testing.T) {
 	// The same definition mounted by a role that declared no binding selector
 	// still receives everything the definition admits.
 	whole := loadBindingSource(t, bindingGraph)
-	if err := SelectOrdinarySkills(whole, definition, whole.RoleProviders["platform"][0].Skills); err != nil {
+	if err := SelectOrdinarySkills(whole, definition, whole.RoleProviders["platform-eng"][0].Skills); err != nil {
 		t.Fatal(err)
 	}
 	if got := selectedIDs(whole); !slices.Equal(got, bindingCatalogue) {
@@ -193,7 +193,7 @@ func TestBindingSelectorRejectsUnknownChildNode(t *testing.T) {
 }
 
 roles {
-    role advocate {
+    role dev-advocate {
         use-repository lore {
             provider "lore-self-*"
         }
@@ -213,7 +213,7 @@ func TestBindingSelectorOnUseProvider(t *testing.T) {
 }
 
 roles {
-    role advocate {
+    role dev-advocate {
         use-provider lore required=#true {
             skill "lore-self-*"
         }
@@ -221,7 +221,7 @@ roles {
 }
 `
 	source := loadBindingSource(t, graph)
-	uses := source.RoleProviders["advocate"]
+	uses := source.RoleProviders["dev-advocate"]
 	if len(uses) != 1 || !uses[0].Required ||
 		!slices.Equal(uses[0].Skills, []string{"lore-self-*"}) {
 		t.Fatalf("use-provider binding = %+v", uses)

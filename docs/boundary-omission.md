@@ -13,7 +13,7 @@ A request states the absence directly:
 
 ```kdl
 compose {
-    role "science"
+    role "scientist"
     boundary-omit "modify-live-backend" "seek-external-validation"
 }
 ```

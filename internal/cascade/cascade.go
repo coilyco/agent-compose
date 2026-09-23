@@ -15,6 +15,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+
 	"gopkg.in/yaml.v3"
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
@@ -303,6 +305,7 @@ func AppendixRoles(cfg *Config) ([]string, error) {
 	var roles []string
 	for _, block := range appendix {
 		for _, role := range block.Roles {
+			role = roleslug.Canonical(role)
 			if seen[role] {
 				continue
 			}

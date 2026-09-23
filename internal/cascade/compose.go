@@ -8,6 +8,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/repositoryplan"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
 )
@@ -303,7 +305,7 @@ func appendixBinds(block AppendixBlock, role string) bool {
 		return false
 	}
 	for _, candidate := range block.Roles {
-		if candidate == role {
+		if roleslug.Canonical(candidate) == roleslug.Canonical(role) {
 			return true
 		}
 	}

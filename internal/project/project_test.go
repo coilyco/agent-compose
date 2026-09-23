@@ -53,11 +53,11 @@ func TestProjectNativeLayouts(t *testing.T) {
 			}
 			if !strings.Contains(
 				readTarget(t, target, want.instructions),
-				"**Role skill // `role-platform`**",
+				"**Role skill // `role-platform-eng`**",
 			) {
 				t.Fatal("instructions load point missing the selected role identity card")
 			}
-			for _, identity := range selectedFixtureSkills(t, "platform") {
+			for _, identity := range selectedFixtureSkills(t, "platform-eng") {
 				skill := readTarget(t, target, want.skillsDir+"/"+identity+"/SKILL.md")
 				if !strings.Contains(skill, skillHeading(identity)) {
 					t.Fatalf("skill load point %s has wrong content:\n%s", identity, skill)
@@ -86,7 +86,7 @@ func TestProjectCompiledLayouts(t *testing.T) {
 				t.Fatal(err)
 			}
 			compiled := readTarget(t, target, instructions)
-			for _, identity := range selectedFixtureSkills(t, "platform") {
+			for _, identity := range selectedFixtureSkills(t, "platform-eng") {
 				if !strings.Contains(compiled, skillHeading(identity)) {
 					t.Fatalf("%s load point missing compiled prose for %s", layout, identity)
 				}
@@ -180,7 +180,7 @@ func TestHomeScopeProjection(t *testing.T) {
 	compiled := composeFixture(t, "compiled.kdl")
 	nativeBefore := treeFingerprint(t, native)
 	compiledBefore := treeFingerprint(t, compiled)
-	expectedIdentities := selectedFixtureSkills(t, "platform")
+	expectedIdentities := selectedFixtureSkills(t, "platform-eng")
 	cases := map[string]struct{ instructions, skillsDir string }{
 		"claude":   {".claude/CLAUDE.md", ".claude/skills"},
 		"codex":    {".codex/AGENTS.md", ".agents/skills"},
@@ -248,7 +248,7 @@ func TestReprojectionChangesDeliveryAndPreservesForeignFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, identity := range selectedFixtureSkills(t, "platform") {
+	for _, identity := range selectedFixtureSkills(t, "platform-eng") {
 		if _, err := os.Stat(filepath.Join(target, ".claude", "skills", identity)); !os.IsNotExist(err) {
 			t.Fatalf("stale native identity %s survived compiled re-projection: %v", identity, err)
 		}

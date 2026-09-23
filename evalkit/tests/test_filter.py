@@ -27,14 +27,14 @@ def responses(sample: Challenge, total: int = 5) -> list[Response]:
 
 
 def test_the_annotator_sees_epoch_one() -> None:
-    sample = role_fit("director")
+    sample = role_fit("prod-director")
     report = dataset_builder.run([sample], responses(sample))
     assert [entry.id for entry in report.kept] == [sample.id]
     assert report.kept[0].output == "answer 1"
 
 
 def test_epoch_order_does_not_depend_on_log_order() -> None:
-    sample = role_fit("director")
+    sample = role_fit("prod-director")
     shuffled = list(reversed(responses(sample)))
     report = dataset_builder.run([sample], shuffled)
     assert report.kept[0].output == "answer 1"
@@ -44,7 +44,7 @@ def test_epoch_order_does_not_depend_on_log_order() -> None:
 def test_every_authored_sample_survives() -> None:
     samples = [
         role_fit("within"),
-        role_fit("platform"),
+        role_fit("platform-eng"),
         Challenge(
             id="sysadmin-sec-out",
             entity="sysadmin",
@@ -71,7 +71,7 @@ def test_every_authored_sample_survives() -> None:
 
 
 def test_a_sample_with_no_runs_is_reported_so_truncation_is_never_silent() -> None:
-    sample = role_fit("director")
+    sample = role_fit("prod-director")
     report = dataset_builder.run([sample], [])
     assert report.dropped[0].reason == "no subject runs"
     assert report.summary == "0 kept, 1 dropped"

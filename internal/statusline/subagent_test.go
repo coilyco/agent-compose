@@ -61,7 +61,7 @@ func decodeRows(t *testing.T, rendered string) []SubagentRow {
 
 func TestRenderSubagentsDecoratesEveryRowFromItsOwnDirectory(t *testing.T) {
 	engineer := t.TempDir()
-	writeProjectedRole(t, engineer, "claude", "platform", "Angie")
+	writeProjectedRole(t, engineer, "claude", "platform-eng", "Angie")
 	qa := t.TempDir()
 	writeProjectedRole(t, qa, "claude", "qa", "Quail")
 
@@ -84,7 +84,7 @@ func TestRenderSubagentsDecoratesEveryRowFromItsOwnDirectory(t *testing.T) {
 	if len(rows) != 2 {
 		t.Fatalf("rows = %d, want 2", len(rows))
 	}
-	if want := "🧭 ⛏️ Angie // platform@claude"; rows[0].Content != want {
+	if want := "🧭 ⛏️ Angie // platform-eng@claude"; rows[0].Content != want {
 		t.Errorf("row 1 content = %q, want %q", rows[0].Content, want)
 	}
 	if want := "🧭 ⛏️ Quail // qa@claude"; rows[1].Content != want {
@@ -94,7 +94,7 @@ func TestRenderSubagentsDecoratesEveryRowFromItsOwnDirectory(t *testing.T) {
 
 func TestRenderSubagentsSkipsRowsWithoutAProjection(t *testing.T) {
 	projected := t.TempDir()
-	writeProjectedRole(t, projected, "claude", "platform", "Angie")
+	writeProjectedRole(t, projected, "claude", "platform-eng", "Angie")
 
 	request, err := json.Marshal(SubagentRequest{Tasks: []SubagentTask{
 		{ID: "task-1", CWD: projected},
@@ -163,7 +163,7 @@ func TestRenderSubagentsReportsAnUnreadableCompositionPerRow(t *testing.T) {
 
 func TestRenderSubagentsPaintsOnlyWhenColorIsRequested(t *testing.T) {
 	target := t.TempDir()
-	writeProjectedRole(t, target, "claude", "platform", "Angie")
+	writeProjectedRole(t, target, "claude", "platform-eng", "Angie")
 	request, err := json.Marshal(SubagentRequest{Tasks: []SubagentTask{{ID: "task-1", CWD: target}}})
 	if err != nil {
 		t.Fatal(err)
@@ -208,7 +208,7 @@ func TestRenderSubagentsEmitsNothingForAnEmptyTickList(t *testing.T) {
 // sends more than this package declares.
 func TestRenderSubagentsIgnoresUnknownTickFields(t *testing.T) {
 	target := t.TempDir()
-	writeProjectedRole(t, target, "claude", "platform", "Angie")
+	writeProjectedRole(t, target, "claude", "platform-eng", "Angie")
 	raw := `{"columns":80,"version":"2.1.221","tasks":[{"id":"task-1","cwd":` +
 		mustJSON(t, target) +
 		`,"model":"opus","effort":"high","tokenSamples":[1,2],"unknown":{"a":1}}]}`

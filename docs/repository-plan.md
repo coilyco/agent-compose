@@ -79,10 +79,10 @@ repositories {
 }
 
 roles {
-    role advocate {
+    role dev-advocate {
         use-repository style-guide
     }
-    role platform { use-repository hardware }
+    role platform-eng { use-repository hardware }
 }
 ```
 

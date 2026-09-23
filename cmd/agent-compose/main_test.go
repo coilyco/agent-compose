@@ -205,16 +205,16 @@ func TestDispatchArgs(t *testing.T) {
 			[]string{"acompose", "compose", "--", "claude"},
 		},
 		"acompose role and harness inject launch": {
-			[]string{"acompose", "frontend", "codex", "--model", "gpt"},
-			[]string{"acompose", "launch", "frontend", "codex", "--model", "gpt"},
+			[]string{"acompose", "frontend-eng", "codex", "--model", "gpt"},
+			[]string{"acompose", "launch", "frontend-eng", "codex", "--model", "gpt"},
 		},
 		"acompose request and layout remain compose": {
 			[]string{"acompose", "--layout", "codex", "request.kdl", "--", "codex"},
 			[]string{"acompose", "compose", "--layout", "codex", "request.kdl", "--", "codex"},
 		},
 		"acompose nested role and harness inject launch": {
-			[]string{"acompose", "--nested", "science", "claude", "-p", "measure it"},
-			[]string{"acompose", "launch", "--nested", "science", "claude", "-p", "measure it"},
+			[]string{"acompose", "--nested", "scientist", "claude", "-p", "measure it"},
+			[]string{"acompose", "launch", "--nested", "scientist", "claude", "-p", "measure it"},
 		},
 		"acompose nested without a harness remains compose": {
 			[]string{"acompose", "--nested", "request.kdl"},
@@ -245,9 +245,9 @@ func TestPrintSummaryUsesSlashSeparators(t *testing.T) {
 		t.Fatal(err)
 	}
 	result := summaryFixture(t, p)
-	wantPersonalities := strings.Join(p.Roles["platform"].Personalities, " // ")
+	wantPersonalities := strings.Join(p.Roles["platform-eng"].Personalities, " // ")
 	wantColor := result.Resolution.FavoriteColor
-	wantIdentity := "agent identity: " + p.Roles["platform"].Identity.Name
+	wantIdentity := "agent identity: " + p.Roles["platform-eng"].Identity.Name
 
 	var output strings.Builder
 	if err := printSummary(&output, result, person.RoleTranscriptOptions{Expanded: true}); err != nil {
@@ -257,7 +257,7 @@ func TestPrintSummaryUsesSlashSeparators(t *testing.T) {
 	for _, want := range []string{
 		"request: model tier frontier // delivery native-skills",
 		"roster: core // provided by: roster:core",
-		"role: platform",
+		"role: platform-eng",
 		"personalities: " + wantPersonalities,
 		"melded color: " + wantColor,
 		"personality: tenacious",
@@ -293,9 +293,9 @@ func TestPrintSummaryUsesSlashSeparators(t *testing.T) {
 func TestPrintCompositionWarningsUsesExplicitWarningPrefix(t *testing.T) {
 	var output strings.Builder
 	printCompositionWarnings(&output, []string{
-		`source "aos" provider role "advocate" matched composed skill "writing-kai-voice" through selectors "*writing*", "*voice*", selected once`,
+		`source "aos" provider role "dev-advocate" matched composed skill "writing-kai-voice" through selectors "*writing*", "*voice*", selected once`,
 	})
-	want := `agent-compose: warning: source "aos" provider role "advocate" matched composed skill "writing-kai-voice" through selectors "*writing*", "*voice*", selected once` + "\n"
+	want := `agent-compose: warning: source "aos" provider role "dev-advocate" matched composed skill "writing-kai-voice" through selectors "*writing*", "*voice*", selected once` + "\n"
 	if output.String() != want {
 		t.Fatalf("warning output = %q, want %q", output.String(), want)
 	}
@@ -303,13 +303,13 @@ func TestPrintCompositionWarningsUsesExplicitWarningPrefix(t *testing.T) {
 
 func summaryFixture(t *testing.T, p *person.Person) *compose.Result {
 	t.Helper()
-	personalities := p.Roles["platform"].Personalities
-	favoriteColor := p.Roles["platform"].FavoriteColor
+	personalities := p.Roles["platform-eng"].Personalities
+	favoriteColor := p.Roles["platform-eng"].FavoriteColor
 	return &compose.Result{
 		Bundle: &bundle.Result{Key: "abc123", Dir: "/tmp/bundle", Reused: true},
 		Resolution: &resolver.Resolution{
 			Request: &schema.Request{
-				Role:      "platform",
+				Role:      "platform-eng",
 				ModelTier: schema.ModelTierFrontier,
 				Delivery:  "native-skills",
 			},
@@ -350,7 +350,7 @@ func TestNativeHarnessCommandPreservesExplicitCodexWork(t *testing.T) {
 	t.Parallel()
 	for name, args := range map[string][]string{
 		"prompt":         {"help me debug this"},
-		"subcommand":     {"director", "run the tests"},
+		"subcommand":     {"prod-director", "run the tests"},
 		"unknown option": {"--future-option"},
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -500,7 +500,7 @@ func TestNativeLaunchSummaryWithoutAuditPrintsOnlyTheTranscript(t *testing.T) {
 			t.Fatalf("quiet launch summary kept %q:\n%s", unwanted, got)
 		}
 	}
-	for _, want := range []string{"personality metadata", "role metadata", "role: platform"} {
+	for _, want := range []string{"personality metadata", "role metadata", "role: platform-eng"} {
 		if !strings.Contains(got, want) {
 			t.Fatalf("quiet launch summary dropped %q:\n%s", want, got)
 		}
@@ -690,13 +690,13 @@ func TestActivateNativeRuntimeHomePreservesCanonicalCodexState(t *testing.T) {
 
 func TestCatalogRoleLineLabelsThePersonalityMeld(t *testing.T) {
 	line := catalogRoleLine(person.RoleCatalogEntry{
-		Slug:          "platform",
-		Skill:         "role-platform",
+		Slug:          "platform-eng",
+		Skill:         "role-platform-eng",
 		Purpose:       "Build and land the foundational software.",
 		Personalities: []string{"tenacious", "grounded"},
 		FavoriteColor: "#9c8b31",
 	})
-	want := "platform // role-platform // Build and land the foundational software. " +
+	want := "platform-eng // role-platform-eng // Build and land the foundational software. " +
 		"// personalities: tenacious, grounded // color: #9c8b31\n"
 	if line != want {
 		t.Fatalf("catalog role line =\n%q\nwant\n%q", line, want)
@@ -770,13 +770,13 @@ func TestCatalogSnapshotCarriesWhatEvalkitRosterReads(t *testing.T) {
 	if !ok {
 		t.Fatalf("roles missing or not an object: %v", snapshot["roles"])
 	}
-	role, ok := roles["manager"].(map[string]any)
+	role, ok := roles["prod-manager"].(map[string]any)
 	if !ok {
-		t.Fatalf("roles[manager] missing: %v", roles)
+		t.Fatalf("roles[prod-manager] missing: %v", roles)
 	}
 	for _, key := range []string{"display_name", "purpose", "boundaries", "acts", "adjacents", "personalities"} {
 		if _, ok := role[key]; !ok {
-			t.Errorf("roles[manager] is missing %q, which evalkit/roster.py reads", key)
+			t.Errorf("roles[prod-manager] is missing %q, which evalkit/roster.py reads", key)
 		}
 	}
 
@@ -788,8 +788,8 @@ func TestCatalogSnapshotCarriesWhatEvalkitRosterReads(t *testing.T) {
 	if !ok {
 		t.Fatalf("boundaries[modify-live-backend] missing: %v", boundaries)
 	}
-	if owner, _ := modify["owner"].(string); owner != "senior-sysadmin" {
-		t.Errorf("boundaries[modify-live-backend].owner = %q, want senior-sysadmin", owner)
+	if owner, _ := modify["owner"].(string); owner != "sysadmin-senior" {
+		t.Errorf("boundaries[modify-live-backend].owner = %q, want sysadmin-senior", owner)
 	}
 }
 
@@ -801,13 +801,13 @@ func TestApplyTelemetryEnvironmentLabelsTheSeatAndDropsInheritedLogging(t *testi
 	}
 	t.Setenv("AOS_NATIVE_SESSION", "yx46")
 	t.Setenv("AGENT_COMPOSE_TELEMETRY", "")
-	t.Setenv("OTEL_RESOURCE_ATTRIBUTES", "seat=director,shadow=ru78")
+	t.Setenv("OTEL_RESOURCE_ATTRIBUTES", "seat=prod-director,shadow=ru78")
 	t.Setenv("OTEL_LOG_USER_PROMPTS", "1")
 
-	if err := applyTelemetryEnvironment(config, "claude", "platform"); err != nil {
+	if err := applyTelemetryEnvironment(config, "claude", "platform-eng"); err != nil {
 		t.Fatal(err)
 	}
-	if got := os.Getenv("OTEL_RESOURCE_ATTRIBUTES"); got != "seat=platform,shadow=yx46" {
+	if got := os.Getenv("OTEL_RESOURCE_ATTRIBUTES"); got != "seat=platform-eng,shadow=yx46" {
 		t.Errorf("OTEL_RESOURCE_ATTRIBUTES = %q", got)
 	}
 	if _, ok := os.LookupEnv("OTEL_LOG_USER_PROMPTS"); ok {
@@ -815,7 +815,7 @@ func TestApplyTelemetryEnvironmentLabelsTheSeatAndDropsInheritedLogging(t *testi
 	}
 
 	t.Setenv("AGENT_COMPOSE_TELEMETRY", "off")
-	if err := applyTelemetryEnvironment(config, "claude", "platform"); err != nil {
+	if err := applyTelemetryEnvironment(config, "claude", "platform-eng"); err != nil {
 		t.Fatal(err)
 	}
 	if _, ok := os.LookupEnv("CLAUDE_CODE_ENABLE_TELEMETRY"); ok {
@@ -826,7 +826,7 @@ func TestApplyTelemetryEnvironmentLabelsTheSeatAndDropsInheritedLogging(t *testi
 func TestApplyTelemetryEnvironmentWithoutHostConfig(t *testing.T) {
 	t.Setenv("CLAUDE_CODE_ENABLE_TELEMETRY", "1")
 	missing := filepath.Join(t.TempDir(), "absent.yaml")
-	if err := applyTelemetryEnvironment(missing, "claude", "platform"); err != nil {
+	if err := applyTelemetryEnvironment(missing, "claude", "platform-eng"); err != nil {
 		t.Fatal(err)
 	}
 	if _, ok := os.LookupEnv("CLAUDE_CODE_ENABLE_TELEMETRY"); ok {

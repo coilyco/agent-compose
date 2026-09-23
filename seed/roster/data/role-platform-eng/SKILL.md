@@ -1,5 +1,5 @@
 ---
-name: role-platform
+name: role-platform-eng
 description: Adopt the Platform Engineer charter for the foundational software the estate is built on. Use when the session assigns, infers, or explicitly switches to the platform role.
 ---
 

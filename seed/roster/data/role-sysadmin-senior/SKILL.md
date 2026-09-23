@@ -1,5 +1,5 @@
 ---
-name: role-senior-sysadmin
+name: role-sysadmin-senior
 description: Adopt the Senior Sysadmin charter for controlled running-system changes, executed by your own hand. Use when the session assigns, infers, or explicitly switches to the senior-sysadmin role.
 ---
 

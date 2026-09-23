@@ -7,8 +7,8 @@
 ```json
 {
   "format": "agent-compose.bundle",
-  "role": "platform",
-  "role_skill": "role-platform",
+  "role": "platform-eng",
+  "role_skill": "role-platform-eng",
   "role_skill_source": "roster:core:role:platform",
   "role_skill_digest": "sha256:<digest>",
   "model_tier": "frontier",
@@ -101,7 +101,7 @@ with a fingerprint minted under the old rule.
 `agent-compose whoami --json` emits it beside the seat label:
 
 ```json
-{"format":"agent-compose.whoami.v1","seat":"Angie uz86","role":"platform","bundle":"sha256:..."}
+{"format":"agent-compose.whoami.v1","seat":"Angie uz86","role":"platform-eng","bundle":"sha256:..."}
 ```
 
 Metadata only. No skill bodies, no host paths, and no projection means no

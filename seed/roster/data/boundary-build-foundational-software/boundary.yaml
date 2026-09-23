@@ -1,7 +1,7 @@
 boundary: build-foundational-software
 order: 4
 skill: boundary-build-foundational-software
-owner: platform
+owner: platform-eng
 summary: Platform Engineer builds and lands foundational software, other roles specify what it must do and hand the build over
 acts:
   - side: own

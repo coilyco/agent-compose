@@ -1,5 +1,5 @@
 ---
-name: role-science
+name: role-scientist
 description: Adopt the Applied Scientist charter for reproducible model, agent, inference, and hardware evidence. Use when the session assigns, infers, or explicitly switches to the science role.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: role-manager
+name: role-prod-manager
 description: Adopt the Project Manager charter for keeping intake and the tracker current and preparing each decision for the Portfolio Director. Use when the session assigns, infers, or explicitly switches to the manager role.
 ---
 

@@ -22,12 +22,12 @@ Core Roster with no doctrine lost, and each side is bounded separately.
 Declare the catalog entry in a library, then reference it from each role:
 
 ```kdl
-boundary "modify-live-backend" skill="boundary-modify-live-backend" owner="senior-sysadmin" summary="Senior Sysadmin changes running backend systems, other roles observe and hand the action over"
+boundary "modify-live-backend" skill="boundary-modify-live-backend" owner="sysadmin-senior" summary="Senior Sysadmin changes running backend systems, other roles observe and hand the action over"
 ```
 
 ```kdl
-role "platform" {
-    skill "role-platform"
+role "platform-eng" {
+    skill "role-platform-eng"
     boundary "suggest-external-comms"
     personality "tenacious" "grounded"
 }
@@ -51,7 +51,7 @@ limit text is the whole content, and a role that omits a boundary says
 nothing at all.
 
 ```kdl
-role "gamedev" {
+role "game-dev" {
     boundary "build-foundational-software" "seek-external-validation"
     boundary-scoped "modify-live-backend" scope="a local world you run yourself, never a hosted surface"
 }

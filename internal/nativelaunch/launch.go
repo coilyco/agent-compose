@@ -11,6 +11,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/agentid"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/compose"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/nativeui"
@@ -92,6 +94,7 @@ func (r repository) name() string { return filepath.ToSlash(r.relative) }
 // Refresh resolves eligible providers, composes the complete role boundary, and
 // transactionally projects the result at the selected harness load points.
 func Refresh(opts Options) (*Result, error) {
+	opts.Role = roleslug.Canonical(opts.Role)
 	if err := validateHarness(opts.Harness); err != nil {
 		return nil, err
 	}

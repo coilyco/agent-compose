@@ -244,7 +244,7 @@ func TestMaterializeKeysRenderedInstructions(t *testing.T) {
 func TestMaterializeRejectsUnsafeIdentitySegments(t *testing.T) {
 	resolution := &resolver.Resolution{
 		Request: &schema.Request{
-			Role:     "platform",
+			Role:     "platform-eng",
 			Delivery: schema.DeliveryNativeSkills,
 		},
 		Person: &person.Person{Raw: []byte("fixture")},

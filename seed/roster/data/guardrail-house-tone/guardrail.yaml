@@ -1,7 +1,7 @@
 guardrail: house-tone
 order: 2
 skill: guardrail-house-tone
-role: advocate
+role: dev-advocate
 detector: <voice-linter> --profile <voice-profile> <file> --strict
 card: Outward text loads every writing skill it triggers before drafting, and does not ship until the
   linter has run on it as a file and you have pasted its exit.

@@ -35,7 +35,7 @@ func shortIDFixtureDirs(t *testing.T) (string, string) {
 		Layout: "claude", Bundle: bundleDir, Files: []string{"CLAUDE.md"},
 	})
 	writeJSON(t, filepath.Join(bundleDir, "manifest.json"), bundle.Manifest{
-		Format: "agent-compose.bundle", Role: "platform", ModelTier: "frontier",
+		Format: "agent-compose.bundle", Role: "platform-eng", ModelTier: "frontier",
 		Color: "#b39258",
 		Identity: bundle.RoleIdentity{
 			Person: "core",

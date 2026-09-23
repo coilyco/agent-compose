@@ -1,5 +1,5 @@
 ---
-name: role-frontend
+name: role-frontend-eng
 description: Adopt the Frontend Engineer charter for coherent, buildable surfaces. Use when the session assigns, infers, or explicitly switches to the frontend role.
 ---
 

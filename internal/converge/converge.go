@@ -167,10 +167,15 @@ func Run(paths cascade.Paths, opts Options, stdout, stderr io.Writer) int {
 	if code := cascade.Run(paths, cascadeOpts, stdout, stderr); code != 0 {
 		return code
 	}
+	skillPoints, err := cascade.ResolveSkillLoadPoints(cfg)
+	if err != nil {
+		fmt.Fprintf(stderr, "agent-compose: %s\n", err)
+		return 1
+	}
 	manifestPath := filepath.Join(filepath.Dir(paths.Composed), "repository-plan.yaml")
 	skills, err := skillmount.ApplyWithRequests(
 		manifestPath,
-		cascade.ResolveSkillLoadPoints(cfg),
+		skillPoints,
 		filepath.Dir(paths.Config),
 		catalogs,
 		requested,

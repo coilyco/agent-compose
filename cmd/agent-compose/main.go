@@ -38,10 +38,6 @@ import (
 // version is stamped by the release build via -ldflags; dev builds say dev.
 var version = "dev"
 
-// nativeCodexIntroductionPrompt trails the composed introduction, which names
-// the seat first so a session list does not open on identical text (#233).
-const nativeCodexIntroductionPrompt = "Introduce yourself now as the active Codex seat, drawing on your loaded identity card and personality meld. Keep it warm and concise, then ask what the human would like to work on."
-
 // nestedLaunchFlag is accepted and ignored. A nested launch no longer needs
 // announcing, and dropping the flag outright would break callers. #403
 const nestedLaunchFlag = "--nested"
@@ -539,7 +535,11 @@ func runSkillsAudit(_ context.Context, cmd *cli.Command) error {
 	if current, err := user.Current(); err == nil && current.HomeDir != "" {
 		realHome = current.HomeDir
 	}
-	report, err := skillaudit.Audit(skillaudit.Roots(cmd.StringSlice("root"), realHome, sessionHome, cwd))
+	roots, err := skillaudit.Roots(cmd.StringSlice("root"), realHome, sessionHome, cwd)
+	if err != nil {
+		return err
+	}
+	report, err := skillaudit.Audit(roots)
 	if err != nil {
 		return err
 	}
@@ -1054,10 +1054,9 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 	}
 	return execReal(
 		nativeHarnessCommand(harness, args[2:], nativeIdentity{
-			SeatName:     result.SeatName,
-			Settings:     result.HarnessSettings,
-			Introduction: result.Introduction,
-			MCP:          scope,
+			SeatName: result.SeatName,
+			Settings: result.HarnessSettings,
+			MCP:      scope,
 		}),
 		append(
 			append(
@@ -1162,23 +1161,14 @@ func acknowledgeNativeLaunch(
 // nativeIdentity carries the composed surfaces a harness can accept as launch
 // arguments rather than as installed host state.
 type nativeIdentity struct {
-	SeatName     string
-	Settings     string
-	Introduction string
-	MCP          mcpLaunch
+	SeatName string
+	Settings string
+	MCP      mcpLaunch
 }
 
 func nativeHarnessCommand(harness string, args []string, identity nativeIdentity) []string {
 	command := append([]string{harness}, nativeIdentityArgs(harness, args, identity)...)
-	command = append(command, args...)
-	if harness == "codex" && codexAcceptsInitialPrompt(args) {
-		prompt := nativeCodexIntroductionPrompt
-		if identity.Introduction != "" {
-			prompt = identity.Introduction + " " + prompt
-		}
-		command = append(command, prompt)
-	}
-	return command
+	return append(command, args...)
 }
 
 // nativeIdentityArgs hands Claude Code its identity as flags, per
@@ -1215,51 +1205,6 @@ func nativeArgsCarry(args []string, flag string) bool {
 		}
 	}
 	return false
-}
-
-func codexAcceptsInitialPrompt(args []string) bool {
-	valueOptions := map[string]bool{
-		"-a": true, "--add-dir": true, "--ask-for-approval": true,
-		"-c": true, "--cd": true, "--config": true,
-		"-i": true, "--image": true,
-		"-m": true, "--model": true,
-		"-p": true, "--profile": true,
-		"-s": true, "--sandbox": true,
-		"--disable": true, "--enable": true,
-		"--local-provider": true, "--remote": true, "--remote-auth-token-env": true,
-	}
-	booleanOptions := map[string]bool{
-		"--dangerously-bypass-approvals-and-sandbox": true,
-		"--dangerously-bypass-hook-trust":            true,
-		"--no-alt-screen":                            true,
-		"--oss":                                      true,
-		"--search":                                   true,
-		"--strict-config":                            true,
-	}
-	for index := 0; index < len(args); index++ {
-		arg := args[index]
-		if arg == "--" || !strings.HasPrefix(arg, "-") {
-			return false
-		}
-		name := arg
-		if before, _, found := strings.Cut(arg, "="); found {
-			name = before
-		}
-		if valueOptions[name] {
-			if strings.Contains(arg, "=") {
-				continue
-			}
-			index++
-			if index >= len(args) {
-				return false
-			}
-			continue
-		}
-		if !booleanOptions[name] {
-			return false
-		}
-	}
-	return true
 }
 
 func clearNativeLaunchEnvironment() error {

@@ -286,22 +286,6 @@ assert_contains "$verbose_output" "role: frontend-eng"
 printf 'smoke: AGENT_COMPOSE_VERBOSE restores the routine status... ok\n'
 show_transcript "verbose native role launch" "$verbose_output"
 
-intro_output="$smoke_root/role-introduction.txt"
-if ! (
-  cd "$launch_target"
-  unset AGENT_COMPOSE_LAUNCH
-  env HOME="$native_root/home" USERPROFILE="$native_root/home" \
-    PROJECTS_ROOT="$native_root/projects" PATH="$smoke_root/bin:$PATH" \
-    "$binary_exec" frontend codex
-) >"$intro_output" 2>&1; then
-  cat "$intro_output" >&2
-  fail "bare Codex introduction launch failed"
-fi
-assert_contains "$intro_output" "fake codex <"
-assert_contains "$intro_output" "Introduce yourself now as the active Codex seat"
-printf 'smoke: bare Codex launch supplies its introduction prompt... ok\n'
-show_transcript "bare Codex introduction" "$intro_output"
-
 third_output="$smoke_root/third.txt"
 if ! env HOME="$native_root/home" USERPROFILE="$native_root/home" \
   PROJECTS_ROOT="$native_root/projects" "$binary_exec" \

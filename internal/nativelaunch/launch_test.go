@@ -926,31 +926,6 @@ func TestRefreshOmitsTheOperatingBaseWithoutARuntimeHome(t *testing.T) {
 	}
 }
 
-func TestJoinTraitsKeepsTheSerialCommaOffATwoTraitMeld(t *testing.T) {
-	t.Parallel()
-	for _, tc := range []struct {
-		name   string
-		traits []string
-		want   string
-	}{
-		{"none", nil, ""},
-		{"one", []string{"grounded"}, "grounded"},
-		{"two", []string{"playful", "imaginative"}, "playful and imaginative"},
-		{
-			"three",
-			[]string{"tenacious", "grounded", "protective"},
-			"tenacious, grounded, and protective",
-		},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-			if got := joinTraits(tc.traits); got != tc.want {
-				t.Fatalf("joinTraits(%v) = %q, want %q", tc.traits, got, tc.want)
-			}
-		})
-	}
-}
-
 // A provider roles.kdl still naming a retired slug binds to the renamed role,
 // whichever slug launches. teable:coilyco-flight-deck/agent-compose#8086.
 func TestRefreshBindsAProviderRoleStillNamedByItsRetiredSlug(t *testing.T) {

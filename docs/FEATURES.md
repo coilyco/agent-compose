@@ -52,8 +52,8 @@ rather than only in the issue.
 
 ## Load-point projection
 
-* `agent-compose project` places verified bundles transactionally at repo or
-  container-home load points for four harnesses.
+* `agent-compose project` places verified bundles at repo or container-home load
+  points from a [layout table](projection.md) `AGENT_COMPOSE_LAYOUTS` replaces.
 * Sidecar ownership protects foreign files and restores prior owned state.
 
 ## Launch-time refresh

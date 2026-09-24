@@ -1,5 +1,5 @@
-// Package project places bundle content at harness load points. This is the
-// one layer allowed to know harness vocabulary; composition stays blind to it.
+// Package project places bundle content at harness load points. The harness
+// names and paths come from the layouts table, so this package holds none.
 package project
 
 import (
@@ -12,66 +12,31 @@ import (
 	"strings"
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/bundle"
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/layouts"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
 )
 
-type LoadPoints struct {
-	Instructions string
-	SkillsDir    string
-}
+type LoadPoints = layouts.LoadPoints
 
-// Layout declares load points per delivery mode; a nil mode is unsupported
-// by that harness and fails with a diagnostic.
-type Layout struct {
-	Native   *LoadPoints
-	Compiled *LoadPoints
-}
+type Layout = layouts.Layout
 
 const (
 	ScopeRepo = "repo"
 	ScopeHome = "home"
 )
 
-// HomeRegistry places content at $HOME-relative global load points, for
-// containers where v2 owns the whole home; sources in docs/projection.md.
-var HomeRegistry = map[string]Layout{
-	"claude": {
-		Native:   &LoadPoints{Instructions: ".claude/CLAUDE.md", SkillsDir: ".claude/skills"},
-		Compiled: &LoadPoints{Instructions: ".claude/CLAUDE.md"},
-	},
-	"codex": {
-		Native:   &LoadPoints{Instructions: ".codex/AGENTS.md", SkillsDir: ".agents/skills"},
-		Compiled: &LoadPoints{Instructions: ".codex/AGENTS.md"},
-	},
-	"goose": {
-		Native:   &LoadPoints{Instructions: ".config/goose/.goosehints", SkillsDir: ".agents/skills"},
-		Compiled: &LoadPoints{Instructions: ".config/goose/.goosehints"},
-	},
-	"opencode": {
-		Native:   &LoadPoints{Instructions: ".config/opencode/AGENTS.md", SkillsDir: ".agents/skills"},
-		Compiled: &LoadPoints{Instructions: ".config/opencode/AGENTS.md"},
-	},
-}
-
-// Registry is the fixed v0.1 layout set. Layout names and load-point paths
-// live here and nowhere else; conventions are recorded in docs/projection.md.
-var Registry = map[string]Layout{
-	"claude": {
-		Native:   &LoadPoints{Instructions: "CLAUDE.md", SkillsDir: ".claude/skills"},
-		Compiled: &LoadPoints{Instructions: "CLAUDE.md"},
-	},
-	"codex": {
-		Native:   &LoadPoints{Instructions: "AGENTS.md", SkillsDir: ".agents/skills"},
-		Compiled: &LoadPoints{Instructions: "AGENTS.md"},
-	},
-	"goose": {
-		Native:   &LoadPoints{Instructions: ".goosehints", SkillsDir: ".agents/skills"},
-		Compiled: &LoadPoints{Instructions: ".goosehints"},
-	},
-	"opencode": {
-		Native:   &LoadPoints{Instructions: "AGENTS.md", SkillsDir: ".agents/skills"},
-		Compiled: &LoadPoints{Instructions: "AGENTS.md"},
-	},
+// Registries splits the layouts table into its repo- and home-scoped views.
+func Registries() (repo, home map[string]Layout, err error) {
+	table, err := layouts.Load()
+	if err != nil {
+		return nil, nil, err
+	}
+	repo, home = map[string]Layout{}, map[string]Layout{}
+	for name, harness := range table {
+		repo[name] = harness.Repo
+		home[name] = harness.Home
+	}
+	return repo, home, nil
 }
 
 const sidecarRel = ".agent-compose/projection.json"
@@ -95,17 +60,21 @@ func Project(bundleDir, layoutName, targetDir string) (*Result, error) {
 // ProjectScoped selects repo-relative or home-relative load points; home
 // scope treats targetDir as the home root.
 func ProjectScoped(bundleDir, layoutName, targetDir, scope string) (*Result, error) {
-	registry := Registry
+	repo, home, err := Registries()
+	if err != nil {
+		return nil, err
+	}
+	registry := repo
 	switch scope {
 	case ScopeRepo:
 	case ScopeHome:
-		registry = HomeRegistry
+		registry = home
 	default:
 		return nil, fmt.Errorf("unknown scope %q; scopes: %s, %s", scope, ScopeRepo, ScopeHome)
 	}
 	layout, ok := registry[layoutName]
 	if !ok {
-		return nil, fmt.Errorf("unknown layout %q; v0.1 layouts: %s", layoutName, strings.Join(registryNames(), ", "))
+		return nil, fmt.Errorf("unknown layout %q; v0.1 layouts: %s", layoutName, strings.Join(registryNames(registry), ", "))
 	}
 	verification, err := bundle.Verify(bundleDir)
 	if err != nil {
@@ -265,9 +234,9 @@ func pruneEmptyDirs(dir, stop string) {
 	}
 }
 
-func registryNames() []string {
-	names := make([]string, 0, len(Registry))
-	for name := range Registry {
+func registryNames(registry map[string]Layout) []string {
+	names := make([]string, 0, len(registry))
+	for name := range registry {
 		names = append(names, name)
 	}
 	sort.Strings(names)

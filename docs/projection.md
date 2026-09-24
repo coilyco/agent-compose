@@ -9,20 +9,23 @@ the selected role and personality bodies.
 agent-compose project <bundle-dir> --layout <name> --scope repo|home --target <dir>
 ```
 
-## v0.1 layout registry
+## Layout table
 
 Every layout declares load points per delivery mode. Native-skills bundles
 place the instructions file plus each selected skill tree. Compiled bundles
 place the single compiled context document at the instructions load point.
 
-* `claude` - instructions to `CLAUDE.md`, skills to `.claude/skills/<skill-id>/`.
-* `codex` - instructions to `AGENTS.md`, skills to `.agents/skills/<skill-id>/`.
-* `goose` - instructions to `.goosehints`, skills to `.agents/skills/<skill-id>/`.
-* `opencode` - instructions to `AGENTS.md`, skills to `.agents/skills/<skill-id>/`.
+The layouts are data, not Go: `internal/layouts/layouts.yaml` is the default,
+and a file named by `AGENT_COMPOSE_LAYOUTS` replaces it whole, so a deployment
+owns its harness set without an agent-compose change. Each entry carries `repo`
+and `home` load points, plus `cascade` to make its home paths default host load
+points for the COMPOSED.md cascade and skill mounts. The loader decodes strictly
+and refuses a path that is absolute or escapes its root
+(`teable:coilyco/agent-compose#8199`).
 
 A layout that lacks load points for a bundle's delivery mode fails with a
-diagnostic. Layout names and load-point paths live only in this layer, and they
-never appear in the resolver, the request, the manifest, or the bundle tree.
+diagnostic. Layout names and load-point paths never appear in the resolver, the
+request, the manifest, or the bundle tree.
 
 ## Home scope
 

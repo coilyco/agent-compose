@@ -74,7 +74,7 @@ func (r *Report) Count(kind Kind) int {
 }
 
 // Roots is the explicit list when one is given, discovery otherwise.
-func Roots(explicit []string, realHome, sessionHome, cwd string) []Root {
+func Roots(explicit []string, realHome, sessionHome, cwd string) ([]Root, error) {
 	if len(explicit) == 0 {
 		return Discover(realHome, sessionHome, cwd)
 	}
@@ -82,12 +82,16 @@ func Roots(explicit []string, realHome, sessionHome, cwd string) []Root {
 	for _, path := range explicit {
 		roots = append(roots, Root{Label: "explicit", Path: path})
 	}
-	return roots
+	return roots, nil
 }
 
 // Discover lists the home layout under both homes and the repo layout at cwd
 // and each ancestor, with suffixes read from the project registries.
-func Discover(realHome, sessionHome, cwd string) []Root {
+func Discover(realHome, sessionHome, cwd string) ([]Root, error) {
+	repoRegistry, homeRegistry, err := project.Registries()
+	if err != nil {
+		return nil, err
+	}
 	var roots []Root
 	seen := map[string]bool{}
 	add := func(label, path string) {
@@ -97,7 +101,7 @@ func Discover(realHome, sessionHome, cwd string) []Root {
 		seen[path] = true
 		roots = append(roots, Root{Label: label, Path: path})
 	}
-	homeDirs := skillDirs(project.HomeRegistry)
+	homeDirs := skillDirs(homeRegistry)
 	for _, dir := range homeDirs {
 		add("home", filepath.Join(realHome, dir))
 	}
@@ -106,7 +110,7 @@ func Discover(realHome, sessionHome, cwd string) []Root {
 			add("session-home", filepath.Join(sessionHome, dir))
 		}
 	}
-	repoDirs := skillDirs(project.Registry)
+	repoDirs := skillDirs(repoRegistry)
 	for dir := cwd; dir != ""; {
 		for _, rel := range repoDirs {
 			add("project", filepath.Join(dir, rel))
@@ -117,7 +121,7 @@ func Discover(realHome, sessionHome, cwd string) []Root {
 		}
 		dir = parent
 	}
-	return roots
+	return roots, nil
 }
 
 func skillDirs(registry map[string]project.Layout) []string {

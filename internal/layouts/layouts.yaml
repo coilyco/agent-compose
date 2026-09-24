@@ -1,0 +1,32 @@
+# Harness load points, the default AGENT_COMPOSE_LAYOUTS replaces whole.
+# Fields and rules: docs/projection.md.
+claude:
+  cascade: true
+  repo:
+    native: {instructions: CLAUDE.md, skills: .claude/skills}
+    compiled: {instructions: CLAUDE.md}
+  home:
+    native: {instructions: .claude/CLAUDE.md, skills: .claude/skills}
+    compiled: {instructions: .claude/CLAUDE.md}
+codex:
+  cascade: true
+  repo:
+    native: {instructions: AGENTS.md, skills: .agents/skills}
+    compiled: {instructions: AGENTS.md}
+  home:
+    native: {instructions: .codex/AGENTS.md, skills: .agents/skills}
+    compiled: {instructions: .codex/AGENTS.md}
+goose:
+  repo:
+    native: {instructions: .goosehints, skills: .agents/skills}
+    compiled: {instructions: .goosehints}
+  home:
+    native: {instructions: .config/goose/.goosehints, skills: .agents/skills}
+    compiled: {instructions: .config/goose/.goosehints}
+opencode:
+  repo:
+    native: {instructions: AGENTS.md, skills: .agents/skills}
+    compiled: {instructions: AGENTS.md}
+  home:
+    native: {instructions: .config/opencode/AGENTS.md, skills: .agents/skills}
+    compiled: {instructions: .config/opencode/AGENTS.md}

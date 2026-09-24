@@ -15,6 +15,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/layouts"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
 
 	"gopkg.in/yaml.v3"
@@ -258,22 +259,20 @@ func ResolveConfiguredPath(value, configPath, home string) string {
 	return filepath.Join(filepath.Dir(configPath), value)
 }
 
-// DefaultLoadPoints wires claude and codex; opencode stays opt-in via config.
-func DefaultLoadPoints() map[string]string {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return map[string]string{}
-	}
-	return map[string]string{
-		"claude": filepath.Join(home, ".claude", "CLAUDE.md"),
-		"codex":  filepath.Join(home, ".codex", "AGENTS.md"),
-	}
+// DefaultLoadPoints is each cascade harness's home native instructions path
+// from the layouts table. Config opts others in.
+func DefaultLoadPoints() (map[string]string, error) {
+	return cascadePoints(func(points *layouts.LoadPoints) string { return points.Instructions })
 }
 
 // ResolveLoadPoints merges config overrides over the defaults; falsy values
 // (null, false, empty) opt a harness out entirely.
-func ResolveLoadPoints(cfg *Config) map[string]string {
-	return resolvePoints(DefaultLoadPoints(), cfg.LoadPoints)
+func ResolveLoadPoints(cfg *Config) (map[string]string, error) {
+	points, err := DefaultLoadPoints()
+	if err != nil {
+		return nil, err
+	}
+	return resolvePoints(points, cfg.LoadPoints), nil
 }
 
 // OperatingBase renders the base for one harness and role: the load point's
@@ -342,23 +341,38 @@ func OperatingBaseParts(cfg *Config, harness, role string) (string, string, erro
 		selected, overrides, appendix, role, cfg.SourceDelivery, ConfiguredSources(cfg))
 }
 
-// DefaultSkillLoadPoints mirrors DefaultLoadPoints for skills. Claude reads only
-// `.claude/skills`, never the portable directory; see docs/projection.md.
-func DefaultSkillLoadPoints() map[string]string {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return map[string]string{}
-	}
-	return map[string]string{
-		"claude": filepath.Join(home, ".claude", "skills"),
-		"codex":  filepath.Join(home, ".agents", "skills"),
-	}
+// DefaultSkillLoadPoints mirrors DefaultLoadPoints for skills. A harness reads
+// only its own table entry; see docs/projection.md.
+func DefaultSkillLoadPoints() (map[string]string, error) {
+	return cascadePoints(func(points *layouts.LoadPoints) string { return points.SkillsDir })
 }
 
 // ResolveSkillLoadPoints merges config overrides over the skill defaults, with
 // the same falsy opt-out as ResolveLoadPoints.
-func ResolveSkillLoadPoints(cfg *Config) map[string]string {
-	return resolvePoints(DefaultSkillLoadPoints(), cfg.SkillLoadPoints)
+func ResolveSkillLoadPoints(cfg *Config) (map[string]string, error) {
+	points, err := DefaultSkillLoadPoints()
+	if err != nil {
+		return nil, err
+	}
+	return resolvePoints(points, cfg.SkillLoadPoints), nil
+}
+
+func cascadePoints(pick func(*layouts.LoadPoints) string) (map[string]string, error) {
+	table, err := layouts.Load()
+	if err != nil {
+		return nil, err
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return map[string]string{}, nil
+	}
+	points := map[string]string{}
+	for name, harness := range table {
+		if harness.Cascade {
+			points[name] = filepath.Join(home, filepath.FromSlash(pick(harness.Home.Native)))
+		}
+	}
+	return points, nil
 }
 
 func resolvePoints(points map[string]string, overrides map[string]RawValue) map[string]string {

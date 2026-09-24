@@ -265,7 +265,10 @@ func TestDiscoverCoversBothHomesAndEveryAncestor(t *testing.T) {
 	sessionHome := "/shadow/home"
 	cwd := "/shadow/projects/org/repo"
 
-	roots := Discover(realHome, sessionHome, cwd)
+	roots, err := Discover(realHome, sessionHome, cwd)
+	if err != nil {
+		t.Fatal(err)
+	}
 	var paths []string
 	for _, root := range roots {
 		paths = append(paths, root.Path)
@@ -296,7 +299,10 @@ func TestDiscoverCoversBothHomesAndEveryAncestor(t *testing.T) {
 }
 
 func TestDiscoverCollapsesASessionHomeThatIsTheRealHome(t *testing.T) {
-	roots := Discover("/h", "/h", "/h/p")
+	roots, err := Discover("/h", "/h", "/h/p")
+	if err != nil {
+		t.Fatal(err)
+	}
 	var paths []string
 	for _, root := range roots {
 		paths = append(paths, root.Path)
@@ -307,11 +313,11 @@ func TestDiscoverCollapsesASessionHomeThatIsTheRealHome(t *testing.T) {
 }
 
 func TestExplicitRootsReplaceDiscovery(t *testing.T) {
-	roots := Roots([]string{"/a", "/b"}, "/real", "/session", "/cwd")
-	if len(roots) != 2 || roots[0].Path != "/a" || roots[1].Path != "/b" {
+	roots, err := Roots([]string{"/a", "/b"}, "/real", "/session", "/cwd")
+	if err != nil || len(roots) != 2 || roots[0].Path != "/a" || roots[1].Path != "/b" {
 		t.Fatalf("explicit roots must stand alone: %+v", roots)
 	}
-	if got := Roots(nil, "/real", "/session", "/cwd"); len(got) < 3 {
+	if got, err := Roots(nil, "/real", "/session", "/cwd"); err != nil || len(got) < 3 {
 		t.Fatalf("no explicit roots must fall back to discovery: %+v", got)
 	}
 }

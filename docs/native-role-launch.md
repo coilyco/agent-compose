@@ -51,12 +51,7 @@ never read stdin or wait for acknowledgement. TTY output uses the melded role
 color and each personality's own color. Redirected output and `NO_COLOR` remain
 plain.
 
-Bare interactive Codex launches also supply an initial prompt asking the active
-Codex seat to introduce itself from the loaded identity card and personality
-boundary, then invite the user's task. Codex options such as AOS's workspace trust
-override or an explicit model selection may precede that prompt. An explicit
-positional prompt, subcommand, or unknown option passes through unprompted. A
-Claude launch instead carries [identity flags](claude-launch-identity.md).
+A Claude launch carries [identity flags](claude-launch-identity.md).
 
 ## Native workspace integration
 
@@ -92,8 +87,7 @@ this is accepted and ignored, because the bound catches the runaway (#403).
 acompose science claude -p 'measure the launch path and report'
 ```
 
-Harness arguments pass through verbatim, and a positional Codex prompt suppresses
-the bare-session introduction so a task and an introduction never collide.
+Harness arguments pass through verbatim.
 
 **A nested launch does not converge.** Its parent already did, against the
 same state, so `launch` skips it and says so on stderr in the wrapper path's

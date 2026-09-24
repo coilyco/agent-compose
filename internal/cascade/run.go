@@ -84,7 +84,11 @@ func buildPlan(cfg *Config, paths Paths, stderr io.Writer, strict bool) (map[str
 		return nil, plan{}, nil, "", 1
 	}
 
-	loadPoints := ResolveLoadPoints(cfg)
+	loadPoints, err := ResolveLoadPoints(cfg)
+	if err != nil {
+		fmt.Fprintf(stderr, "agent-compose: %s\n", err)
+		return nil, plan{}, nil, "", 1
+	}
 	p := planOutputs(sources, loadPoints, paths.Composed)
 	p.appendix = appendix
 	p.delivery = cfg.SourceDelivery

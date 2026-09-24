@@ -12,6 +12,7 @@ import (
 	"testing"
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/compose"
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/layouts"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
 )
 
@@ -105,8 +106,12 @@ func TestProjectRejectsUnknownLayoutAndUnsupportedMode(t *testing.T) {
 		t.Fatalf("expected unknown-layout diagnostic, got %v", err)
 	}
 
-	Registry["compiled-only"] = Layout{Compiled: &LoadPoints{Instructions: "CONTEXT.md"}}
-	defer delete(Registry, "compiled-only")
+	table := filepath.Join(t.TempDir(), "layouts.yaml")
+	body := "compiled-only:\n  repo: {compiled: {instructions: CONTEXT.md}}\n  home: {compiled: {instructions: CONTEXT.md}}\n"
+	if err := os.WriteFile(table, []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv(layouts.Env, table)
 	if _, err := Project(native, "compiled-only", t.TempDir()); err == nil || !strings.Contains(err.Error(), "does not support bundles") {
 		t.Fatalf("expected unsupported-mode diagnostic, got %v", err)
 	}

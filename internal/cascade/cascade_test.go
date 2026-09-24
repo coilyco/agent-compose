@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/layouts"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/repositoryplan"
 )
 
@@ -707,18 +708,29 @@ func readFile(t *testing.T, path string) string {
 }
 
 // A config naming one harness must not silently unwire the other, which is how
-// claude lost its global skills.
-func TestResolveSkillLoadPointsDefaultsWireClaudeAndCodex(t *testing.T) {
+// one harness lost its global skills. Only cascade harnesses are defaults.
+func TestResolveSkillLoadPointsDefaultsWireEveryCascadeHarness(t *testing.T) {
 	home := t.TempDir()
 	// os.UserHomeDir reads USERPROFILE on Windows, so HOME alone leaks the
 	// developer real home into the defaults.
 	t.Setenv("HOME", home)
 	t.Setenv("USERPROFILE", home)
+	table := filepath.Join(t.TempDir(), "layouts.yaml")
+	body := "alpha:\n  cascade: true\n  repo: {native: {instructions: A.md}}\n  home: {native: {instructions: .alpha/A.md, skills: .alpha/skills}}\n" +
+		"beta:\n  cascade: true\n  repo: {native: {instructions: B.md}}\n  home: {native: {instructions: .beta/B.md, skills: .shared/skills}}\n" +
+		"gamma:\n  repo: {native: {instructions: C.md}}\n  home: {native: {instructions: .gamma/C.md, skills: .gamma/skills}}\n"
+	if err := os.WriteFile(table, []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv(layouts.Env, table)
 
-	points := ResolveSkillLoadPoints(&Config{})
+	points, err := ResolveSkillLoadPoints(&Config{})
+	if err != nil {
+		t.Fatal(err)
+	}
 	want := map[string]string{
-		"claude": filepath.Join(home, ".claude", "skills"),
-		"codex":  filepath.Join(home, ".agents", "skills"),
+		"alpha": filepath.Join(home, ".alpha", "skills"),
+		"beta":  filepath.Join(home, ".shared", "skills"),
 	}
 	for harness, path := range want {
 		if points[harness] != path {
@@ -745,7 +757,10 @@ func TestResolveSkillLoadPointsHonorsOverrideAndOptOut(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	points := ResolveSkillLoadPoints(cfg)
+	points, err := ResolveSkillLoadPoints(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if got := points["codex"]; got != filepath.Join(home, "elsewhere") {
 		t.Fatalf("configured codex skill load point = %q", got)
 	}

@@ -20,7 +20,6 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/telemetry"
 )
 
 const (
@@ -44,7 +43,6 @@ type Config struct {
 	OperatingContext     []string            `yaml:"operating_context"`
 	SourceDelivery       string              `yaml:"source_delivery"`
 	Appendix             []AppendixEntry     `yaml:"appendix"`
-	Telemetry            *telemetry.Config   `yaml:"telemetry"`
 
 	// Kept so a relative appendix path resolves against the config file.
 	SourcePath string `yaml:"-"`
@@ -120,9 +118,6 @@ func LoadConfig(path string) (*Config, error) {
 		seenRepositories[repository] = true
 	}
 	if err := validateAppendix(cfg.Appendix); err != nil {
-		return nil, fmt.Errorf("%s: %w", path, err)
-	}
-	if err := cfg.Telemetry.Validate(); err != nil {
 		return nil, fmt.Errorf("%s: %w", path, err)
 	}
 	cfg.SourcePath = path

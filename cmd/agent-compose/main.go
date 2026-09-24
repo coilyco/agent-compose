@@ -3,10 +3,8 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
-	"io/fs"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -35,7 +33,6 @@ import (
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/skillaudit"
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/statusline"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/telemetry"
 )
 
 // version is stamped by the release build via -ldflags; dev builds say dev.
@@ -1048,9 +1045,6 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 			return err
 		}
 	}
-	if err := applyTelemetryEnvironment(paths.Config, harness, role); err != nil {
-		return err
-	}
 	if verbose && !interactive {
 		printNativeLaunchStatus(os.Stderr, role, harness, result, state)
 	}
@@ -1276,36 +1270,6 @@ func clearNativeLaunchEnvironment() error {
 	} {
 		if err := os.Unsetenv(name); err != nil {
 			return fmt.Errorf("clear native launch environment %s: %w", name, err)
-		}
-	}
-	return nil
-}
-
-// applyTelemetryEnvironment sets or clears a Claude seat's metrics export.
-// See docs/claude-launch-identity.md.
-func applyTelemetryEnvironment(configPath, harness, role string) error {
-	cfg, err := cascade.LoadConfig(configPath)
-	if errors.Is(err, fs.ErrNotExist) {
-		cfg, err = &cascade.Config{}, nil
-	}
-	if err != nil {
-		return fmt.Errorf("load host configuration for telemetry: %w", err)
-	}
-	plan := telemetry.Environment(
-		cfg.Telemetry,
-		harness,
-		role,
-		os.Getenv(telemetry.EnvShadow),
-		os.Getenv(telemetry.EnvSwitch),
-	)
-	for _, name := range plan.Unset {
-		if err := os.Unsetenv(name); err != nil {
-			return fmt.Errorf("clear telemetry environment %s: %w", name, err)
-		}
-	}
-	for name, value := range plan.Set {
-		if err := os.Setenv(name, value); err != nil {
-			return fmt.Errorf("set telemetry environment %s: %w", name, err)
 		}
 	}
 	return nil

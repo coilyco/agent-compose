@@ -169,18 +169,3 @@ func TestVerboseLayoutNamesEveryAppendixDestination(t *testing.T) {
 		}
 	}
 }
-
-func TestLoadConfigRejectsMalformedTelemetry(t *testing.T) {
-	e := newEnv(t)
-	for name, body := range map[string]string{
-		"bare host":      "telemetry:\n  otlp_metrics_endpoint: collector.example:4318\n",
-		"bad protocol":   "telemetry:\n  otlp_metrics_endpoint: http://collector.example:4318/v1/metrics\n  protocol: udp\n",
-		"logs requested": "telemetry:\n  otlp_logs_endpoint: http://collector.example:4318/v1/logs\n",
-	} {
-		t.Run(name, func(t *testing.T) {
-			if _, err := LoadConfig(e.write(t, name+".yaml", body)); err == nil {
-				t.Fatal("malformed telemetry block passed strict config loading")
-			}
-		})
-	}
-}

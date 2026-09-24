@@ -61,30 +61,6 @@ loses the colors and keeps the name, the verbs, and the tips.
 `--safe-mode` disables custom themes along with plugins, output styles, and
 keybindings. The session name survives it.
 
-## Token metrics
-
-A Claude seat exports Claude Code's `claude_code.token.usage` metrics, labelled
-by seat, once the host configuration names a collector
-(`teable:coilyco-flight-deck/agent-compose#7834`). The fleet rollout renders the
-endpoint, and Agent Compose ships no default.
-
-```yaml
-telemetry:
-  otlp_metrics_endpoint: http://collector.example:4318/v1/metrics
-  protocol: http/protobuf   # optional, also http/json or grpc
-```
-
-* It sets `CLAUDE_CODE_ENABLE_TELEMETRY=1`, `OTEL_METRICS_EXPORTER=otlp`, and
-  only the per-signal metrics endpoint and protocol, so no other signal is routed.
-* Logs and traces are forced to `none`, and the prompt, tool, and raw-body
-  logging flags are cleared, because events can carry prompt text.
-* `OTEL_RESOURCE_ATTRIBUTES=seat=<role slug>,shadow=<AOS_NATIVE_SESSION>`. It
-  never uses the display name, which concurrent sessions in one shadow share,
-  and `session.id` separates those sessions.
-* `AGENT_COMPOSE_TELEMETRY=off`, or no `telemetry` block, clears every managed
-  variable. The session then emits nothing even when a parent seat exported,
-  and the switch carries on to seats that session launches.
-
 ## MCP role scope
 
 A launch narrows the converged inventory `~/.mcporter/mcporter.json` to the

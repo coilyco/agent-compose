@@ -175,6 +175,18 @@ def score(out, export=None, write=True):
     tt = [x for x in (timing(r, snap) for r in rows) if x]
     vis = sum(1 for x in tt if x["spread"] >= 5)
     say(f"P4 progress: {'PASS' if tt and vis / len(tt) >= 0.8 else 'FAIL'} ({vis}/{len(tt)} settled prompts with first-to-fourth spread >= 5s)")
+    # AMENDMENT-3: descriptive, no threshold. What a prompt with a bad answer does to the rest of its row.
+    dstate = {d["prompt_id"]: d for d in snap.get("divergence", [])}
+    bad = [r for r in rows if any(a["state"] in ("empty", "failed") for a in prompt_answers(r, snap))]
+    stuck = [r for r in rows if any(a["state"] not in TERMINAL for a in prompt_answers(r, snap))]
+    say(f"stall: {len(bad)} prompts with an empty or failed answer, {len(stuck)} prompts with an answer never terminal")
+    for r in bad + [r for r in stuck if r not in bad]:
+        ans = prompt_answers(r, snap)
+        d = dstate.get(r.get("room_id"), {})
+        t = timing(r, snap)
+        say(f"  {r['stage']} L{r['level']} {r['pid']}: states {[a['state'] for a in ans]} reasons {[a.get('reason') for a in ans if a.get('reason')]}"
+            f" divergence {d.get('state', 'absent')}/{d.get('method', '-')}{' ' + str(d.get('reason')) if d.get('reason') else ''}"
+            f" all4 {'%.1fs' % t['all4'] if t else 'never'}")
     text = "\n".join(lines)
     if write:
         open(os.path.join(out, "score.txt"), "w").write(text + "\n")
@@ -262,6 +274,8 @@ def selftest():
         assert "empty 2/64" in s and "markup UNMEASURED" in s, s
         assert "P3 divergence: PASS (gap +0.450, persona n=7" in s and "lexical 1" in s, s
         assert "P4 progress: FAIL" in s, s
+        assert "stall: 3 prompts with an empty or failed answer, 0 prompts with an answer never terminal" in s, s
+        assert "S1 L1 ctl-mult: states ['done', 'done', 'done', 'failed']" in s and "divergence done/stance" in s, s
         exp = os.path.join(out, "export.jsonl")
         open(exp, "w").write(json.dumps({"text": "fine"}) + "\n" + json.dumps({"text": "<invoke name='x'>"}) + "\n")
         assert "markup 1/2 from export" in score(out, exp, write=False)

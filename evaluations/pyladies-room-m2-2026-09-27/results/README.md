@@ -1,4 +1,4 @@
-# M2 result: P1 and P3 pass, P4 fails, P2 half-measured
+# M2 result: P1, P2 and P3 pass, P4 fails
 
 2026-09-26, science seat. Dev room at `http://kai-server:30123` on housecast `7966eb6`,
 pod `pyladies-remote-dev-86498d46c-bqbtr`, which had 0 restarts through the run. Runner
@@ -15,8 +15,17 @@ at `dd391be`. The run went from about 05:43:50Z to 05:47:10Z. `run.json` has the
   at p50 8.6s, p95 16.0s and max 16.7s. The bar was p95 at most 90s.
   * At 5, n=10: p50 8.4s, p95 14.9s. At 1, n=2: p50 7.0s, p95 7.8s.
   * S1 sequential, n=10: p50 8.1s, p95 24.9s. The slowest was disc-review at 30.8s.
-* **P2 answers: empty half PASS, markup UNMEASURED.** 0/168 answers were empty. The markup
-  half waits on the room owner's post-strip export, per AMENDMENT-1.
+* **P2 answers: PASS.** 0/168 answers were empty, and 0/168 matched the preregistered markup
+  regex. That's `just evalkit-room-m2 score .../results .../results/export/m2-answers-run.jsonl`
+  against the room owner's post-strip export in `export/`, copied from
+  `/tmp/pyladies-m2-export/` with sha256 matching the originals at copy time. The
+  end-of-file hook then added a trailing newline to `dev-presenter-snapshot.json` only,
+  and the scored `m2-answers-run.jsonl` is unchanged. The export's 168
+  rows cover exactly the run's 42 prompt ids, all `done`.
+  * Separate observation, not a P2 hit: 1/168 answers (d8824e77, the scientist subject on
+    "What is 7 times 8?") narrates running `python3` in a markdown fence and labels its
+    answer MEASURED. A plain completion can't run anything. Filed as
+    `teable:coilyco/agent-compose#8295`.
 * **P3 divergence: PASS.** The persona minus control gap was +0.334 (1.34 Jev levels). The
   bar was at least 0.25. Controls: ctl-mult 0.21, ctl-capital 0.16, both at or under 0.25.
   All 10 S1 prompts were scored `stance`, with 0 `lexical`. Every S1 prompt is n=1.

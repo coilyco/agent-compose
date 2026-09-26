@@ -1,0 +1,12 @@
+prompts submitted 42, snapshot rev 676, subjects 4
+submit statuses [201], 429s 0
+S2 level 1: n=2 errors=0 all4 p50=7.0s p95=7.8s max=7.9s first p50=4.6s
+S2 level 5: n=10 errors=0 all4 p50=8.4s p95=14.9s max=15.5s first p50=3.8s
+S2 level 10: n=20 errors=0 all4 p50=8.6s p95=16.0s max=16.7s first p50=4.6s
+S1 sequential: n=10 all4 p50=8.1s p95=24.9s
+P1 load: PASS (top level reached 10, errors 0, p95 all4 16.0s)
+P2 answers: empty half PASS, markup UNMEASURED (empty 0/168, no export)
+divergence methods on done prompts: ['stance'], lexical 0
+P3 divergence: PASS (gap +0.334, persona n=8, controls [0.21, 0.16])
+P4 progress: FAIL (20/42 settled prompts with first-to-fourth spread >= 5s)
+stall: 0 prompts with an empty or failed answer, 0 prompts with an answer never terminal

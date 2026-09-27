@@ -4,10 +4,14 @@ import (
 	"fmt"
 )
 
-func validateActs(owner string, acts []Act, sided bool) error {
-	if !sided {
-		if len(acts) != actsPerAttribute {
-			return fmt.Errorf("%s names %d acts, needs exactly %d", owner, len(acts), actsPerAttribute)
+// validateActs checks an unsided list against actsPerAttribute..maxActs. A
+// maxActs of zero marks a sided boundary list, which needs exactly three per side.
+func validateActs(owner string, acts []Act, maxActs int) error {
+	if maxActs > 0 {
+		if len(acts) < actsPerAttribute || len(acts) > maxActs {
+			return fmt.Errorf(
+				"%s names %d acts, needs %d to %d", owner, len(acts), actsPerAttribute, maxActs,
+			)
 		}
 		return validateActTexts(owner, acts)
 	}

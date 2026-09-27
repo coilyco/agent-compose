@@ -44,9 +44,13 @@ const maxBoundarySkillBodyWords = 200
 // roster chooses its sharpest confusions. See docs/role-boundaries.md.
 const adjacentsPerRole = 2
 
-// Three is the authored number rather than a measured optimum, and
-// housecast#6 is where measuring it belongs. See docs/kdl-contracts.md.
-const actsPerAttribute = 3
+// Three is an authored floor, not a measured optimum (housecast#6). Boundary
+// sides stay at three. See docs/kdl-contracts.md.
+const (
+	actsPerAttribute   = 3
+	maxPersonalityActs = 5
+	maxRoleActs        = 10
+)
 
 // The scoped side is required even though its prose section is optional. Why:
 // docs/kdl-contracts.md.
@@ -988,17 +992,17 @@ func validateActCoverage(p *Person) error {
 		return nil
 	}
 	for _, roleName := range p.roleOrder() {
-		if err := validateActs("role "+roleName, p.Roles[roleName].Acts, false); err != nil {
+		if err := validateActs("role "+roleName, p.Roles[roleName].Acts, maxRoleActs); err != nil {
 			return err
 		}
 	}
 	for _, name := range p.PersonalityOrder {
-		if err := validateActs("personality "+name, p.Personalities[name].Acts, false); err != nil {
+		if err := validateActs("personality "+name, p.Personalities[name].Acts, maxPersonalityActs); err != nil {
 			return err
 		}
 	}
 	for _, name := range p.BoundaryOrder {
-		if err := validateActs("boundary "+name, p.Boundaries[name].Acts, true); err != nil {
+		if err := validateActs("boundary "+name, p.Boundaries[name].Acts, 0); err != nil {
 			return err
 		}
 	}

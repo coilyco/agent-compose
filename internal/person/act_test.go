@@ -1,6 +1,7 @@
 package person
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -17,13 +18,14 @@ func TestCoreRosterNamesActsForEveryAttribute(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, roleName := range p.roleOrder() {
-		if got := len(p.Roles[roleName].Acts); got != actsPerAttribute {
-			t.Errorf("core role %q names %d acts, want %d", roleName, got, actsPerAttribute)
+		if got := len(p.Roles[roleName].Acts); got < actsPerAttribute || got > maxRoleActs {
+			t.Errorf("core role %q names %d acts, want %d to %d", roleName, got, actsPerAttribute, maxRoleActs)
 		}
 	}
 	for _, name := range p.PersonalityOrder {
-		if got := len(p.Personalities[name].Acts); got != actsPerAttribute {
-			t.Errorf("core personality %q names %d acts, want %d", name, got, actsPerAttribute)
+		if got := len(p.Personalities[name].Acts); got < actsPerAttribute || got > maxPersonalityActs {
+			t.Errorf("core personality %q names %d acts, want %d to %d",
+				name, got, actsPerAttribute, maxPersonalityActs)
 		}
 	}
 	for _, name := range p.BoundaryOrder {
@@ -123,5 +125,48 @@ func TestBoundaryActsFollowTheSideTheSeatHolds(t *testing.T) {
 		if strings.Contains(card, ownAct.Text) {
 			t.Errorf("platform card carries the owning act %q", ownAct.Text)
 		}
+	}
+}
+
+// A personality may name more acts than the floor and a role more again, while
+// a boundary side stays at exactly the floor.
+func TestActCountsFollowTheAttributeKind(t *testing.T) {
+	acts := func(n int) []Act {
+		out := make([]Act, n)
+		for i := range out {
+			out[i] = Act{Tool: "grep", Text: fmt.Sprintf("grep %d", i)}
+		}
+		return out
+	}
+	for _, test := range []struct {
+		name    string
+		n       int
+		maxActs int
+		wantErr bool
+	}{
+		{"role at floor", actsPerAttribute, maxRoleActs, false},
+		{"role at ceiling", maxRoleActs, maxRoleActs, false},
+		{"role over ceiling", maxRoleActs + 1, maxRoleActs, true},
+		{"role under floor", actsPerAttribute - 1, maxRoleActs, true},
+		{"personality at ceiling", maxPersonalityActs, maxPersonalityActs, false},
+		{"personality over ceiling", maxPersonalityActs + 1, maxPersonalityActs, true},
+	} {
+		err := validateActs(test.name, acts(test.n), test.maxActs)
+		if gotErr := err != nil; gotErr != test.wantErr {
+			t.Errorf("%s (%d acts): err = %v, want error %v", test.name, test.n, err, test.wantErr)
+		}
+	}
+	if maxPersonalityActs <= actsPerAttribute || maxRoleActs <= maxPersonalityActs {
+		t.Errorf("want floor %d < personality ceiling %d < role ceiling %d",
+			actsPerAttribute, maxPersonalityActs, maxRoleActs)
+	}
+	side := []Act{}
+	for _, s := range boundaryActSides {
+		for i := 0; i < actsPerAttribute+1; i++ {
+			side = append(side, Act{Side: s, Tool: "grep", Text: fmt.Sprintf("grep %s %d", s, i)})
+		}
+	}
+	if err := validateActs("boundary", side, 0); err == nil {
+		t.Error("a boundary side naming four acts loaded, want exactly three")
 	}
 }

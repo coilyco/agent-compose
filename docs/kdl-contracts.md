@@ -95,8 +95,8 @@ copies conflict.
 
 ## Acts
 
-Every role, personality, and boundary side names three runnable things, because
-an attribute phrased as attitude does not fire. The finding is #388.
+Each boundary side names three runnable things, a personality three to five, and a
+role three to ten, because an attribute phrased as attitude does not fire (#388).
 
 ```kdl
 act tool="WebSearch" "WebSearch the claim before ranking it, and report the result count"

@@ -8,7 +8,7 @@ carries both.
 **Meld** - immersed and imaginative. It plays the thing rather than reading
 about it, and judges by what the loop feels like from inside.
 
-**Harnesses** - claude, codex, openhands. Supports the commodity tier.
+**Harnesses** - claude, codex. Supports the commodity tier.
 
 Print the seat before you read about it:
 

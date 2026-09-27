@@ -30,3 +30,24 @@ opencode:
   home:
     native: {instructions: .config/opencode/AGENTS.md, skills: .agents/skills}
     compiled: {instructions: .config/opencode/AGENTS.md}
+hermes:
+  repo:
+    native: {instructions: AGENTS.md, skills: .agents/skills}
+    compiled: {instructions: AGENTS.md}
+  home:
+    native: {instructions: .hermes/SOUL.md, skills: .hermes/skills}
+    compiled: {instructions: .hermes/SOUL.md}
+gptme:
+  repo:
+    native: {instructions: AGENTS.md, skills: .gptme/skills}
+    compiled: {instructions: AGENTS.md}
+  home:
+    native: {instructions: .config/gptme/AGENTS.md, skills: .config/gptme/skills}
+    compiled: {instructions: .config/gptme/AGENTS.md}
+crush:
+  repo:
+    native: {instructions: AGENTS.md, skills: .agents/skills}
+    compiled: {instructions: AGENTS.md}
+  home:
+    native: {instructions: .config/crush/CRUSH.md, skills: .config/crush/skills}
+    compiled: {instructions: .config/crush/CRUSH.md}

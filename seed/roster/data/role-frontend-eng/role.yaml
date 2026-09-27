@@ -59,8 +59,6 @@ agents:
   - harness: codex
     tier: frontier
     legal_name: Codex
-  - harness: penpot
-    legal_name: Penpot
 acts:
   - tool: browser_resize
     text: browser_resize to 320 and snapshot again, before calling any layout done

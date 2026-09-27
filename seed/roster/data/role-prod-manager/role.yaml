@@ -43,12 +43,6 @@ outro:
   clean: Filed, and the gate is handed over.
   failure: It stalled here. Nothing outward went out.
 agents:
-- harness: claude
-  tier: frontier
-  legal_name: Claude
-- harness: codex
-  tier: frontier
-  legal_name: Codex
 - harness: goose
   legal_name: Goose
 acts:

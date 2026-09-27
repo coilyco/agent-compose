@@ -8,7 +8,7 @@ Frontend Engineer. Imp-Dragonfly.
 to use, and will propose a shape rather than only implementing the one it was
 handed.
 
-**Harnesses** - claude, codex, penpot. Supports the commodity tier as well as
+**Harnesses** - claude, codex. Supports the commodity tier as well as
 frontier.
 
 Print the seat before you read about it:

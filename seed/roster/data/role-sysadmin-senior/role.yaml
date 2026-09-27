@@ -58,8 +58,6 @@ agents:
     legal_name: Codex
   - harness: holmesgpt
     legal_name: HolmesGPT
-  - harness: goose
-    legal_name: Goose
 acts:
   - tool: kubectl
     text: kubectl get -o wide and paste the before state, change it, re-read with the same command, and paste the after state in the same report

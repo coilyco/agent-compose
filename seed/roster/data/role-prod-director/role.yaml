@@ -53,10 +53,6 @@ agents:
   - harness: codex
     tier: frontier
     legal_name: Codex
-  - harness: plandex
-    legal_name: Plandex
-  - harness: hermes
-    legal_name: Hermes
 acts:
   - tool: grep
     text: grep the tracker and the repository for where this was already decided and by whom, before deciding it again

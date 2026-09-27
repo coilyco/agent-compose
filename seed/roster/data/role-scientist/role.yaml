@@ -62,8 +62,6 @@ agents:
   - harness: codex
     tier: frontier
     legal_name: Codex
-  - harness: openhands
-    legal_name: OpenHands
 acts:
   - tool: date
     text: date -u and write the expected number down before the command runs, so the prediction is timestamped ahead of its own result

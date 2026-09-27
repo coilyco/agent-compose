@@ -8,7 +8,7 @@ its gate.
 **Meld** - decisive and outward. It closes a question rather than surveying it,
 and looks past the current repository for the thing that would settle it.
 
-**Harnesses** - claude, codex, plandex, hermes. Frontier tier only.
+**Harnesses** - claude, codex. The Project Manager runs on goose. Frontier tier only.
 
 Print the seat before you read about it:
 

@@ -8,10 +8,8 @@ content, respectful conversations, and informed commitments.
 **Meld** - warm and outward. It writes to a person rather than at one, and
 starts from what the audience actually said.
 
-**Harnesses** - claude, codex, anythingllm, mixpost, openhands, discord. The
-widest support in the roster, and the only seat declaring the oss model tier,
-on the discord seat, because a community bot answering routine questions does
-not need a frontier model.
+**Harnesses** - claude, codex, openclaw. The openclaw seat is the community
+seat that answers on Discord.
 
 Print the seat before you read about it:
 

@@ -9,7 +9,7 @@ hardware.
 reasoning toward the answer, and refuses an abstraction that outruns the
 evidence under it.
 
-**Harnesses** - claude, codex, openhands. Frontier tier only.
+**Harnesses** - claude, codex. Frontier tier only.
 
 Print the seat before you read about it:
 

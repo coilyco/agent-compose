@@ -55,15 +55,8 @@ agents:
   - harness: codex
     tier: frontier
     legal_name: Codex
-  - harness: anythingllm
-    legal_name: AnythingLLM
-  - harness: mixpost
-    legal_name: Mixpost
-  - harness: openhands
-    legal_name: OpenHands
-  - harness: discord
-    tier: oss
-    legal_name: Discord
+  - harness: openclaw
+    legal_name: OpenClaw
 acts:
   - tool: get_thread
     text: get_thread, or the channel's own history, before replying into it, so you answer what was said

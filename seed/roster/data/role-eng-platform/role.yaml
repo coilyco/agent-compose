@@ -59,8 +59,6 @@ agents:
   - harness: codex
     tier: frontier
     legal_name: Codex
-  - harness: openhands
-    legal_name: OpenHands
 acts:
   - tool: git log
     text: git log -20 on an upstream and its release history before you add it as a dependency, and record last release and maintainer count in the commit body

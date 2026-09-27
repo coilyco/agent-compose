@@ -15,6 +15,25 @@ A roster root holding `overlay.yaml` with `layers_over: core` adds to the next p
 
 A private roster rides on the public seed this way. A host that must not hold it does not mount it, and runs the seed alone.
 
+### Appended acts
+
+An overlay root may also hold `acts.yaml`, which appends acts to shipped roles, personalities, and boundary sides instead of replacing them (Kai, 2026-09-01, teable:coilyco-flight-deck/agent-compose#1824). The shipped acts stay first, so a host holding both tools runs the portable one before the estate one.
+
+```yaml
+overlay: kai-estate
+roles:
+  sysadmin-senior:
+    - {tool: signoz, text: "signoz the service error rate before claiming it moved"}
+boundaries:
+  modify-live-backend:
+    own: [{tool: aosguard, text: "aosguard ops the before state, then the same read after"}]
+```
+
+* A boundary act names its side, `own`, `scoped`, or `defer`, and reaches only a seat holding that side.
+* Appended acts carry no ceiling. The ceilings exist to keep the shipped roster readable by a stranger.
+* Every name is checked. An unknown key, a misspelled role, a tool missing from its text, or a repeated act fails the load, since an act that reaches nobody looks exactly like an act nobody wrote.
+* The estate-tool refusal still guards the shipped roster, which stays byte-identical for a host that mounts no overlay.
+
 ### Derived roles
 
 `derives: <parent>` in a `role.yaml` merges the parent's fields under the child's. A mapping such as `voice` merges key by key. A scalar or list replaces the parent's whole, so dropping one boundary means restating the list. An explicit `null` removes the parent's key, as in `guardrail: null`. `role`, `order`, `skill`, and `archived` never inherit, `skill` defaults to `role-<slug>`, and `color_twin` is implied as the parent.

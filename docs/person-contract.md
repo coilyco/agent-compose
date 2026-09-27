@@ -69,8 +69,8 @@ consistently. Mixing role-level identity with per-seat identity fails
 validation. Seats are personality-neutral. A compose request selects a role,
 which activates its role skill, methods, and ordered personality set. See
 [role-skill delivery](role-briefings.md). A private overlay may add scoped
-instructions or selection rules. It may not redefine selected roles,
-personalities, definitions, or role personality sets. Naming the seat is the
+instructions, selection rules, or appended acts, and appending is not redefining.
+It may not redefine selected roles, personalities, definitions, or personality sets. Naming the seat is the
 one exception: [seat identity](identity.md). An external package replaces
 the embedded default as one unit, and AOS owns no copy of either package.
 

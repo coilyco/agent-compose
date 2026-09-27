@@ -9,8 +9,8 @@ then the seed a package manager installed beside it, and names every path it tri
 and scoop install that seed, so a roster change needs no rebuild and an upgrade never overwrites an edited
 roster in the state directory (#336). The release also ships the composed bundle set, addressed
 `<role>-<tier>-<delivery>`, because housecast composes at build time and never runs on a user's machine
-(#412). A root marked as an [overlay](roster-composition.md) adds to the roster under it, and a role can
-`derives:` a parent, declaring only its deltas.
+(#412). A root marked as an [overlay](roster-composition.md) adds to the roster under it, its `acts.yaml`
+appends estate acts, and a role can `derives:` a parent, declaring only its deltas.
 
 ## Composition moved to housecast
 

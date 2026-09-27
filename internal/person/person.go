@@ -539,6 +539,9 @@ func Load() (*Person, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := applyActsOverlay(source, p); err != nil {
+		return nil, fmt.Errorf("%s: %w", label, err)
+	}
 	if err := resolveAndValidatePerson(p); err != nil {
 		return nil, err
 	}

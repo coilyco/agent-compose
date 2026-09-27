@@ -51,3 +51,10 @@ crush:
   home:
     native: {instructions: .config/crush/CRUSH.md, skills: .config/crush/skills}
     compiled: {instructions: .config/crush/CRUSH.md}
+openclaw:
+  repo:
+    native: {instructions: AGENTS.md, skills: .agents/skills}
+    compiled: {instructions: AGENTS.md}
+  home:
+    native: {instructions: .openclaw/workspace/AGENTS.md, skills: .openclaw/workspace/skills}
+    compiled: {instructions: .openclaw/workspace/AGENTS.md}

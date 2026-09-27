@@ -54,10 +54,10 @@ default), and opencode discovers project skills from `.opencode/skills/`,
 `.claude/skills/`, and `.agents/skills/`. Compiled delivery gives consumers
 one instruction document.
 
-Read at source 2026-09-27: hermes (6e69a89) reads only `~/.hermes/SOUL.md` from
-home and project skills after `hermes skills trust`, gptme (f7bb348) reads
-`.gptme/skills/`, crush (v0.92.0) reads `~/.config/crush/CRUSH.md`. HolmesGPT and
-OpenClaw have no layout yet (teable:coilyco/agent-compose#8377).
+Read at source 2026-09-27: hermes reads only `~/.hermes/SOUL.md` from home, gptme
+reads `.gptme/skills/`, crush reads `~/.config/crush/CRUSH.md`, and openclaw v2026.9.6
+reads workspace then execution-folder AGENTS.md, each cut at `bootstrapMaxChars`
+(20000). HolmesGPT has no layout yet (teable:coilyco/agent-compose#8377).
 
 Claude Code is the exception on both portable conventions. Its documented
 skill locations are `.claude/skills/` and `~/.claude/skills/` only -

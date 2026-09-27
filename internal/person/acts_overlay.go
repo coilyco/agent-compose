@@ -12,8 +12,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// actsOverlayFile appends estate acts to a mounted roster. The act ceilings bind
-// the shipped roster only, so it carries none. See docs/roster-composition.md.
+// actsOverlayFile appends estate acts to a mounted roster, with no count
+// guideline. See docs/roster-composition.md.
 const actsOverlayFile = "acts" + yamlFragmentExt
 
 type actsOverlay struct {

@@ -30,7 +30,7 @@ boundaries:
 ```
 
 * A boundary act names its side, `own`, `scoped`, or `defer`, and reaches only a seat holding that side.
-* Appended acts carry no ceiling. The ceilings exist to keep the shipped roster readable by a stranger.
+* Appended acts follow no count guideline, since the guideline keeps the shipped roster readable by a stranger.
 * Every name is checked. An unknown key, a misspelled role, a tool missing from its text, or a repeated act fails the load, since an act that reaches nobody looks exactly like an act nobody wrote.
 * The estate-tool refusal still guards the shipped roster, which stays byte-identical for a host that mounts no overlay.
 

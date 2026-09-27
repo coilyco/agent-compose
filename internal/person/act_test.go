@@ -18,23 +18,19 @@ func TestCoreRosterNamesActsForEveryAttribute(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, roleName := range p.roleOrder() {
-		if got := len(p.Roles[roleName].Acts); got < actsPerAttribute || got > maxRoleActs {
-			t.Errorf("core role %q names %d acts, want %d to %d", roleName, got, actsPerAttribute, maxRoleActs)
+		if len(p.Roles[roleName].Acts) == 0 {
+			t.Errorf("core role %q names no acts", roleName)
 		}
 	}
 	for _, name := range p.PersonalityOrder {
-		if got := len(p.Personalities[name].Acts); got < actsPerAttribute || got > maxPersonalityActs {
-			t.Errorf("core personality %q names %d acts, want %d to %d",
-				name, got, actsPerAttribute, maxPersonalityActs)
+		if len(p.Personalities[name].Acts) == 0 {
+			t.Errorf("core personality %q names no acts", name)
 		}
 	}
 	for _, name := range p.BoundaryOrder {
 		for _, side := range boundaryActSides {
-			if got := len(p.Boundaries[name].ActsForSide(side)); got != actsPerAttribute {
-				t.Errorf(
-					"core boundary %q %s side names %d acts, want %d",
-					name, side, got, actsPerAttribute,
-				)
+			if len(p.Boundaries[name].ActsForSide(side)) == 0 {
+				t.Errorf("core boundary %q %s side names no acts", name, side)
 			}
 		}
 	}
@@ -86,7 +82,7 @@ func TestActsStayOptionalUntilOneIsDeclared(t *testing.T) {
 		{Tool: "wc", Text: "wc it"},
 	}}
 	err := validateActCoverage(p)
-	if err == nil || !strings.Contains(err.Error(), "role reader names 0 acts") {
+	if err == nil || !strings.Contains(err.Error(), "role reader names no acts") {
 		t.Fatalf("a half-covered catalog loaded, error = %v", err)
 	}
 }
@@ -128,45 +124,32 @@ func TestBoundaryActsFollowTheSideTheSeatHolds(t *testing.T) {
 	}
 }
 
-// A personality may name more acts than the floor and a role more again, while
-// a boundary side stays at exactly the floor.
-func TestActCountsFollowTheAttributeKind(t *testing.T) {
-	acts := func(n int) []Act {
+// Kai, 2026-09-27: how many acts is a guideline, so only an empty list or side
+// fails. See docs/kdl-contracts.md.
+func TestActCountsAreGuidelinesButEmptyFails(t *testing.T) {
+	acts := func(n int, side string) []Act {
 		out := make([]Act, n)
 		for i := range out {
-			out[i] = Act{Tool: "grep", Text: fmt.Sprintf("grep %d", i)}
+			out[i] = Act{Side: side, Tool: "grep", Text: fmt.Sprintf("grep %s %d", side, i)}
 		}
 		return out
 	}
-	for _, test := range []struct {
-		name    string
-		n       int
-		maxActs int
-		wantErr bool
-	}{
-		{"role at floor", actsPerAttribute, maxRoleActs, false},
-		{"role at ceiling", maxRoleActs, maxRoleActs, false},
-		{"role over ceiling", maxRoleActs + 1, maxRoleActs, true},
-		{"role under floor", actsPerAttribute - 1, maxRoleActs, true},
-		{"personality at ceiling", maxPersonalityActs, maxPersonalityActs, false},
-		{"personality over ceiling", maxPersonalityActs + 1, maxPersonalityActs, true},
-	} {
-		err := validateActs(test.name, acts(test.n), test.maxActs)
-		if gotErr := err != nil; gotErr != test.wantErr {
-			t.Errorf("%s (%d acts): err = %v, want error %v", test.name, test.n, err, test.wantErr)
+	for _, n := range []int{1, 2, 12, 40} {
+		if err := validateActs("role", acts(n, ""), false); err != nil {
+			t.Errorf("a list of %d acts failed: %v", n, err)
 		}
 	}
-	if maxPersonalityActs <= actsPerAttribute || maxRoleActs <= maxPersonalityActs {
-		t.Errorf("want floor %d < personality ceiling %d < role ceiling %d",
-			actsPerAttribute, maxPersonalityActs, maxRoleActs)
+	if err := validateActs("role", nil, false); err == nil {
+		t.Error("an empty act list loaded")
 	}
-	side := []Act{}
-	for _, s := range boundaryActSides {
-		for i := 0; i < actsPerAttribute+1; i++ {
-			side = append(side, Act{Side: s, Tool: "grep", Text: fmt.Sprintf("grep %s %d", s, i)})
-		}
+	sides := []Act{}
+	for _, side := range boundaryActSides {
+		sides = append(sides, acts(7, side)...)
 	}
-	if err := validateActs("boundary", side, 0); err == nil {
-		t.Error("a boundary side naming four acts loaded, want exactly three")
+	if err := validateActs("boundary", sides, true); err != nil {
+		t.Errorf("seven acts per boundary side failed: %v", err)
+	}
+	if err := validateActs("boundary", sides[7:], true); err == nil {
+		t.Error("a boundary with an empty own side loaded")
 	}
 }

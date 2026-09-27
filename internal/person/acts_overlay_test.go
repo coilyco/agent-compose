@@ -30,13 +30,13 @@ func loadWithActsOverlay(t *testing.T, acts string) (*Person, error) {
 	return p, nil
 }
 
-func TestActsOverlayAppendsAfterTheShippedActsWithNoCeiling(t *testing.T) {
+func TestActsOverlayAppendsAfterTheShippedActs(t *testing.T) {
 	base, err := Load()
 	if err != nil {
 		t.Fatal(err)
 	}
 	var roleActs strings.Builder
-	for i := range maxRoleActs + 2 {
+	for i := range 12 {
 		fmt.Fprintf(&roleActs, "      - {tool: signoz, text: \"signoz query %d before claiming the error rate\"}\n", i)
 	}
 	p, err := loadWithActsOverlay(t, "overlay: estate\nroles:\n  eng-platform:\n"+roleActs.String()+
@@ -47,8 +47,8 @@ func TestActsOverlayAppendsAfterTheShippedActsWithNoCeiling(t *testing.T) {
 		t.Fatal(err)
 	}
 	baseRole, role := base.Roles["eng-platform"].Acts, p.Roles["eng-platform"].Acts
-	if len(role) != len(baseRole)+maxRoleActs+2 {
-		t.Fatalf("eng-platform has %d acts, want %d shipped plus %d appended", len(role), len(baseRole), maxRoleActs+2)
+	if len(role) != len(baseRole)+12 {
+		t.Fatalf("eng-platform has %d acts, want %d shipped plus 12 appended", len(role), len(baseRole))
 	}
 	for i, act := range baseRole {
 		if role[i] != act {

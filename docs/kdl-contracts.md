@@ -95,8 +95,8 @@ copies conflict.
 
 ## Acts
 
-Each boundary side names three runnable things, a personality three to five, and a
-role three to ten, because an attribute phrased as attitude does not fire (#388).
+Every attribute names runnable acts, since attitude does not fire (#388). Counts are a guideline:
+about 3 per boundary side, 3-5 per personality, 3-10 per role. Only an empty list or side fails.
 
 ```kdl
 act tool="WebSearch" "WebSearch the claim before ranking it, and report the result count"
@@ -106,7 +106,7 @@ act "defer" tool="create_issue" "create_issue naming the outside question"   // 
 `tool` is carried apart from the sentence so a coverage or portability check
 reads it without parsing English, and it has to appear in the text so the two
 cannot drift and leave the check passing against text nobody can run. A boundary
-act takes a leading side argument, and each side owes its own three: a deferred
+act takes a leading side argument, and each side owes its own acts: a deferred
 boundary is a different action rather than the owner's withheld. Acts are
 optional until one attribute declares them, then all do, and they spend no
 doctrine word budget.

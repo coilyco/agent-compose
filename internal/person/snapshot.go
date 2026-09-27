@@ -55,7 +55,9 @@ func BuildSnapshot(p *Person) (*Snapshot, error) {
 					name, role.Guardrail,
 				)
 			}
-			if rail.Role != name {
+			// A derived role narrows its parent's charter, so it may keep the
+			// parent's guardrail. No other role may borrow one.
+			if rail.Role != name && (role.Derives == "" || rail.Role != role.Derives) {
 				return nil, fmt.Errorf(
 					"build person snapshot: role %q names guardrail %q, which claims role %q",
 					name, role.Guardrail, rail.Role,

@@ -36,7 +36,7 @@ boundaries:
 
 ### Derived roles
 
-`derives: <parent>` in a `role.yaml` merges the parent's fields under the child's. A mapping such as `voice` merges key by key. A scalar or list replaces the parent's whole, so dropping one boundary means restating the list. An explicit `null` removes the parent's key, as in `guardrail: null`. `role`, `order`, `skill`, and `archived` never inherit, `skill` defaults to `role-<slug>`, and `color_twin` is implied as the parent.
+`derives: <parent>` in a `role.yaml` merges the parent's fields under the child's. A mapping such as `voice` merges key by key. A scalar or list replaces the parent's whole, so dropping one boundary means restating the list. An explicit `null` removes the parent's key, as in `guardrail: null`. A child may keep its parent's guardrail, and no other role may name it. `role`, `order`, `skill`, and `archived` never inherit, `skill` defaults to `role-<slug>`, and `color_twin` is implied as the parent.
 
 The loader refuses a derivation from itself, from an undefined role, or from a role that itself derives. It also refuses a derived role named as a boundary `owner`, because a derived role narrows a charter rather than owning one.
 

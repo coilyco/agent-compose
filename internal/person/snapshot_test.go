@@ -146,3 +146,29 @@ func TestSnapshotV4RejectsInconsistentProvenanceAndAffinities(t *testing.T) {
 		t.Fatal("inconsistent affinity boundary passed")
 	}
 }
+
+func TestSnapshotLetsOnlyADerivedRoleKeepItsParentsGuardrail(t *testing.T) {
+	for _, test := range []struct {
+		role    string
+		derives string
+		wantErr bool
+	}{
+		{role: "researcher", derives: "scientist"},
+		{role: "game-design", derives: "game-dev", wantErr: true},
+		{role: "eng-platform", wantErr: true},
+	} {
+		p, err := Load()
+		if err != nil {
+			t.Fatal(err)
+		}
+		role := p.Roles[test.role]
+		role.Derives = test.derives
+		role.Guardrail = "provable-results"
+		p.Roles[test.role] = role
+		_, err = BuildSnapshot(p)
+		if gotErr := err != nil; gotErr != test.wantErr {
+			t.Errorf("role %q deriving %q with scientist's guardrail: err = %v, want error %v",
+				test.role, test.derives, err, test.wantErr)
+		}
+	}
+}

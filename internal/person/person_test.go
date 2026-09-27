@@ -40,7 +40,8 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 			t.Errorf("role %q briefing has %d paragraphs, want at least three", roleName, got)
 		}
 		minSeats := 2
-		if roleName == "eng-junior" || roleName == "prod-manager" {
+		if roleName == "eng-junior" || roleName == "prod-manager" || roleName == "researcher" ||
+			roleName == "game-design" || roleName == "frontend-design" {
 			minSeats = 1
 		}
 		if len(role.Seats) < minSeats {
@@ -71,6 +72,15 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 		}
 		if roleName == "prod-manager" {
 			wantHarnesses = []string{"goose"}
+		}
+		if roleName == "researcher" {
+			wantHarnesses = []string{"hermes"}
+		}
+		if roleName == "game-design" {
+			wantHarnesses = []string{"crush"}
+		}
+		if roleName == "frontend-design" {
+			wantHarnesses = []string{"gptme"}
 		}
 		if roleName == "sysadmin-access" {
 			wantHarnesses = []string{"codex", "goose"}

@@ -60,3 +60,6 @@ sysadmin-junior // #0d9c92 // #002a36 // protective, grounded // twin of sysadmi
 prod-manager // #da656f // #391721 // decisive, outward // twin of prod-director
 sysadmin-access // #0d9c92 // #002a36 // protective, grounded // twin of sysadmin-senior
 eng-junior // #709b62 // #0e2b14 // tenacious, grounded // twin of eng-platform
+researcher // #14d5b8 // #002c27 // empirical, grounded // twin of scientist
+game-design // #3b82ff // #11243e // immersed, imaginative // twin of game-dev
+frontend-design // #ee7eea // #321a31 // playful, imaginative // twin of frontend-eng

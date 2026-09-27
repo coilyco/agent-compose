@@ -120,8 +120,8 @@ type Role struct {
 	Stance           string           `json:"stance,omitempty"`
 	Voice            *Voice           `json:"voice,omitempty"`
 	Outro            *Outro           `json:"outro,omitempty"`
-	// Guardrail names this role's guardrail element, or is empty. Four roles
-	// carry one by Kai's scope decision, so absence is a decision.
+	// Guardrail names this role's guardrail element, or is empty. Five roles
+	// carry one, a derived role only by keeping its parent's, so absence is a decision.
 	Guardrail string `json:"guardrail,omitempty"`
 	// ColorTwin names a role whose favorite_color and background this role
 	// copies verbatim instead of solving its own; must not itself be a twin.
@@ -2014,8 +2014,8 @@ func Source(p *Person) (*schema.Source, error) {
 				EntryPoint: "SKILL.md",
 			})
 		}
-		// A guardrail binds to exactly one role, so it rides here rather than in
-		// the shared skill list, the same way a boundary body does.
+		// A guardrail binds to one role and its derived children, so it rides here
+		// rather than in the shared skill list, the same way a boundary body does.
 		if rail := p.Roles[roleName].Guardrail; rail != "" {
 			binding, ok := p.Guardrails[rail]
 			if !ok {

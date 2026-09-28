@@ -955,3 +955,42 @@ func TestRefreshBindsAProviderRoleStillNamedByItsRetiredSlug(t *testing.T) {
 		})
 	}
 }
+
+// A repo-scope launch from the projects root or an org directory once wrote a
+// role CLAUDE.md that every session beneath inherited. teable:coilyco/agent-compose#8436
+func TestRefreshRefusesToProjectAboveARepository(t *testing.T) {
+	projects := filepath.Join(t.TempDir(), "projects")
+	org := filepath.Join(projects, "coilyco-flight-deck")
+	provider := filepath.Join(org, "agentic-os")
+	writeProvider(t, provider, true)
+	manifest := filepath.Join(t.TempDir(), "repository-plan.yaml")
+	writeManifest(t, manifest, projects, provider)
+	out := filepath.Join(t.TempDir(), "bundles")
+
+	for _, harness := range []string{"claude", "codex", "goose", "opencode"} {
+		for name, target := range map[string]string{"projects root": projects, "org directory": org} {
+			_, err := Refresh(Options{
+				Role: "frontend-eng", Harness: harness, CWD: target, TargetDir: target,
+				PlanPath: manifest, OutDir: out,
+			})
+			if err == nil || !strings.Contains(err.Error(), "refusing to project") {
+				t.Fatalf("%s from the %s: err = %v, want a refusal", harness, name, err)
+			}
+			for _, leaked := range []string{"CLAUDE.md", "AGENTS.md", ".goosehints", ".claude", ".agents/skills/role-frontend-eng"} {
+				if _, err := os.Stat(filepath.Join(target, leaked)); !os.IsNotExist(err) {
+					t.Errorf("%s from the %s left %s behind: %v", harness, name, leaked, err)
+				}
+			}
+		}
+	}
+
+	if _, err := Refresh(Options{
+		Role: "frontend-eng", Harness: "claude", CWD: provider, TargetDir: provider,
+		PlanPath: manifest, OutDir: out,
+	}); err != nil {
+		t.Fatalf("a launch inside the repository was refused: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(provider, "CLAUDE.md")); err != nil {
+		t.Fatalf("a launch inside the repository projected nothing: %v", err)
+	}
+}

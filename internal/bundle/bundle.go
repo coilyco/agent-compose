@@ -323,15 +323,59 @@ func stripRosterCards(base string, p *person.Person) string {
 	return strings.Join(kept, "\n")
 }
 
+// switchPolicyHeadings open the roster NATIVE-ADAPTATION.txt sections that
+// stripAssignedBase drops.
+var switchPolicyHeadings = []string{
+	"### Native interactive adaptation",
+	"#### Inferred native role switches",
+	"#### Personality-only swaps",
+}
+
+// The switch policy is unreachable once a role is assigned, and the base already
+// carries each instruction body the bundle appends. See docs/science-context-budget.md.
+func stripAssignedBase(base string, p *person.Person, appended [][]byte) string {
+	base = stripRosterCards(base, p)
+	drop := make(map[string]bool, len(switchPolicyHeadings))
+	for _, heading := range switchPolicyHeadings {
+		drop[heading] = true
+	}
+	lines := strings.Split(base, "\n")
+	kept := make([]string, 0, len(lines))
+	for i := 0; i < len(lines); {
+		if !drop[strings.TrimRight(lines[i], " \t")] {
+			kept = append(kept, lines[i])
+			i++
+			continue
+		}
+		for i++; i < len(lines) && !strings.HasPrefix(lines[i], "#"); i++ {
+		}
+	}
+	base = strings.Join(kept, "\n")
+	for _, body := range appended {
+		if trimmed := strings.TrimSpace(string(body)); trimmed != "" {
+			base = strings.Replace(base, trimmed, "", 1)
+		}
+	}
+	return base
+}
+
 func joinInstructions(res *resolver.Resolution) ([]byte, error) {
 	card, err := res.Person.RenderRoleIdentityCard(res.Request.Role, res.FavoriteColor, res.Boundaries)
 	if err != nil {
 		return nil, err
 	}
+	bodies := make([][]byte, 0, len(res.Instructions))
+	for _, sel := range res.Instructions {
+		raw, err := fs.ReadFile(sel.Files, sel.Path)
+		if err != nil {
+			return nil, err
+		}
+		bodies = append(bodies, raw)
+	}
 	// The operating base leads, matching the host global load point, so a role
 	// bundle carries its own doctrine instead of inheriting the host's.
 	var out []byte
-	if base := strings.TrimSpace(stripRosterCards(res.OperatingBase, res.Person)); base != "" {
+	if base := strings.TrimSpace(stripAssignedBase(res.OperatingBase, res.Person, bodies)); base != "" {
 		out = append(out, []byte(base+"\n\n")...)
 	}
 	out = append(out, []byte(fmt.Sprintf(
@@ -349,11 +393,7 @@ func joinInstructions(res *resolver.Resolution) ([]byte, error) {
 		res.Request.Role,
 		card,
 	))...)
-	for _, sel := range res.Instructions {
-		raw, err := fs.ReadFile(sel.Files, sel.Path)
-		if err != nil {
-			return nil, err
-		}
+	for _, raw := range bodies {
 		out = append(out, '\n')
 		out = append(out, raw...)
 	}

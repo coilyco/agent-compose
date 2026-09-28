@@ -1,10 +1,12 @@
 package bundle
 
 import (
+	"os"
 	"strings"
 	"testing"
 
 	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
+	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roster"
 )
 
 // The base's copies are dead weight on every turn. See docs/bundle-protocol.md.
@@ -61,4 +63,43 @@ func TestStripRosterCardsLeavesACardlessBaseAlone(t *testing.T) {
 	if got := stripRosterCards(base, nil); got != base {
 		t.Errorf("nil person changed base:\n%q", got)
 	}
+}
+
+func TestStripAssignedBaseDropsSwitchPolicyAndDuplicateBodies(t *testing.T) {
+	p, err := person.Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	files, err := roster.Render(p, nil, "/opt/artifact")
+	if err != nil {
+		t.Fatal(err)
+	}
+	base := string(files["AGENTS.COMPOSE.md"])
+	invariant, err := os.ReadFile("../../seed/roster/data/invariant/INVARIANT.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(base, strings.TrimSpace(string(invariant))) {
+		t.Fatal("rendered base no longer carries the invariant, so this test proves nothing")
+	}
+
+	stripped := stripAssignedBase(base, p, [][]byte{invariant})
+
+	for _, heading := range switchPolicyHeadings {
+		if !strings.Contains(base, heading) {
+			t.Errorf("rendered base lacks %q, so the strip list drifted from the policy", heading)
+		}
+		if strings.Contains(stripped, heading) {
+			t.Errorf("stripped base still carries %q", heading)
+		}
+	}
+	for _, want := range []string{"# Agent seats", "#### Conditional evaluation fixture authority"} {
+		if !strings.Contains(stripped, want) {
+			t.Errorf("stripped base dropped %q", want)
+		}
+	}
+	if strings.Contains(stripped, strings.TrimSpace(string(invariant))) {
+		t.Error("stripped base still carries the invariant the bundle appends")
+	}
+	t.Logf("assigned strip recovered %d of %d bytes", len(base)-len(stripped), len(base))
 }

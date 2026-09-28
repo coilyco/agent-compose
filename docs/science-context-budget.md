@@ -53,6 +53,15 @@ the deliberately simple `ceil(bytes / 4)` heuristic.
 measurements. The released baseline is retained here because rerunning a newer
 binary cannot reconstruct an older renderer.
 
+### Assigned-base strip
+
+A bundle already drops every roster card from the operating base. It also drops
+the role-switch and personality-swap policy, which its own text rules out for a
+composed run, and any instruction body the bundle appends again, such as the
+personality invariant. Fixture authority stays because it restricts. Measured
+against the host base on 2026-09-28, this removes a further 3,700 bytes, about
+925 tokens, per assigned session.
+
 ### Boundary extraction
 
 Extracting the shared communication and live-operations boundaries into

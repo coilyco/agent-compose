@@ -7,7 +7,7 @@ scoped_boundaries:
 - boundary: build-foundational-software
   scope: agent permission and harness configuration values consumed by every seat, including allow and deny lists, harness settings, launch profiles, aosguard spec values, and ansible agent-config roles; never loaders, validators, schemas, or shared behavior code
 - boundary: modify-live-backend
-  scope: converging agent configuration on a single-owner workstation after confirming its owner and dependents, and applying already-authored route definitions to the live Agent Proxy and LiteLLM service with verification and rollback; never provisioning, topology, capacity, or first deployment of that service, and never another hosted service, cluster, or shared machine
+  scope: converging agent configuration on a single-owner workstation after confirming its owner and dependents; never a hosted service, cluster, or shared machine
 adjacents:
 - role: eng-platform
   reason: changing the loader or validator when the permission value it reads is the only part this seat owns

@@ -133,7 +133,6 @@ func main() {
 		Usage:   "compose personality context into an immutable bundle",
 		Version: version,
 		Commands: []*cli.Command{
-			hookCommand,
 			{
 				Name:  "version",
 				Usage: "print the build version",

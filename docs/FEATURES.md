@@ -59,7 +59,7 @@ rather than only in the issue.
 ## Launch-time refresh
 
 * [Launch](native-role-launch.md) adds color, an Enter gate, and a Codex intro.
-* A Claude launch passes [identity flags](claude-launch-identity.md), not files, guards bare kubectl and helm by role, and exports seat-labelled token metrics. Every native harness narrows MCP servers to the role. A failed [startup step](launch.md) degrades a launch if it shapes behavior and refuses it if it bounds reach.
+* A Claude launch passes [identity flags](claude-launch-identity.md), not files, and exports seat-labelled token metrics. Every native harness narrows MCP servers to the role. A failed [startup step](launch.md) degrades a launch if it shapes behavior and refuses it if it bounds reach.
 * Refresh uses validated fallback unless `external-only` forbids it.
 * `launch` starts a [second seat from inside a session](native-role-launch.md),
   one hop deep and never over the caller's own load points.

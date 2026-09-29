@@ -53,39 +53,6 @@ against the base theme rather than trusting its own output.
 Files over 256KB are skipped with a warning. The whole directory is watched, so
 a rewritten theme file is picked up without a restart.
 
-## Cluster CLI deny
-
-The Claude settings fragment a native launch passes as `--settings` refuses bare
-`kubectl` and `helm`, so seats change the cluster through the operator CLI's
-kubectl verbs. The owner of the `modify-live-backend` boundary keeps bare `kubectl
-exec` alone, until exec moves onto that operator CLI.
-
-### Two layers
-
-* `permissions.deny` for `kubectl` and `helm`, by name and by path, on every
-  role but the owner. A deny in any tier beats every allow, so the host's
-  `Bash(*)` cannot reopen it, and for the same reason it cannot carve out exec.
-* A `PreToolUse` Bash hook, `agent-compose hook bash-guard`, on every role, with
-  `--allow-kubectl exec` for the owner. It parses the command with
-  `mvdan.cc/sh`, so a flag before the verb, `sudo`, `env`, `xargs`, `bash -c`,
-  `eval`, a heredoc, a pipe into a shell, and `ssh` or `python -c` text are all
-  judged by the verb they would run. A computed command on a line naming a
-  cluster CLI is refused. Exit 2 blocks and shows the reason to the model.
-
-The owner comes from the roster's boundary table, and a roster naming none
-denies every role. The launch resolves `agent-compose` on `PATH` into the hook,
-because a hook that cannot start does not block. Observed on Claude Code
-2.1.283: exec ran, while `kubectl apply`, `helm upgrade`, and the `bash -c` form
-were refused.
-
-### What it does not cover
-
-A `just` verb or a script file runs its own kubectl unseen. Those call sites move
-to the operator CLI instead. Anything that writes a file and runs it later, or
-builds the name at runtime from pieces, gets past a guard on ordinary use. A
-caller-supplied `--settings` replaces the fragment whole, per
-[caller precedence](claude-launch-identity.md#caller-precedence).
-
 ## Safe mode caveat
 
 `--safe-mode` disables custom themes, keybindings, output styles, and plugins

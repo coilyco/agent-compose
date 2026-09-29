@@ -63,44 +63,6 @@ type Settings struct {
 	SpinnerTipsEnabled bool              `json:"spinnerTipsEnabled"`
 	SpinnerTips        SpinnerTips       `json:"spinnerTipsOverride"`
 	SubagentStatusLine StatusLineCommand `json:"subagentStatusLine"`
-	Permissions        *Permissions      `json:"permissions,omitempty"`
-	Hooks              *Hooks            `json:"hooks,omitempty"`
-}
-
-// Hooks carries the PreToolUse guard. Claude Code merges hooks across settings
-// tiers, so the host's own hooks still run beside it.
-type Hooks struct {
-	PreToolUse []HookMatcher `json:"PreToolUse"`
-}
-
-// HookMatcher runs its commands for the tools Matcher names.
-type HookMatcher struct {
-	Matcher string              `json:"matcher"`
-	Hooks   []StatusLineCommand `json:"hooks"`
-}
-
-// OwnerKubectlVerbs is the one bare verb the live-backend owner keeps, until
-// teable:coilyco-flight-deck/agentic-os#225 puts exec on aosguard.
-var OwnerKubectlVerbs = []string{"exec"}
-
-// Permissions carries harness deny rules. A deny in any settings tier beats an
-// allow in every other, so the host's own allow list cannot reopen these.
-type Permissions struct {
-	Deny []string `json:"deny"`
-}
-
-// LiveBackendBoundary names the boundary whose owner keeps the bare cluster CLIs.
-const LiveBackendBoundary = "modify-live-backend"
-
-// ClusterCLIDenies refuses bare kubectl and helm, by name and by path.
-// See docs/claude-native-ui-surfaces.md.
-var ClusterCLIDenies = []string{
-	"Bash(kubectl)",
-	"Bash(kubectl *)",
-	"Bash(*/kubectl *)",
-	"Bash(helm)",
-	"Bash(helm *)",
-	"Bash(*/helm *)",
 }
 
 // SubagentStatusLineCommand renders the composed identity per agent-panel row.
@@ -121,9 +83,6 @@ type Options struct {
 	SpinnerMode string
 	// SlugPrefix namespaces theme slugs so several people can coexist.
 	SlugPrefix string
-	// GuardCommand is the agent-compose the bash-guard hook runs. A launch
-	// passes a resolved path, because an unfound hook does not block.
-	GuardCommand string
 }
 
 func (o Options) spinnerMode() string {
@@ -201,48 +160,8 @@ func BuildRole(p *person.Person, roleName string, opts Options) (Bundle, error) 
 				Type:    "command",
 				Command: SubagentStatusLineCommand,
 			},
-			Permissions: permissionsFor(p, roleName),
-			Hooks:       hooksFor(p, roleName, opts),
 		},
 	}, nil
-}
-
-// permissionsFor denies the cluster CLIs to every role but the live-backend
-// owner. A roster with no owner denies them to all, rather than to none.
-func permissionsFor(p *person.Person, roleName string) *Permissions {
-	if boundary, ok := p.Boundaries[LiveBackendBoundary]; ok && boundary.Owner == roleName {
-		return nil
-	}
-	return &Permissions{Deny: append([]string(nil), ClusterCLIDenies...)}
-}
-
-// hooksFor wires bash-guard on every role. The deny above matches command text,
-// and the guard parses it, so it also catches a nested shell or a wrapper.
-func hooksFor(p *person.Person, roleName string, opts Options) *Hooks {
-	command := shellQuote(opts.guardCommand()) + " hook bash-guard"
-	if permissionsFor(p, roleName) == nil {
-		for _, verb := range OwnerKubectlVerbs {
-			command += " --allow-kubectl " + verb
-		}
-	}
-	return &Hooks{PreToolUse: []HookMatcher{{
-		Matcher: "Bash",
-		Hooks:   []StatusLineCommand{{Type: "command", Command: command}},
-	}}}
-}
-
-func (o Options) guardCommand() string {
-	if o.GuardCommand == "" {
-		return "agent-compose"
-	}
-	return o.GuardCommand
-}
-
-func shellQuote(value string) string {
-	if value != "" && !strings.ContainsAny(value, " '\"$`\\\t\n;&|<>()*?[]{}~#!") {
-		return value
-	}
-	return "'" + strings.ReplaceAll(value, "'", `'\''`) + "'"
 }
 
 // tipsFor states the charter, the lock on it, and the boundary. A tip lands while

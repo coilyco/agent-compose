@@ -4,7 +4,7 @@ How agent-compose releases, and what the v2 migration changed.
 
 ## Release
 
-Agent Compose releases are Forgejo-canonical. Every push to `main` enters a
+Agent Compose releases are canonical on the forge. Every push to `main` enters a
 no-cancel queue and validates the exact commit, and the owning
 `scripts/release-impact.sh` classifier decides whether publication runs.
 Automatic publication occurs when the unreleased diff from the latest reachable
@@ -22,12 +22,12 @@ release eligible when a later main push carries only recovery evidence. The
 classifier fails closed to publication when its base revision is unavailable.
 
 An automatic release publishes a new minor version once its binaries build,
-cross-compiling macOS, Linux and Windows, creating the Forgejo release, uploading
+cross-compiling macOS, Linux and Windows, creating the forge release, uploading
 checksums and package files, and updating Homebrew and Scoop when tokens allow.
 Those two bumps run **before** the GitHub mirror check, whose poll ceiling stays
 well under the job's `timeout-minutes`. Neither channel reads the mirror, and a
 step killed mid-loop takes every later step down with it, so a red release may
-still have shipped: check the tap (`teable:coilyco-flight-deck/agent-compose#6994`).
+still have shipped: check the tap.
 
 ### Major release hold
 

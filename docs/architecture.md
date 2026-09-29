@@ -25,7 +25,7 @@ failures drive a revision. See [evaluation](evaluation.md).
 
 A role **is** an entity, and a personality and a boundary **are** attributes.
 That mapping is why one grading layer serves a composed prompt here and a live
-Discord agent in sirens-echo without either shape leaking into the other.
+deployed agent elsewhere without either shape leaking into the other.
 
 ## Composition inputs
 

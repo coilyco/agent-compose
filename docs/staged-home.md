@@ -55,7 +55,7 @@ Every development verb is a recipe in the repo-root [justfile](../justfile).
 Per-repo `ward exec` is retired, under the principle that ward is out-of-band
 flight control, so a repo should mention it in passing rather than route its
 whole build through it. The pattern is
-[agentic-os#1048](https://forgejo.coilysiren.me/coilyco-flight-deck/agentic-os/pulls/1048).
+now the fleet norm.
 
 ### What changed
 
@@ -74,8 +74,7 @@ just test
 It outlived the verbs by carrying a `catalog:` block, because
 `check_catalog_block` pinned that exact path and `catalog-trifecta` wanted
 README, AGENTS, and FEATURES to link it. Both are retired and the cross-repo
-graph that read the block is gone, so the file is deleted fleet-wide
-(`teable:coilyco-flight-deck/agentic-os#95`).
+graph that read the block is gone, so the file is deleted fleet-wide.
 
 ### One line of comment per recipe
 

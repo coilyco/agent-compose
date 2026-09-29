@@ -20,8 +20,7 @@ and a file named by `AGENT_COMPOSE_LAYOUTS` replaces it whole, so a deployment
 owns its harness set without an agent-compose change. Each entry carries `repo`
 and `home` load points, plus `cascade` to make its home paths default host load
 points for the COMPOSED.md cascade and skill mounts. The loader decodes strictly
-and refuses a path that is absolute or escapes its root
-(`teable:coilyco/agent-compose#8199`).
+and refuses a path that is absolute or escapes its root.
 
 A layout that lacks load points for a bundle's delivery mode fails with a
 diagnostic. Layout names and load-point paths never appear in the resolver, the
@@ -57,7 +56,7 @@ one instruction document.
 Read at source 2026-09-27: hermes reads only `~/.hermes/SOUL.md` from home, gptme
 reads `.gptme/skills/`, crush reads `~/.config/crush/CRUSH.md`, and openclaw v2026.9.6
 reads workspace then execution-folder AGENTS.md, each cut at `bootstrapMaxChars`
-(20000). HolmesGPT has no layout yet (teable:coilyco/agent-compose#8377).
+(20000). HolmesGPT has no layout yet.
 
 Claude Code is the exception on both portable conventions. Its documented
 skill locations are `.claude/skills/` and `~/.claude/skills/` only -

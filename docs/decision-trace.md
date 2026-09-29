@@ -47,7 +47,7 @@ deterministic.
 
 ## Issue-suite run journal
 
-Contract: Forgejo issue #115. Program counter uses structured bullets because
+Contract: issue #115. Program counter uses structured bullets because
 the repository voice forbids prose tables.
 
 * reconcile-current-main

@@ -4,7 +4,7 @@ What a deployment may add to the roster, derive from it, or leave out of it.
 
 ## Roster overlays and derived roles
 
-A role can be minted as data outside `seed/roster/data/` and declare only how it differs from its parent (teable:coilyco/agent-compose#8197).
+A role can be minted as data outside `seed/roster/data/` and declare only how it differs from its parent.
 
 ### Roster overlay
 
@@ -17,16 +17,16 @@ A private roster rides on the public seed this way. A host that must not hold it
 
 ### Appended acts
 
-An overlay root may also hold `acts.yaml`, which appends acts to shipped roles, personalities, and boundary sides instead of replacing them (Kai, 2026-09-01, teable:coilyco-flight-deck/agent-compose#1824). The shipped acts stay first, so a host holding both tools runs the portable one before the estate one.
+An overlay root may also hold `acts.yaml`, which appends acts to shipped roles, personalities, and boundary sides instead of replacing them. The shipped acts stay first, so a host holding both tools runs the portable one before the estate one.
 
 ```yaml
-overlay: kai-estate
+overlay: local-estate
 roles:
   sysadmin-senior:
-    - {tool: signoz, text: "signoz the service error rate before claiming it moved"}
+    - {tool: metrics, text: "metrics query the service error rate before claiming it moved"}
 boundaries:
   modify-live-backend:
-    own: [{tool: aosguard, text: "aosguard ops the before state, then the same read after"}]
+    own: [{tool: opcli, text: "opcli read the before state, then the same read after"}]
 ```
 
 * A boundary act names its side, `own`, `scoped`, or `defer`, and reaches only a seat holding that side.

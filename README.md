@@ -64,9 +64,9 @@ scoop bucket add coilyco-flight-deck https://forgejo.coilysiren.me/coilyco-fligh
 scoop install coilyco-flight-deck/agent-compose
 ```
 
-Releases publish to this project's public Forgejo server, and the GitHub mirror
+Releases publish to this project's canonical forge, and the GitHub mirror
 trails it. Both managers also install `acompose` and the roster beside the
-binary. A raw binary from [Forgejo releases](https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases)
+binary. A raw binary from [the forge releases](https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases)
 needs the roster as a second asset, because the binary carries none:
 
 ```sh
@@ -117,7 +117,7 @@ likeliest absorptions, and those reasons become the descriptors a generator uses
 to build exactly the confusion a seat is most at risk of.
 
 Three parties and none of them holds two seats: a generator authors the cases, a
-subject answers them through Agent Proxy, and a human grades them. The grading
+subject answers them through a model gateway, and a human grades them. The grading
 half ships separately as `housecast grade`, so it holds no runner and no model
 client, and grading never spends a token or touches a deployed system.
 Details in [docs/evaluation.md](docs/evaluation.md).
@@ -125,7 +125,7 @@ Details in [docs/evaluation.md](docs/evaluation.md).
 ### What the board needs, and what runs without it
 
 Two pieces of the eval half come from outside this repository. housecast is
-pinned from Forgejo by tag, and the subject answers through Agent Proxy, an
+pinned by tag, and the subject answers through a model gateway, an
 internal transport, so running the board yourself means supplying a model
 transport in its place.
 
@@ -142,7 +142,7 @@ load points, and idempotence without touching live host state or the network.
 `just palette-serve` starts the local personality palette explorer.
 
 Every push to canonical `main` validates and publishes the next minor release.
-Forgejo is canonical and the GitHub mirror is verified.
+The canonical forge is the source of truth and the GitHub mirror is verified.
 
 ## License
 
@@ -156,5 +156,5 @@ MIT. See [LICENSE](LICENSE).
 - [docs/architecture.md](docs/architecture.md) - the composition boundary.
 - [docs/ownership.md](docs/ownership.md) - who owns which boundary, and why.
 - [docs/evaluation.md](docs/evaluation.md) - the generator, subject, and grader split.
-- [docs/release.md](docs/release.md) - the automatic Forgejo release pipeline.
+- [docs/release.md](docs/release.md) - the automatic release pipeline.
 - [justfile](justfile) - development recipes.

@@ -80,8 +80,8 @@ node keeps the role's own seat, which is what every existing request does.
 
 ### Why it exists
 
-A caller that already has an identity would otherwise carry two. Sirens Echo
-composes `sysadmin` for its operator doctrine and answers as Sirens Echo, so
+A caller that already has an identity would otherwise carry two. One such
+caller composes `sysadmin` for its operator doctrine and answers under its own name, so
 without this its prompt introduced Vera as well, a name from a different context,
 in a lane whose policy forbids describing itself at all. The alternative was a
 whole person package, which replaces the roster as one unit: copying ten roles

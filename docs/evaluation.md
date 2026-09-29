@@ -11,7 +11,7 @@ and writes the dataset. It left housecast under housecast#7961.
 **`housecast.grade`** is the grading half, shipped from `coilyco-flight-deck/housecast` under that
 package's `eval` extra so the pairing rule has one home. It holds no runner and no model client, so
 grading never spends a token and never touches a deployed system. Run `housecast grade help` for the
-exhaustive reference. sirens-echo grades through it too, against a live harness rather than a composed
+exhaustive reference. a deployed lane grades through it too, against a live harness rather than a composed
 prompt, so the pairing rule has one implementation across both.
 
 One home per contract keeps the seam honest, and it now names the eval pack rather than the roster:
@@ -91,7 +91,7 @@ their own structure, so a renderer gets `complete` and `passed` rather than a ha
 `critique` and `evidence` stay out unless `--include-private` asks for them. Export **refuses rather
 than scrubs** when a record looks like it carries a secret, because a scrubber that misses a pattern
 ships the secret, and withheld text is not scanned since text that never leaves cannot leak. Recognized:
-AWS key ids, bearer and API tokens, JWTs, private key blocks, SSM parameter paths, Discord snowflakes,
+AWS key ids, bearer and API tokens, JWTs, private key blocks, SSM parameter paths, chat-platform ids,
 tailnet hosts, and email addresses.
 
 `format: agent-compose.eval-export.v1`. Nothing is authored in the projection, so nothing has to come
@@ -111,8 +111,5 @@ that config is managed by agentic-os and a hand-added hook is lost on the next s
   leg, nothing was adopted for grading, and those pages say why.
 * [housecast grading](https://forgejo.coilysiren.me/coilyco-flight-deck/housecast/src/branch/main/docs/grading.md)
   - the shared grading layer, its profile contract, and the probe layer under it.
-* [sirens-echo
-  evaluation](https://forgejo.coilysiren.me/coilyco-gaming/sirens-echo/src/branch/main/docs/sirens-echo-eval.md)
-  - the other consumer: a live harness, cases authored against prompt clauses.
 * [Deleting the Mechanical Scorer](https://coilysiren.me/posts/deleting-the-mechanical-scorer/) - the
   measurement that retired the discriminator tier, and why a rule written twice was the one extracted.

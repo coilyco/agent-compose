@@ -39,7 +39,7 @@ _MARKUP = [
 ]
 CLAIM = re.compile(r"MEASURED|```\s*bash")
 RAN = re.compile(r"```\s*(?:bash|sh)\b|(?m:^\W*MEASURED\b)")
-CORRECT = {"ctl-mult": "56", "ctl-capital": "Paris"}
+CORRECT = {"ctl-mult": ("56", "fifty-six"), "ctl-capital": ("Paris",)}
 
 def strip_markup(text):
     for pattern in _MARKUP:
@@ -197,7 +197,7 @@ def score(out, labels):
               f"/{sum(1 for r in rows if r['who'] == 'evie')}")
         print(f"   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): "
               f"{sum(1 for r in ok if r['who'] == 'evie' and RAN.search(r['raw']))}/{sum(1 for r in rows if r['who'] == 'evie')}")
-        print("   control correct: " + ", ".join(f"{k} {sum(1 for r in ok if r['prompt'] == k and v in r['content'])}"
+        print("   control correct: " + ", ".join(f"{k} {sum(1 for r in ok if r['prompt'] == k and any(w in r['content'].lower() for w in map(str.lower, v)))}"
               f"/{sum(1 for r in rows if r['prompt'] == k)}" for k, v in CORRECT.items()))
         print(f"   response model fields: { {m: sum(1 for r in ok if r['model'] == m) for m in sorted({r['model'] for r in ok}, key=str)} }")
         jp = os.path.join(out, f"jev-{label}.jsonl")

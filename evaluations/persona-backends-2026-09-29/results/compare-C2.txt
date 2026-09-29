@@ -1,0 +1,1 @@
+C2 persona mean 2.150 (n=24) vs pooled A+B 2.089 (n=48): diff +0.060, 95% bootstrap [-0.295, +0.406]; control mean 0.570 (n=6)

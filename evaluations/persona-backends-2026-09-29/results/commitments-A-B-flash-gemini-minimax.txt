@@ -1,0 +1,31 @@
+colors: {'evie': '#14d5b8', 'delphi': '#ee7eea', 'sprite': '#3b82ff', 'gem': '#f7a060'}
+
+=== A
+  evie   Frog-Ox          refused-word answers 0/30  top []  | purple answer names own color 3/3
+  delphi Imp-Dragonfly    refused-word answers 0/30  top []  | purple answer names own color 3/3
+  sprite Whale-Dragonfly  refused-word answers 0/30  top []  | purple answer names own color 3/3
+  gem    Panda-Goose      refused-word answers 1/29  top [('just', 1)]  | purple answer names own color 3/3
+
+=== B
+  evie   Frog-Ox          refused-word answers 0/30  top []  | purple answer names own color 3/3
+  delphi Imp-Dragonfly    refused-word answers 0/30  top []  | purple answer names own color 3/3
+  sprite Whale-Dragonfly  refused-word answers 1/30  top [('fun', 1)]  | purple answer names own color 3/3
+  gem    Panda-Goose      refused-word answers 2/30  top [('just', 2)]  | purple answer names own color 3/3
+
+=== flash
+  evie   Frog-Ox          refused-word answers 0/30  top []  | purple answer names own color 3/3
+  delphi Imp-Dragonfly    refused-word answers 2/30  top [('intuitive', 2), ('seamless', 1)]  | purple answer names own color 3/3
+  sprite Whale-Dragonfly  refused-word answers 2/30  top [('fun', 2)]  | purple answer names own color 3/3
+  gem    Panda-Goose      refused-word answers 3/30  top [('just', 3)]  | purple answer names own color 3/3
+
+=== gemini
+  evie   Frog-Ox          refused-word answers 0/30  top []  | purple answer names own color 3/3
+  delphi Imp-Dragonfly    refused-word answers 0/30  top []  | purple answer names own color 3/3
+  sprite Whale-Dragonfly  refused-word answers 0/30  top []  | purple answer names own color 3/3
+  gem    Panda-Goose      refused-word answers 0/30  top []  | purple answer names own color 3/3
+
+=== minimax
+  evie   Frog-Ox          refused-word answers 3/30  top [('significantly', 2), ('clearly', 2), ('tends to', 2), ('in principle', 2)]  | purple answer names own color 2/3
+  delphi Imp-Dragonfly    refused-word answers 2/30  top [('modern', 1), ('clean', 1), ('intuitive', 1)]  | purple answer names own color 3/3
+  sprite Whale-Dragonfly  refused-word answers 3/30  top [('polished', 2), ('fun', 2), ('juicy', 1), ('players will love', 1)]  | purple answer names own color 3/3
+  gem    Panda-Goose      refused-word answers 8/30  top [('just', 7), ('simply', 1), ('easy', 1), ('obviously', 1)]  | purple answer names own color 1/3

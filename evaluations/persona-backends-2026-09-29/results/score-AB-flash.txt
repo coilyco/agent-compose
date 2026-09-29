@@ -1,0 +1,31 @@
+
+== A (current) rounds=30 answers=120 lost=1
+   lost A|ctl-capital|1|gem: empty after stripping
+   round secs p50=9.17 p95=15.38 max=18.46
+   answer secs p50=4.87 p95=13.77 (n=120)
+   truncated(length)=0 markup_stripped=1 retried=0
+   evie MEASURED-or-bash-fence: 7/30
+   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): 0/30
+   control correct: ctl-mult 12/12, ctl-capital 11/12
+   response model fields: {'evaluation/deepseek-v4-pro': 120}
+   jev failures=0 persona n=24 mean=2.060 controls n=6 mean=0.490 per-control {'ctl-mult': 0.7, 'ctl-capital': 0.28} gap=+1.570
+
+== B (current) rounds=30 answers=120 lost=0
+   round secs p50=7.56 p95=15.18 max=16.50
+   answer secs p50=4.66 p95=11.93 (n=120)
+   truncated(length)=0 markup_stripped=1 retried=0
+   evie MEASURED-or-bash-fence: 9/30
+   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): 0/30
+   control correct: ctl-mult 12/12, ctl-capital 12/12
+   response model fields: {'evaluation/deepseek-v4-pro': 120}
+   jev failures=0 persona n=24 mean=2.118 controls n=6 mean=0.360 per-control {'ctl-mult': 0.49, 'ctl-capital': 0.23} gap=+1.758
+
+== flash (flash) rounds=30 answers=120 lost=0
+   round secs p50=3.30 p95=11.48 max=14.31
+   answer secs p50=2.61 p95=5.14 (n=120)
+   truncated(length)=0 markup_stripped=0 retried=0
+   evie MEASURED-or-bash-fence: 14/30
+   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): 1/30
+   control correct: ctl-mult 11/12, ctl-capital 12/12
+   response model fields: {'evaluation/deepseek-v4-flash': 120}
+   jev failures=0 persona n=24 mean=1.897 controls n=6 mean=0.847 per-control {'ctl-mult': 1.163, 'ctl-capital': 0.53} gap=+1.050

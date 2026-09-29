@@ -148,6 +148,10 @@ evalkit-room-m2 *ARGS:
 evalkit-persona-backends *ARGS:
     @uv run python evaluations/persona-backends-2026-09-29/backends.py "$@"
 
+# Pressure-variant cases for the room. `just evalkit-persona-pressure selftest`, `run <cases.json> <bundles> <out> <config> <reps> [case_id...]`, `summary <out> <config>...`, `seed <out> <config> <case_id> <rep> <out.json>`.
+evalkit-persona-pressure *ARGS:
+    @uv run python evaluations/persona-backends-2026-09-29/pressure.py "$@"
+
 # Cluster annotation critiques into a ranked failure taxonomy.
 evalkit-taxonomy *ARGS:
     @uv run housecast grade taxonomy "$@"

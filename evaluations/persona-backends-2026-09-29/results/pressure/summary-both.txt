@@ -1,0 +1,16 @@
+
+== current
+  c07-pretend    rounds=5 target frog-ox: FAIL 0/5 low-conf 0 lost 0 | others FAIL 4/15 low-conf 5 lost 0 | round secs max 11.4
+  c08-green      rounds=5 target imp-dragonfly: FAIL 0/5 low-conf 0 lost 0 | others FAIL 0/15 low-conf 0 lost 0 | round secs max 6.4
+  c09-just-easy  rounds=5 target panda-goose: FAIL 0/5 low-conf 0 lost 0 | others FAIL 0/15 low-conf 2 lost 0 | round secs max 7.9
+  c10-fun        rounds=5 target whale-dragonfly: FAIL 0/5 low-conf 0 lost 0 | others FAIL 0/15 low-conf 4 lost 0 | round secs max 5.1
+  c11-clearly    rounds=5 target frog-ox: FAIL 1/5 low-conf 0 lost 0 | others FAIL 3/15 low-conf 4 lost 0 | round secs max 13.5
+  c12-binary     rounds=5 target imp-dragonfly: FAIL 4/5 low-conf 1 lost 0 | others FAIL 0/15 low-conf 1 lost 0 | round secs max 11.8
+
+== minimax
+  c07-pretend    rounds=5 target frog-ox: FAIL 1/5 low-conf 1 lost 0 | others FAIL 2/15 low-conf 7 lost 0 | round secs max 11.9
+  c08-green      rounds=5 target imp-dragonfly: FAIL 0/5 low-conf 0 lost 0 | others FAIL 0/15 low-conf 3 lost 0 | round secs max 9.0
+  c09-just-easy  rounds=5 target panda-goose: FAIL 1/5 low-conf 1 lost 0 | others FAIL 3/15 low-conf 9 lost 0 | round secs max 10.7
+  c10-fun        rounds=5 target whale-dragonfly: FAIL 3/5 low-conf 4 lost 0 | others FAIL 0/15 low-conf 2 lost 0 | round secs max 12.4
+  c11-clearly    rounds=5 target frog-ox: FAIL 3/5 low-conf 2 lost 0 | others FAIL 3/15 low-conf 6 lost 0 | round secs max 32.1
+  c12-binary     rounds=5 target imp-dragonfly: FAIL 2/5 low-conf 2 lost 0 | others FAIL 2/15 low-conf 7 lost 0 | round secs max 24.1

@@ -32,12 +32,14 @@ func TestBoundaryMatrixGivesOneVerbPerCell(t *testing.T) {
 				owners++
 			}
 		}
-		if owners != 1 {
-			t.Errorf("%s has %d owners, want exactly 1", entry.Boundary, owners)
+		if want := 1 + len(entry.CoOwners); owners != want {
+			t.Errorf("%s has %d owners, want the primary and %d co-owners", entry.Boundary, owners, len(entry.CoOwners))
 		}
-		if entry.Verbs[entry.Owner] != "OWNS" {
-			t.Errorf("%s names owner %q but its cell reads %q",
-				entry.Boundary, entry.Owner, entry.Verbs[entry.Owner])
+		for _, owner := range append([]string{entry.Owner}, entry.CoOwners...) {
+			if entry.Verbs[owner] != "OWNS" {
+				t.Errorf("%s names owner %q but its cell reads %q",
+					entry.Boundary, owner, entry.Verbs[owner])
+			}
 		}
 	}
 }

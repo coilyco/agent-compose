@@ -2,7 +2,9 @@ boundary: modify-live-backend
 order: 1
 skill: boundary-modify-live-backend
 owner: sysadmin-senior
-summary: Senior Sysadmin changes running backend systems, other roles observe and hand the action over
+co_owners:
+  - sysadmin-access
+summary: Senior Sysadmin and Access Sysadmin change running backend systems, other roles observe and hand the action over
 acts:
   - side: own
     tool: kubectl

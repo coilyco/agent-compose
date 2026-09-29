@@ -216,7 +216,7 @@ func (p *Person) RenderRoleIdentityCard(roleName, meldedColor string, boundaries
 			}
 			side := "you hand this to its specialist"
 			sideKey := "defer"
-			if binding.Owner == roleName {
+			if binding.OwnedBy(roleName) {
 				side = "you own this"
 				sideKey = "own"
 			}

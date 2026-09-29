@@ -24,7 +24,11 @@ def to_entity_roster(person: dict[str, Any]) -> dict[str, Any]:
     for name in order:
         spec = person["roles"][name]
         notes: list[str] = []
-        owned = [b for b, meta in boundaries.items() if meta.get("owner") == name]
+        owned = [
+            b
+            for b, meta in boundaries.items()
+            if meta.get("owner") == name or name in meta.get("co_owners", [])
+        ]
         if owned:
             notes.append("owns: " + ", ".join(sorted(owned)))
         scoped = spec.get("scoped_boundaries") or []

@@ -148,6 +148,7 @@ func (p *Person) SeatCatalog(roleFilter string) ([]SeatCatalogEntry, error) {
 type BoundaryMatrixEntry struct {
 	Boundary string            `json:"boundary"`
 	Owner    string            `json:"owner"`
+	CoOwners []string          `json:"co_owners,omitempty"`
 	Verbs    map[string]string `json:"verbs"`
 }
 
@@ -160,10 +161,11 @@ func (p *Person) BoundaryMatrix() ([]string, []BoundaryMatrixEntry) {
 		entry := BoundaryMatrixEntry{
 			Boundary: name,
 			Owner:    p.Boundaries[name].Owner,
+			CoOwners: p.Boundaries[name].CoOwners,
 			Verbs:    make(map[string]string, len(roles)),
 		}
 		for _, roleName := range roles {
-			entry.Verbs[roleName] = boundaryVerb(p.Roles[roleName], name, entry.Owner == roleName)
+			entry.Verbs[roleName] = boundaryVerb(p.Roles[roleName], name, p.Boundaries[name].OwnedBy(roleName))
 		}
 		out = append(out, entry)
 	}

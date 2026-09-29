@@ -150,6 +150,7 @@ type yamlBoundaryEntity struct {
 	Order    int       `yaml:"order,omitempty"`
 	Skill    string    `yaml:"skill,omitempty"`
 	Owner    string    `yaml:"owner,omitempty"`
+	CoOwners []string  `yaml:"co_owners,omitempty"`
 	Summary  string    `yaml:"summary,omitempty"`
 	Acts     []yamlAct `yaml:"acts,omitempty"`
 }
@@ -292,10 +293,11 @@ func (g *yamlGuardrailEntity) model() Guardrail {
 
 func (b *yamlBoundaryEntity) model() Boundary {
 	return Boundary{
-		Skill:   b.Skill,
-		Summary: b.Summary,
-		Owner:   b.Owner,
-		Acts:    actModels(b.Acts),
+		Skill:    b.Skill,
+		Summary:  b.Summary,
+		Owner:    b.Owner,
+		CoOwners: b.CoOwners,
+		Acts:     actModels(b.Acts),
 	}
 }
 

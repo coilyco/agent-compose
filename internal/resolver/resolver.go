@@ -44,7 +44,7 @@ func composedBoundaries(p *person.Person, req *schema.Request) ([]string, error)
 		}
 		// An owner losing its own boundary is a larger claim than a deferrer
 		// losing one, and nothing here is allowed to make it.
-		if binding.Owner == req.Role {
+		if binding.OwnedBy(req.Role) {
 			return nil, fmt.Errorf("boundary-omit %q is owned by role %q and cannot be omitted", name, req.Role)
 		}
 		// A scoped grant is a bounded permission rather than a deferral, so
@@ -252,7 +252,7 @@ func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, mi
 		// The trace names which of the three sides the role received, because
 		// a scoped grant reading as a deferral hides a permission.
 		relationship := "defers"
-		if p.Boundaries[name].Owner == req.Role {
+		if p.Boundaries[name].OwnedBy(req.Role) {
 			relationship = "owns"
 		}
 		for _, scoped := range p.Roles[req.Role].ScopedBoundaries {

@@ -11,7 +11,7 @@ calls those, and four name the loop that measures them.
 
 * `role` - one seat with a purpose, a charter, and the work it owns. See [role briefings](role-briefings.md).
 * `personality` - a disposition a role melds. Two per core role, one signature and one bond shared with a sibling seat. See [personalities](personality.md).
-* `boundary` - one behavior removed from several roles and allocated to one owner. A role owns it, defers it, or holds it within a scope. See [role boundaries](role-boundaries.md).
+* `boundary` - one behavior removed from several roles and allocated to one primary owner. A role owns it, defers it, or holds it within a scope. See [role boundaries](role-boundaries.md).
 * `entity` - what is under test. A role here, a deployed lane in another deployment, so `housecast grade` names the abstraction rather than either.
 * `attribute` - what is being tested about the entity. A boundary or a personality here, a clause elsewhere.
 * `challenge` - one question put to a composed entity, with a target saying what passing means. The roster derives it unwritten, and a human writes it.

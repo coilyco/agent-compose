@@ -2,8 +2,8 @@ package person
 
 import "testing"
 
-// Every boundary reaches every seat with exactly one owner. The scoped/deferring
-// split is a roster decision that moves as seats are added, so it is not asserted.
+// Every boundary reaches every seat with one primary owner plus any co-owners.
+// The scoped/deferring split moves as seats are added, so it is not asserted.
 func TestEveryBoundaryAllocatesTheWholeRoster(t *testing.T) {
 	p, err := Load()
 	if err != nil {
@@ -13,7 +13,7 @@ func TestEveryBoundaryAllocatesTheWholeRoster(t *testing.T) {
 		owner, scoped, deferring := 0, 0, 0
 		for _, roleName := range p.RoleOrder {
 			role := p.Roles[roleName]
-			if p.Boundaries[boundaryName].Owner == roleName {
+			if p.Boundaries[boundaryName].OwnedBy(roleName) {
 				owner++
 			}
 			for _, entry := range role.ScopedBoundaries {
@@ -30,10 +30,11 @@ func TestEveryBoundaryAllocatesTheWholeRoster(t *testing.T) {
 				}
 			}
 		}
-		if owner != 1 || owner+scoped+deferring != len(p.RoleOrder) {
+		wantOwners := 1 + len(p.Boundaries[boundaryName].CoOwners)
+		if owner != wantOwners || owner+scoped+deferring != len(p.RoleOrder) {
 			t.Errorf(
-				"boundary %q reaches %d owner, %d scoped, %d deferring, want 1 owner and %d seats total",
-				boundaryName, owner, scoped, deferring, len(p.RoleOrder),
+				"boundary %q reaches %d owners, %d scoped, %d deferring, want %d owners and %d seats total",
+				boundaryName, owner, scoped, deferring, wantOwners, len(p.RoleOrder),
 			)
 		}
 	}

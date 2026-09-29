@@ -38,11 +38,25 @@ boundaries:
 
 `derives: <parent>` in a `role.yaml` merges the parent's fields under the child's. A mapping such as `voice` merges key by key. A scalar or list replaces the parent's whole, so dropping one boundary means restating the list. An explicit `null` removes the parent's key, as in `guardrail: null`. A child may keep its parent's guardrail, and no other role may name it. `role`, `order`, `skill`, and `archived` never inherit, `skill` defaults to `role-<slug>`, and `color_twin` is implied as the parent.
 
-The loader refuses a derivation from itself, from an undefined role, or from a role that itself derives. It also refuses a derived role named as a boundary `owner`, because a derived role narrows a charter rather than owning one.
+The loader refuses a derivation from itself, from an undefined role, or from a role that itself derives. It also refuses a derived role named as a boundary `owner`, because a derived role narrows a charter rather than owning one. A derived role may appear in `co_owners` only on a boundary its own parent owns, which narrows the parent's ownership instead of adding a new one.
 
 A derived role ships its own `SKILL.md`. The parent's charter is not appended, because it states authority the child lacks: Senior Sysadmin's says it changes running systems, and Junior Sysadmin's exists to say the opposite.
 
 `derives` reaches the snapshot and `catalog roles --json`, and `scripts/eval-prompts.sh` writes it to `derives.json` beside the prompts. The board then runs every parent case against the child too, re-keyed `<id>@<child>`, so a derived role never enters the board unmeasured.
+
+### Co-owners
+
+A boundary names one primary `owner` and may list `co_owners` beside it. A
+co-owner receives the owner side exactly as the primary does, and the same rules
+bind it: it may not also declare or scope the boundary, and it may not appear
+twice. The identity card, the boundary matrix, and the evaluation board read
+every owner as `OWNS`, and `catalog boundaries --json` carries `co_owners` next
+to `owner`. A derived role may co-own only its parent's own boundary.
+
+Sharing changes who holds the owner side. It does not say which systems that
+side reaches, and a roster that needs such a limit states it in its deployment
+layer rather than in `roster:core`. The shipped roster shares `modify-live-backend`
+between its senior and access sysadmin seats.
 
 ## Boundary omission
 

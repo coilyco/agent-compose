@@ -1,0 +1,26 @@
+grid: 24 assignments, 6 eligible, selection on reps 0 and 1 only
+rank eligible persona(reps0-1) control(reps0-1) modeled_round_p95 lost_cells_answers assignment
+ 1 yes 2.439 0.703 25.41s lost=0 jevfail=0 delphi=evaluation/deepseek-v4-pro,evie=chat/gemini-3-5-flash,gem=chat/minimax-m3,sprite=chat/glm-5-3
+ 2 yes 2.349 0.520 27.69s lost=0 jevfail=0 delphi=chat/glm-5-3,evie=chat/gemini-3-5-flash,gem=chat/minimax-m3,sprite=evaluation/deepseek-v4-pro
+ 3 yes 2.342 0.867 24.87s lost=0 jevfail=0 delphi=chat/minimax-m3,evie=evaluation/deepseek-v4-pro,gem=chat/gemini-3-5-flash,sprite=chat/glm-5-3
+ 4 yes 2.251 0.738 25.08s lost=0 jevfail=0 delphi=chat/glm-5-3,evie=evaluation/deepseek-v4-pro,gem=chat/gemini-3-5-flash,sprite=chat/minimax-m3
+ 5 yes 2.226 0.807 26.58s lost=0 jevfail=0 delphi=chat/minimax-m3,evie=chat/glm-5-3,gem=chat/gemini-3-5-flash,sprite=evaluation/deepseek-v4-pro
+ 6 yes 2.116 0.770 25.64s lost=0 jevfail=0 delphi=chat/glm-5-3,evie=chat/minimax-m3,gem=chat/gemini-3-5-flash,sprite=evaluation/deepseek-v4-pro
+ 7 no  2.609 1.353 46.75s lost=2 jevfail=0 delphi=chat/minimax-m3,evie=evaluation/deepseek-v4-pro,gem=chat/glm-5-3,sprite=chat/gemini-3-5-flash
+ 8 no  2.532 1.355 26.58s lost=1 jevfail=0 delphi=chat/minimax-m3,evie=chat/glm-5-3,gem=evaluation/deepseek-v4-pro,sprite=chat/gemini-3-5-flash
+ 9 no  2.524 1.272 27.69s lost=0 jevfail=0 delphi=chat/glm-5-3,evie=evaluation/deepseek-v4-pro,gem=chat/minimax-m3,sprite=chat/gemini-3-5-flash
+10 no  2.496 1.390 26.59s lost=0 jevfail=0 delphi=chat/gemini-3-5-flash,evie=chat/glm-5-3,gem=chat/minimax-m3,sprite=evaluation/deepseek-v4-pro
+11 no  2.475 1.617 46.75s lost=2 jevfail=0 delphi=evaluation/deepseek-v4-pro,evie=chat/minimax-m3,gem=chat/glm-5-3,sprite=chat/gemini-3-5-flash
+12 no  2.462 1.327 25.41s lost=0 jevfail=0 delphi=chat/gemini-3-5-flash,evie=evaluation/deepseek-v4-pro,gem=chat/minimax-m3,sprite=chat/glm-5-3
+13 no  2.455 1.302 26.59s lost=0 jevfail=0 delphi=evaluation/deepseek-v4-pro,evie=chat/glm-5-3,gem=chat/minimax-m3,sprite=chat/gemini-3-5-flash
+14 no  2.397 1.333 46.75s lost=2 jevfail=0 delphi=chat/gemini-3-5-flash,evie=chat/minimax-m3,gem=chat/glm-5-3,sprite=evaluation/deepseek-v4-pro
+15 no  2.388 1.385 46.75s lost=2 jevfail=0 delphi=chat/gemini-3-5-flash,evie=evaluation/deepseek-v4-pro,gem=chat/glm-5-3,sprite=chat/minimax-m3
+16 no  2.382 0.372 24.87s lost=1 jevfail=0 delphi=chat/minimax-m3,evie=chat/gemini-3-5-flash,gem=evaluation/deepseek-v4-pro,sprite=chat/glm-5-3
+17 no  2.361 1.678 25.64s lost=1 jevfail=0 delphi=chat/glm-5-3,evie=chat/minimax-m3,gem=evaluation/deepseek-v4-pro,sprite=chat/gemini-3-5-flash
+18 no  2.328 1.555 26.05s lost=1 jevfail=0 delphi=chat/gemini-3-5-flash,evie=chat/glm-5-3,gem=evaluation/deepseek-v4-pro,sprite=chat/minimax-m3
+19 no  2.327 1.062 22.16s lost=0 jevfail=0 delphi=evaluation/deepseek-v4-pro,evie=chat/minimax-m3,gem=chat/gemini-3-5-flash,sprite=chat/glm-5-3
+20 no  2.325 0.375 46.75s lost=2 jevfail=0 delphi=chat/minimax-m3,evie=chat/gemini-3-5-flash,gem=chat/glm-5-3,sprite=evaluation/deepseek-v4-pro
+21 no  2.324 1.450 22.16s lost=1 jevfail=0 delphi=chat/gemini-3-5-flash,evie=chat/minimax-m3,gem=evaluation/deepseek-v4-pro,sprite=chat/glm-5-3
+22 no  2.252 0.517 25.08s lost=1 jevfail=0 delphi=chat/glm-5-3,evie=chat/gemini-3-5-flash,gem=evaluation/deepseek-v4-pro,sprite=chat/minimax-m3
+23 no  2.231 1.005 26.05s lost=0 jevfail=0 delphi=evaluation/deepseek-v4-pro,evie=chat/glm-5-3,gem=chat/gemini-3-5-flash,sprite=chat/minimax-m3
+24 no  2.221 0.630 46.75s lost=2 jevfail=0 delphi=evaluation/deepseek-v4-pro,evie=chat/gemini-3-5-flash,gem=chat/glm-5-3,sprite=chat/minimax-m3

@@ -1,0 +1,20 @@
+
+== gemini (gemini) rounds=30 answers=120 lost=0
+   round secs p50=14.12 p95=15.88 max=17.11
+   answer secs p50=8.38 p95=15.27 (n=120)
+   truncated(length)=6 markup_stripped=0 retried=0
+   evie MEASURED-or-bash-fence: 11/30
+   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): 10/30
+   control correct: ctl-mult 10/12, ctl-capital 12/12
+   response model fields: {'chat/gemini-3-5-flash': 120}
+   jev failures=0 persona n=24 mean=2.676 controls n=6 mean=1.225 per-control {'ctl-mult': 1.647, 'ctl-capital': 0.803} gap=+1.451
+
+== minimax (minimax) rounds=30 answers=120 lost=0
+   round secs p50=9.99 p95=27.83 max=33.09
+   answer secs p50=4.31 p95=21.97 (n=120)
+   truncated(length)=0 markup_stripped=2 retried=0
+   evie MEASURED-or-bash-fence: 5/30
+   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): 1/30
+   control correct: ctl-mult 12/12, ctl-capital 12/12
+   response model fields: {'chat/minimax-m3': 120}
+   jev failures=0 persona n=24 mean=2.065 controls n=6 mean=0.605 per-control {'ctl-mult': 0.95, 'ctl-capital': 0.26} gap=+1.460

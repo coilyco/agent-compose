@@ -1,0 +1,9 @@
+
+== A (current) rounds=30 answers=120 lost=1
+   lost A|ctl-capital|1|gem: empty after stripping
+   round secs p50=9.17 p95=15.38 max=18.46
+   answer secs p50=4.87 p95=13.77 (n=120)
+   truncated(length)=0 markup_stripped=1 retried=0
+   evie MEASURED-or-bash-fence: 7/30
+   response model fields: {'evaluation/deepseek-v4-pro': 120}
+   jev failures=0 persona n=24 mean=2.060 controls n=6 mean=0.490 per-control {'ctl-mult': 0.7, 'ctl-capital': 0.28} gap=+1.570

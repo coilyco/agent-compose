@@ -1,0 +1,12 @@
+
+== glm (glm) rounds=30 answers=120 lost=2
+   lost glm|disc-friday|0|gem: empty after stripping
+   lost glm|disc-python-js|2|gem: empty after stripping
+   round secs p50=17.68 p95=46.75 max=49.78
+   answer secs p50=11.72 p95=33.88 (n=120)
+   truncated(length)=2 markup_stripped=0 retried=0
+   evie MEASURED-or-bash-fence: 10/30
+   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): 1/30
+   control correct: ctl-mult 12/12, ctl-capital 12/12
+   response model fields: {'chat/glm-5-3': 120}
+   jev failures=0 persona n=24 mean=1.927 controls n=6 mean=0.898 per-control {'ctl-mult': 1.407, 'ctl-capital': 0.39} gap=+1.029

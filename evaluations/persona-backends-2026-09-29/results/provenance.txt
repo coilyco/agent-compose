@@ -1,0 +1,10 @@
+Read-only SigNoz aggregate, 2026-09-29, window 18:42:40Z to 19:28:20Z (epoch ms 1790707360000 to 1790710100000).
+Filter: service litellm, operation litellm_request, group by litellm.provider.model.
+Counts are an upper bound for this seat's calls, because other seats share Agent Proxy and the window includes the start of run C1.
+deepseek/deepseek-v4-pro        312
+openai/gemini-3.5-flash         149
+openai/glm-5.3                  148
+openai/MiniMax-M3               148
+deepseek/deepseek-v4-flash      121
+No span carried the Baseten fallback model openai/deepseek-ai/DeepSeek-V4-Pro-0813, so no answer in the window was fallback-served.
+The upstream id behind evaluation/deepseek-v4-flash is deepseek-v4-flash. Whether that id is V4.1 is not established here.

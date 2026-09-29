@@ -1,0 +1,10 @@
+
+== C1 (custom:delphi=evaluation/deepseek-v4-pro,evie=chat/gemini-3-5-flash,gem=chat/minimax-m3,sprite=chat/glm-5-3) rounds=30 answers=120 lost=0
+   round secs p50=13.29 p95=33.28 max=47.50
+   answer secs p50=6.52 p95=26.26 (n=120)
+   truncated(length)=1 markup_stripped=1 retried=0
+   evie MEASURED-or-bash-fence: 12/30
+   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): 11/30
+   control correct: ctl-mult 12/12, ctl-capital 12/12
+   response model fields: {'chat/gemini-3-5-flash': 30, 'chat/glm-5-3': 30, 'chat/minimax-m3': 30, 'evaluation/deepseek-v4-pro': 30}
+   jev failures=0 persona n=24 mean=2.372 controls n=6 mean=0.917 per-control {'ctl-mult': 0.783, 'ctl-capital': 1.05} gap=+1.455

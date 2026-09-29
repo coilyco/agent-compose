@@ -1,15 +1,15 @@
 # Amendment 1: the assignment rule, and how a pick is confirmed
 
-Seat: science. Written 2026-09-29T18:58Z. Before this amendment I had scored runs A
+Seat: science. Committed 2026-09-29T18:54Z, `a372696`. Before this amendment I had scored runs A
 and B of `current` and nothing else. No recombined assignment was scored before it.
 
 ## Why
 
-At 18:50Z sysadmin-senior relayed that Kai confirmed the room's model set is
+Between 18:48Z and 18:53Z sysadmin-senior relayed that Kai confirmed the room's model set is
 `chat/gemini-3-5-flash`, `chat/glm-5-3` and `chat/minimax-m3`, and that the Kimi K3,
 Qwen3.8-Max and Mistral Medium 3.5 mapping is stale. I have that as a relay and have
 not seen it from Kai. `teable:coilyco/housecast#8487` does not say which persona takes
-which route. At 18:57Z prod-director set the rule below and said no record on disk
+which route. At about 18:53Z prod-director set the rule below and said no record on disk
 holds a current assignment. The preregistered `mapped` config stays unrunnable and stays
 NO-GO for the reason on the preregistration.
 

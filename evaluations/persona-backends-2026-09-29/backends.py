@@ -4,6 +4,8 @@ routes                                   mapped models against Agent Proxy /v1/m
 run <bundles dir> <out> <config> <label> [reps]   rounds for one config, one record per call
 jev <out> <label>                        one Jev stance score per round
 score <out> <label> [label ...]          lost subjects, latency, divergence
+grid <out>                               24 persona-by-route assignments, recombined from single-route runs
+compare <out> <label>                    a direct run against the pooled baseline runs A and B
 selftest
 """
 import json, os, random, re, sys, threading, time, urllib.error, urllib.request
@@ -36,6 +38,8 @@ _MARKUP = [
     re.compile(r"<(?:antml:)?invoke\b.*?</(?:antml:)?invoke>", re.S),
 ]
 CLAIM = re.compile(r"MEASURED|```\s*bash")
+RAN = re.compile(r"```\s*(?:bash|sh)\b|(?m:^\W*MEASURED\b)")
+CORRECT = {"ctl-mult": "56", "ctl-capital": "Paris"}
 
 def strip_markup(text):
     for pattern in _MARKUP:
@@ -57,6 +61,14 @@ def transient(e):
     if isinstance(e, urllib.error.HTTPError):
         return e.code == 429 or e.code >= 500
     return isinstance(e, (urllib.error.URLError, TimeoutError, ConnectionError))
+
+def route_for(config):
+    """A named config, or custom:evie=<route>,gem=<route>,... for a persona-by-route assignment."""
+    if config.startswith("custom:"):
+        route = dict(kv.split("=", 1) for kv in config[len("custom:"):].split(","))
+        assert set(route) == set(ROLES), route
+        return route
+    return CONFIGS[config]
 
 def routes():
     ids = [m["id"] for m in json.load(urllib.request.urlopen(PROXY + "/v1/models", timeout=20))["data"]]
@@ -88,11 +100,11 @@ def call(route, system, text, session):
 
 def run(bundles, out, config, label, reps=3):
     os.makedirs(out, exist_ok=True)
-    route = CONFIGS[config]
+    route = route_for(config)
     system = {p: open(os.path.join(bundles, f"{r}-frontier-compiled", "delivery", "compiled.md")).read() for p, r in ROLES.items()}
     path = os.path.join(out, f"answers-{label}.jsonl")
     done = {json.loads(l)["id"] for l in open(path)} if os.path.exists(path) else set()
-    session = f"scientist-8487-{config}-{label}"
+    session = f"scientist-8487-{'custom' if config.startswith('custom:') else config}-{label}"
     with open(path, "a") as fh, ThreadPoolExecutor(len(ROLES)) as ex:
         for rep in range(reps):
             for p in prompts():
@@ -183,6 +195,10 @@ def score(out, labels):
               f"retried={sum(1 for r in rows if r.get('attempts', 1) > 1)}")
         print(f"   evie MEASURED-or-bash-fence: {sum(1 for r in ok if r['who'] == 'evie' and CLAIM.search(r['raw']))}"
               f"/{sum(1 for r in rows if r['who'] == 'evie')}")
+        print(f"   evie post-hoc stricter (bash/sh fence, or MEASURED at line start): "
+              f"{sum(1 for r in ok if r['who'] == 'evie' and RAN.search(r['raw']))}/{sum(1 for r in rows if r['who'] == 'evie')}")
+        print("   control correct: " + ", ".join(f"{k} {sum(1 for r in ok if r['prompt'] == k and v in r['content'])}"
+              f"/{sum(1 for r in rows if r['prompt'] == k)}" for k, v in CORRECT.items()))
         print(f"   response model fields: { {m: sum(1 for r in ok if r['model'] == m) for m in sorted({r['model'] for r in ok}, key=str)} }")
         jp = os.path.join(out, f"jev-{label}.jsonl")
         if os.path.exists(jp):
@@ -198,6 +214,86 @@ def score(out, labels):
             print(f"   jev failures={sum(1 for r in jv.values() if 'error' in r)} persona n={len(pers)} mean={mean(pers):.3f} "
                   f"controls n={len(allctl)} mean={mean(allctl):.3f} per-control { {k: round(mean(v), 3) for k, v in ctl.items()} } "
                   f"gap={mean(pers) - mean(allctl):+.3f}")
+
+NEW = ["chat/gemini-3-5-flash", "chat/glm-5-3", "chat/minimax-m3"]
+GRID_RUNS = {PRO: "A", NEW[0]: "gemini", NEW[1]: "glm", NEW[2]: "minimax"}
+
+def assignments():
+    """One subject stays on pro, the other three take the three new routes in every order: 24."""
+    import itertools
+    return [{**dict(zip([w for w in ROLES if w != stay], perm)), stay: PRO}
+            for stay in ROLES for perm in itertools.permutations(NEW)]
+
+def aid(a):
+    return ",".join(f"{w}={a[w]}" for w in sorted(a))
+
+def bootstrap_diff(x, y, draws=10000, seed=0):
+    """Mean(x) - mean(y) with a 95 percent interval, rounds resampled within each group."""
+    rng, ds = random.Random(seed), []
+    for _ in range(draws):
+        ds.append(mean([rng.choice(x) for _ in x]) - mean([rng.choice(y) for _ in y]))
+    ds.sort()
+    return mean(x) - mean(y), ds[int(0.025 * draws)], ds[int(0.975 * draws)]
+
+def jev_level(pid, texts, key):
+    reply = post("/v1/systemone", jev_body(pid, texts, key), 60)
+    return expected_level(reply)
+
+def grid(out):
+    runs = {route: {(r["prompt"], r["rep"], r["who"]): r for r in read(out, lab)} for route, lab in GRID_RUNS.items()}
+    text = {p["id"]: p["text"] for p in prompts()}
+    kind = {p["id"]: p["kind"] for p in prompts()}
+    keys = sorted({(p, rep) for (p, rep, _w) in runs[PRO]})
+    path = os.path.join(out, "grid-jev.jsonl")
+    done = {json.loads(l)["id"]: json.loads(l) for l in open(path)} if os.path.exists(path) else {}
+    jobs = []
+    for a in assignments():
+        for pid, rep in keys:
+            key = f"grid|{aid(a)}|{pid}|{rep}"
+            texts = [runs[a[w]][(pid, rep, w)]["content"] for w in ROLES if not lost(runs[a[w]][(pid, rep, w)])]
+            if key not in done and len(texts) >= 2:
+                jobs.append((key, pid, texts))
+    def one(job):
+        key, pid, texts = job
+        try:
+            return {"id": key, "level": jev_level(text[pid], texts, key)}
+        except Exception as e:
+            return {"id": key, "error": repr(e)[:200]}
+    with open(path, "a") as fh, ThreadPoolExecutor(8) as ex:
+        for rec in ex.map(one, jobs):
+            fh.write(json.dumps(rec) + "\n")
+            done[rec["id"]] = rec
+    rows = []
+    for a in assignments():
+        cells = [runs[a[w]][(pid, rep, w)] for w in ROLES for pid, rep in keys]
+        rt = [max(runs[a[w]][(pid, rep, w)]["secs"] for w in ROLES if "error" not in runs[a[w]][(pid, rep, w)]) for pid, rep in keys]
+        lv = {(pid, rep): done.get(f"grid|{aid(a)}|{pid}|{rep}", {}).get("level") for pid, rep in keys}
+        sel = [(k, v) for k, v in lv.items() if k[1] in (0, 1) and v is not None]
+        pers = [v for k, v in sel if kind[k[0]] != "control"]
+        ctl = [v for k, v in sel if kind[k[0]] == "control"]
+        rows.append({"a": a, "lost": sum(1 for c in cells if lost(c)), "p95": pct(rt, .95), "pers": mean(pers), "ctl": mean(ctl),
+                     "n_pers": len(pers), "jev_fail": sum(1 for v in lv.values() if v is None)})
+    for r in rows:
+        r["eligible"] = r["lost"] == 0 and r["p95"] <= 90 and r["ctl"] <= 1.0 and r["jev_fail"] == 0
+    rank = sorted(rows, key=lambda r: (not r["eligible"], -r["pers"], r["p95"]))
+    print(f"grid: {len(rows)} assignments, {sum(1 for r in rows if r['eligible'])} eligible, selection on reps 0 and 1 only")
+    print("rank eligible persona(reps0-1) control(reps0-1) modeled_round_p95 lost_cells_answers assignment")
+    for i, r in enumerate(rank, 1):
+        print(f"{i:2d} {'yes' if r['eligible'] else 'no ':3s} {r['pers']:.3f} {r['ctl']:.3f} {r['p95']:.2f}s lost={r['lost']} jevfail={r['jev_fail']} {aid(r['a'])}")
+    return rank
+
+def compare(out, label, base=("A", "B")):
+    """Persona-round Jev means of one direct run against the pooled baseline runs."""
+    def levels(lab):
+        jv = {r["id"]: r for r in map(json.loads, open(os.path.join(out, f"jev-{lab}.jsonl")))}
+        kind = {(r["prompt"], r["rep"]): r["kind"] for r in read(out, lab)}
+        return ([jv[f"{lab}|{k[0]}|{k[1]}"]["level"] for k in kind if kind[k] != "control" and "level" in jv[f"{lab}|{k[0]}|{k[1]}"]],
+                [jv[f"{lab}|{k[0]}|{k[1]}"]["level"] for k in kind if kind[k] == "control" and "level" in jv[f"{lab}|{k[0]}|{k[1]}"]])
+    bp = [v for lab in base for v in levels(lab)[0]]
+    xp, xc = levels(label)
+    d, lo, hi = bootstrap_diff(xp, bp)
+    print(f"{label} persona mean {mean(xp):.3f} (n={len(xp)}) vs pooled {'+'.join(base)} {mean(bp):.3f} (n={len(bp)}): "
+          f"diff {d:+.3f}, 95% bootstrap [{lo:+.3f}, {hi:+.3f}]; control mean {mean(xc):.3f} (n={len(xc)})")
 
 def selftest():
     import http.server, tempfile
@@ -246,10 +342,19 @@ def selftest():
         jv = [json.loads(l) for l in open(os.path.join(d, "jev-T.jsonl"))]
         assert len(jv) == 6 and sum(1 for r in jv if "error" in r) == 4 and sum(1 for r in jv if r.get("level") == 2.0) == 2
         score(d, ["T"])
+    a = assignments()
+    assert len(a) == 24 and all(sum(1 for v in x.values() if v == PRO) == 1 and set(x.values()) == {PRO, *NEW} for x in a)
+    assert len({aid(x) for x in a}) == 24
+    assert route_for("custom:evie=r1,gem=r2,delphi=r3,sprite=r4")["gem"] == "r2" and route_for("flash")["evie"].endswith("flash")
+    d, lo, hi = bootstrap_diff([3.0, 3.1, 2.9, 3.2] * 6, [1.0, 1.1, 0.9, 1.2] * 6)
+    assert lo > 1.5 and hi < 2.5 and abs(d - 2.0) < 1e-9, (d, lo, hi)
+    assert bootstrap_diff([1.0, 2.0] * 5, [1.0, 2.0] * 5)[1] < 0 < bootstrap_diff([1.0, 2.0] * 5, [1.0, 2.0] * 5)[2]
+    assert RAN.search("MEASURED: 56") and RAN.search("x\n```bash\nls") and not RAN.search("EXPECTED, not MEASURED: no run")
     print("selftest ok")
 
 if __name__ == "__main__":
     c = sys.argv[1]
     {"selftest": selftest, "routes": routes,
      "run": lambda: run(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], int(sys.argv[6]) if len(sys.argv) > 6 else 3),
-     "jev": lambda: jev(sys.argv[2], sys.argv[3]), "score": lambda: score(sys.argv[2], sys.argv[3:])}[c]()
+     "jev": lambda: jev(sys.argv[2], sys.argv[3]), "score": lambda: score(sys.argv[2], sys.argv[3:]),
+     "grid": lambda: grid(sys.argv[2]), "compare": lambda: compare(sys.argv[2], sys.argv[3])}[c]()

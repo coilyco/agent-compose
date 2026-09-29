@@ -1,0 +1,10 @@
+Written 2026-09-29T18:41:04Z, before any model call in this evaluation. Science seat, teable:coilyco/housecast#8487.
+
+EXPECTED, not measured:
+1. Route inventory: at most 1 of the 4 mapped models has an Agent Proxy route (DeepSeek, through evaluation/deepseek-v4-flash). Mistral Medium 3.5, Kimi K3 and Qwen3.8-Max are absent. So mapped cannot run and the verdict is NO-GO.
+2. current (evaluation/deepseek-v4-pro), 30 rounds: 0 to 3 lost subjects of 120, round p95 between 35s and 70s, persona minus control gap between +0.6 and +1.6 levels, both control means at or below 0.3.
+3. flash (evaluation/deepseek-v4-flash): round p95 between 6s and 20s, controls noisier than pro.
+4. gemini, minimax, glm, chatdefault: each 0 to 3 lost subjects of 120. Round p95 under 90s for gemini, and possibly over 60s for the two reasoning models (minimax, glm).
+5. Run-to-run: the two current runs differ in round p95 by under 30 percent and in gap by under 0.5 levels.
+6. At least one non-DeepSeek single route qualifies as a whole-round fallback.
+7. Evie answers carrying MEASURED or a bash fence: 0 to 2 of 30 per config.

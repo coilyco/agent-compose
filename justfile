@@ -144,6 +144,10 @@ evalkit-validity ANNOTATIONS:
 evalkit-room-m2 *ARGS:
     @uv run python evaluations/pyladies-room-m2-2026-09-27/room_m2.py "$@"
 
+# Per-persona backend check for the room. `just evalkit-persona-backends selftest`, `routes`, `run <bundles> <out> <config> <label> [reps]`, `jev <out> <label>`, `score <out> <label>...`.
+evalkit-persona-backends *ARGS:
+    @uv run python evaluations/persona-backends-2026-09-29/backends.py "$@"
+
 # Cluster annotation critiques into a ranked failure taxonomy.
 evalkit-taxonomy *ARGS:
     @uv run housecast grade taxonomy "$@"

@@ -83,7 +83,7 @@ commodity models.
 
 ### Category 3: high-security roles
 
-Content Creator includes an OSS-classified Discord seat so callers can keep
+Content Creator includes an OSS-classified community seat so callers can keep
 sensitive community context on a local or open-model route. Role compatibility
 does not choose a route or grant access. The launch consumer still selects the
 appropriate tier and controls the supplied context.
@@ -92,7 +92,7 @@ appropriate tier and controls the supplied context.
 
 **Deployment tier and tested tier are separate.** Everything above is a
 deployment compatibility claim, and it is unchanged. Roles are still used on
-frontier and OSS models, Content Creator's OSS Discord seat included.
+frontier and OSS models, Content Creator's OSS community seat included.
 
 The behavior board tests one tier: `commodity`, currently DeepSeek. It does not
 read a role's declared tier and does not expand into lanes. Model tier does not

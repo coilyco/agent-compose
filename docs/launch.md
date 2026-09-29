@@ -55,8 +55,8 @@ because the prior projection may have used the embedded package.
 
 **An assigned-role launch classes each startup step as warn or refuse.** A
 step that shapes behavior warns and launches, and a step that bounds reach
-refuses, since a plain Claude or Codex seat loads the whole user-level MCP set
-(teable:coilyco/agent-compose#8260). `startup_policy.go` holds the classes, and
+refuses, since a plain Claude or Codex seat loads the whole user-level MCP set.
+`startup_policy.go` holds the classes, and
 a drift test holds this list to it:
 
 * `launch-depth` - refuse - the one-hop nested-launch bound.
@@ -66,7 +66,7 @@ a drift test holds this list to it:
 * `operating-base` - warn - a session home's operating base and appendix.
 * `projection-guard` - refuse - a nested launch projecting over its own load points.
 * `role-composition` - warn - identity, personality, voice, skills, doctrine and UI settings, in a staged session home.
-* `role-composition-repo-scope` - refuse - the same without a session home, where the working directory may hold another role's projection. It also refuses a working directory at or above a repository, such as the projects root or an org directory, since every session beneath would inherit the role (`teable:coilyco/agent-compose#8436`).
+* `role-composition-repo-scope` - refuse - the same without a session home, where the working directory may hold another role's projection. It also refuses a working directory at or above a repository, such as the projects root or an org directory, since every session beneath would inherit the role.
 * `card` - warn - the identity card.
 * `launch-pause` - warn - the Press Enter gate.
 * `selector-environment` - warn - clearing the parent's selectors.

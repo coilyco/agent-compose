@@ -56,11 +56,9 @@ a rewritten theme file is picked up without a restart.
 ## Cluster CLI deny
 
 The Claude settings fragment a native launch passes as `--settings` refuses bare
-`kubectl` and `helm`, so seats change the cluster through `aosguard ops
-kubectl`. The owner of the `modify-live-backend` boundary keeps bare `kubectl
-exec` alone, until `teable:coilyco-flight-deck/agentic-os#225` puts exec on
-aosguard. Kai's decisions: `teable:coilyco/agentic-os#8282` and
-`teable:coilyco/agent-compose#8288`.
+`kubectl` and `helm`, so seats change the cluster through the operator CLI's
+kubectl verbs. The owner of the `modify-live-backend` boundary keeps bare `kubectl
+exec` alone, until exec moves onto that operator CLI.
 
 ### Two layers
 
@@ -83,7 +81,7 @@ were refused.
 ### What it does not cover
 
 A `just` verb or a script file runs its own kubectl unseen. Those call sites move
-to aosguard instead (#8288). Anything that writes a file and runs it later, or
+to the operator CLI instead. Anything that writes a file and runs it later, or
 builds the name at runtime from pieces, gets past a guard on ordinary use. A
 caller-supplied `--settings` replaces the fragment whole, per
 [caller precedence](claude-launch-identity.md#caller-precedence).

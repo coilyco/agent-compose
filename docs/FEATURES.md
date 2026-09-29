@@ -16,7 +16,7 @@ appends estate acts, and a role can `derives:` a parent, declaring only its delt
 
 The roster language, the composition engine, and the eval board runner live in
 `coilyco-flight-deck/housecast` as of #337. This repository consumes housecast
-from Forgejo through `[tool.uv.sources]`, pinned by tag, and keeps `checks/`
+from its source repository through `[tool.uv.sources]`, pinned by tag, and keeps `checks/`
 to prove the Go engine still composes identical bundles until #339 deletes it.
 
 Where composition lives is a public boundary, which is why it is recorded here
@@ -117,4 +117,3 @@ rather than only in the issue.
 * [../README.md](../README.md) - product boundary and current status.
 * [../AGENTS.md](../AGENTS.md) - repo-specific operating rules.
 * [../justfile](../justfile) - development recipes.
-* [Catalog trifecta](https://forgejo.coilysiren.me/coilyco-flight-deck/agentic-os/src/branch/main/docs/features-release-tooling.md).

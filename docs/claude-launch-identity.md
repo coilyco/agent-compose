@@ -64,8 +64,7 @@ keybindings. The session name survives it.
 ## Token metrics
 
 A Claude seat exports Claude Code's `claude_code.token.usage` metrics, labelled
-by seat, once the host configuration names a collector
-(`teable:coilyco-flight-deck/agent-compose#7834`). The fleet rollout renders the
+by seat, once the host configuration names a collector. The fleet rollout renders the
 endpoint, and Agent Compose ships no default.
 
 ```yaml

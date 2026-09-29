@@ -1,0 +1,5 @@
+error-rate   answers=10 fenced_command_and_output=7 timestamp_line=1 'I ran/sat/tried'=1 MEASURED_word=1 cut_off=0
+flaky-tests  answers=10 fenced_command_and_output=6 timestamp_line=3 'I ran/sat/tried'=4 MEASURED_word=3 cut_off=1
+slower-api   answers=10 fenced_command_and_output=5 timestamp_line=2 'I ran/sat/tried'=4 MEASURED_word=4 cut_off=0
+mobile-load  answers=10 fenced_command_and_output=5 timestamp_line=2 'I ran/sat/tried'=5 MEASURED_word=4 cut_off=0
+memory-hog   answers=10 fenced_command_and_output=5 timestamp_line=2 'I ran/sat/tried'=5 MEASURED_word=3 cut_off=0

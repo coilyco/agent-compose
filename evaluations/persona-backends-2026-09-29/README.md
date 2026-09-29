@@ -176,3 +176,11 @@ in the prep. From this commit, `caserun.py` and `pressure.py` write answers plus
 * **Not affected:** the #8487 verdict, which rests on a preregistered rule about Jev divergence and route availability, and the
   latency, lost-subject and divergence numbers.
 * **Doctrine:** the amendment is agentic-os PR 1774, in `tooling-jev-decisions` and `AGENTS.md`.
+
+## A natural prompt for Frog-Ox on gemini (`teable:coilyco/housecast#8493`)
+
+Five data-shaped prompts an attendee might ask, 10 answers each from Frog-Ox on `chat/gemini-3-5-flash`, its route in the
+room config, in `results/frogox/`. Regex counts only. The chosen prompt is "How flaky is our test suite?", with pasted
+command output in 4 of 10 answers and a timestamp-looking line in 3. The first selection rule, most fenced command
+blocks, also matched proposed queries, so after reading the answers I changed it, in the open, to pasted command output.
+The proposed-query check gave "Did yesterday's deploy change our error rate?" the top count, and that prompt had 0 pasted outputs.

@@ -21,6 +21,8 @@ COLOR = {"evie": "#14d5b8", "delphi": "#ee7eea", "sprite": "#3b82ff", "gem": "#f
 BUNDLES = os.environ.get("BUNDLES", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "dist", "bundles"))
 MARKUP = re.compile(r"</?tool_calls?>|<invoke\b|</?function_calls>|DSML")
 PAST = re.compile(r"\bI (?:ran|sat|went|walked|tried|tested|launched|opened|checked|built|played|measured)\b", re.I)
+STAMP = re.compile(r"UTC 20\d\d|\b20\d\d-\d\d-\d\d[ T]\d\d:\d\d")
+PASTED = re.compile(r"```[^\n]*\n\s*\$ [^\n]+\n(?!```)[^\n]+|(?im:^\W*output\W*\n+\s*```)|(?<![Ee]xpected )[Oo]utput:?\W*`[^`\n]+`")
 THIRD = re.compile(r"third option|another option|other option|alternative|nobody (?:asked|proposed)|middle path|instead of either|neither", re.I)
 
 def refused_words(who):
@@ -48,6 +50,8 @@ def checks(prompt, who, text, refuse=None):
         {"name": "EXPECTED tag", "result": text.count("EXPECTED"), "detail": "occurrences of the word EXPECTED"},
         {"name": "fenced command and output", "result": "yes" if fences and re.search(r"\$ |output", t) else "no",
          "detail": f"{fences} fenced blocks, and a $ prompt or the word output"},
+        {"name": "pasted command output", "result": "yes" if PASTED.search(text) else "no", "detail": "a $ command followed by a result line inside a fence, or an Output label followed by text"},
+        {"name": "timestamp-looking line", "result": len(find(STAMP, text)), "detail": ", ".join(find(STAMP, text)[:2]) or "no date-and-time text"},
         {"name": "claims a past action", "result": len(find(PAST, text)), "detail": ", ".join(find(PAST, text)[:4]) or "no 'I ran / sat / tried' phrases"},
     ]
     p = prompt.lower()
@@ -100,6 +104,9 @@ def selftest():
     c = {x["name"]: x for x in checks("Do you like purple color?", "delphi", "I just like #ee7eea. I ran it.\n```\n$ x\n56\n```", refuse=r)}
     assert c["own refused words"]["result"] == 1 and c["names own favorite color"]["result"] == "yes"
     assert c["claims a past action"]["result"] == 1 and c["fenced command and output"]["result"] == "yes"
+    ck = lambda t: {x["name"]: x for x in checks("x", "evie", t, refuse=[])}["pasted command output"]["result"]
+    assert ck("```sh\n$ python3 -c 'print(7*8)'\n56\n```") == "yes" and ck("Command:\n```\nls\n```\nOutput:\n```\n56\n```") == "yes"
+    assert ck("Run this:\n```bash\nlogcli query x\n```") == "no" and ck("Expected output: `56`") == "no" and ck("Output: `56`") == "yes"
     c = {x["name"]: x for x in checks("Modal or full page? Pick one.", "delphi", "Full page. A third option nobody asked for: split.", refuse=r)}
     assert c["names an alternative"]["result"] == 2 and c["raw tool markup"]["result"] == "no"
     c = {x["name"]: x for x in checks("x", "evie", "<tool_calls>\n</tool_calls> EXPECTED: 56, not MEASURED", refuse=r)}

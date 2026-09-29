@@ -12,6 +12,11 @@ import (
 // roster:core, which ships to anyone who installs agent-compose. agent-compose#8039.
 var bannedIdentityTokens = regexp.MustCompile(`(?i)\b(kai|coilyco|coilysiren)\b`)
 
+// bannedServiceTokens catches a deployment service name in the same tree, since
+// a role that names one hands every other installer a dependency they lack.
+var bannedServiceTokens = regexp.MustCompile(
+	`(?i)\b(agent[ -]proxy|litellm|aosguard|forgejo|teable|trello|signoz|housecast|kai-server|jev)\b`)
+
 // scanForBannedIdentityTokens walks every regular file under source and
 // reports one violation per matching line, sorted for a stable message.
 func scanForBannedIdentityTokens(source fs.FS) ([]string, error) {
@@ -28,8 +33,10 @@ func scanForBannedIdentityTokens(source fs.FS) ([]string, error) {
 			return fmt.Errorf("read %s: %w", path, err)
 		}
 		for i, line := range strings.Split(string(raw), "\n") {
-			if match := bannedIdentityTokens.FindString(line); match != "" {
-				violations = append(violations, fmt.Sprintf("%s:%d: %s", path, i+1, match))
+			for _, banned := range []*regexp.Regexp{bannedIdentityTokens, bannedServiceTokens} {
+				if match := banned.FindString(line); match != "" {
+					violations = append(violations, fmt.Sprintf("%s:%d: %s", path, i+1, match))
+				}
 			}
 		}
 		return nil
@@ -49,7 +56,7 @@ func validateNoPersonOrOwnerLeak(p *Person) error {
 		return err
 	}
 	if len(violations) > 0 {
-		return fmt.Errorf("roster:core names a person or owner:\n%s", strings.Join(violations, "\n"))
+		return fmt.Errorf("roster:core names a person, owner, or deployment service:\n%s", strings.Join(violations, "\n"))
 	}
 	return nil
 }

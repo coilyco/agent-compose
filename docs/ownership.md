@@ -56,8 +56,8 @@ build-foundational-software  OWNS      scope     scope    scope     scope    def
 ```
 
 `describe` carries the same facts in a sentence past column 90, in per-role
-order, so it cannot be compared across roles. Four boundaries against seven
-roles means three roles own nothing, and a role may hold more than one scope.
+order, so it cannot be compared across roles. A boundary may name co-owners:
+see [co-owners](roster-composition.md).
 ## Product and engine ownership
 
 Agent Compose keeps executable parsing, validation, selection, deterministic

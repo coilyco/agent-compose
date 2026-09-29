@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"slices"
 	"sort"
 	"strings"
 	"testing/fstest"
@@ -244,9 +245,16 @@ type Boundary struct {
 	Skill   string `json:"skill"`
 	Summary string `json:"summary"`
 	Owner   string `json:"owner,omitempty"`
-	Source  string `json:"source,omitempty"`
-	Digest  string `json:"digest,omitempty"`
-	Acts    []Act  `json:"acts,omitempty"`
+	// CoOwners share the owner's side of the body. Owner stays the primary.
+	CoOwners []string `json:"co_owners,omitempty"`
+	Source   string   `json:"source,omitempty"`
+	Digest   string   `json:"digest,omitempty"`
+	Acts     []Act    `json:"acts,omitempty"`
+}
+
+// OwnedBy reports whether the role holds the owner side, as primary or co-owner.
+func (b Boundary) OwnedBy(role string) bool {
+	return role != "" && (b.Owner == role || slices.Contains(b.CoOwners, role))
 }
 
 // Guardrail is one strong course correction bound to a single role. Card is
@@ -906,31 +914,38 @@ func validateBoundaryBodySides(boundaryName, body string) error {
 // the body by owning it, never by declaring it.
 func validateBoundaryOwners(p *Person) error {
 	for _, boundaryName := range p.boundaryOrder() {
-		owner := p.Boundaries[boundaryName].Owner
-		if owner == "" {
+		binding := p.Boundaries[boundaryName]
+		if binding.Owner == "" {
 			return fmt.Errorf("boundary %q has no owner", boundaryName)
 		}
-		role, ok := p.Roles[owner]
-		if !ok {
-			return fmt.Errorf("boundary %q names unknown owner %q", boundaryName, owner)
-		}
-		for _, declared := range role.Boundaries {
-			if declared == boundaryName {
-				return fmt.Errorf(
-					"boundary %q owner %q also declares it",
-					boundaryName,
-					owner,
-				)
+		seen := map[string]bool{}
+		for _, owner := range append([]string{binding.Owner}, binding.CoOwners...) {
+			if seen[owner] {
+				return fmt.Errorf("boundary %q names owner %q twice", boundaryName, owner)
+			}
+			seen[owner] = true
+			role, ok := p.Roles[owner]
+			if !ok {
+				return fmt.Errorf("boundary %q names unknown owner %q", boundaryName, owner)
+			}
+			if err := validateOwnerSide(boundaryName, owner, role); err != nil {
+				return err
 			}
 		}
-		for _, scoped := range role.ScopedBoundaries {
-			if scoped.Name == boundaryName {
-				return fmt.Errorf(
-					"boundary %q owner %q also scopes it",
-					boundaryName,
-					owner,
-				)
-			}
+	}
+	return nil
+}
+
+// validateOwnerSide rejects an owner that also stands on another side.
+func validateOwnerSide(boundaryName, owner string, role Role) error {
+	for _, declared := range role.Boundaries {
+		if declared == boundaryName {
+			return fmt.Errorf("boundary %q owner %q also declares it", boundaryName, owner)
+		}
+	}
+	for _, scoped := range role.ScopedBoundaries {
+		if scoped.Name == boundaryName {
+			return fmt.Errorf("boundary %q owner %q also scopes it", boundaryName, owner)
 		}
 	}
 	return nil
@@ -1556,7 +1571,7 @@ func (p *Person) BoundarySkillDefinition(boundaryName string) ([]byte, bool) {
 func (p *Person) RoleOwnedBoundaries(roleName string) []string {
 	owned := make([]string, 0, 1)
 	for _, name := range p.boundaryOrder() {
-		if p.Boundaries[name].Owner == roleName {
+		if p.Boundaries[name].OwnedBy(roleName) {
 			owned = append(owned, name)
 		}
 	}

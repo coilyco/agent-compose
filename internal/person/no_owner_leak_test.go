@@ -51,3 +51,31 @@ func TestScanForBannedIdentityTokensCatchesAnOwnerToken(t *testing.T) {
 		t.Fatal("expected at least one violation for an owner-org URL, got none")
 	}
 }
+
+// A deployment service name is caught the same as an owner token. The first
+// regression was Agent Proxy named in a shared role scope.
+func TestScanForBannedIdentityTokensCatchesADeploymentService(t *testing.T) {
+	for _, line := range []string{
+		"applying routes to the live Agent Proxy and LiteLLM service",
+		"launch profiles, aosguard spec values, and ansible roles",
+	} {
+		leaked := fstest.MapFS{
+			"roles/sysadmin-access/SKILL.md": &fstest.MapFile{Data: []byte(line + "\n")},
+		}
+		violations, err := scanForBannedIdentityTokens(leaked)
+		if err != nil {
+			t.Fatalf("scan %q: %v", line, err)
+		}
+		if len(violations) == 0 {
+			t.Errorf("no violation for %q", line)
+		}
+	}
+	generic := fstest.MapFS{
+		"roles/sysadmin-access/SKILL.md": &fstest.MapFile{
+			Data: []byte("permission specification values and the deployment's model gateway\n"),
+		},
+	}
+	if violations, err := scanForBannedIdentityTokens(generic); err != nil || len(violations) != 0 {
+		t.Fatalf("generic wording flagged: %v %v", violations, err)
+	}
+}

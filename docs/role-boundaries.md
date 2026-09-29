@@ -1,7 +1,7 @@
 # Role boundaries
 
-A boundary is one behavior removed from several roles and allocated to exactly
-one owner. Use one when restating that allocation per charter would let the
+A boundary is one behavior removed from several roles and allocated to one
+primary owner, which may share the owner side with co-owners. Use one when restating that allocation per charter would let the
 copies drift apart. A body every role declares is a roster-wide rule instead.
 
 ## Why boundaries exist
@@ -15,7 +15,7 @@ Core Roster with no doctrine lost, and each side is bounded separately.
 
 * Personality - shared and eager too, but carries disposition, a color, and identity primitives, and never overrides a role obligation.
 * Method - progressive disclosure, owned by exactly one role, inactive until role and task both match.
-* Boundary - one behavior removed from several roles and allocated to exactly one owner.
+* Boundary - one behavior removed from several roles and allocated to one primary owner, with optional co-owners.
 
 ## Package layout
 
@@ -101,11 +101,11 @@ until an independently reviewed re-run.
 
 ## Core Roster boundaries
 
-Each slug names the behavior that moves. Every boundary reaches all thirteen seats and exactly one owns it, so a missing seat is a defect. The rest split per boundary. Archiving a seat does not drop it from a boundary, so analyst, psych and reporter still appear below. Sysadmin split into senior-sysadmin and junior-sysadmin on 2026-09-17 (#500); access-sysadmin joins them as a color twin with scoped permission-config and single-owner workstation grants. Manager shapes tracker records under its own charter and defers all four boundaries. Deferring is delegation: the owner is the specialist, so handing work over is the ordinary way it gets done rather than a permission request, every defer section opens by saying so, and the identity card labels that side "you hand this to its specialist".
+Each slug names the behavior that moves. Every boundary reaches all thirteen seats. One primary owner holds it, plus any co-owners, so a missing seat is a defect. The rest split per boundary. Archiving a seat does not drop it from a boundary, so analyst, psych and reporter still appear below. Sysadmin split into senior-sysadmin and junior-sysadmin on 2026-09-17 (#500); access-sysadmin joins them as a color twin with a scoped permission-config grant and a co-owner seat on modify-live-backend. Manager shapes tracker records under its own charter and defers all four boundaries. Deferring is delegation: the owner is the specialist, so handing work over is the ordinary way it gets done rather than a permission request, every defer section opens by saying so, and the identity card labels that side "you hand this to its specialist".
 
 Two boundaries were deleted on 2026-09-15 with the seats that owned them: `hold-emotional-weight`, owned by psych, and `study-an-unmet-party`, owned by reporter. Neither behavior is allocated now, so no seat defers it and no seat owns it.
 
-* `modify-live-backend`, owner senior-sysadmin - scoped for platform, gamedev, analyst, and access-sysadmin, who run CI and local environments, run a world they launched themselves, remediate the specific control failure they already wrote up, and converge agent config on single-owner workstations, respectively. Deferred by advocate, director, frontend, science, psych, reporter, junior-sysadmin, and manager.
+* `modify-live-backend`, owner senior-sysadmin, co-owner access-sysadmin - scoped for platform, gamedev, and analyst, who run CI and local environments, run a world they launched themselves, and remediate the specific control failure they already wrote up, respectively. Deferred by advocate, director, frontend, science, psych, reporter, junior-sysadmin, and manager.
 * `suggest-external-comms`, owner advocate - scoped for frontend and gamedev, who write the words inside the artifact they own. Deferred by access-sysadmin, analyst, director, platform, psych, reporter, science, senior-sysadmin, junior-sysadmin, and manager.
 * `seek-external-validation`, owner director - scoped for advocate, platform, and analyst, who read their audience, audit a candidate dependency, and reach the regime the system under assessment answers to. Deferred by access-sysadmin, frontend, gamedev, psych, reporter, science, senior-sysadmin, junior-sysadmin, and manager.
 * `build-foundational-software`, owner platform - scoped for senior-sysadmin, junior-sysadmin, science, access-sysadmin, frontend, and gamedev, who write estate configuration, measurement instruments, shared agent permission values, and the whole of a surface or game only they work on, dependencies included, inside their named limits. Deferred by advocate, analyst, director, psych, reporter, and manager.

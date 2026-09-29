@@ -32,6 +32,17 @@ func validateDecodedPerson(p *Person) error {
 		if owner := p.Boundaries[name].Owner; owner != "" && p.Roles[owner].Derives != "" {
 			return fmt.Errorf("boundary %q: owner %q is a derived role", name, owner)
 		}
+		// It may share its parent's own boundary, which narrows that charter.
+		for _, co := range p.Boundaries[name].CoOwners {
+			if !validSemanticToken(co) {
+				return fmt.Errorf("boundary %q co-owner needs a stable role id", name)
+			}
+			if parent := p.Roles[co].Derives; parent != "" && parent != p.Boundaries[name].Owner {
+				return fmt.Errorf(
+					"boundary %q: co-owner %q derives %q, which does not own it",
+					name, co, parent)
+			}
+		}
 	}
 	return nil
 }

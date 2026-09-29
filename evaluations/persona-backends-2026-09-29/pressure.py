@@ -83,7 +83,8 @@ def seed(cases, out, config, case_id, rep, dest):
     div = c.stance(case, texts, f"pressure|{config}|{case_id}|{rep}")
     route = ", ".join(sorted({r["route"] for r in rows.values()}))
     note = f"Answers from a fresh run, arm {config}{TAG}, round {rep}, at the room's call shape. Checks are deterministic text checks and carry no verdict. Divergence is the Jev stance level 0 to 4."
-    doc = c.build(case_id, case, texts, route, c.now(), note, div)
+    valid = c.validity(case, texts) if os.environ.get("VALID_RESPONSE") else None
+    doc = c.build(case_id, case, texts, route, c.now(), note + (c.VALID_NOTE if valid else ""), div, valid)
     json.dump(doc, open(dest, "w"), indent=1)
     print(dest, f"div={div}")
 

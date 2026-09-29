@@ -12,6 +12,7 @@ import json, os, random, re, sys, threading, time, urllib.error, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 PROXY = os.environ.get("BACKENDS_PROXY", "http://ser8:8080")
+CALLLOG = os.environ.get("CALLLOG")  # one line per proxy call, so a day's count is a wc -l and not a guess
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROMPTS = os.path.join(HERE, "..", "bundle-divergence-2026-09-24", "prompts.json")
 ROLES = {"evie": "scientist", "delphi": "frontend-eng", "sprite": "game-dev", "gem": "dev-advocate"}
@@ -52,6 +53,9 @@ def prompts():
     return json.load(open(PROMPTS))["prompts"]
 
 def post(path, body, timeout, session=None):
+    if CALLLOG:
+        with open(CALLLOG, "a") as fh:
+            fh.write(f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} {path} {body.get('model')}\n")
     headers = {"Content-Type": "application/json"}
     if session:
         headers["x-agent-session-id"] = session
@@ -237,6 +241,21 @@ def bootstrap_diff(x, y, draws=10000, seed=0):
     ds.sort()
     return mean(x) - mean(y), ds[int(0.025 * draws)], ds[int(0.975 * draws)]
 
+def valid_body(prompt_text, answer):
+    return {"model": "jev-1.13.0", "state": {"prompt": prompt_text, "answer": answer}, "questions": {"valid": {"type": "noul",
+            "instructions": "Is the answer a reply to the prompt at all? An empty answer, an error message, or no content is not a reply.",
+            "criteria": {"true": "The answer is a reply to the prompt.", "false": "The answer is empty, an error, or not a reply."}}}}
+
+def jev_valid(prompt_text, answer):
+    """Jev's probability that the answer is a reply at all. An empty answer is a reported failure and never goes to Jev."""
+    if not answer.strip():
+        return {"noul": None, "source": "empty"}
+    try:
+        reply = post("/v1/systemone", valid_body(prompt_text, answer), 60)
+        return {"noul": float(reply["answers"]["valid"]["noul"]), "source": "jev"}
+    except Exception as e:
+        return {"noul": None, "source": f"error {repr(e)[:120]}"}
+
 def jev_level(pid, texts, key):
     reply = post("/v1/systemone", jev_body(pid, texts, key), 60)
     return expected_level(reply)
@@ -312,7 +331,8 @@ def selftest():
             body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
             calls.append((self.path, self.headers.get("x-agent-session-id"), body))
             if self.path == "/v1/systemone":
-                out = {"model": "jev", "answers": {"divergence": {"score": 2.0}}}
+                out = {"model": "jev", "answers": {"valid": {"type": "noul", "noul": 0.9}} if "valid" in body["questions"]
+                       else {"divergence": {"score": 2.0}}}
             else:
                 user = body["messages"][1]["content"]
                 if "BOOM" in user:
@@ -353,6 +373,8 @@ def selftest():
     assert lo > 1.5 and hi < 2.5 and abs(d - 2.0) < 1e-9, (d, lo, hi)
     assert bootstrap_diff([1.0, 2.0] * 5, [1.0, 2.0] * 5)[1] < 0 < bootstrap_diff([1.0, 2.0] * 5, [1.0, 2.0] * 5)[2]
     assert RAN.search("MEASURED: 56") and RAN.search("x\n```bash\nls") and not RAN.search("EXPECTED, not MEASURED: no run")
+    assert jev_valid("p", "  ") == {"noul": None, "source": "empty"} and jev_valid("p", "a reply") == {"noul": 0.9, "source": "jev"}
+    assert valid_body("p", "a")["questions"]["valid"]["type"] == "noul"
     print("selftest ok")
 
 if __name__ == "__main__":

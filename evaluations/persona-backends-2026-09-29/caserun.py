@@ -61,10 +61,20 @@ def checks(prompt, who, text, refuse=None):
         out.append({"name": "names an alternative", "result": len(find(THIRD, text)), "detail": ", ".join(find(THIRD, text)[:4]) or "no alternative phrase"})
     return out
 
-def build(case_id, case, texts, route, at, note, divergence):
+def build(case_id, case, texts, route, at, note, divergence, valid=None):
     answers = {name: {"text": texts[who], "checks": checks(case["prompt"], who, texts[who])} for name, who in WHO.items()}
+    for name, who in WHO.items():
+        if valid:
+            answers[name]["valid_response"] = valid[who]
     return {"case_id": case_id, "route": route, "at": at.strftime("%Y-%m-%dT%H:%M:%SZ"), "divergence": round(divergence, 3),
             "note": note, "answers": answers}
+
+VALID_NOTE = " valid_response.noul is Jev's probability that the answer is a reply at all, null for an empty answer or a failed Jev call."
+
+def validity(case, texts):
+    with ThreadPoolExecutor(4) as ex:
+        futs = {w: ex.submit(b.jev_valid, case["prompt"], texts[w]) for w in WHO.values()}
+        return {w: f.result() for w, f in futs.items()}
 
 def stance(case, texts, key):
     return b.jev_level(case["prompt"], [texts[w] for w in WHO.values()], key)
@@ -91,11 +101,12 @@ def run(case, case_id, bundles, config, out):
     texts = {w: res[w].get("content", "") for w in res}
     lost = [w for w in res if "error" in res[w] or not texts[w].strip()]
     div = stance(case, texts, f"casebook|{case_id}|{now().isoformat()}") if len(lost) <= 2 else float("nan")
+    valid = validity(case, texts) if os.environ.get("VALID_RESPONSE") else None
     secs = max(r["secs"] for r in res.values())
     routes = sorted(set(route.values()))
     note = (f"Run on the serving config {config} ({', '.join(routes)}) at the room's call shape. Round time {secs:.1f}s, lost subjects {len(lost)}"
-            f"{' (' + ', '.join(lost) + ')' if lost else ''}. Checks are deterministic text checks and carry no verdict. Divergence is the Jev stance level 0 to 4.")
-    doc = build(case_id, case, texts, ", ".join(routes), now(), note, div)
+            f"{' (' + ', '.join(lost) + ')' if lost else ''}. Checks are deterministic text checks and carry no verdict. Divergence is the Jev stance level 0 to 4." + (VALID_NOTE if valid else ""))
+    doc = build(case_id, case, texts, ", ".join(routes), now(), note, div, valid)
     json.dump(doc, open(out, "w"), indent=1)
     print(out, f"div={div}")
 
@@ -112,6 +123,10 @@ def selftest():
     c = {x["name"]: x for x in checks("x", "evie", "<tool_calls>\n</tool_calls> EXPECTED: 56, not MEASURED", refuse=r)}
     assert c["raw tool markup"]["result"] == "yes" and c["EXPECTED tag"]["result"] == 1 and c["MEASURED tag"]["result"] == 1
     assert not any(k in json.dumps(c).lower() for k in ('"grade"', "pass", "fail"))
+    v = {w: {"noul": 0.9, "source": "jev"} for w in WHO.values()}
+    d = build("x", {"prompt": "x"}, {w: "t" for w in WHO.values()}, "r", now(), "n", 1.0, v)
+    assert all(a["valid_response"] == v["evie"] for a in d["answers"].values())
+    assert all("valid_response" not in a for a in build("x", {"prompt": "x"}, {w: "t" for w in WHO.values()}, "r", now(), "n", 1.0)["answers"].values())
     print("selftest ok")
 
 if __name__ == "__main__":

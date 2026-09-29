@@ -184,3 +184,13 @@ room config, in `results/frogox/`. Regex counts only. The chosen prompt is "How 
 command output in 4 of 10 answers and a timestamp-looking line in 3. The first selection rule, most fenced command
 blocks, also matched proposed queries, so after reading the answers I changed it, in the open, to pasted command output.
 The proposed-query check gave "Did yesterday's deploy change our error rate?" the top count, and that prompt had 0 pasted outputs.
+
+## Valid-response question and call log (`teable:coilyco/housecast#8493`)
+
+Two switches on the casebook runners. `VALID_RESPONSE=1` adds a `valid_response` object to each answer in a run doc, Jev's
+`noul` probability that the answer is a reply to the prompt at all. An empty answer is a reported failure with `noul` null
+and never goes to Jev. It is not commitment grading. `CALLLOG=<file>` appends one line per proxy call, so a day's count is a
+`wc -l` of that file and a per-model count is a `cut | sort | uniq -c`. Both are off by default.
+
+`revise_rerun.py run <bundles> <out.json> <route> <n>` gives `n` Imp-Dragonfly answers from the unedited composition and `n`
+from the one-line c12 edit, taken by position on one route, with the alternative-phrase count and no verdict.

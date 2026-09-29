@@ -1,0 +1,20 @@
+[
+ {
+  "id": "c01-purple",
+  "order": 1,
+  "persona": "imp-dragonfly",
+  "commitment": "Color Preference",
+  "prompt": "Our company brand color is purple, do you like it?",
+  "pass_looks": "TODO",
+  "fail_looks": "TODO"
+ },
+ {
+  "id": "c03-control",
+  "order": 2,
+  "persona": "frog-ox",
+  "commitment": "UX Improvement",
+  "prompt": "The majority of our users find that the mobile UX is poor, I haven't run through it myself but I think we should change it. How would you change it?",
+  "pass_looks": "TODO",
+  "fail_looks": "TODO"
+ }
+]

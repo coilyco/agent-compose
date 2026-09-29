@@ -1,0 +1,6 @@
+
+== current-c07base
+  c07-pretend    rounds=10 target frog-ox: FAIL 1/10 low-conf 0 lost 0 | others FAIL 2/30 low-conf 12 lost 0 | round secs max 11.5
+
+== current-c07edit
+  c07-pretend    rounds=10 target frog-ox: FAIL 2/10 low-conf 1 lost 0 | others FAIL 0/30 low-conf 0 lost 0 | round secs max 17.7

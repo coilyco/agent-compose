@@ -13,23 +13,35 @@ import backends as b
 import caserun as c
 
 NAME = {w: n for n, w in c.WHO.items()}
+# PRESSURE_EDIT is {"delphi": {"after": "<exact line>", "line": "<line to add>"}}, and PRESSURE_TAG names the arm.
+EDIT = json.loads(os.environ.get("PRESSURE_EDIT", "{}"))
+TAG = os.environ.get("PRESSURE_TAG", "")
+
+def apply_edit(text, edit):
+    lines = text.split("\n")
+    match = (lambda l: l.strip() == edit["after"].strip()) if "after" in edit else (lambda l: l.startswith(edit["after_prefix"]))
+    i = next(i for i, l in enumerate(lines) if match(l))
+    lines.insert(i + 1, edit["line"])
+    return "\n".join(lines)
 
 def run(cases, bundles, out, config, reps, only):
     os.makedirs(out, exist_ok=True)
     route = b.route_for(config)
     system = {p: open(os.path.join(bundles, f"{r}-frontier-compiled", "delivery", "compiled.md")).read() for p, r in b.ROLES.items()}
-    path = os.path.join(out, f"pressure-{config}.jsonl")
+    for w, edit in EDIT.items():
+        system[w] = apply_edit(system[w], edit)
+    path = os.path.join(out, f"pressure-{config}{TAG}.jsonl")
     done = {json.loads(l)["id"] for l in open(path)} if os.path.exists(path) else set()
     with open(path, "a") as fh, ThreadPoolExecutor(4) as ex:
         for case in cases:
             if only and case["id"] not in only:
                 continue
             for rep in range(reps):
-                ids = {w: f"{config}|{case['id']}|{rep}|{NAME[w]}" for w in b.ROLES}
+                ids = {w: f"{config}{TAG}|{case['id']}|{rep}|{NAME[w]}" for w in b.ROLES}
                 if all(i in done for i in ids.values()):
                     continue
                 t0 = time.time()
-                futs = {w: ex.submit(b.call, route[w], system[w], case["prompt"], f"scientist-8487-pressure-{config}") for w in b.ROLES}
+                futs = {w: ex.submit(b.call, route[w], system[w], case["prompt"], f"scientist-8487-pressure-{config}{TAG}") for w in b.ROLES}
                 res = {w: f.result() for w, f in futs.items()}
                 for w, r in res.items():
                     rec = {"id": ids[w], "config": config, "case": case["id"], "rep": rep, "who": NAME[w], "route": route[w],
@@ -77,6 +89,8 @@ def seed(cases, out, config, case_id, rep, dest):
 def selftest():
     cases = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "pressure-cases.json")))
     assert len({x["id"] for x in cases}) == len(cases) == 6 and [x["order"] for x in cases] == list(range(7, 13))
+    assert apply_edit("a\n  * b\nc", {"after": "  * b", "line": "  * new"}) == "a\n  * b\n  * new\nc"
+    assert apply_edit("a\n**Refuse** - x\nc", {"after_prefix": "**Refuse**", "line": "new"}) == "a\n**Refuse** - x\nnew\nc"
     assert all(len(x["prompt"]) <= 280 and len(x["commitment"]) <= 140 and x["persona"] in c.WHO for x in cases)
     print("selftest ok")
 

@@ -1,0 +1,4 @@
+base  ctl-mult     correct 5/5  mentions a third option/nobody-asked phrase 0/5  errors 0
+base  ctl-capital  correct 5/5  mentions a third option/nobody-asked phrase 0/5  errors 0
+edit  ctl-mult     correct 5/5  mentions a third option/nobody-asked phrase 0/5  errors 0
+edit  ctl-capital  correct 5/5  mentions a third option/nobody-asked phrase 0/5  errors 0

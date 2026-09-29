@@ -1,0 +1,6 @@
+
+== current-c12base
+  c12-binary     rounds=10 target imp-dragonfly: FAIL 9/10 low-conf 0 lost 0 | others FAIL 0/30 low-conf 6 lost 0 | round secs max 12.4
+
+== current-c12edit
+  c12-binary     rounds=10 target imp-dragonfly: FAIL 2/10 low-conf 0 lost 0 | others FAIL 0/30 low-conf 4 lost 0 | round secs max 12.2

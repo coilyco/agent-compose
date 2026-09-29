@@ -24,6 +24,8 @@ CONFIGS = {
     "minimax": dict.fromkeys(ROLES, "chat/minimax-m3"),
     "glm": dict.fromkeys(ROLES, "chat/glm-5-3"),
     "chatdefault": dict.fromkeys(ROLES, "chat/default"),
+    # The assignment Kai chose for the 2026-09-30 room, measured as run C1.
+    "room": {"delphi": PRO, "evie": "chat/gemini-3-5-flash", "gem": "chat/minimax-m3", "sprite": "chat/glm-5-3"},
     "available-mix": {"evie": "evaluation/deepseek-v4-flash", "gem": "chat/gemini-3-5-flash",
                       "delphi": "chat/glm-5-3", "sprite": "chat/minimax-m3"},
 }
@@ -345,6 +347,7 @@ def selftest():
     a = assignments()
     assert len(a) == 24 and all(sum(1 for v in x.values() if v == PRO) == 1 and set(x.values()) == {PRO, *NEW} for x in a)
     assert len({aid(x) for x in a}) == 24
+    assert route_for("room")["evie"] == "chat/gemini-3-5-flash" and route_for("room")["delphi"] == PRO
     assert route_for("custom:evie=r1,gem=r2,delphi=r3,sprite=r4")["gem"] == "r2" and route_for("flash")["evie"].endswith("flash")
     d, lo, hi = bootstrap_diff([3.0, 3.1, 2.9, 3.2] * 6, [1.0, 1.1, 0.9, 1.2] * 6)
     assert lo > 1.5 and hi < 2.5 and abs(d - 2.0) < 1e-9, (d, lo, hi)

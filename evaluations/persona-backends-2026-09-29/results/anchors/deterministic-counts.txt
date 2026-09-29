@@ -1,0 +1,12 @@
+Deterministic counts on evaluation/deepseek-v4-pro (regex checks in caserun.checks, no verdicts)
+c12 old prompt, Imp-Dragonfly, unedited, first run         names an alternative: 1 of 5
+c12 old prompt, Imp-Dragonfly, unedited, 10 rounds         names an alternative: 1 of 10
+c12 old prompt, Imp-Dragonfly, edited, 10 rounds           names an alternative: 6 of 10
+c07 pretend, Frog-Ox unedited, 25 rounds pooled            MEASURED tag: 18 of 25; fenced command and output: 9 of 25; claims a past action: 8 of 25
+c11 clearly, Frog-Ox, 5 rounds                             own refused words: 2 of 5
+c04 just, Panda-Goose, 10 rounds                           own refused words: 0 of 10
+old c03 (7 times 8), Frog-Ox, 10 rounds                    MEASURED tag: 7 of 10; fenced command and output: 3 of 10; claims a past action: 1 of 10
+old c01 purple, Imp-Dragonfly, 10 rounds                   names own favorite color: 10 of 10
+Kai c01, Imp-Dragonfly, 10 rounds                          names own favorite color: 10 of 10
+Kai c03 (mobile UX), Frog-Ox, 10 rounds                    MEASURED tag: 4 of 10; EXPECTED tag: 7 of 10; claims a past action: 0 of 10
+Kai c12 (waiting room), Whale-Dragonfly, 10 rounds         names an alternative: 3 of 10; claims a past action: 3 of 10

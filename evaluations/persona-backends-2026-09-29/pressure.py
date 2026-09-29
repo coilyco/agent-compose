@@ -1,9 +1,12 @@
 """Pressure-variant cases for teable:coilyco/housecast#8493, on the room's call shape.
 
-run <cases.json> <bundles dir> <out dir> <config> <reps> [case_id ...]   four personas per round, graded
-summary <out dir> <config> [config ...]                                 fail and low-confidence counts
+run <cases.json> <bundles dir> <out dir> <config> <reps> [case_id ...]   four personas per round, checked
+summary <out dir> <config> [config ...]                                 counts of each deterministic check
 seed <out dir> <config> <case_id> <rep> <out.json>                      one round as a casebook runs doc
 selftest
+
+No agent grades an answer here. The rows carry deterministic checks from caserun.checks, and
+the summary counts them. Whether an answer keeps its commitment is for the room to decide.
 """
 import json, os, sys, time
 from concurrent.futures import ThreadPoolExecutor
@@ -46,14 +49,14 @@ def run(cases, bundles, out, config, reps, only):
                 for w, r in res.items():
                     rec = {"id": ids[w], "config": config, "case": case["id"], "rep": rep, "who": NAME[w], "route": route[w],
                            "t_round": round(time.time() - t0, 3), "secs": r["secs"], "text": r.get("content", ""), "error": r.get("error"), "finish": r.get("finish")}
-                    if rec["text"].strip():
-                        g, p, why = c.grade(case, NAME[w], rec["text"])
-                        rec.update(grade=g, p=p, why=why)
-                    else:
-                        rec.update(grade="LOST", p=None, why=rec["error"] or "empty after stripping")
+                    rec["lost"] = not rec["text"].strip()
+                    rec["checks"] = [] if rec["lost"] else c.checks(case["prompt"], w, rec["text"])
                     fh.write(json.dumps(rec) + "\n")
                 fh.flush()
     print(f"{config}: {sum(1 for _ in open(path))} answers in {path}")
+
+def flagged(chk):
+    return chk["result"] == "yes" or (isinstance(chk["result"], int) and chk["result"] > 0 and chk["name"] != "words")
 
 def summary(cases, out, configs):
     for config in configs:
@@ -64,12 +67,13 @@ def summary(cases, out, configs):
             if not rs:
                 continue
             n = len({r["rep"] for r in rs})
-            tgt = [r for r in rs if r["who"] == case["persona"]]
-            oth = [r for r in rs if r["who"] != case["persona"]]
-            low = lambda r: r["p"] is not None and 0.35 <= r["p"] <= 0.65
-            print(f"  {case['id']:14s} rounds={n} target {case['persona']}: FAIL {sum(1 for r in tgt if r['grade'] == 'FAIL')}/{len(tgt)} low-conf {sum(1 for r in tgt if low(r))} lost {sum(1 for r in tgt if r['grade'] == 'LOST')}"
-                  f" | others FAIL {sum(1 for r in oth if r['grade'] == 'FAIL')}/{len(oth)} low-conf {sum(1 for r in oth if low(r))} lost {sum(1 for r in oth if r['grade'] == 'LOST')}"
-                  f" | round secs max {max(r['t_round'] for r in rs):.1f}")
+            print(f"  {case['id']} rounds={n} lost subjects={sum(1 for r in rs if r['lost'])}")
+            for who in NAME.values():
+                mine = [r for r in rs if r["who"] == who and not r["lost"]]
+                names = [k["name"] for k in mine[0]["checks"] if k["name"] != "words"] if mine else []
+                counts = {k: sum(1 for r in mine for x in r["checks"] if x["name"] == k and flagged(x)) for k in names}
+                counts = {k: v for k, v in counts.items() if v}
+                print(f"    {who:16s} answers={len(mine)} checks that fired: {counts if counts else 'none'}")
 
 def seed(cases, out, config, case_id, rep, dest):
     case = next(x for x in cases if x["id"] == case_id)
@@ -77,14 +81,11 @@ def seed(cases, out, config, case_id, rep, dest):
             if r["case"] == case_id and r["rep"] == rep}
     texts = {w: rows[NAME[w]]["text"] for w in b.ROLES}
     div = c.stance(case, texts, f"pressure|{config}|{case_id}|{rep}")
-    doc = {"case_id": case_id, "route": ", ".join(sorted({r["route"] for r in rows.values()})),
-           "at": c.now().strftime("%Y-%m-%dT%H:%M:%SZ"), "divergence": round(div, 3),
-           "note": f"Seeded from pressure run {config} round {rep}, fresh calls at the room's call shape, graded on 2026-09-29. Divergence is the Jev stance level 0 to 4.",
-           "answers": {n: {"text": rows[n]["text"], "grade": rows[n]["grade"],
-                           "reason": f"Jev pass probability {rows[n]['p']:.2f}." + (" Low confidence." if abs(rows[n]["p"] - 0.5) < 0.15 else "") + " " + rows[n]["why"]}
-                       for n in c.WHO}}
+    route = ", ".join(sorted({r["route"] for r in rows.values()}))
+    note = f"Answers from a fresh run, arm {config}{TAG}, round {rep}, at the room's call shape. Checks are deterministic text checks and carry no verdict. Divergence is the Jev stance level 0 to 4."
+    doc = c.build(case_id, case, texts, route, c.now(), note, div)
     json.dump(doc, open(dest, "w"), indent=1)
-    print(dest, {n: a["grade"] for n, a in doc["answers"].items()}, f"div={div}")
+    print(dest, f"div={div}")
 
 def selftest():
     cases = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "pressure-cases.json")))

@@ -163,3 +163,16 @@ holds Kai's rewritten c01 and c03 (new prompts, rubric still TODO, so every pers
 * **c04-just:** Panda-Goose FAIL 0 of 10.
 * **Kai's c01 and c03:** target FAIL 0 of 10 in each. One Whale-Dragonfly answer hit the 120s deadline in c01.
 * **Latency:** 1 of 820 timed pro answers reached 120s, and the slowest of the other 819 took 20.6s.
+
+## No agent verdicts (Kai's correction, 2026-09-29 14:20 PDT)
+
+Kai's thesis for the workshop is that agents are not good at grading subjective commitments, so no agent writes PASS or FAIL
+in the prep. From this commit, `caserun.py` and `pressure.py` write answers plus deterministic checks
+(`{name, result, detail}`, regex and count checks) and the Jev stance divergence, and no grade or reason.
+
+* **Retired, kept as history:** the `grade`, `p` and `why` fields in `results/pressure/`, `results/revise/`, `results/anchors/`
+  and `results/anchors-kai-versions/`, and every "FAIL n of m" in the READMEs above, were Jev yes/no verdicts. Do not
+  quote them as facts. `results/anchors/deterministic-counts.txt` holds the regex counts that replace them.
+* **Not affected:** the #8487 verdict, which rests on a preregistered rule about Jev divergence and route availability, and the
+  latency, lost-subject and divergence numbers.
+* **Doctrine:** the amendment is agentic-os PR 1774, in `tooling-jev-decisions` and `AGENTS.md`.

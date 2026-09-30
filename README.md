@@ -54,29 +54,25 @@ makes that boundary fail closed across the machine. See
 
 ## Install
 
-```sh
-brew tap coilyco-flight-deck/tap https://forgejo.coilysiren.me/coilyco-flight-deck/homebrew-tap
-brew install coilyco-flight-deck/tap/agent-compose
-```
-
-```powershell
-scoop bucket add coilyco-flight-deck https://forgejo.coilysiren.me/coilyco-flight-deck/scoop-bucket
-scoop install coilyco-flight-deck/agent-compose
-```
-
-Releases publish to this project's canonical forge, and the GitHub mirror
-trails it. Both managers also install `acompose` and the roster beside the
-binary. A raw binary from [the forge releases](https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases)
-needs the roster as a second asset, because the binary carries none:
+From the public internet, with Go 1.25.5 or newer:
 
 ```sh
-mkdir -p ~/.agent-compose && curl -fL https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases/latest/download/agent-compose-roster.tar.gz | tar xz -C ~/.agent-compose
+git clone https://github.com/coilyco/agent-compose.git
+cd agent-compose
+go install ./cmd/agent-compose
+mkdir -p ~/.agent-compose && cp -R seed/roster ~/.agent-compose/roster
+agent-compose catalog roles
 ```
 
-Skip that and the first `catalog roles` reports `no roster is mounted`, naming
-every path it tried. Releases attach darwin-arm64, linux-amd64, linux-arm64 and
-windows-amd64. From source, `just install` builds into `GOBIN` and exports the
-roster path for you. `agent-compose version` reports the build you are running.
+The binary carries no roster, so the copy is required. Skip it and the first
+`catalog roles` reports `no roster is mounted`, naming every path it tried.
+`go install` writes to `GOBIN`, by default `$(go env GOPATH)/bin`, which needs to be on your
+`PATH`. `agent-compose version` reports the build you are running.
+
+Releases publish to this project's canonical forge, `forgejo.coilysiren.me`, which resolves
+only on the tailnet, and the GitHub mirror trails it with no roster asset. On the tailnet, the
+Homebrew tap, Scoop bucket and raw release binaries install `acompose` and the roster too. The
+commands are in [guides/quickstart.md](guides/quickstart.md).
 
 ## Use it
 

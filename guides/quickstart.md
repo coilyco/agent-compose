@@ -1,9 +1,9 @@
 # Quickstart
 
 From an empty terminal to an agent that knows which seat it is sitting in.
-Nothing here assumes a checkout of this repository, a package registry account,
-or any file you already have. Every command below was run against a released
-binary in a scratch home before it was written down.
+Nothing here assumes a package registry account or any file you already have.
+The only checkout you need is this repository's, once, to install. Every command
+below was run in a scratch home before it was written down.
 
 ## What you are about to build
 
@@ -24,10 +24,31 @@ error messages are the real reference page. Read them rather than guessing.
 
 ## 1. Install
 
-The package managers install the binary and the roster together, which is the
-path with the fewest steps. Releases publish to the project's own public
-Forgejo server, `forgejo.coilysiren.me`, and the GitHub mirror trails it, so
-every command below points there.
+From the public internet, with Go 1.25.5 or newer, build from the GitHub mirror:
+
+```sh
+git clone https://github.com/coilyco/agent-compose.git
+cd agent-compose
+go install ./cmd/agent-compose
+mkdir -p ~/.agent-compose && cp -R seed/roster ~/.agent-compose/roster
+```
+
+`go install` writes to `GOBIN`, by default `$(go env GOPATH)/bin`, which needs to be
+on your `PATH`. The binary carries no roster, so the copy puts the seats at
+`~/.agent-compose/roster`, the second place the binary looks. Check it took:
+
+```sh
+agent-compose catalog roles
+```
+
+One line per seat. If instead you get `no roster is mounted`, the
+message lists every directory it tried, in order. Put the roster in one of them,
+or point `AGENT_COMPOSE_ROSTER` at wherever you unpacked it.
+
+On the tailnet, releases publish to the project's canonical forge,
+`forgejo.coilysiren.me`, which public DNS does not resolve to a reachable address.
+The GitHub mirror trails it and has no roster asset. There the package managers
+install the binary and the roster together, with the fewest steps:
 
 ```sh
 brew tap coilyco-flight-deck/tap https://forgejo.coilysiren.me/coilyco-flight-deck/homebrew-tap
@@ -39,9 +60,9 @@ scoop bucket add coilyco-flight-deck https://forgejo.coilysiren.me/coilyco-fligh
 scoop install coilyco-flight-deck/agent-compose
 ```
 
-If you take a raw binary from the
-[releases](https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases)
-instead, take two assets, not one. The binary alone has no seats in it:
+A raw binary from the
+[forge releases](https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases)
+needs two assets, not one, because the binary alone has no seats in it:
 
 ```sh
 curl -fLo ~/.local/bin/agent-compose \
@@ -53,16 +74,7 @@ curl -fL https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/release
   | tar xz -C ~/.agent-compose
 ```
 
-The tarball unpacks to `roster/`, so that lands at `~/.agent-compose/roster`,
-which is the second place the binary looks. Check it took:
-
-```sh
-agent-compose catalog roles
-```
-
-Eight lines, one per seat. If instead you get `no roster is mounted`, the
-message lists every directory it tried, in order. Put the roster in one of them,
-or point `AGENT_COMPOSE_ROSTER` at wherever you unpacked it.
+The tarball unpacks to `roster/`, so that lands at `~/.agent-compose/roster`.
 
 ## 2. Read the seats before you pick one
 

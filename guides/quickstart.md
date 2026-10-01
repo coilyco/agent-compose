@@ -125,10 +125,9 @@ load_points:
 * `load_points` - where the finished context file lands for each harness. This
   is the path your agent will actually read.
 
-Every one of these is required in the sense that leaving it out produces a
-specific complaint rather than a silent partial run. Omitting
-`operating_context` gives you `agent-compose.yaml must declare operating_context
-repositories` and stops.
+Only `operating_context` is required. Omitting it gives you
+`agent-compose.yaml must declare operating_context repositories` and stops.
+The rest default from the host: see [host config defaults](../docs/cascade.md).
 
 ## 4. Declare the roles your repository offers
 

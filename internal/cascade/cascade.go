@@ -98,7 +98,13 @@ func (r RawValue) truthy() bool {
 	}
 }
 
+// LoadConfig reads one host config and fills the defaults that make a short
+// file enough. See docs/cascade.md "Host config defaults".
 func LoadConfig(path string) (*Config, error) {
+	return loadConfig(path, defaultProjectsRoot())
+}
+
+func loadConfig(path, projects string) (*Config, error) {
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -127,7 +133,50 @@ func LoadConfig(path string) (*Config, error) {
 		return nil, fmt.Errorf("%s: %w", path, err)
 	}
 	cfg.SourcePath = path
+	applyDefaults(&cfg, path, projects)
 	return &cfg, nil
+}
+
+// applyDefaults fills absent keys from the host and never overrides a set one.
+// A default pointing at nothing on disk is skipped, not fatal. docs/cascade.md.
+func applyDefaults(cfg *Config, path, projects string) {
+	if cfg.Roots == nil {
+		// The roster renders its personality library here, so a host with no
+		// `roots` key still composes it. `roots: []` opts out.
+		if root := filepath.Join(filepath.Dir(path), "sources"); isDir(root) {
+			cfg.Roots = []string{root}
+		}
+	}
+	if cfg.Sources == nil && projects != "" {
+		// Delivery stays `inline` when sources are named, because only derived
+		// ones are guaranteed to sit at the absolute path an import names.
+		for _, identity := range cfg.OperatingContext {
+			source := filepath.Join(projects, filepath.FromSlash(identity), "AGENTS.md")
+			if isFile(source) {
+				cfg.Sources = append(cfg.Sources, source)
+			}
+		}
+		if len(cfg.Sources) > 0 && cfg.SourceDelivery == "" {
+			cfg.SourceDelivery = DeliveryImport
+		}
+	}
+	if cfg.SkillCatalogManifest == "" {
+		if home, err := os.UserHomeDir(); err == nil {
+			if manifest := filepath.Join(home, ".config", "aos", "catalogues.json"); isFile(manifest) {
+				cfg.SkillCatalogManifest = manifest
+			}
+		}
+	}
+}
+
+func isDir(path string) bool {
+	info, err := os.Stat(path)
+	return err == nil && info.IsDir()
+}
+
+func isFile(path string) bool {
+	info, err := os.Stat(path)
+	return err == nil && info.Mode().IsRegular()
 }
 
 // Shape is all cascade can check, because it never loads a person; see the
@@ -277,7 +326,7 @@ func ResolveLoadPoints(cfg *Config) (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return resolvePoints(points, cfg.LoadPoints), nil
+	return resolvePoints(points, cfg.LoadPoints, func(p *layouts.LoadPoints) string { return p.Instructions })
 }
 
 // OperatingBase renders the base for one harness and role: the load point's
@@ -359,7 +408,7 @@ func ResolveSkillLoadPoints(cfg *Config) (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return resolvePoints(points, cfg.SkillLoadPoints), nil
+	return resolvePoints(points, cfg.SkillLoadPoints, func(p *layouts.LoadPoints) string { return p.SkillsDir })
 }
 
 func cascadePoints(pick func(*layouts.LoadPoints) string) (map[string]string, error) {
@@ -380,15 +429,42 @@ func cascadePoints(pick func(*layouts.LoadPoints) string) (map[string]string, er
 	return points, nil
 }
 
-func resolvePoints(points map[string]string, overrides map[string]RawValue) map[string]string {
+// A bare `true` opts a harness in at its table default, which is how a harness
+// outside the cascade set (opencode) joins without restating its path.
+func resolvePoints(
+	points map[string]string, overrides map[string]RawValue, pick func(*layouts.LoadPoints) string,
+) (map[string]string, error) {
 	for harness, value := range overrides {
-		if value.truthy() {
-			points[harness] = expand(value.node.Value)
-		} else {
+		switch {
+		case !value.truthy():
 			delete(points, harness)
+		case value.node.Tag == "!!bool":
+			fallback, err := tableDefault(harness, pick)
+			if err != nil {
+				return nil, err
+			}
+			points[harness] = fallback
+		default:
+			points[harness] = expand(value.node.Value)
 		}
 	}
-	return points
+	return points, nil
+}
+
+func tableDefault(harness string, pick func(*layouts.LoadPoints) string) (string, error) {
+	table, err := layouts.Load()
+	if err != nil {
+		return "", err
+	}
+	entry, ok := table[harness]
+	if !ok || entry.Home.Native == nil {
+		return "", fmt.Errorf("load point %q: no harness of that name has a home load point to default to", harness)
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(home, filepath.FromSlash(pick(entry.Home.Native))), nil
 }
 
 // splitFrontmatter separates a leading `--- ... ---` YAML block from the

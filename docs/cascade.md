@@ -4,10 +4,8 @@ The cascade turns doctrine sources into each harness's global context when
 `~/.agent-compose/agent-compose.yaml` exists. Missing config is a no-op.
 
 Bare `acompose` summarizes its roster, outputs, load points, repository plan, skill
-links, and repaired drift.
-Bare `acompose --reapply` recreates outputs and load-point links.
-`acompose --verbose` emits each source, override, manifest, and link as
-`source => destination`.
+links, and repaired drift. `--reapply` recreates outputs and links, and `--verbose`
+emits each source, override, manifest, and link as `source => destination`.
 
 `person_policy: external-only` requires `person_source`. A bad package aborts
 before roster or cascade projection can restore the embedded default.
@@ -56,15 +54,10 @@ appendix:
     roles: [platform, sysadmin]
 ```
 
-A native role bundle carries the appendix apart from the sources, because it
-rewrites the source body before rendering and a rewrite keyed to headings
-swallows whatever follows the last one. The block lands at the tail of the
-bundle's instructions, holding the position it holds on the host load point.
-
-A `path` entry is rewritten the way a source is: frontmatter stripped,
-`## See also` dropped, relative links absolutized against the file's own
-directory. Inline `text` composes verbatim, because nothing about a config
-string is repo-relative.
+A native role bundle carries the appendix apart from the sources, because a
+heading-keyed rewrite of the source body would swallow it. It lands at the tail
+of the bundle's instructions. A `path` entry is rewritten the way a source is,
+and inline `text` composes verbatim.
 
 An entry with no `roles` is global and reaches every composed output. An entry
 naming `roles` composes only for those roles, which by construction leaves it
@@ -75,9 +68,21 @@ host file, so it sees global blocks alone.
 Cascade never loads a person, so `roles` is checked for slug shape and nothing
 more. A native launch does resolve one, and warns there for any configured slug
 the roster does not define, because a block that composes for no one otherwise
-passes silently. `acompose --verbose` also lists every block with its
-destination. A missing `path` warns and skips on convergence,
-exactly as a missing source does, and fails under `--check`.
+passes silently. A missing `path` warns and skips on convergence, exactly as a
+missing source does, and fails under `--check`.
+
+## Host config defaults
+
+An absent key resolves from the host, and a set key always wins. Only
+`operating_context` is required.
+
+* `sources` - each `operating_context` repository's `AGENTS.md`, imported. A
+  repository without one is skipped, and naming `sources` turns this off.
+* `roots` - `sources` beside the config. `roots: []` opts out.
+* `skill_catalog_manifest` - `~/.config/aos/catalogues.json` when present. It
+  projects AOS-verified roots, under the [trust contract](skill-catalogues.md).
+* `load_points`, `skill_load_points` - the layout table. `opencode: true` opts a
+  non-cascade harness in at its table path, and an unknown name fails.
 
 ## Outputs
 
@@ -98,23 +103,18 @@ linked strict provider document without writes.
 ## Native skill roots
 
 Bare compose can also link authored skill catalogs into harness-native skill
-directories through [`skill_load_points`](skill-selectors.md).
-
-Native skill linking uses the compiled residency set from
-`repository-plan.yaml`. Repositories contribute `.agents/skills`. The compiled
-set precedes verified local catalogues. Existing unowned entries win. Missing entries warn and skip, while
-other inspection failures remain fatal. Agent-compose records links in
+directories through [`skill_load_points`](skill-selectors.md). Native skill
+linking uses the compiled residency set from `repository-plan.yaml`.
+Repositories contribute `.agents/skills`. The compiled set precedes verified
+local catalogues. Existing unowned entries win. Missing entries warn and skip,
+while other inspection failures remain fatal. Agent-compose records links in
 `~/.agent-compose/skill-mounts.json` and removes only stale links that still
 match that ownership record. Fleet pointer aggregation, conditional category
 gating, and per-repo capability pulls remain rollout policy outside this
 substrate operation.
-
-`skill_catalog_manifest` projects AOS-verified roots without network work.
-[Local skill catalogues](skill-catalogues.md) define the trust contract.
 
 ## See also
 
 * [integration.md](integration.md) - how roster and cascade fit together.
 * [repository-policy.md](repository-plan.md) - strict repository grammar and projections.
 * [projection.md](projection.md) - repo and home load-point projection.
-* [local-skill-catalogues.md](skill-catalogues.md) - AOS local-root handoff.

@@ -27,12 +27,21 @@ type RunOptions struct {
 	Verbose bool
 }
 
+// defaultProjectsRoot is $PROJECTS_ROOT, else ~/projects.
+func defaultProjectsRoot() string {
+	if projects := os.Getenv("PROJECTS_ROOT"); projects != "" {
+		return projects
+	}
+	root, err := os.UserHomeDir()
+	if err != nil {
+		return ""
+	}
+	return filepath.Join(root, "projects")
+}
+
 func DefaultPaths() Paths {
 	root, _ := os.UserHomeDir()
-	projects := os.Getenv("PROJECTS_ROOT")
-	if projects == "" {
-		projects = filepath.Join(root, "projects")
-	}
+	projects := defaultProjectsRoot()
 	stateDir, err := home.Dir()
 	if err != nil {
 		stateDir = filepath.Join(root, ".agent-compose")

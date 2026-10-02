@@ -1,5 +1,6 @@
 """Jev as a read-time relevance filter over Basic Memory search results.
 
+  jevfilter.py label CORPUS CASES OUT.jsonl                    multi-gold labels, distinctive answers only (amendment 1)
   jevfilter.py retrieve FIXTURE PROJECT CASES OUT_DIR          top 10 per case, once (Basic Memory venv python)
   jevfilter.py jev OUT_DIR HOUSECAST REP                        one Jev choice per case, scored by jevroute
   jevfilter.py answer OUT_DIR CORPUS OPENCODE_CONFIG REP        downstream answer, top 3 against Jev's pick
@@ -33,6 +34,34 @@ def rows(path: str) -> list[dict]:
 def ok_set(cands: list[dict], gold: list[str]) -> list[str]:
     hits = [f"c{i + 1}" for i, c in enumerate(cands) if c["file_path"] in gold]
     return hits or ["none"]
+
+
+def gold_of(case: dict) -> list[str]:
+    return case.get("gold") or case["sources"]
+
+
+def label(corpus: str, cases_path: str, out: str, min_chars: str = "6", max_files: str = "3") -> None:
+    texts = {}
+    for d, _, fs in os.walk(corpus):
+        for f in fs:
+            p = os.path.relpath(os.path.join(d, f), corpus)
+            try:
+                texts[p] = open(os.path.join(corpus, p), encoding="utf-8").read().lower()
+            except (UnicodeDecodeError, OSError):
+                continue
+    kept, dropped = 0, {"short": 0, "common": 0}
+    with open(out, "w") as fh:
+        for case in rows(cases_path):
+            m = case["must_contain"][0].lower()
+            gold = sorted(p for p, t in texts.items() if m in t)
+            if len(m) < int(min_chars):
+                dropped["short"] += 1
+            elif len(gold) > int(max_files):
+                dropped["common"] += 1
+            else:
+                fh.write(json.dumps({**case, "gold": gold}) + "\n")
+                kept += 1
+    print(json.dumps({"kept": kept, "dropped": dropped}))
 
 
 def criteria(cands: list[dict]) -> dict[str, str]:
@@ -73,7 +102,7 @@ def jev(out: str, housecast: str, rep: str) -> None:
             body = {"model": "jev-latest", "state": {"question": case["question"]},
                     "questions": {"tool": {"type": "choice", "instructions": INSTRUCTIONS,
                                            "criteria": criteria(case["candidates"])}}}
-            ok = ok_set(case["candidates"], case["sources"])
+            ok = ok_set(case["candidates"], gold_of(case))
             row = score({"q": case["question"], "ok": ok}, post_jev(body), THRESHOLD)
             row.update({"id": case["id"], "rank1_correct": "c1" in ok, "gold_in_10": ok != ["none"]})
             fh.write(json.dumps(row) + "\n")
@@ -112,7 +141,7 @@ def answer(out: str, corpus: str, cfg: str, rep: str) -> None:
 def summary(out: str) -> None:
     cands = rows(f"{out}/candidates.jsonl")
     n = len(cands)
-    print(json.dumps({"n": n, "recall_at_10": sum(ok_set(c["candidates"], c["sources"]) != ["none"] for c in cands)}))
+    print(json.dumps({"n": n, "recall_at_10": sum(ok_set(c["candidates"], gold_of(c)) != ["none"] for c in cands)}))
     for rep in ("r1", "r2"):
         if not os.path.exists(f"{out}/jev-{rep}.jsonl"):
             continue
@@ -123,6 +152,12 @@ def summary(out: str) -> None:
                           "errors": sum(1 for r in j if r.get("error"))}))
         if os.path.exists(f"{out}/answer-{rep}.jsonl"):
             a = rows(f"{out}/answer-{rep}.jsonl")
+            nar = [r for r in a if r["jev_narrowed"]]
+            if nar:
+                print(json.dumps({"rep": rep, "narrowed": len(nar), "gate_precision": round(sum(r["pass"] for r in j) / max(1, sum(r["pass"] or r["confident_wrong"] for r in j)), 3),
+                                  "narrowed_a_recall": sum(r["a_recall"] for r in nar), "narrowed_b_recall": sum(r["b_recall"] for r in nar),
+                                  "harm": sum(r["a_recall"] and not r["b_recall"] for r in nar), "help": sum(r["b_recall"] and not r["a_recall"] for r in nar),
+                                  "narrowed_tokens_ratio": round(sum(r["b_tokens"] for r in nar) / sum(r["a_tokens"] for r in nar), 3)}))
             print(json.dumps({"rep": rep, "a_recall": sum(r["a_recall"] for r in a), "b_recall": sum(r["b_recall"] for r in a),
                               "a_tokens_mean": round(sum(r["a_tokens"] for r in a) / len(a)),
                               "b_tokens_mean": round(sum(r["b_tokens"] for r in a) / len(a)),
@@ -147,9 +182,11 @@ def selftest(housecast: str) -> None:
     assert r["confident_wrong"] and not r["correct"], r
     r = score({"q": "q", "ok": ["c1"]}, ans, 0.9)
     assert r["pass"] and not r["confident_wrong"], r
-    print("selftest ok: 5 checks")
+    assert gold_of({"sources": ["a"], "gold": ["a", "b"]}) == ["a", "b"] and gold_of({"sources": ["a"]}) == ["a"]
+    assert ok_set(cands, ["a/SKILL.md", "b/SKILL.md"]) == ["c1", "c2"]   # multi-gold
+    print("selftest ok: 7 checks")
 
 
 if __name__ == "__main__":
     cmd, args = sys.argv[1], sys.argv[2:]
-    {"retrieve": retrieve, "jev": jev, "answer": answer, "summary": summary, "selftest": selftest}[cmd](*args)
+    {"label": label, "retrieve": retrieve, "jev": jev, "answer": answer, "summary": summary, "selftest": selftest}[cmd](*args)

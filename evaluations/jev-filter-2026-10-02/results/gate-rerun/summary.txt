@@ -1,0 +1,8 @@
+{"n": 95, "recall_at_10": 85}
+{"rep": "r1", "a_rank1_correct": 60, "b_correct": 69, "b_pass": 49, "b_confident_wrong": 6, "errors": 0}
+{"rep": "r1", "narrowed": 48, "gate_precision": 0.891, "narrowed_a_recall": 36, "narrowed_b_recall": 37, "harm": 2, "help": 3, "narrowed_tokens_ratio": 0.39}
+{"rep": "r1", "a_recall": 63, "b_recall": 64, "a_tokens_mean": 3632, "b_tokens_mean": 2608, "narrowed": 48}
+{"rep": "r2", "a_rank1_correct": 60, "b_correct": 69, "b_pass": 47, "b_confident_wrong": 6, "errors": 0}
+{"rep": "r2", "narrowed": 46, "gate_precision": 0.887, "narrowed_a_recall": 34, "narrowed_b_recall": 35, "harm": 2, "help": 3, "narrowed_tokens_ratio": 0.404}
+{"rep": "r2", "a_recall": 62, "b_recall": 63, "a_tokens_mean": 3632, "b_tokens_mean": 2716, "narrowed": 46}
+{"rep_winner_agreement": 93, "of": 95}

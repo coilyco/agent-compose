@@ -5,7 +5,7 @@ import (
 	"io/fs"
 	"path"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 )
 
 type PersonalityCatalogEntry struct {

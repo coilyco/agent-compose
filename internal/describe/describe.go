@@ -11,10 +11,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/bundle"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/color"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/resolver"
+	"github.com/coilyco/agent-compose/v2/internal/bundle"
+	"github.com/coilyco/agent-compose/v2/internal/color"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/resolver"
 )
 
 type Options struct {

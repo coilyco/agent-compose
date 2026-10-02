@@ -13,7 +13,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 )
 
 // Server is one inventory entry in mcporter's shape. Unknown keys are ignored.

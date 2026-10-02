@@ -7,10 +7,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/compose"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/launch"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/nativelaunch"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/resolver"
+	"github.com/coilyco/agent-compose/v2/internal/compose"
+	"github.com/coilyco/agent-compose/v2/internal/launch"
+	"github.com/coilyco/agent-compose/v2/internal/nativelaunch"
+	"github.com/coilyco/agent-compose/v2/internal/resolver"
 )
 
 func TestParseNativeLaunchFlagsReadsSpecOut(t *testing.T) {

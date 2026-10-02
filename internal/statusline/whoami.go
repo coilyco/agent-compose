@@ -3,9 +3,9 @@ package statusline
 import (
 	"encoding/json"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/agentid"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/bundle"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/agentid"
+	"github.com/coilyco/agent-compose/v2/internal/bundle"
+	"github.com/coilyco/agent-compose/v2/internal/person"
 )
 
 // Whoami returns what this session calls itself: `Angie uz86`, or "" with

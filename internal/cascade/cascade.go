@@ -15,13 +15,13 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/layouts"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+	"github.com/coilyco/agent-compose/v2/internal/layouts"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/telemetry"
+	"github.com/coilyco/agent-compose/v2/internal/personpolicy"
+	"github.com/coilyco/agent-compose/v2/internal/telemetry"
 )
 
 const (

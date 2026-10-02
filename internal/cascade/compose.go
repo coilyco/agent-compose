@@ -8,10 +8,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/repositoryplan"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/repositoryplan"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 var headingRe = regexp.MustCompile(`^(#{1,6}) +\S`)

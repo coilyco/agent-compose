@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/layouts"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/repositoryplan"
+	"github.com/coilyco/agent-compose/v2/internal/layouts"
+	"github.com/coilyco/agent-compose/v2/internal/repositoryplan"
 )
 
 type env struct {

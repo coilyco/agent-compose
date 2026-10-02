@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/launch"
+	"github.com/coilyco/agent-compose/v2/internal/launch"
 )
 
 // The flag is accepted and ignored, so what matters is that it never reaches

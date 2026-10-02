@@ -7,8 +7,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
+	"github.com/coilyco/agent-compose/v2/internal/personpolicy"
+	"github.com/coilyco/agent-compose/v2/internal/project"
 )
 
 func fixture(t testing.TB, name string) string {

@@ -9,12 +9,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 
 	kdl "github.com/calico32/kdl-go"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/skillselector"
+	"github.com/coilyco/agent-compose/v2/internal/personpolicy"
+	"github.com/coilyco/agent-compose/v2/internal/skillselector"
 )
 
 const (

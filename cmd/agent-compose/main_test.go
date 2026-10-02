@@ -13,19 +13,19 @@ import (
 
 	"github.com/urfave/cli/v3"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/bundle"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/cascade"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/color"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/compose"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/describe"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/nativelaunch"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/overlay"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/palette"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/resolver"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roster"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/bundle"
+	"github.com/coilyco/agent-compose/v2/internal/cascade"
+	"github.com/coilyco/agent-compose/v2/internal/color"
+	"github.com/coilyco/agent-compose/v2/internal/compose"
+	"github.com/coilyco/agent-compose/v2/internal/describe"
+	"github.com/coilyco/agent-compose/v2/internal/nativelaunch"
+	"github.com/coilyco/agent-compose/v2/internal/overlay"
+	"github.com/coilyco/agent-compose/v2/internal/palette"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/personpolicy"
+	"github.com/coilyco/agent-compose/v2/internal/resolver"
+	"github.com/coilyco/agent-compose/v2/internal/roster"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 func TestConfigValidateRejectsRemovedRoleProviderKeys(t *testing.T) {

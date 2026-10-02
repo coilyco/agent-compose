@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogmanifest"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogset"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/catalogmanifest"
+	"github.com/coilyco/agent-compose/v2/internal/catalogset"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 func writeCatalogueSkill(t *testing.T, root, name string) {

@@ -7,11 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/treehash"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/treehash"
 )
 
 const (

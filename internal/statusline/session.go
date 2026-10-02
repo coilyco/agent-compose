@@ -4,8 +4,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/launch"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
+	"github.com/coilyco/agent-compose/v2/internal/launch"
+	"github.com/coilyco/agent-compose/v2/internal/project"
 )
 
 // resolveProjection answers which composition this call describes. The launch

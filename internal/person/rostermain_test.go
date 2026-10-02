@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/rostertest"
+	"github.com/coilyco/agent-compose/v2/internal/rostertest"
 )
 
 func TestMain(m *testing.M) {

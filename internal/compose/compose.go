@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/bundle"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/resolver"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/bundle"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/personpolicy"
+	"github.com/coilyco/agent-compose/v2/internal/resolver"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 type Result struct {

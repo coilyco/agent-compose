@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/color"
+	"github.com/coilyco/agent-compose/v2/internal/color"
 )
 
 // OverrideRoleIdentity renames a role's seat and changes nothing else about the

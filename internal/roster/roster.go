@@ -10,8 +10,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 //go:embed definitions/NATIVE-ADAPTATION.txt

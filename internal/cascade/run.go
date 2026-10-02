@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/home"
+	"github.com/coilyco/agent-compose/v2/internal/home"
 )
 
 // Paths carries the injectable filesystem anchors so tests never touch the

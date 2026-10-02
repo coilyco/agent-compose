@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/compose"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/personpolicy"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
+	"github.com/coilyco/agent-compose/v2/internal/compose"
+	"github.com/coilyco/agent-compose/v2/internal/personpolicy"
+	"github.com/coilyco/agent-compose/v2/internal/project"
 )
 
 // EnvSentinel marks a process launched by agent-compose. Both call sites read

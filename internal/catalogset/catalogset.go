@@ -9,9 +9,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogmanifest"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/skillselector"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/treehash"
+	"github.com/coilyco/agent-compose/v2/internal/catalogmanifest"
+	"github.com/coilyco/agent-compose/v2/internal/skillselector"
+	"github.com/coilyco/agent-compose/v2/internal/treehash"
 )
 
 // Catalog is one compiled catalogue and the skills it actually offers.

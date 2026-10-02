@@ -6,10 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/bundle"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/resolver"
+	"github.com/coilyco/agent-compose/v2/internal/bundle"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/project"
+	"github.com/coilyco/agent-compose/v2/internal/resolver"
 )
 
 // writeProjectedRole stages a projection whose bundle names one seat, which

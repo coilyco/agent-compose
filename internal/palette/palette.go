@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"sort"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/person"
 )
 
 const schemaVersion = 2

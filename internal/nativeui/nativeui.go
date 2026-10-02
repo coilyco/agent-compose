@@ -8,8 +8,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/color"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/color"
+	"github.com/coilyco/agent-compose/v2/internal/person"
 )
 
 // Unknown tokens are dropped silently by the harness, so emission uses a

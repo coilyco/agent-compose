@@ -1,0 +1,10 @@
+{"id": "S01-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 4, "tokens_in": 65463, "tokens_out": 104, "secs": 19.0}
+{"id": "S02-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 3, "tokens_in": 51587, "tokens_out": 88, "secs": 9.8}
+{"id": "S03-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 4, "tokens_in": 65384, "tokens_out": 99, "secs": 10.3}
+{"id": "S04-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 5, "tokens_in": 77841, "tokens_out": 127, "secs": 12.5}
+{"id": "S05-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 3, "tokens_in": 51593, "tokens_out": 79, "secs": 14.2}
+{"id": "S06-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 4, "tokens_in": 61520, "tokens_out": 98, "secs": 9.5}
+{"id": "S07-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 4, "tokens_in": 63909, "tokens_out": 110, "secs": 10.5}
+{"id": "S08-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 4, "tokens_in": 68749, "tokens_out": 121, "secs": 11.0}
+{"id": "S09-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 4, "tokens_in": 65452, "tokens_out": 109, "secs": 9.1}
+{"id": "S10-old", "kind": "S-old", "cond": "c1", "label": "sent2-old-c1", "recall": true, "source": true, "answered": true, "tool_calls": 5, "tokens_in": 77979, "tokens_out": 120, "secs": 9.3}

@@ -1,0 +1,10 @@
+{"id": "S01-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 4, "tokens_in": 65464, "tokens_out": 105, "secs": 9.6}
+{"id": "S02-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 5, "tokens_in": 77848, "tokens_out": 130, "secs": 9.6}
+{"id": "S03-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 4, "tokens_in": 65385, "tokens_out": 99, "secs": 9.4}
+{"id": "S04-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 3, "tokens_in": 51576, "tokens_out": 93, "secs": 8.9}
+{"id": "S05-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 3, "tokens_in": 51593, "tokens_out": 79, "secs": 8.1}
+{"id": "S06-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 4, "tokens_in": 61536, "tokens_out": 100, "secs": 8.1}
+{"id": "S07-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 3, "tokens_in": 49789, "tokens_out": 91, "secs": 8.8}
+{"id": "S08-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 4, "tokens_in": 68752, "tokens_out": 112, "secs": 12.1}
+{"id": "S09-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 4, "tokens_in": 65453, "tokens_out": 104, "secs": 11.0}
+{"id": "S10-new", "kind": "S-new", "cond": "c1", "label": "sent2-new-c1", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 5, "tokens_in": 77980, "tokens_out": 121, "secs": 11.8}

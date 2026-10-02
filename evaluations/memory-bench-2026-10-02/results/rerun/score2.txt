@@ -1,0 +1,12 @@
+{"label": "lore2-c0-r3", "kind": "L1", "n": 20, "recall": 9, "source": 10, "answered": 20, "tokens_per_q": 74927, "tool_calls_per_q": 3.2}
+{"label": "lore2-c0-r3", "kind": "L2", "n": 10, "recall": 2, "source": 5, "answered": 9, "tokens_per_q": 80617, "tool_calls_per_q": 3.5}
+{"label": "lore2-c1-r3", "kind": "L1", "n": 20, "recall": 14, "source": 15, "answered": 20, "tokens_per_q": 62555, "tool_calls_per_q": 3.8}
+{"label": "lore2-c1-r3", "kind": "L2", "n": 10, "recall": 2, "source": 8, "answered": 10, "tokens_per_q": 68304, "tool_calls_per_q": 4.1}
+{"label": "lore2-c0-r4", "kind": "L1", "n": 20, "recall": 11, "source": 14, "answered": 20, "tokens_per_q": 75828, "tool_calls_per_q": 3.2}
+{"label": "lore2-c0-r4", "kind": "L2", "n": 10, "recall": 2, "source": 7, "answered": 10, "tokens_per_q": 86972, "tool_calls_per_q": 3.5}
+{"label": "lore2-c1-r4", "kind": "L1", "n": 20, "recall": 13, "source": 14, "answered": 20, "tokens_per_q": 64420, "tool_calls_per_q": 3.9}
+{"label": "lore2-c1-r4", "kind": "L2", "n": 10, "recall": 2, "source": 7, "answered": 10, "tokens_per_q": 73493, "tool_calls_per_q": 4.5}
+{"label": "sent2-old-c0", "kind": "S-old", "n": 10, "recall": 10, "source": 10, "answered": 10, "tokens_per_q": 47015, "tool_calls_per_q": 2.1}
+{"label": "sent2-old-c1", "kind": "S-old", "n": 10, "recall": 10, "source": 10, "answered": 10, "tokens_per_q": 65053, "tool_calls_per_q": 4.0}
+{"label": "sent2-new-c0", "kind": "S-new", "n": 10, "recall": 9, "source": 9, "answered": 10, "tokens_per_q": 49019, "tool_calls_per_q": 2.2, "stale": 0}
+{"label": "sent2-new-c1", "kind": "S-new", "n": 10, "recall": 10, "source": 10, "answered": 10, "tokens_per_q": 63641, "tool_calls_per_q": 3.9, "stale": 0}

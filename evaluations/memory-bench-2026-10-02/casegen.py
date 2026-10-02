@@ -1,6 +1,6 @@
 """Write lore cases with a local model, so the science seat never reads lore.
 
-Usage: casegen.py LORE_DIR OUT.jsonl OPENCODE_CONFIG [--l1 20] [--l2 10] [--seed 8632]
+Usage: casegen.py LORE_DIR OUT.jsonl OPENCODE_CONFIG [--l1 20] [--l2 10] [--seed 8632] [--single]
 
 Every model call goes to Agent Proxy on BENCH_ROUTE, default
 `evaluation/ministral-3-14b`, which resolves to Ollama on kai-tower-3026. Prints counts, rejects and the sha256 of the output,
@@ -45,6 +45,13 @@ DOCUMENT A (path: %s):
 DOCUMENT B (path: %s):
 %s"""
 
+L1_SINGLE = L1_PROMPT.replace(
+    "must_contain is 1 to 3 short strings (3 to 40 characters each) copied EXACTLY from the document, which a correct answer must include.",
+    "must_contain is exactly ONE short string (3 to 40 characters) copied EXACTLY from the document: the fact the question asks for.")
+L2_SINGLE = L2_PROMPT.replace(
+    "must_contain_a is 1 or 2 short strings (3 to 40 characters) copied EXACTLY from A. must_contain_b is the same for B.",
+    "must_contain_a is exactly ONE short string (3 to 40 characters) copied EXACTLY from A. must_contain_b is exactly ONE such string from B.")
+
 
 def chat(base: str, key: str, prompt: str) -> dict | None:
     body = json.dumps({"model": ROUTE, "temperature": 0, "messages": [{"role": "user", "content": prompt}]})
@@ -59,8 +66,8 @@ def chat(base: str, key: str, prompt: str) -> dict | None:
         return None
 
 
-def grounded(strings: object, doc: str, question: str) -> list[str] | None:
-    if not isinstance(strings, list) or not 1 <= len(strings) <= 3:
+def grounded(strings: object, doc: str, question: str, most: int = 3) -> list[str] | None:
+    if not isinstance(strings, list) or not 1 <= len(strings) <= most:
         return None
     doc_l, q_l = doc.lower(), question.lower()
     for s in strings:
@@ -79,7 +86,10 @@ def main() -> int:
     ap.add_argument("--l1", type=int, default=20)
     ap.add_argument("--l2", type=int, default=10)
     ap.add_argument("--seed", type=int, default=8632)
+    ap.add_argument("--single", action="store_true", help="one exact string per document (amendment 3)")
     a = ap.parse_args()
+    most = 1 if a.single else 3
+    l1_prompt, l2_prompt = (L1_SINGLE, L2_SINGLE) if a.single else (L1_PROMPT, L2_PROMPT)
     prov = json.load(open(a.opencode_config))["provider"]["agent-proxy"]["options"]
     base, key = prov["baseURL"].rstrip("/"), prov["apiKey"]
 
@@ -103,8 +113,8 @@ def main() -> int:
         doc = read(path)
         if len(doc) < 400:
             continue
-        got = chat(base, key, L1_PROMPT % (path, doc))
-        must = grounded((got or {}).get("must_contain"), doc, str((got or {}).get("question", "")))
+        got = chat(base, key, l1_prompt % (path, doc))
+        must = grounded((got or {}).get("must_contain"), doc, str((got or {}).get("question", "")), most)
         if not got or not must or not got.get("question"):
             rejects["l1"] += 1
             print(json.dumps({"l1_reject": rejects["l1"]}), file=sys.stderr, flush=True)
@@ -120,10 +130,10 @@ def main() -> int:
         if src in used_sources:
             continue
         doc_a, doc_b = read(src), read(tgt)
-        got = chat(base, key, L2_PROMPT % (src, doc_a, tgt, doc_b))
+        got = chat(base, key, l2_prompt % (src, doc_a, tgt, doc_b))
         q = str((got or {}).get("question", ""))
-        must_a = grounded((got or {}).get("must_contain_a"), doc_a, q)
-        must_b = grounded((got or {}).get("must_contain_b"), doc_b, q)
+        must_a = grounded((got or {}).get("must_contain_a"), doc_a, q, most)
+        must_b = grounded((got or {}).get("must_contain_b"), doc_b, q, most)
         if not q or not must_a or not must_b:
             rejects["l2"] += 1
             print(json.dumps({"l2_reject": rejects["l2"]}), file=sys.stderr, flush=True)

@@ -144,6 +144,10 @@ evalkit-validity ANNOTATIONS:
 evalkit-room-m2 *ARGS:
     @uv run python evaluations/pyladies-room-m2-2026-09-27/room_m2.py "$@"
 
+# Why seats ask to merge, from transcripts. `just evalkit-merge-asks selftest`, `extract DIR HOURS OUT`, `classify OUT`.
+evalkit-merge-asks *ARGS:
+    @uv run python evaluations/merge-asks-2026-10-02/mergeasks.py "$@"
+
 # Jev as a read-time filter over Basic Memory. `just evalkit-jev-filter selftest HOUSECAST`, `summary OUT_DIR`.
 evalkit-jev-filter *ARGS:
     @uv run python evaluations/jev-filter-2026-10-02/jevfilter.py "$@"

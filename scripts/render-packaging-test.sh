@@ -92,4 +92,22 @@ do
   fi
 done
 
+# Outsiders fail fast with one sentence: every download uses the tailnet strategy
+# and the Scoop manifest probes the host. teable:coilyco/homebrew-tap#8682
+urls=$(grep -c '^ *url "' "$formula")
+strategies=$(grep -c 'using: TailnetCurlDownloadStrategy' "$formula")
+if [ "$urls" -ne "$strategies" ] || [ "$urls" -lt 5 ]; then
+  echo "render-packaging-test: $strategies of $urls formula downloads use the tailnet strategy" >&2
+  exit 1
+fi
+if ! grep -F 'require_relative "../lib/tailnet_download_strategy"' "$formula" >/dev/null; then
+  echo "render-packaging-test: the formula does not load the tailnet strategy" >&2
+  exit 1
+fi
+if ! grep -F "only available on the coilyco tailnet" "$manifest" >/dev/null ||
+  ! grep -F "ConnectAsync('forgejo.coilysiren.me', 443)" "$manifest" >/dev/null; then
+  echo "render-packaging-test: the Scoop manifest does not probe the tailnet host" >&2
+  exit 1
+fi
+
 echo "render-packaging-test: ok"

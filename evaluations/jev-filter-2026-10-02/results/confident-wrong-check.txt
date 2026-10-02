@@ -1,0 +1,9 @@
+{"rep": "r1", "id": "L1-11", "picked": "agents/composed/tooling-scout-capability/references/phase-5-present.md", "gold": "agents/composed/tooling-scout-autonomy/references/phase-5-present.md", "conf": 0.9, "picked_note_contains_answer": true}
+{"rep": "r1", "id": "L1-21", "win": "none", "conf": 0.94}
+{"rep": "r1", "id": "L1-32", "picked": "docs/native-shadow.md", "gold": "CODE-REVIEW.md", "conf": 0.99, "picked_note_contains_answer": true}
+{"rep": "r1", "id": "L1-36", "picked": "agents/skills/tooling-gpg-ssm/references/design.md", "gold": "agents/skills/tooling-gpg-ssm/references/adding-a-host.md", "conf": 0.9, "picked_note_contains_answer": true}
+{"rep": "r1", "id": "L1-37", "picked": "agents/composed/coding-discord-bot-architect/references/sharding.md", "gold": "agents/composed/coding-discord-bot-architect/references/edge-gateway-disconnections.md", "conf": 1.0, "picked_note_contains_answer": true}
+{"rep": "r2", "id": "L1-21", "win": "none", "conf": 0.93}
+{"rep": "r2", "id": "L1-32", "picked": "docs/native-shadow.md", "gold": "CODE-REVIEW.md", "conf": 0.99, "picked_note_contains_answer": true}
+{"rep": "r2", "id": "L1-36", "picked": "agents/skills/tooling-gpg-ssm/references/design.md", "gold": "agents/skills/tooling-gpg-ssm/references/adding-a-host.md", "conf": 0.92, "picked_note_contains_answer": true}
+{"rep": "r2", "id": "L1-37", "picked": "agents/composed/coding-discord-bot-architect/references/sharding.md", "gold": "agents/composed/coding-discord-bot-architect/references/edge-gateway-disconnections.md", "conf": 1.0, "picked_note_contains_answer": true}

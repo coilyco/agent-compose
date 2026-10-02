@@ -1,0 +1,6 @@
+{"n": 40, "recall_at_10": 37}
+{"rep": "r1", "a_rank1_correct": 18, "b_correct": 25, "b_pass": 11, "b_confident_wrong": 5, "errors": 0}
+{"rep": "r1", "a_recall": 27, "b_recall": 30, "a_tokens_mean": 3531, "b_tokens_mean": 3011, "narrowed": 10}
+{"rep": "r2", "a_rank1_correct": 18, "b_correct": 25, "b_pass": 12, "b_confident_wrong": 4, "errors": 0}
+{"rep": "r2", "a_recall": 27, "b_recall": 29, "a_tokens_mean": 3531, "b_tokens_mean": 2982, "narrowed": 11}
+{"rep_winner_agreement": 38, "of": 40}

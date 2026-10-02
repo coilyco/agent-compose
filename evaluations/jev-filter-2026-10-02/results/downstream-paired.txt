@@ -1,0 +1,2 @@
+{"rep": "r1", "b_right_a_wrong": 3, "a_right_b_wrong": 0, "narrowed": 10, "narrowed_b_recall": 8, "narrowed_a_recall": 5, "narrowed_tokens_ratio": 0.39, "unnarrowed_disagree": 0}
+{"rep": "r2", "b_right_a_wrong": 2, "a_right_b_wrong": 0, "narrowed": 11, "narrowed_b_recall": 8, "narrowed_a_recall": 6, "narrowed_tokens_ratio": 0.4, "unnarrowed_disagree": 0}

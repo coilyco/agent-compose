@@ -1,0 +1,8 @@
+Written 2026-10-02T11:16:27Z, before any corpus or case exists. EXPECTED:
+
+1. recall@10 >= 0.80 on 40 L1 cases.
+2. B correct > A correct by >= 0.10.
+3. B confident_wrong <= 2 of 40, per rep.
+4. B pass (correct at >= 0.9) between 0.40 and 0.75.
+5. Downstream: B prompt tokens <= 0.5 x A. B recall >= A recall - 0.05.
+6. The two Jev reps agree on the winner in >= 90 percent of cases.

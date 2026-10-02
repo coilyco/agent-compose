@@ -1,0 +1,19 @@
+Written 2026-10-02T08:18:45Z, before any candidate is installed or any case exists.
+Seat: science (Frog-Ox). teable:coilyco/agentic-os#8632.
+
+EXPECTED, Basic Memory 0.23.2 (C1) against the lore-and-grep control (C0),
+both in OpenCode on agent-proxy/evaluation/ornith-35b:
+
+1. Single-entry recall (L1): C0 >= C1. Grep over 133 files is strong.
+   C0 in 0.70-0.95, C1 in 0.55-0.90.
+2. Cross-link recall (L2): |C1 - C0| <= 0.15. No winner predicted.
+3. Source-path fidelity: C0 >= 0.80 (it reads paths). C1 >= 0.60.
+4. Update after re-sync (S-update): C1 10/10 new value, 0/10 stale.
+   C0 10/10 (it reads the file as it is now).
+5. Tokens per question: C1 < C0, by 20-50 percent.
+6. Restart survival: C1 10/10 sentinels after a server restart.
+7. Store-level cross-harness (Claude Code, Codex): both list the server
+   as connected, and a note written by one MCP process is read by a fresh one.
+8. Run-to-run variance on L1+L2 accuracy: <= 0.10 between two runs.
+9. Mem0 and Graphiti: not runnable fully local behind Agent Proxy today
+   (audits), so no lore numbers for either. This is a finding, not a skip.

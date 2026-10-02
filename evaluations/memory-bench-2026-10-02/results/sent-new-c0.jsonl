@@ -1,0 +1,10 @@
+{"id": "S01-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44886, "tokens_out": 243, "secs": 12.0}
+{"id": "S02-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44912, "tokens_out": 238, "secs": 12.2}
+{"id": "S03-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44913, "tokens_out": 239, "secs": 14.4}
+{"id": "S04-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44904, "tokens_out": 243, "secs": 11.9}
+{"id": "S05-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44886, "tokens_out": 240, "secs": 12.0}
+{"id": "S06-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44910, "tokens_out": 240, "secs": 12.6}
+{"id": "S07-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 3, "tokens_in": 63826, "tokens_out": 370, "secs": 15.5}
+{"id": "S08-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": false, "source": false, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 53370, "tokens_out": 148, "secs": 15.1}
+{"id": "S09-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44856, "tokens_out": 245, "secs": 13.4}
+{"id": "S10-new", "kind": "S-new", "cond": "c0", "label": "sent-new-c0", "recall": true, "source": true, "stale": false, "answered": true, "tool_calls": 2, "tokens_in": 44864, "tokens_out": 243, "secs": 15.3}

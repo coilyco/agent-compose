@@ -1,0 +1,9 @@
+{"label": "lore-c0-r1", "kind": "L1", "n": 20, "gold_source_seen": 0.9, "gold_strings_in_tool_results": 0.52, "answer_frac": 0.27}
+{"label": "lore-c0-r1", "kind": "L2", "n": 9, "gold_source_seen": 0.67, "gold_strings_in_tool_results": 0.56, "answer_frac": 0.28}
+{"label": "lore-c1-r1", "kind": "L1", "n": 20, "gold_source_seen": 0.95, "gold_strings_in_tool_results": 0.72, "answer_frac": 0.43}
+{"label": "lore-c1-r1", "kind": "L2", "n": 9, "gold_source_seen": 1.0, "gold_strings_in_tool_results": 0.75, "answer_frac": 0.39}
+{"label": "lore-c0-r2", "kind": "L1", "n": 20, "gold_source_seen": 0.9, "gold_strings_in_tool_results": 0.57, "answer_frac": 0.4}
+{"label": "lore-c0-r2", "kind": "L2", "n": 9, "gold_source_seen": 0.89, "gold_strings_in_tool_results": 0.64, "answer_frac": 0.28}
+{"label": "lore-c1-r2", "kind": "L1", "n": 20, "gold_source_seen": 0.95, "gold_strings_in_tool_results": 0.8, "answer_frac": 0.5}
+{"label": "lore-c1-r2", "kind": "L2", "n": 9, "gold_source_seen": 1.0, "gold_strings_in_tool_results": 0.72, "answer_frac": 0.39}
+{"must_contain_strings": 95, "per_case_mean": 3.28, "mean_chars": 16.7}

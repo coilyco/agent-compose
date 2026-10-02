@@ -144,6 +144,10 @@ evalkit-validity ANNOTATIONS:
 evalkit-room-m2 *ARGS:
     @uv run python evaluations/pyladies-room-m2-2026-09-27/room_m2.py "$@"
 
+# Cross-harness memory bench. `just evalkit-memory-bench selftest`, `run FIXTURE c0|c1 LABEL CASES`, `sentinels FIXTURE old|new`, `score FIXTURE LABEL...`.
+evalkit-memory-bench *ARGS:
+    @uv run python evaluations/memory-bench-2026-10-02/bench.py "$@"
+
 # Per-persona backend check for the room. `just evalkit-persona-backends selftest`, `routes`, `run <bundles> <out> <config> <label> [reps]`, `jev <out> <label>`, `score <out> <label>...`.
 evalkit-persona-backends *ARGS:
     @uv run python evaluations/persona-backends-2026-09-29/backends.py "$@"

@@ -41,7 +41,7 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 		}
 		minSeats := 2
 		if roleName == "eng-junior" || roleName == "prod-manager" || roleName == "researcher" ||
-			roleName == "game-design" || roleName == "frontend-design" {
+			roleName == "game-design" || roleName == "frontend-design" || roleName == "biz-ops" {
 			minSeats = 1
 		}
 		if len(role.Seats) < minSeats {
@@ -67,7 +67,7 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 			}
 		}
 		wantHarnesses := []string{"claude", "codex"}
-		if roleName == "eng-junior" {
+		if roleName == "eng-junior" || roleName == "biz-ops" {
 			wantHarnesses = []string{"opencode"}
 		}
 		if roleName == "prod-manager" {

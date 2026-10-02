@@ -43,23 +43,24 @@ happen to be close. junior-sysadmin twins senior-sysadmin this way, which is
 why the roster below still solves as ten independent points, not eleven, and
 the L/chroma push above never actually had to ship.
 
-Closest accent pair: 0.0810
-Closest background pair: 0.0319
+Closest accent pair: 0.0961
+Closest background pair: 0.0296
 
-eng-platform // #709b62 // #0e2b14 // tenacious, grounded
-sysadmin-senior // #0d9c92 // #002a36 // protective, grounded
-scientist // #14d5b8 // #002c27 // empirical, grounded
-frontend-eng // #ee7eea // #321a31 // playful, imaginative
-game-dev // #3b82ff // #11243e // immersed, imaginative
-prod-director // #da656f // #391721 // decisive, outward
-dev-advocate // #f7a060 // #3a1a0e // warm, outward
-analyst // #9190c1 // #251e3c // suspicious, tenacious
-psych // #ab9137 // #332000 // warm, protective
-reporter // #99b052 // #252602 // tenacious, outward
-sysadmin-junior // #0d9c92 // #002a36 // protective, grounded // twin of sysadmin-senior
-prod-manager // #da656f // #391721 // decisive, outward // twin of prod-director
-sysadmin-access // #0d9c92 // #002a36 // protective, grounded // twin of sysadmin-senior
-eng-junior // #709b62 // #0e2b14 // tenacious, grounded // twin of eng-platform
-researcher // #14d5b8 // #002c27 // empirical, grounded // twin of scientist
-game-design // #3b82ff // #11243e // immersed, imaginative // twin of game-dev
-frontend-design // #ee7eea // #321a31 // playful, imaginative // twin of frontend-eng
+eng-platform // #819656 // #192a0c // tenacious, grounded
+sysadmin-senior // #0da390 // #002c2e // protective, grounded
+scientist // #3cd8ac // #002c1e // empirical, grounded
+frontend-eng // #ee7fec // #331931 // playful, imaginative
+game-dev // #5480fe // #17233f // immersed, imaginative
+prod-director // #e36574 // #391721 // decisive, outward
+dev-advocate // #f2a75b // #351e01 // warm, outward
+analyst // #8c8ac5 // #271e3b // suspicious, tenacious
+psych // #cd8752 // #3a1910 // warm, protective
+reporter // #b1aa3d // #2a2400 // tenacious, outward
+sysadmin-junior // #0da390 // #002c2e // protective, grounded // twin of sysadmin-senior
+prod-manager // #e36574 // #391721 // decisive, outward // twin of prod-director
+sysadmin-access // #0da390 // #002c2e // protective, grounded // twin of sysadmin-senior
+eng-junior // #819656 // #192a0c // tenacious, grounded // twin of eng-platform
+researcher // #3cd8ac // #002c1e // empirical, grounded // twin of scientist
+game-design // #5480fe // #17233f // immersed, imaginative // twin of game-dev
+frontend-design // #ee7fec // #331931 // playful, imaginative // twin of frontend-eng
+biz-ops // #2a99d1 // #00283a // protective, suspicious

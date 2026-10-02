@@ -10,8 +10,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/mcpscope"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/mcpscope"
+	"github.com/coilyco/agent-compose/v2/internal/person"
 	"github.com/urfave/cli/v3"
 	"gopkg.in/yaml.v3"
 )

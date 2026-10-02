@@ -11,8 +11,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/repositoryplan"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/skillselector"
+	"github.com/coilyco/agent-compose/v2/internal/repositoryplan"
+	"github.com/coilyco/agent-compose/v2/internal/skillselector"
 )
 
 const sidecarName = "skill-mounts.json"

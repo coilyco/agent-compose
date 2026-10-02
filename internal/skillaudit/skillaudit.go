@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/treehash"
+	"github.com/coilyco/agent-compose/v2/internal/project"
+	"github.com/coilyco/agent-compose/v2/internal/treehash"
 )
 
 // Root is one directory of skills, as its caller spelled it.

@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/person"
 )
 
 // Format names the artifact so a consumer can refuse an unrecognized one.

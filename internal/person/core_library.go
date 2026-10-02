@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing/fstest"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 // CoreLibraryRoot admits the mounted core personalities wherever a

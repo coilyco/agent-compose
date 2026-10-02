@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/project"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 func loadInputs(t *testing.T) (*person.Person, []*schema.Source) {

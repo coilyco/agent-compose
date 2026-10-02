@@ -1,4 +1,4 @@
-module github.com/coilyco-flight-deck/agent-compose/v2
+module github.com/coilyco/agent-compose/v2
 
 go 1.25.5
 

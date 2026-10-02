@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogmanifest"
+	"github.com/coilyco/agent-compose/v2/internal/catalogmanifest"
 )
 
 func makeCatalog(t *testing.T, root string, skills ...string) string {

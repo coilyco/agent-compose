@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/resolver"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/resolver"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 // A defer-side boundary routes work to the seat that owns it. A deployment

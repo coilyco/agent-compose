@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/launch"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/nativelaunch"
+	"github.com/coilyco/agent-compose/v2/internal/launch"
+	"github.com/coilyco/agent-compose/v2/internal/nativelaunch"
 )
 
 // launchSpecFormat versions the document `launch --spec-out` writes. It carries

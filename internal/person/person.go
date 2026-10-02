@@ -20,8 +20,8 @@ import (
 
 	"golang.org/x/text/unicode/norm"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/color"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/color"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 const (

@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"syscall"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/launch"
+	"github.com/coilyco/agent-compose/v2/internal/launch"
 )
 
 // execReal replaces this process with the target command; the sentinel in

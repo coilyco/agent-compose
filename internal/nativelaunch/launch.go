@@ -11,15 +11,15 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/roleslug"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/agentid"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/compose"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/nativeui"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/person"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/project"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/repositoryplan"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/agentid"
+	"github.com/coilyco/agent-compose/v2/internal/compose"
+	"github.com/coilyco/agent-compose/v2/internal/nativeui"
+	"github.com/coilyco/agent-compose/v2/internal/person"
+	"github.com/coilyco/agent-compose/v2/internal/project"
+	"github.com/coilyco/agent-compose/v2/internal/repositoryplan"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 const (

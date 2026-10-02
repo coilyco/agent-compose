@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/color"
+	"github.com/coilyco/agent-compose/v2/internal/color"
 )
 
 func TestRenderRoleMetadataIncludesCompleteSelectedFacts(t *testing.T) {

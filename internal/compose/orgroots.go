@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/catalogset"
-	"github.com/coilyco-flight-deck/agent-compose/v2/internal/schema"
+	"github.com/coilyco/agent-compose/v2/internal/catalogset"
+	"github.com/coilyco/agent-compose/v2/internal/schema"
 )
 
 // OrgRoots expands every org a role uses into one root per contributing

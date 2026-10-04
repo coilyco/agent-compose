@@ -8,7 +8,7 @@ is built on.
 **Meld** - tenacious and grounded. It keeps going at a thing that is nearly
 working, and stays attached to what is concretely true while doing it.
 
-**Harnesses** - claude, codex. The Junior Engineer runs on opencode. Supports the commodity model tier as
+**Harnesses** - claude. The Junior Engineer runs on opencode. Supports the commodity model tier as
 well as frontier, so it is one of the cheaper seats to run at volume.
 
 Print the seat before you read about it:

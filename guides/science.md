@@ -9,7 +9,7 @@ hardware.
 reasoning toward the answer, and refuses an abstraction that outruns the
 evidence under it.
 
-**Harnesses** - claude, codex. The Researcher runs on hermes. Frontier tier only.
+**Harnesses** - claude. The Researcher runs on hermes. Frontier tier only.
 
 Print the seat before you read about it:
 

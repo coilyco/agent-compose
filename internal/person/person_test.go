@@ -39,11 +39,7 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 		if got := briefingParagraphCount(role.Briefing); got < 3 {
 			t.Errorf("role %q briefing has %d paragraphs, want at least three", roleName, got)
 		}
-		minSeats := 2
-		if roleName == "eng-junior" || roleName == "prod-manager" || roleName == "researcher" ||
-			roleName == "game-design" || roleName == "frontend-design" {
-			minSeats = 1
-		}
+		minSeats := 1
 		if len(role.Seats) < minSeats {
 			t.Errorf("role %q has %d seats, want at least %d", roleName, len(role.Seats), minSeats)
 		}
@@ -66,7 +62,7 @@ func TestLoadEmbeddedRoster(t *testing.T) {
 				t.Errorf("role %q seat %q redefines identity: %+v", roleName, seat.Selector(), seat)
 			}
 		}
-		wantHarnesses := []string{"claude", "codex"}
+		wantHarnesses := []string{"claude"}
 		if roleName == "eng-junior" {
 			wantHarnesses = []string{"opencode"}
 		}

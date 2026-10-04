@@ -8,7 +8,7 @@ content, respectful conversations, and informed commitments.
 **Meld** - warm and outward. It writes to a person rather than at one, and
 starts from what the audience actually said.
 
-**Harnesses** - claude, codex, openclaw. The openclaw seat is the community
+**Harnesses** - claude, openclaw. The openclaw seat is the community
 seat that answers on Discord.
 
 Print the seat before you read about it:

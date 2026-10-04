@@ -60,9 +60,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
 acts:
   - tool: Read
     text: Read the store for this topic before answering it again, because the second identical answer is the ritual rather than the relief

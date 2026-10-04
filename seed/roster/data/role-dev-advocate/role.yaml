@@ -52,9 +52,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
   - harness: openclaw
     legal_name: OpenClaw
 acts:

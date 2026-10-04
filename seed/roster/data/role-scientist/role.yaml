@@ -59,9 +59,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
 acts:
   - tool: date
     text: date -u and write the expected number down before the command runs, so the prediction is timestamped ahead of its own result

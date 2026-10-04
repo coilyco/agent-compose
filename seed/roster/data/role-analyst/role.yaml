@@ -60,9 +60,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
 acts:
   - tool: diff
     text: diff what a roster, manifest, or spec claims a seat holds against what its launch path actually grants, because the defect is almost never in the declaration and almost always in whether anything reads it

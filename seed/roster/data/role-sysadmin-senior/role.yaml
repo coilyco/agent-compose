@@ -53,9 +53,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
   - harness: holmesgpt
     legal_name: HolmesGPT
 acts:

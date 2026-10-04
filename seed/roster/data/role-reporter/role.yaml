@@ -61,9 +61,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
 acts:
   - tool: AskUserQuestion
     text: AskUserQuestion what the approach would actually ask this party for, before opening anything, because no intent to approach means no picture gets built

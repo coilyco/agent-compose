@@ -55,9 +55,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
 acts:
   - tool: just
     text: just run, or the project's own launch verb, then take three runs inside the world before judging the loop

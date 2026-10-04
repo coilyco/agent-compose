@@ -56,9 +56,6 @@ agents:
   - harness: claude
     tier: frontier
     legal_name: Claude
-  - harness: codex
-    tier: frontier
-    legal_name: Codex
 acts:
   - tool: browser_resize
     text: browser_resize to 320 and snapshot again, before calling any layout done

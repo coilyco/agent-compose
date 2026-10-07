@@ -43,7 +43,13 @@ type RootSource struct {
 	// Catalogue reads Root as a bare skills directory rather than a provider
 	// tree, which is what an org grant expands to.
 	Catalogue bool
+	// OmitSkills names ordinary skills to drop after selection, such as the
+	// tool reference of an MCP server the launch does not mount.
+	OmitSkills []string
 }
+
+// OmitReason is the trace wording for a skill dropped through OmitSkills.
+const OmitReason = "the role's MCP scope omits the server this skill documents"
 
 type externalOnlyError struct {
 	err error
@@ -173,6 +179,7 @@ func RunRootsWithMissing(
 				hostExternalOnly,
 			)
 		}
+		schema.OmitOrdinarySkills(source, root.OmitSkills, OmitReason)
 		sources = append(sources, source)
 	}
 	return materialize(req, p, sources, missing, outDir, hostExternalOnly, opts.OperatingBase, opts.OperatingAppendix)

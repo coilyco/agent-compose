@@ -196,3 +196,28 @@ func TestOpenCodeConfigDefinesSelectedAndDisablesOmitted(t *testing.T) {
 		t.Errorf("omitted = %v, want only enabled=false so any definition elsewhere is turned off", off)
 	}
 }
+
+// The skill name follows agentic-os-kai's generator: lowercase, runs of other
+// characters collapsed to one hyphen. COI-2121
+func TestSkillNameMatchesTheGeneratedSkill(t *testing.T) {
+	for server, want := range map[string]string{
+		"local_coilyco_playwright_prod-director": "mcp-tools-local-coilyco-playwright-prod-director",
+		"tailnet_coilyco_lunch_money":            "mcp-tools-tailnet-coilyco-lunch-money",
+		"public_coilyco_eco":                     "mcp-tools-public-coilyco-eco",
+	} {
+		if got := SkillName(server); got != want {
+			t.Errorf("SkillName(%q) = %q, want %q", server, got, want)
+		}
+	}
+}
+
+func TestOmittedSkillsFollowTheOmittedServers(t *testing.T) {
+	inv, err := Load(write(t, inventory), roster)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := inv.Select("eng-platform").OmittedSkills()
+	if len(got) != 1 || got[0] != "mcp-tools-pw-sysadmin" {
+		t.Fatalf("omitted skills = %v, want [mcp-tools-pw-sysadmin]", got)
+	}
+}

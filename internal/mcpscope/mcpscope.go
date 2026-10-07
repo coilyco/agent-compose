@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -106,6 +107,27 @@ func tagged(s Server, role string) bool {
 		}
 	}
 	return false
+}
+
+// skillPrefix and skillSlug mirror agentic-os-kai scripts/sync_mcp_skills.py,
+// which names the generated skill for each inventory server.
+const skillPrefix = "mcp-tools-"
+
+var nonSlug = regexp.MustCompile(`[^a-z0-9]+`)
+
+// SkillName is the generated tool-reference skill for one inventory server.
+func SkillName(server string) string {
+	return skillPrefix + strings.Trim(nonSlug.ReplaceAllString(strings.ToLower(server), "-"), "-")
+}
+
+// OmittedSkills names the tool-reference skill of each server the role leaves
+// out, so a session home does not list tools its harness never mounts.
+func (sel Selection) OmittedSkills() []string {
+	skills := make([]string, 0, len(sel.Omitted))
+	for _, name := range sel.Omitted {
+		skills = append(skills, SkillName(name))
+	}
+	return skills
 }
 
 // Summary is the one line a launch prints so the narrowing is never silent.

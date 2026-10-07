@@ -178,6 +178,9 @@ type Source struct {
 	ProviderScope    string
 	ExcludedSkills   []ContentRef
 	SelectorReason   string
+	// ExcludedReasons overrides the selector wording for a skill dropped for
+	// another cause, keyed by skill ID.
+	ExcludedReasons map[string]string
 }
 
 // SelectOrdinarySkills applies a definition's selector, then a role binding's
@@ -187,6 +190,31 @@ func SelectOrdinarySkills(source *Source, definition, binding []string) error {
 		return err
 	}
 	return applySkillSelector(source, binding)
+}
+
+// OmitOrdinarySkills drops the named skills and records each as excluded for
+// reason. A name the source lacks is skipped, as one list goes to every provider.
+func OmitOrdinarySkills(source *Source, names []string, reason string) {
+	if len(names) == 0 {
+		return
+	}
+	omit := make(map[string]bool, len(names))
+	for _, name := range names {
+		omit[name] = true
+	}
+	kept := source.Skills[:0]
+	for _, ref := range source.Skills {
+		if !omit[ref.ID] {
+			kept = append(kept, ref)
+			continue
+		}
+		source.ExcludedSkills = append(source.ExcludedSkills, ref)
+		if source.ExcludedReasons == nil {
+			source.ExcludedReasons = map[string]string{}
+		}
+		source.ExcludedReasons[ref.ID] = reason
+	}
+	source.Skills = kept
 }
 
 func applySkillSelector(source *Source, patterns []string) error {

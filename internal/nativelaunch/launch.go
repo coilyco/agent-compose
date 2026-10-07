@@ -59,6 +59,9 @@ type Options struct {
 	OutDir          string
 	PersonSelection compose.Options
 	SkipProjection  bool
+	// OmitSkills are ordinary skills left out of the bundle, so a seat's home
+	// holds no tool reference for an MCP server its launch omits. COI-2121
+	OmitSkills []string
 }
 
 // Result records the immutable bundle and projected load points selected for
@@ -109,6 +112,9 @@ func Refresh(opts Options) (*Result, error) {
 	roots, missing, repositories, repositoryPaths, err := resolveRoots(plan, opts.Role, opts.CWD)
 	if err != nil {
 		return nil, err
+	}
+	for i := range roots {
+		roots[i].OmitSkills = opts.OmitSkills
 	}
 	request := &schema.Request{
 		Role:         strings.TrimSpace(opts.Role),

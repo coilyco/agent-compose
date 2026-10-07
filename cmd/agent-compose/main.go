@@ -1055,6 +1055,7 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 		composition = stepRepoComposition
 	}
 	if err := run.do(composition, func() (err error) {
+		omitSkills := omittedMCPSkills(os.Stderr, scopePerson(nil, personSelection), role, harness, args[2:])
 		result, err = nativelaunch.Refresh(nativelaunch.Options{
 			Role:              role,
 			Harness:           harness,
@@ -1068,6 +1069,7 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 			PlanPath:          filepath.Join(filepath.Dir(paths.Composed), "repository-plan.yaml"),
 			OutDir:            filepath.Join(stateDir, "bundles"),
 			PersonSelection:   personSelection,
+			OmitSkills:        omitSkills,
 		})
 		return err
 	}); err != nil {

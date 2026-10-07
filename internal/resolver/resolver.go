@@ -306,10 +306,14 @@ func Resolve(req *schema.Request, p *person.Person, sources []*schema.Source, mi
 	}
 	for _, src := range sources {
 		for _, ref := range src.ExcludedSkills {
+			reason := src.SelectorReason + "; this skill matched no configured selector pattern"
+			if own, ok := src.ExcludedReasons[ref.ID]; ok {
+				reason = own
+			}
 			res.decide(Decision{
 				Subject: "skill:" + ref.ID, Kind: "skill", Source: src.ID,
 				Outcome: OutcomeExcluded,
-				Reason:  src.SelectorReason + "; this skill matched no configured selector pattern",
+				Reason:  reason,
 			})
 		}
 	}

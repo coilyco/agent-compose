@@ -53,21 +53,7 @@ func loadMCPInventory(p *person.Person, path string) (*mcpscope.Inventory, error
 // nativeMCPScope narrows the host MCP inventory to role for one launch, and
 // fails closed rather than load the user-level set. See docs/launch.md.
 func nativeMCPScope(w io.Writer, loadPerson func() (*person.Person, error), role, harness, stateDir string, args []string) (mcpLaunch, error) {
-	switch harness {
-	case "claude":
-		if nativeArgsCarry(args, "--mcp-config") || nativeArgsCarry(args, "--strict-mcp-config") {
-			return mcpLaunch{}, nil
-		}
-	case "codex":
-	case "goose":
-		if !gooseScopeApplies(args) {
-			return mcpLaunch{}, nil
-		}
-	case "opencode":
-		if strings.TrimSpace(os.Getenv(openCodeConfigEnv)) != "" {
-			return mcpLaunch{}, nil
-		}
-	default:
+	if !mcpScopeApplies(harness, args) {
 		return mcpLaunch{}, nil
 	}
 	p, err := loadPerson()
@@ -109,6 +95,50 @@ func nativeMCPScope(w io.Writer, loadPerson func() (*person.Person, error), role
 		return mcpLaunch{}, err
 	}
 	return mcpLaunch{ClaudeConfig: path}, nil
+}
+
+// mcpScopeApplies is false where the harness takes no scope from this launch,
+// or the caller supplied one of their own.
+func mcpScopeApplies(harness string, args []string) bool {
+	switch harness {
+	case "claude":
+		return !nativeArgsCarry(args, "--mcp-config") && !nativeArgsCarry(args, "--strict-mcp-config")
+	case "codex":
+		return true
+	case "goose":
+		return gooseScopeApplies(args)
+	case "opencode":
+		return strings.TrimSpace(os.Getenv(openCodeConfigEnv)) == ""
+	default:
+		return false
+	}
+}
+
+// omittedMCPSkills names the skills of servers this launch omits, ahead of the
+// composition a spec launch also runs. Best effort: the scope step refuses. COI-2121
+func omittedMCPSkills(w io.Writer, loadPerson func() (*person.Person, error), role, harness string, args []string) []string {
+	if !mcpScopeApplies(harness, args) {
+		return nil
+	}
+	home, err := mcpInventoryHome()
+	if err != nil {
+		fmt.Fprintf(w, "agent-compose: warning: MCP skill scope skipped: %v\n", err)
+		return nil
+	}
+	p, err := loadPerson()
+	if err != nil || p == nil {
+		fmt.Fprintf(w, "agent-compose: warning: MCP skill scope skipped: no roster (%v)\n", err)
+		return nil
+	}
+	inv, err := loadMCPInventory(p, filepath.Join(home, ".mcporter", "mcporter.json"))
+	if errors.Is(err, mcpscope.ErrNoInventory) {
+		return nil
+	}
+	if err != nil {
+		fmt.Fprintf(w, "agent-compose: warning: MCP skill scope skipped: %v\n", err)
+		return nil
+	}
+	return inv.Select(role).OmittedSkills()
 }
 
 // gooseSessionVerbs are the subcommands that load extensions. Bare `goose`

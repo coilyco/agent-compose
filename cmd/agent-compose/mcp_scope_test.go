@@ -127,3 +127,43 @@ func TestNativeMCPScopeKeepsACallerScope(t *testing.T) {
 		t.Fatalf("scope = %#v, %v; want the caller's own", got, err)
 	}
 }
+
+// The bundle is composed before the scope step, so the omitted servers' skills
+// are named from the same inventory and role. COI-2121
+func TestOmittedMCPSkillsNameTheOtherRolesServers(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("AOS_NATIVE_CANONICAL_HOME", home)
+	t.Setenv(openCodeConfigEnv, "")
+	if err := os.MkdirAll(filepath.Join(home, ".mcporter"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	inventory := `{"mcpServers": {
+		"shared": {"command": "npx"},
+		"local_x_playwright_eng-platform": {"command": "npx", "x-aos": {"roles": ["eng-platform"]}},
+		"local_x_playwright_scientist": {"command": "npx", "x-aos": {"roles": ["scientist"]}}
+	}}`
+	if err := os.WriteFile(filepath.Join(home, ".mcporter", "mcporter.json"), []byte(inventory), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	got := omittedMCPSkills(io.Discard, person.Load, "eng-platform", "claude", nil)
+	if want := []string{"mcp-tools-local-x-playwright-scientist"}; !reflect.DeepEqual(got, want) {
+		t.Fatalf("omitted skills = %v, want %v", got, want)
+	}
+	if got := omittedMCPSkills(io.Discard, person.Load, "eng-platform", "claude", []string{"--mcp-config", "mine.json"}); got != nil {
+		t.Fatalf("a caller's own scope should omit nothing, got %v", got)
+	}
+}
+
+// An absent inventory leaves every skill in place and lets the scope step refuse.
+func TestOmittedMCPSkillsNeverBlockALaunch(t *testing.T) {
+	t.Setenv("AOS_NATIVE_CANONICAL_HOME", t.TempDir())
+	t.Setenv(openCodeConfigEnv, "")
+	var warned strings.Builder
+	if got := omittedMCPSkills(&warned, person.Load, "eng-platform", "claude", nil); got != nil || warned.Len() != 0 {
+		t.Fatalf("no inventory: got %v, warned %q; want nothing", got, warned.String())
+	}
+	unreadable := func() (*person.Person, error) { return nil, errors.New("roster unreadable") }
+	if got := omittedMCPSkills(&warned, unreadable, "eng-platform", "claude", nil); got != nil || !strings.Contains(warned.String(), "skipped") {
+		t.Fatalf("unreadable roster: got %v, warned %q; want a warning and no omission", got, warned.String())
+	}
+}

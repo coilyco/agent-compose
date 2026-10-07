@@ -103,6 +103,7 @@ the launch with that slug.
   carry refuses, and a resume keeps the set its session recorded.
 * OpenCode gets `OPENCODE_CONFIG_CONTENT`, merged over its other layers, defining
   each selected server and setting `enabled: false` on each omitted one.
+* The bundle drops each omitted server's `mcp-tools-<server>` skill, composed ahead of this step.
 * No inventory or no roster refuses, per [launch](launch.md). A caller's own
   scope is used as given: `--mcp-config` or `--strict-mcp-config` for Claude,
   `--no-profile` for goose, and a set `OPENCODE_CONFIG_CONTENT` for OpenCode.

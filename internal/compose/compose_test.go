@@ -669,3 +669,49 @@ func TestTheManifestRecordsTheComposedBodySize(t *testing.T) {
 		}
 	}
 }
+
+// A skill named in OmitSkills never reaches the bundle, and the decision trace
+// says why rather than blaming a selector. COI-2121
+func TestOmitSkillsKeepsAnOmittedServersReferenceOutOfTheBundle(t *testing.T) {
+	root := t.TempDir()
+	for _, name := range []string{"coding-go", "mcp-tools-pw-mine", "mcp-tools-pw-other"} {
+		dir := filepath.Join(root, ".agents", "skills", name)
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(dir, "SKILL.md"), []byte("# "+name+"\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := os.WriteFile(filepath.Join(root, ".agents", "roles.kdl"), []byte("roles {\n    role \"eng-platform\" {\n    }\n}\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	result, err := RunRoots(
+		&schema.Request{Role: "eng-platform", Delivery: schema.DeliveryNativeSkills},
+		// The second name is held by no provider, which must not fail the launch.
+		[]RootSource{{ID: "fixture", Root: root, OmitSkills: []string{"mcp-tools-pw-other", "mcp-tools-gone"}}},
+		t.TempDir(),
+		Options{},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	mustExist(t, result.Bundle.Dir, "content/skills/fixture/coding-go/SKILL.md")
+	mustExist(t, result.Bundle.Dir, "content/skills/fixture/mcp-tools-pw-mine/SKILL.md")
+	omitted := filepath.Join(result.Bundle.Dir, "content", "skills", "fixture", "mcp-tools-pw-other")
+	if _, err := os.Stat(omitted); !os.IsNotExist(err) {
+		t.Fatalf("an omitted server's skill reached the bundle: %v", err)
+	}
+	var found bool
+	for _, d := range result.Resolution.Decisions {
+		if d.Subject == "skill:mcp-tools-pw-other" {
+			found = true
+			if d.Outcome != resolver.OutcomeExcluded || d.Reason != OmitReason {
+				t.Fatalf("decision = %+v, want excluded with %q", d, OmitReason)
+			}
+		}
+	}
+	if !found {
+		t.Fatal("the omitted skill left no decision in the trace")
+	}
+}

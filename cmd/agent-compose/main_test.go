@@ -585,7 +585,7 @@ func TestActivateNativeRuntimeHome(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", "old-config")
 	t.Setenv("CLAUDE_CONFIG_DIR", "old-claude")
 
-	if err := activateNativeRuntimeHome(home, "claude"); err != nil {
+	if err := activateNativeRuntimeHome(home, "claude", ""); err != nil {
 		t.Fatal(err)
 	}
 	for name, want := range map[string]string{
@@ -598,6 +598,29 @@ func TestActivateNativeRuntimeHome(t *testing.T) {
 		if got := os.Getenv(name); got != want {
 			t.Errorf("%s = %q, want %q", name, got, want)
 		}
+	}
+}
+
+func TestActivateNativeRuntimeHomeTakesASharedClaudeConfigDir(t *testing.T) {
+	home := t.TempDir()
+	shared := filepath.Join(t.TempDir(), ".claude-seats")
+	t.Setenv("CLAUDE_CONFIG_DIR", "old-claude")
+
+	if err := activateNativeRuntimeHome(home, "claude", shared); err != nil {
+		t.Fatal(err)
+	}
+	if got := os.Getenv("CLAUDE_CONFIG_DIR"); got != shared {
+		t.Errorf("CLAUDE_CONFIG_DIR = %q, want the shared directory %q", got, shared)
+	}
+	if got := os.Getenv("HOME"); got != home {
+		t.Errorf("HOME = %q, want the runtime home %q", got, home)
+	}
+
+	if err := activateNativeRuntimeHome(home, "codex", shared); err != nil {
+		t.Fatal(err)
+	}
+	if got := os.Getenv("CLAUDE_CONFIG_DIR"); got != shared {
+		t.Errorf("a codex launch touched CLAUDE_CONFIG_DIR: %q", got)
 	}
 }
 
@@ -634,7 +657,7 @@ func TestActivateNativeRuntimeHomePreservesCanonicalCodexState(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := activateNativeRuntimeHome(home, "codex"); err != nil {
+	if err := activateNativeRuntimeHome(home, "codex", ""); err != nil {
 		t.Fatal(err)
 	}
 

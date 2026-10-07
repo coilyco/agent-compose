@@ -1011,6 +1011,7 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 		return err
 	})
 	runtimeHome := strings.TrimSpace(os.Getenv(nativelaunch.EnvRuntimeHome))
+	claudeConfigDir := strings.TrimSpace(os.Getenv(nativelaunch.EnvClaudeConfigDir))
 	// Only a session home replaces the host load point. A repo-scope launch
 	// still reads the host file, where repeating the base would double it.
 	operatingBase, operatingAppendix := "", ""
@@ -1110,7 +1111,7 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 	_ = run.do(stepSelectorEnv, clearNativeLaunchEnvironment)
 	if runtimeHome != "" {
 		_ = run.do(stepRuntimeHome, func() error {
-			return activateNativeRuntimeHome(runtimeHome, harness)
+			return activateNativeRuntimeHome(runtimeHome, harness, claudeConfigDir)
 		})
 	}
 	_ = run.do(stepTelemetry, func() error {
@@ -1306,6 +1307,7 @@ var nativeLaunchSelectorEnv = []string{
 	nativelaunch.EnvModelTier,
 	"AGENT_COMPOSE_MODEL_CLASS",
 	nativelaunch.EnvRuntimeHome,
+	nativelaunch.EnvClaudeConfigDir,
 	// Cleared so a launch from inside the harness still pauses.
 	noPauseEnv,
 }
@@ -1349,7 +1351,9 @@ func applyTelemetryEnvironment(configPath, harness, role string) error {
 	return nil
 }
 
-func activateNativeRuntimeHome(home, harness string) error {
+// activateNativeRuntimeHome exports the session home. A Claude seat takes a
+// shared config directory when named, since the Keychain login keys to it.
+func activateNativeRuntimeHome(home, harness, claudeConfigDir string) error {
 	absolute, err := filepath.Abs(home)
 	if err != nil {
 		return fmt.Errorf("resolve native runtime home: %w", err)
@@ -1377,6 +1381,9 @@ func activateNativeRuntimeHome(home, harness string) error {
 	}
 	if harness == "claude" {
 		environment["CLAUDE_CONFIG_DIR"] = filepath.Join(absolute, ".claude")
+		if shared := strings.TrimSpace(claudeConfigDir); shared != "" {
+			environment["CLAUDE_CONFIG_DIR"] = shared
+		}
 	}
 	for name, value := range environment {
 		if err := os.Setenv(name, value); err != nil {

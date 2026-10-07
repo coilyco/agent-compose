@@ -27,6 +27,9 @@ const (
 	EnvModelTier = "AGENT_COMPOSE_MODEL_TIER"
 	// EnvRuntimeHome selects a session-scoped home for the harness process.
 	EnvRuntimeHome = "AGENT_COMPOSE_RUNTIME_HOME"
+	// EnvClaudeConfigDir points a Claude seat at a config directory shared
+	// across sessions, in place of the runtime home's own .claude.
+	EnvClaudeConfigDir = "AGENT_COMPOSE_CLAUDE_CONFIG_DIR"
 	// EnvVerbose restores the routine composition status a launch otherwise
 	// keeps off screen. See docs/native-role-launch.md.
 	EnvVerbose = "AGENT_COMPOSE_VERBOSE"

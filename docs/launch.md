@@ -33,6 +33,9 @@ the launch-only variable before handing control to the harness. The retired
 `AGENT_COMPOSE_RUNTIME_HOME` similarly selects a prepared session home. Agent
 Compose switches `HOME`, `CODEX_HOME`, `XDG_CONFIG_HOME`, and Claude's config
 directory only after composition, then clears the control variable.
+`AGENT_COMPOSE_CLAUDE_CONFIG_DIR` names a config directory shared across Claude
+seats in place of the session home's own `.claude`, since Claude Code keys its
+Keychain login to that path. It is honored and cleared the same way.
 
 ## Recursion guard
 

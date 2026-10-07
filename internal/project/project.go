@@ -76,6 +76,11 @@ func ProjectScoped(bundleDir, layoutName, targetDir, scope string) (*Result, err
 	if !ok {
 		return nil, fmt.Errorf("unknown layout %q; v0.1 layouts: %s", layoutName, strings.Join(registryNames(registry), ", "))
 	}
+	if scope == ScopeRepo {
+		if err := refuseAboveRepositories(targetDir); err != nil {
+			return nil, err
+		}
+	}
 	verification, err := bundle.Verify(bundleDir)
 	if err != nil {
 		return nil, err

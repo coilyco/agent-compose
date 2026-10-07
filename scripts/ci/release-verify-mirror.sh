@@ -20,9 +20,9 @@ module=$(sed -n 's|^module github\.com/\([^/]*/[^/]*\).*|\1|p' "${GO_MOD:-go.mod
 MIRROR="${MIRROR_REPO:-$module}"
 : "${MIRROR:?MIRROR_REPO is unset and go.mod names no github.com module}"
 API="${GITHUB_API:-https://api.github.com}"
-# The sync is asynchronous, so a first-read miss means nothing. The ceiling
-# stays well under the job timeout. See docs/release.md.
-ATTEMPTS="${MIRROR_ATTEMPTS:-20}"
+# Tags reach the mirror 8.5 to 9 minutes late (v2.200.0, v2.201.0), so a first
+# miss means nothing. The 800s ceiling clears that, under the job timeout.
+ATTEMPTS="${MIRROR_ATTEMPTS:-40}"
 DELAY="${MIRROR_DELAY:-10}"
 CURL_TIMEOUT="${MIRROR_CURL_TIMEOUT:-10}"
 

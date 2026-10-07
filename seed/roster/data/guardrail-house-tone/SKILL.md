@@ -18,6 +18,10 @@ resolve both from this seat's own configuration rather than assuming a
 path. Paste the violation lines and the exit status beside the draft. A
 silent clean run is reported as a clean run rather than as silence.
 
+Every rule carries a level. An L2 or L3 hit refuses this seat's reply, so clear
+every one of those. An L1 hit warns and does not refuse, and it still gets
+the treatment below.
+
 The two halves of a hit. A profile carries house-style rules, which are
 this deployment's own settled decisions about punctuation, emphasis,
 pronouns and address. Those are not negotiable and you clear every one.

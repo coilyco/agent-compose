@@ -16,15 +16,18 @@ import (
 const Format = "agent-compose.voice-profile"
 
 // Rule is one linter rule. The engine reads id, pattern, hint, scope, flags and
-// blocking, and ignores anything else, so source rides along as provenance.
+// level, and ignores anything else, so source rides along as provenance.
 type Rule struct {
-	ID       string   `json:"id"`
-	Pattern  string   `json:"pattern"`
-	Hint     string   `json:"hint"`
-	Scope    string   `json:"scope,omitempty"`
-	Flags    []string `json:"flags,omitempty"`
-	Blocking bool     `json:"blocking,omitempty"`
-	Source   string   `json:"source,omitempty"`
+	ID      string   `json:"id"`
+	Pattern string   `json:"pattern"`
+	Hint    string   `json:"hint"`
+	Scope   string   `json:"scope,omitempty"`
+	Flags   []string `json:"flags,omitempty"`
+	Level   string   `json:"level,omitempty"`
+	// Blocking is retired from the engine, which refuses it. It stays declared so
+	// a profile still carrying it fails loudly there instead of losing it here.
+	Blocking bool   `json:"blocking,omitempty"`
+	Source   string `json:"source,omitempty"`
 }
 
 // Profile is the document the linter engine loads.

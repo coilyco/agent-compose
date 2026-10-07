@@ -65,7 +65,8 @@ its own prose against. It merges two kinds of rule.
   hand-written rules. Discovery reads the document rather than matching a skill
   name, so a source ships a house style without agent-compose knowing what that
   source called it. A carried rule keeps the keys `Rule` declares and loses any
-  other, so `blocking` is declared there: dropping it ships a gate as a warning.
+  other, so `level` is declared there: dropping it ships a gate as a warning.
+  A retired `blocking` is declared too, so the engine refuses it.
 * **Generated** - one rule per term on the seat's melded `voice.avoid` bank,
   role first then personalities, deduped so the role bank keeps a shared term.
 

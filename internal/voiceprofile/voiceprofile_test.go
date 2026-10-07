@@ -137,8 +137,40 @@ func TestBuildReportsEmptyRatherThanWritingAnUnloadableProfile(t *testing.T) {
 	}
 }
 
-// blocking decides the engine's --block-only exit status, so a round trip that
+// level decides which gate the engine fails a rule under, so a round trip that
 // drops it turns a gating rule into a warning and the bundle reports success.
+func TestCarriedAndBuildKeepLevel(t *testing.T) {
+	carried, err := Carried("kai-voice-guide-linter", []byte(
+		`{"rules":[
+			{"id":"em-dash","pattern":"—","hint":"replace with ' - '","level":"L2"},
+			{"id":"everyone","pattern":"x","hint":"cut it","level":"L3"},
+			{"id":"wordy","pattern":"\\bverily\\b","hint":"cut it"}
+		]}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := Build("coilyco:advocate", carried, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var profile Profile
+	if err := json.Unmarshal(raw, &profile); err != nil {
+		t.Fatal(err)
+	}
+	for id, want := range map[string]string{"em-dash": "L2", "everyone": "L3", "wordy": ""} {
+		if got := ruleByID(t, profile.Rules, id).Level; got != want {
+			t.Fatalf("%s level = %q after the round trip, want %q", id, got, want)
+		}
+	}
+	// omitempty leaves the default level unwritten, so a warning's document is
+	// identical to what it was before the field existed.
+	if strings.Count(string(raw), `"level"`) != 2 {
+		t.Fatalf("level is written for a rule that left it at the default:\n%s", raw)
+	}
+}
+
+// The engine refuses a rule still carrying blocking, so the round trip keeps it
+// rather than drop it and let a stale profile ship a gate as a warning.
 func TestCarriedAndBuildKeepBlocking(t *testing.T) {
 	carried, err := Carried("kai-voice-guide-linter", []byte(
 		`{"rules":[

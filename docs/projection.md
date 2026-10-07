@@ -25,6 +25,7 @@ and refuses a path that is absolute or escapes its root.
 A layout that lacks load points for a bundle's delivery mode fails with a
 diagnostic. Layout names and load-point paths never appear in the resolver, the
 request, the manifest, or the bundle tree.
+`--scope repo` refuses a target holding repositories, such as the projects root.
 
 ## Home scope
 

@@ -471,3 +471,58 @@ func treeFingerprint(t *testing.T, root string) string {
 	}
 	return fmt.Sprintf("%x", hash.Sum(nil))
 }
+
+func TestRepoScopeRefusesDirectoryHoldingRepositories(t *testing.T) {
+	bundleDir := composeFixture(t, "native.kdl")
+	cases := map[string][]string{
+		"projects root": {"coilyco/agent-compose/.git"},
+		"org directory": {"agent-compose/.git"},
+		"worktree file": {"checkout/.git"},
+	}
+	for name, marks := range cases {
+		t.Run(name, func(t *testing.T) {
+			target := t.TempDir()
+			for _, mark := range marks {
+				path := filepath.Join(target, filepath.FromSlash(mark))
+				if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+					t.Fatal(err)
+				}
+				if strings.HasPrefix(name, "worktree") {
+					if err := os.WriteFile(path, []byte("gitdir: elsewhere\n"), 0o644); err != nil {
+						t.Fatal(err)
+					}
+				} else if err := os.Mkdir(path, 0o755); err != nil {
+					t.Fatal(err)
+				}
+			}
+			before := treeFingerprint(t, target)
+			_, err := ProjectScoped(bundleDir, "claude", target, ScopeRepo)
+			if err == nil || !strings.Contains(err.Error(), "every session beneath it would inherit the role") {
+				t.Fatalf("expected above-repositories refusal, got %v", err)
+			}
+			if after := treeFingerprint(t, target); after != before {
+				t.Fatal("refused projection changed its target")
+			}
+		})
+	}
+}
+
+func TestRepoScopeAllowsRepositoryAndHomeScope(t *testing.T) {
+	bundleDir := composeFixture(t, "native.kdl")
+	repo := t.TempDir()
+	for _, rel := range []string{".git", "vendor/nested/.git"} {
+		if err := os.MkdirAll(filepath.Join(repo, filepath.FromSlash(rel)), 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, err := ProjectScoped(bundleDir, "claude", repo, ScopeRepo); err != nil {
+		t.Fatalf("a repository holding another is a valid target: %v", err)
+	}
+	home := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(home, "projects", "coilyco", "x", ".git"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ProjectScoped(bundleDir, "claude", home, ScopeHome); err != nil {
+		t.Fatalf("home scope owns its root and holds repositories beneath it: %v", err)
+	}
+}

@@ -30,7 +30,7 @@ url="$API/repos/$MIRROR/git/ref/tags/$TAG"
 attempt=1
 
 while [ "$attempt" -le "$ATTEMPTS" ]; do
-  code=$(curl -s -o /dev/null -w '%{http_code}' -m "$CURL_TIMEOUT" "$url" || echo 000)
+  code=$(curl -s -o /dev/null -w '%{http_code}' -m "$CURL_TIMEOUT" "$url") && rc=0 || rc=$?
   if [ "$code" = "200" ]; then
     echo "release-verify-mirror: $MIRROR carries $TAG after ${attempt} attempt(s)."
     exit 0
@@ -39,11 +39,15 @@ while [ "$attempt" -le "$ATTEMPTS" ]; do
   # saying out loud: the retry is fine, a wall of them is the real problem.
   [ "$code" = "403" ] && echo "release-verify-mirror: rate limited, retrying." >&2
   [ "$code" = "301" ] && echo "release-verify-mirror: $MIRROR moved on GitHub, fix its slug." >&2
+  # Every attempt took the full timeout in the 10-02 to 10-07 failures, which the
+  # old message hid: 000 with curl exit 28 is no response, not a missing tag.
+  [ "$code" != "404" ] && echo "release-verify-mirror: attempt $attempt got HTTP $code, curl exit $rc." >&2
   attempt=$((attempt + 1))
   sleep "$DELAY"
 done
 
 echo "::error::release-verify-mirror: $MIRROR does not carry $TAG after $((ATTEMPTS * (DELAY + CURL_TIMEOUT)))s at worst." >&2
+echo "Last attempt: HTTP $code, curl exit $rc (000 and 28 mean no response in ${CURL_TIMEOUT}s)." >&2
 echo "GitHub is the module origin, so this release is unresolvable to Go consumers." >&2
 echo "The tag exists on Forgejo and the packages are already published. Check the" >&2
 echo "push mirror, then re-run this job." >&2

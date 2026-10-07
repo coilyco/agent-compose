@@ -18,7 +18,9 @@ cat >"$fixture_root/bin/curl" <<'STUB'
 #!/bin/sh
 for arg in "$@"; do last=$arg; done
 printf '%s\n' "$last" >"$FIXTURE_URL_FILE"
-printf '200'
+printf '%s' "${FIXTURE_CODE:-200}"
+[ "${FIXTURE_CODE:-200}" = 000 ] && exit 28
+exit 0
 STUB
 chmod +x "$fixture_root/bin/curl"
 
@@ -47,4 +49,13 @@ if run_verifier env 2>/dev/null; then
   echo "release-verify-mirror-test: a go.mod without a github.com module must fail" >&2
   exit 1
 fi
+printf 'module github.com/example-org/example-repo\n' >"$fixture_root/go.mod"
+if message=$(run_verifier env FIXTURE_CODE=000 MIRROR_ATTEMPTS=2 2>&1 >/dev/null); then
+  echo "release-verify-mirror-test: a curl that never answers must fail" >&2
+  exit 1
+fi
+case $message in
+  *"HTTP 000, curl exit 28"*) ;;
+  *) echo "release-verify-mirror-test: failure message omits the status: $message" >&2; exit 1 ;;
+esac
 echo "release-verify-mirror-test: ok"

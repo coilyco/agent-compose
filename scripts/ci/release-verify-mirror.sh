@@ -14,7 +14,11 @@
 set -eu
 
 : "${TAG:?TAG is required}"
-MIRROR="${MIRROR_REPO:-coilyco-flight-deck/agent-compose}"
+# go.mod owns the slug: a restated default went stale when the module moved
+# orgs, and GitHub answers the old slug with a 301 that no 200 check passes.
+module=$(sed -n 's|^module github\.com/\([^/]*/[^/]*\).*|\1|p' "${GO_MOD:-go.mod}")
+MIRROR="${MIRROR_REPO:-$module}"
+: "${MIRROR:?MIRROR_REPO is unset and go.mod names no github.com module}"
 API="${GITHUB_API:-https://api.github.com}"
 # The sync is asynchronous, so a first-read miss means nothing. The ceiling
 # stays well under the job timeout. See docs/release.md.
@@ -34,6 +38,7 @@ while [ "$attempt" -le "$ATTEMPTS" ]; do
   # 403 is the anonymous rate limit rather than a missing tag, so it is worth
   # saying out loud: the retry is fine, a wall of them is the real problem.
   [ "$code" = "403" ] && echo "release-verify-mirror: rate limited, retrying." >&2
+  [ "$code" = "301" ] && echo "release-verify-mirror: $MIRROR moved on GitHub, fix its slug." >&2
   attempt=$((attempt + 1))
   sleep "$DELAY"
 done

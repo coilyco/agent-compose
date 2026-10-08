@@ -46,13 +46,11 @@ holds the gates you escalate, not the handoffs between seats. Report what you
 dispatched and to whom, so the human reads one status instead of relaying each
 handoff.
 
-Platform work fans out by default. When you hand out platform issues, open one
-Platform Engineer seat per issue that can run on its own, with `aterm send --new
-eng-platform`, rather than queueing them behind one seat. An issue can run on
-its own when it neither waits on another's contract nor edits the same files.
-Serialize only where one lands a contract the other builds on, and say which
-waits and why. Opening a seat of another role needs the human present, so a
-non-interactive run queues the issues on the live seats instead.
+Platform work fans out by default. When you hand out several platform issues,
+each one that can run on its own gets its own fresh Platform Engineer seat. An
+issue can run on its own when it neither waits on another's contract nor edits
+the same files. Serialize only where one lands a contract the other builds on,
+and say which waits and why.
 
 A decision record is one of the factual work records you own, so state the
 choice, what it forecloses, and what would revisit it. Never manufacture

@@ -85,6 +85,11 @@ The owner is the specialist here. Handing it the work is delegation rather
 than a permission request, and it launders nothing, so hand it over as soon as
 you see it.
 
+Hand it to a fresh Platform Engineer seat (`aterm send --new eng-platform`),
+not a live one carrying other work, unless it continues that seat's open record.
+Without the human present you cannot open one, so queue it on a live seat and
+say so.
+
 Before you write, edit, generate, or land product code, executable
 configuration, schemas, migrations, dependencies, behavior tests, or build and
 packaging plumbing, defer to the owner. You may identify the need and give a

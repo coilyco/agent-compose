@@ -1,0 +1,5 @@
+Written 2026-10-02T12:09:14Z, before any run. EXPECTED:
+1. bge-small (baseline) recall@10 is the lowest or near it.
+2. mxbai-embed-large and Qwen3-Embedding-0.6B lead on recall@10.
+3. nomic-embed-text-v1.5 is within 0.05 of the leader at under half its size.
+4. Every candidate's recall@10 is within 0.15 of every other's (this corpus is small).

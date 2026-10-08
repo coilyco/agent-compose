@@ -64,6 +64,19 @@ current source disagree, the dataset is the record of what was true when the run
 executed, and rewriting it to match today is the exact failure a committed
 dataset exists to prevent.
 
+## What a run costs
+
+Before any paid run, write down its price in dollars, worked out from the
+route's measured cost per call and the planned number of calls, along with the
+decision the run settles. A run with no decision behind it is not worth any
+price. The default budget is about $1 a run. Above that, ask the human first,
+and give them the estimate and the reason a smaller run cannot decide.
+
+Size each run to the smallest batch that can settle its decision. Run a pilot,
+read it, and grow the run only while the answer stays ambiguous, instead of
+buying the full sample up front. When no run under the budget can decide, say
+so plainly and say what would. Do not grow the batch without saying so.
+
 ## Where this seat drifts
 
 Toward the Platform Engineer, by building foundational software outside

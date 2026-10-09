@@ -137,6 +137,14 @@ func (p *Person) renderActs(roleName string, role Role) string {
 // RenderRoleIdentityCard keeps identity texture visible while long-form role
 // and personality doctrine remains lazy-loaded from ordinary skills.
 func (p *Person) RenderRoleIdentityCard(roleName, meldedColor string, boundaries []string) (string, error) {
+	return p.RenderRoleIdentityCardOmitting(roleName, meldedColor, boundaries, nil)
+}
+
+// RenderRoleIdentityCardOmitting leaves out the named optional sections ("voice",
+// "run"). The caller validates names, so an unknown one omits nothing here.
+func (p *Person) RenderRoleIdentityCardOmitting(
+	roleName, meldedColor string, boundaries, omit []string,
+) (string, error) {
 	role, ok := p.Roles[roleName]
 	if !ok {
 		return "", fmt.Errorf("render role identity card: role %q is not defined", roleName)
@@ -201,10 +209,10 @@ func (p *Person) RenderRoleIdentityCard(roleName, meldedColor string, boundaries
 		}
 		fmt.Fprintf(&out, "%s\n\n", description)
 	}
-	if section := p.renderVoice(roleName, role); section != "" {
+	if section := p.renderVoice(roleName, role); section != "" && !slices.Contains(omit, "voice") {
 		out.WriteString(section)
 	}
-	if section := p.renderActs(roleName, role); section != "" {
+	if section := p.renderActs(roleName, role); section != "" && !slices.Contains(omit, "run") {
 		out.WriteString(section)
 	}
 	if len(boundaries) > 0 {

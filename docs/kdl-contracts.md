@@ -31,7 +31,7 @@ other densities fail. Sources run in request order, `root` and `declaration`
 only locate files, and optional `identity` renames the composed seat
 ([identity](identity.md)). Optional `boundary-omit` drops defer-side boundaries
 whose owning seat this deployment does not have
-([boundary omission](roster-composition.md)). The public AOS provider needs only its root.
+([boundary omission](roster-composition.md)), and `card-omit "voice" "run"` drops those card sections ([card omission](roster-composition.md#card-omission)). The public AOS provider needs only its root.
 Agent-compose discovers ordinary skills and reads one `.agents/roles.kdl`
 graph:
 

@@ -1,0 +1,6 @@
+// The card-omit.kdl request without the omission: the baseline it is compared with.
+compose {
+    role "prod-manager"
+    delivery "native-skills"
+    source "aos-public" declaration="source-public.kdl" required=#true
+}

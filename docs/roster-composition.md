@@ -96,3 +96,20 @@ Three refusals keep the knob from meaning something it should not:
 The decision trace records each omission as an excluded profile decision. A
 bundle that quietly lacks a boundary is worse than one that never had it,
 because the review surface stops telling the truth.
+
+## Card omission
+
+A deployment that supplies its own voice policy, or whose runtime already
+carries run guidance, can ask the identity card to leave those sections out:
+
+```kdl
+compose {
+    role "prod-manager"
+    card-omit "voice" "run"
+}
+```
+
+Only `voice` and `run` can go. An unknown, empty or repeated name fails the
+request, so a typo cannot quietly omit nothing. The role skill, personality
+meld, boundaries, and doctrine list stay, because they are what the card is. The
+bundle key hashes the rendered card, so an omission yields a new bundle.

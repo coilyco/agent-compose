@@ -6,6 +6,7 @@ import (
 	"os"
 	pathpkg "path"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 
@@ -58,7 +59,14 @@ type Request struct {
 	// BoundaryOmissions names defer-side boundaries this deployment does not
 	// compose. See docs/ownership.md.
 	BoundaryOmissions []string
+	// CardOmissions names identity card sections this deployment does not
+	// render. Only the sections in CardSections can go. See docs/roster-composition.md.
+	CardOmissions []string
 }
+
+// CardSections are the identity card sections a request may omit. The rest of
+// the card is what makes a bundle an identity, so it is not omittable.
+var CardSections = []string{"voice", "run"}
 
 // IdentityOverride renames the seat a request composes. It says who is
 // speaking, never what the role is. See docs/person-contract.md.
@@ -381,6 +389,21 @@ func ParseRequest(path string) (*Request, error) {
 					}
 				}
 				req.BoundaryOmissions = append(req.BoundaryOmissions, name)
+			}
+		case "card-omit":
+			if len(n.Arguments()) == 0 {
+				return nil, fmt.Errorf("request %s: card-omit needs at least one section name", path)
+			}
+			for _, arg := range n.Arguments() {
+				name := strings.TrimSpace(arg.String())
+				if !slices.Contains(CardSections, name) {
+					return nil, fmt.Errorf("request %s: card-omit %q is not a section a card can omit (%s)",
+						path, name, strings.Join(CardSections, ", "))
+				}
+				if slices.Contains(req.CardOmissions, name) {
+					return nil, fmt.Errorf("request %s: duplicate card-omit %q", path, name)
+				}
+				req.CardOmissions = append(req.CardOmissions, name)
 			}
 		case "source":
 			id, err := oneStringArg(n)

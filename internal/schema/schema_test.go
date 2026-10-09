@@ -836,3 +836,54 @@ func TestLoadSourceRejectsARetiredAndCurrentSpellingOfOneRole(t *testing.T) {
 		t.Fatalf("LoadSource error = %v, want a duplicate eng-platform role", err)
 	}
 }
+
+func TestParseRequestReadsCardOmissions(t *testing.T) {
+	path := writeRequest(t, `compose {
+    role "prod-manager"
+    delivery "native-skills"
+    card-omit "voice" "run"
+}`)
+	req, err := ParseRequest(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := strings.Join(req.CardOmissions, ","); got != "voice,run" {
+		t.Fatalf("card omissions = %q, want voice,run", got)
+	}
+}
+
+// Absent stays absent, or every existing bundle silently loses a section.
+func TestParseRequestLeavesCardWholeWhenNoneOmitted(t *testing.T) {
+	path := writeRequest(t, `compose {
+    role "prod-manager"
+    delivery "native-skills"
+}`)
+	req, err := ParseRequest(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(req.CardOmissions) != 0 {
+		t.Fatalf("card omissions = %v, want none", req.CardOmissions)
+	}
+}
+
+// Only the sections named in CardSections can go. A typo or a section that
+// makes the card an identity must fail the request, not quietly omit nothing.
+func TestParseRequestRefusesWhatCardOmitCannotMean(t *testing.T) {
+	cases := map[string]string{
+		"no section":       `card-omit`,
+		"unknown section":  `card-omit "voices"`,
+		"structural part":  `card-omit "boundaries"`,
+		"empty name":       `card-omit ""`,
+		"duplicate":        `card-omit "voice" "voice"`,
+		"duplicate across": "card-omit \"run\"\n    card-omit \"run\"",
+	}
+	for name, node := range cases {
+		t.Run(name, func(t *testing.T) {
+			path := writeRequest(t, "compose {\n    role \"prod-manager\"\n    delivery \"native-skills\"\n    "+node+"\n}")
+			if _, err := ParseRequest(path); err == nil {
+				t.Fatalf("%s was accepted", node)
+			}
+		})
+	}
+}

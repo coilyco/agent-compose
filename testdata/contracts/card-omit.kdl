@@ -1,0 +1,8 @@
+// A runtime that owns voice and run guidance asks the card to leave both out.
+// Everything that makes the card an identity stays.
+compose {
+    role "prod-manager"
+    delivery "native-skills"
+    card-omit "voice" "run"
+    source "aos-public" declaration="source-public.kdl" required=#true
+}

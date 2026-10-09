@@ -360,7 +360,9 @@ func stripAssignedBase(base string, p *person.Person, appended [][]byte) string 
 }
 
 func joinInstructions(res *resolver.Resolution) ([]byte, error) {
-	card, err := res.Person.RenderRoleIdentityCard(res.Request.Role, res.FavoriteColor, res.Boundaries)
+	card, err := res.Person.RenderRoleIdentityCardOmitting(
+		res.Request.Role, res.FavoriteColor, res.Boundaries, res.Request.CardOmissions,
+	)
 	if err != nil {
 		return nil, err
 	}

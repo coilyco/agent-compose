@@ -93,7 +93,11 @@ func TestStripAssignedBaseDropsSwitchPolicyAndDuplicateBodies(t *testing.T) {
 			t.Errorf("stripped base still carries %q", heading)
 		}
 	}
-	for _, want := range []string{"# Agent seats", "#### Conditional evaluation fixture authority"} {
+	for _, want := range []string{
+		"# Agent seats",
+		"#### Conditional evaluation fixture authority",
+		"#### Humans grade evaluations",
+	} {
 		if !strings.Contains(stripped, want) {
 			t.Errorf("stripped base dropped %q", want)
 		}

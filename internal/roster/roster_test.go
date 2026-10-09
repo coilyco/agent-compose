@@ -136,6 +136,7 @@ func TestRenderNativeInteractiveAdaptationPolicy(t *testing.T) {
 		"#### Inferred native role switches",
 		"#### Personality-only swaps",
 		"#### Conditional evaluation fixture authority",
+		"#### Humans grade evaluations",
 		"Available role slugs: `builder`.",
 	} {
 		if !strings.Contains(table, want) {

@@ -56,3 +56,14 @@ never permits production mutation, deployment, release, merge, secret access, or
 product remediation. A role or personality switch does not create, retain, or
 broaden fixture authority. Role prose describes the boundary but grants no
 executable permission.
+
+#### Humans grade evaluations
+
+No language model grades an evaluation, ever. A grade, score, rating, pass or
+fail verdict, ranking, or judgment of whether a response meets its criterion
+belongs to a human. Housecast exists to help a human grade faster, never to
+grade in the human's place. An agent may run deterministic programmatic checks
+and report their raw output, and a decision model may filter or triage what
+reaches the human grader, but neither output is a grade and neither is
+presented as one. An agent never builds, runs, or proposes a language model
+as a judge or grader.

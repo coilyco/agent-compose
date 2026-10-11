@@ -19,7 +19,11 @@ import (
 // mcpLaunch is the per-harness form of one role's MCP selection.
 type mcpLaunch struct {
 	ClaudeConfig string
-	CodexArgs    []string
+	// Allow and Deny replace --strict-mcp-config for a role granted claude.ai
+	// connectors, which strict mode hides. See docs/claude-launch-identity.md.
+	Allow     []map[string]any
+	Deny      []string
+	CodexArgs []string
 	// GooseArgs follow goose's session verb, which is the only place they parse.
 	GooseArgs []string
 	// Env is set on the harness process, for OpenCode's inline config.
@@ -94,7 +98,30 @@ func nativeMCPScope(w io.Writer, loadPerson func() (*person.Person, error), role
 	if err != nil {
 		return mcpLaunch{}, err
 	}
-	return mcpLaunch{ClaudeConfig: path}, nil
+	if len(sel.Connectors()) == 0 {
+		return mcpLaunch{ClaudeConfig: path}, nil
+	}
+	fmt.Fprintf(w, "agent-compose: claude.ai connectors for %s: %d, behind an allowlist\n", sel.Role, len(sel.Connectors()))
+	return mcpLaunch{ClaudeConfig: path, Allow: sel.Allowlist(home), Deny: sel.DeniedTools()}, nil
+}
+
+// applyConnectorSettings folds the allowlist into the one --settings file Claude takes.
+// A caller's own --settings cannot merge, so the launch stays strict, minus connectors.
+func applyConnectorSettings(w io.Writer, role, stateDir string, args []string, identity *nativeIdentity) error {
+	if len(identity.MCP.Allow) == 0 {
+		return nil
+	}
+	if nativeArgsCarry(args, "--settings") {
+		fmt.Fprintln(w, "agent-compose: a caller --settings cannot carry the connector allowlist, so this launch has no claude.ai connectors")
+		identity.MCP.Allow, identity.MCP.Deny = nil, nil
+		return nil
+	}
+	path, err := mcpscope.WriteSettings(filepath.Join(stateDir, "mcp"), role, identity.Settings, identity.MCP.Allow, identity.MCP.Deny)
+	if err != nil {
+		return err
+	}
+	identity.Settings = path
+	return nil
 }
 
 // mcpScopeApplies is false where the harness takes no scope from this launch,

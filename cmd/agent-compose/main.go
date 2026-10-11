@@ -1136,6 +1136,9 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 		identity.SeatName, identity.Settings = result.SeatName, result.HarnessSettings
 		env = append(env, sessionBundleEnv(result.BundleDir, harness)...)
 	}
+	if err := applyConnectorSettings(os.Stderr, role, stateDir, args[2:], &identity); err != nil {
+		return err
+	}
 	command := nativeHarnessCommand(harness, args[2:], identity)
 	if len(run.degraded) > 0 {
 		command = append(command[:1], append(degradedHarnessArgs(harness, args[2:], run.degraded), command[1:]...)...)
@@ -1278,7 +1281,10 @@ func nativeIdentityArgs(harness string, args []string, identity nativeIdentity) 
 	}
 	var flags []string
 	if identity.MCP.ClaudeConfig != "" {
-		flags = append(flags, "--strict-mcp-config", "--mcp-config", identity.MCP.ClaudeConfig)
+		if len(identity.MCP.Allow) == 0 {
+			flags = append(flags, "--strict-mcp-config")
+		}
+		flags = append(flags, "--mcp-config", identity.MCP.ClaudeConfig)
 	}
 	if identity.SeatName != "" && !nativeArgsCarry(args, "--name") {
 		flags = append(flags, "--name", identity.SeatName)

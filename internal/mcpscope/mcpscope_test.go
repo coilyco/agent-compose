@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -219,5 +220,107 @@ func TestOmittedSkillsFollowTheOmittedServers(t *testing.T) {
 	got := inv.Select("eng-platform").OmittedSkills()
 	if len(got) != 1 || got[0] != "mcp-tools-pw-sysadmin" {
 		t.Fatalf("omitted skills = %v, want [mcp-tools-pw-sysadmin]", got)
+	}
+}
+
+var grants = []Connector{
+	{URL: "https://slack.invalid/mcp", Roles: []string{"eng-platform"}, Deny: []string{"mcp__claude_ai_X__send"}},
+	{URL: "https://pay.invalid", Roles: []string{"senior-sysadmin"}},
+}
+
+func TestSelectWithGrantsConnectorsOnlyToTheirRoles(t *testing.T) {
+	inv, err := Load(write(t, inventory), roster)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := inv.SelectWith("eng-platform", grants).Connectors(); len(got) != 1 || got[0].URL != "https://slack.invalid/mcp" {
+		t.Errorf("eng-platform connectors = %v", got)
+	}
+	if got := inv.SelectWith("scientist", grants).Connectors(); len(got) != 0 {
+		t.Errorf("scientist connectors = %v, want none", got)
+	}
+	// A retired slug in the table resolves to the current role.
+	if got := inv.SelectWith("sysadmin-senior", grants).Connectors(); len(got) != 1 || got[0].URL != "https://pay.invalid" {
+		t.Errorf("sysadmin-senior connectors = %v", got)
+	}
+}
+
+func TestAllowlistNamesEachServerExactlyThenEachConnector(t *testing.T) {
+	inv, err := Load(write(t, inventory), roster)
+	if err != nil {
+		t.Fatal(err)
+	}
+	allow := inv.SelectWith("eng-platform", grants).Allowlist("/home/x")
+	want := []map[string]any{
+		{"serverCommand": []string{"npx", "pw"}},
+		{"serverUrl": "https://example.invalid/mcp"},
+		{"serverCommand": []string{"npx", "-y", "tool", "--config", "/home/x/x.json"}},
+		{"serverUrl": "https://slack.invalid/mcp"},
+	}
+	if !reflect.DeepEqual(allow, want) {
+		t.Errorf("allowlist = %#v, want %#v", allow, want)
+	}
+}
+
+func TestAllowlistHoldsNothingBeyondTheSelection(t *testing.T) {
+	inv, err := Load(write(t, inventory), roster)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range inv.SelectWith("scientist", nil).Allowlist("/home/x") {
+		if strings.Contains(strings.Join(commandOf(entry), " "), "pw") && len(commandOf(entry)) == 2 {
+			t.Errorf("scientist allowlist carries another role's server: %v", entry)
+		}
+	}
+}
+
+func commandOf(entry map[string]any) []string {
+	command, _ := entry["serverCommand"].([]string)
+	return command
+}
+
+func TestWriteSettingsMergesIntoTheBundleFragmentWithoutLosingItsKeys(t *testing.T) {
+	dir := t.TempDir()
+	base := filepath.Join(dir, "claude-settings.json")
+	if err := os.WriteFile(base, []byte(`{"theme":"dark","permissions":{"deny":["a"],"allow":["b"]}}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	allow := []map[string]any{{"serverUrl": "https://x.invalid"}}
+	path, err := WriteSettings(filepath.Join(dir, "mcp"), "eng-platform", base, allow, []string{"mcp__t"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got struct {
+		Theme       string           `json:"theme"`
+		Allowed     []map[string]any `json:"allowedMcpServers"`
+		Permissions struct {
+			Deny  []string `json:"deny"`
+			Allow []string `json:"allow"`
+		} `json:"permissions"`
+	}
+	raw, _ := os.ReadFile(path)
+	if err := json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.Theme != "dark" || len(got.Allowed) != 1 || strings.Join(got.Permissions.Deny, ",") != "a,mcp__t" || strings.Join(got.Permissions.Allow, ",") != "b" {
+		t.Errorf("merged = %s", raw)
+	}
+	again, err := WriteSettings(filepath.Join(dir, "mcp"), "eng-platform", base, allow, []string{"mcp__t"})
+	if err != nil || again != path {
+		t.Errorf("a second write named %q (%v), want the same %q", again, err, path)
+	}
+}
+
+func TestWriteSettingsStartsEmptyWithoutABaseAndRefusesABrokenOne(t *testing.T) {
+	dir := t.TempDir()
+	if _, err := WriteSettings(dir, "eng-platform", "", nil, nil); err != nil {
+		t.Fatalf("no base: %v", err)
+	}
+	broken := filepath.Join(dir, "broken.json")
+	if err := os.WriteFile(broken, []byte("{not json"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := WriteSettings(dir, "eng-platform", broken, nil, nil); err == nil || !strings.Contains(err.Error(), "broken.json") {
+		t.Errorf("err = %v, want the broken file named", err)
 	}
 }

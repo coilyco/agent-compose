@@ -43,6 +43,8 @@ type Selection struct {
 	Omitted  []string
 	Scoped   int // selected servers that carry a role tag
 	servers  map[string]Server
+
+	connectors []Connector
 }
 
 // ErrNoInventory marks an absent inventory, which leaves the launch unscoped.
@@ -80,6 +82,10 @@ func Load(path string, roles []string) (*Inventory, error) {
 
 // Select keeps every untagged server and every server tagged for role.
 func (inv *Inventory) Select(role string) Selection {
+	return inv.SelectWith(role, claudeAIConnectors)
+}
+
+func (inv *Inventory) selectServers(role string) Selection {
 	role = roleslug.Canonical(role)
 	sel := Selection{Role: role, servers: map[string]Server{}}
 	for _, name := range sortedNames(inv.Servers) {

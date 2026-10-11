@@ -167,3 +167,68 @@ func TestOmittedMCPSkillsNeverBlockALaunch(t *testing.T) {
 		t.Fatalf("unreadable roster: got %v, warned %q; want a warning and no omission", got, warned.String())
 	}
 }
+
+func TestNativeHarnessCommandDropsStrictForAConnectorGrant(t *testing.T) {
+	t.Parallel()
+	got := nativeHarnessCommand("claude", nil, nativeIdentity{
+		Settings: "/state/mcp/prod-director-abc-settings.json",
+		MCP:      mcpLaunch{ClaudeConfig: "/state/mcp/prod-director-abc.json", Allow: []map[string]any{{"serverUrl": "https://x.invalid"}}},
+	})
+	want := []string{
+		"claude",
+		"--mcp-config", "/state/mcp/prod-director-abc.json",
+		"--settings", "/state/mcp/prod-director-abc-settings.json",
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("command = %#v, want %#v", got, want)
+	}
+}
+
+func TestApplyConnectorSettingsMergesIntoTheBundleFragment(t *testing.T) {
+	t.Parallel()
+	dir := t.TempDir()
+	base := filepath.Join(dir, "claude-settings.json")
+	if err := os.WriteFile(base, []byte(`{"theme":"dark"}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	identity := nativeIdentity{Settings: base, MCP: mcpLaunch{Allow: []map[string]any{{"serverUrl": "https://x.invalid"}}}}
+	if err := applyConnectorSettings(io.Discard, "prod-director", dir, nil, &identity); err != nil {
+		t.Fatal(err)
+	}
+	if identity.Settings == base || !strings.HasSuffix(identity.Settings, "-settings.json") {
+		t.Fatalf("settings = %q, want a derived file", identity.Settings)
+	}
+	raw, _ := os.ReadFile(identity.Settings)
+	if !strings.Contains(string(raw), `"theme": "dark"`) || !strings.Contains(string(raw), "allowedMcpServers") {
+		t.Errorf("derived = %s", raw)
+	}
+}
+
+func TestApplyConnectorSettingsFallsBackToStrictWhenTheCallerOwnsSettings(t *testing.T) {
+	t.Parallel()
+	identity := nativeIdentity{
+		Settings: "/bundle/claude-settings.json",
+		MCP:      mcpLaunch{ClaudeConfig: "/c.json", Allow: []map[string]any{{"serverUrl": "https://x.invalid"}}, Deny: []string{"t"}},
+	}
+	if err := applyConnectorSettings(io.Discard, "prod-director", t.TempDir(), []string{"--settings", "/mine.json"}, &identity); err != nil {
+		t.Fatal(err)
+	}
+	if len(identity.MCP.Allow) != 0 || len(identity.MCP.Deny) != 0 || identity.Settings != "/bundle/claude-settings.json" {
+		t.Fatalf("identity = %#v, want the grant dropped and settings untouched", identity)
+	}
+	got := nativeHarnessCommand("claude", []string{"--settings", "/mine.json"}, identity)
+	if got[1] != "--strict-mcp-config" {
+		t.Fatalf("command = %#v, want strict restored", got)
+	}
+}
+
+func TestApplyConnectorSettingsIsANoOpWithoutAGrant(t *testing.T) {
+	t.Parallel()
+	identity := nativeIdentity{Settings: "/bundle/claude-settings.json", MCP: mcpLaunch{ClaudeConfig: "/c.json"}}
+	if err := applyConnectorSettings(io.Discard, "scientist", t.TempDir(), nil, &identity); err != nil {
+		t.Fatal(err)
+	}
+	if identity.Settings != "/bundle/claude-settings.json" {
+		t.Fatalf("settings = %q, want untouched", identity.Settings)
+	}
+}

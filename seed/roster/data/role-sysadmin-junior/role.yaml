@@ -1,4 +1,10 @@
 role: sysadmin-junior
+identity:
+  name: Terrapin-Ox
+  alternates:
+    - Gecko-Ox
+    - Skink-Ox
+    - Lizard-Ox
 order: 11
 derives: sysadmin-senior
 display_name: Junior Sysadmin

@@ -31,6 +31,7 @@ import (
 	"github.com/coilyco/agent-compose/v2/internal/personpolicy"
 	"github.com/coilyco/agent-compose/v2/internal/project"
 	"github.com/coilyco/agent-compose/v2/internal/resolver"
+	"github.com/coilyco/agent-compose/v2/internal/roleslug"
 	"github.com/coilyco/agent-compose/v2/internal/roster"
 	"github.com/coilyco/agent-compose/v2/internal/schema"
 	"github.com/coilyco/agent-compose/v2/internal/skillaudit"
@@ -851,9 +852,33 @@ func runCatalogSnapshot(_ context.Context, cmd *cli.Command) error {
 	return err
 }
 
+// identityEnv picks which of a role's names this launch or card answers to.
+// A launch clears it, so a child seat picks its own: docs/identity.md.
+const identityEnv = "AGENT_COMPOSE_IDENTITY"
+
+// launchIdentity returns the name identityEnv selects for the role, or "" when
+// unset. A name outside the role's pool is an error, and the person is renamed.
+func launchIdentity(load func() (*person.Person, error), role string) (string, error) {
+	name := strings.TrimSpace(os.Getenv(identityEnv))
+	if name == "" {
+		return "", nil
+	}
+	p, err := load()
+	if err != nil {
+		return "", fmt.Errorf("%s: %w", identityEnv, err)
+	}
+	if err := p.ChooseRoleIdentity(roleslug.Canonical(role), name); err != nil {
+		return "", fmt.Errorf("%s: %w", identityEnv, err)
+	}
+	return name, nil
+}
+
 func runOverlay(_ context.Context, cmd *cli.Command) error {
 	p, _, err := loadSelectedPersonWithLibraries(cmd.String("person-source"), cmd.StringSlice("personality-library"))
 	if err != nil {
+		return err
+	}
+	if _, err := launchIdentity(func() (*person.Person, error) { return p, nil }, cmd.String("role")); err != nil {
 		return err
 	}
 	doc, err := overlay.Build(
@@ -1056,9 +1081,14 @@ func runNativeLaunch(_ context.Context, cmd *cli.Command) error {
 	}
 	if err := run.do(composition, func() (err error) {
 		omitSkills := omittedMCPSkills(os.Stderr, scopePerson(nil, personSelection), role, harness, args[2:])
+		identityName, err := launchIdentity(scopePerson(nil, personSelection), role)
+		if err != nil {
+			return err
+		}
 		result, err = nativelaunch.Refresh(nativelaunch.Options{
 			Role:              role,
 			Harness:           harness,
+			Identity:          identityName,
 			ModelTier:         os.Getenv(nativelaunch.EnvModelTier),
 			CWD:               cwd,
 			TargetDir:         cwd,
@@ -1312,6 +1342,7 @@ func nativeArgsCarry(args []string, flag string) bool {
 // nativeLaunchSelectorEnv is what a launch clears before exec, so a child seat
 // does not inherit its parent's selection.
 var nativeLaunchSelectorEnv = []string{
+	identityEnv,
 	nativelaunch.EnvModelTier,
 	"AGENT_COMPOSE_MODEL_CLASS",
 	nativelaunch.EnvRuntimeHome,

@@ -1,4 +1,10 @@
 role: eng-platform
+identity:
+  name: Beetle-Ox
+  alternates:
+    - Stag-Ox
+    - Weevil-Ox
+    - Cricket-Ox
 order: 1
 display_name: Platform Engineer
 purpose: Build and land the foundational software the rest of the estate is built on.

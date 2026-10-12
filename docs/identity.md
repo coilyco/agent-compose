@@ -76,24 +76,26 @@ compose {
 ```
 
 The `name` property is required and the node takes no arguments. Omitting the
-node keeps the role's own seat, which is what every existing request does.
+node keeps the role's own seat.
 
-### Why it exists
+A caller with its own identity would otherwise carry two, and a whole person
+package makes every roster change something the copy chases.
 
-A caller that already has an identity would otherwise carry two. One such
-caller composes `sysadmin` for its operator doctrine and answers under its own name, so
-without this its prompt introduced Vera as well, a name from a different context,
-in a lane whose policy forbids describing itself at all. The alternative was a
-whole person package, which replaces the roster as one unit: copying ten roles
-to rename one seat makes every future roster change something the copy chases.
+### A role's own names
+
+A role authors `identity` with a `name` and `alternates`, the names its second,
+third and later live instances take. They keep the family word and vary the
+first (`Turtle-Ox`, `Bison-Ox`, `Yak-Ox`), and no two roles share one. The caller
+that knows the live instances sets `AGENT_COMPOSE_IDENTITY` to one of the role's
+names for a launch or an overlay, and a name outside the pool is refused. A
+launch clears it, so a child seat picks its own.
 
 ### What it does not do
 
 It renames. Skills, methods, personalities, boundaries, and model tiers are
-untouched, and no equivalent exists for any of them. The personality meld is the
-one people ask for next and is a different shape: `role.Personalities` also
-drives the melded favorite color, the nativeui theme tokens, and a validator
-requiring exactly two on a core role. A meld is several seams, a name is one.
+untouched. The personality meld is a different shape: it also drives the melded
+favorite color, the nativeui theme tokens, and a two-per-role validator, so a
+meld is several seams and a name is one.
 
 ### The dictatable short id
 

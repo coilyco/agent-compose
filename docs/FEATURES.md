@@ -86,8 +86,8 @@ rather than only in the issue.
 
 * [Identity primitives](identity.md) give every personality a `species`, a
   `color_word`, an emblem name list, a `motif`, a `geometry`, and a prose
-  `body`. A seat's creature is derived from its meld rather than
-  authored, so two seats sharing a personality share an animal.
+  `body`. A role's creature comes from its meld, but each role authors its
+  own name and the names its extra live instances take, so none is shared.
 * [Identity renderers](statusline.md) cover the palette, overlays, the
   `acompose statusline` row, `--subagent` rows, and the
   [short id](whoami.md). [`whoami`](whoami.md) prints it. The

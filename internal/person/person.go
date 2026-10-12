@@ -96,6 +96,9 @@ type Seat struct {
 // authored override, or else the role's own creature. See resolveIdentities.
 type AgentIdentity struct {
 	Name string `json:"name" yaml:"name"`
+	// Alternates are the names later live instances take, in order. They keep
+	// the primary's family word. See docs/identity.md.
+	Alternates []string `json:"alternates,omitempty" yaml:"alternates,omitempty"`
 }
 
 type Role struct {
@@ -518,6 +521,9 @@ func resolveIdentities(p *Person) error {
 			}
 		}
 		if role.Identity != nil {
+			if err := validateAlternates(roleName, role.Identity); err != nil {
+				return err
+			}
 			for index := range role.Seats {
 				if strings.TrimSpace(role.Seats[index].Name) == "" {
 					role.Seats[index].Name = role.Identity.Name
@@ -525,6 +531,24 @@ func resolveIdentities(p *Person) error {
 			}
 		}
 		p.Roles[roleName] = role
+	}
+	return nil
+}
+
+// validateAlternates checks one role's pool: every name set, none repeated.
+// Names across roles are pinned by the shipped roster's own test.
+func validateAlternates(roleName string, identity *AgentIdentity) error {
+	seen := map[string]bool{strings.TrimSpace(identity.Name): true}
+	for index, alternate := range identity.Alternates {
+		alternate = strings.TrimSpace(alternate)
+		if alternate == "" {
+			return fmt.Errorf("role %q identity alternate %d is empty", roleName, index+1)
+		}
+		if seen[alternate] {
+			return fmt.Errorf("role %q identity name %q appears twice", roleName, alternate)
+		}
+		seen[alternate] = true
+		identity.Alternates[index] = alternate
 	}
 	return nil
 }

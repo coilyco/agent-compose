@@ -41,7 +41,8 @@ type yamlAdjacent struct {
 }
 
 type yamlIdentity struct {
-	Name string `yaml:"name,omitempty"`
+	Name       string   `yaml:"name,omitempty"`
+	Alternates []string `yaml:"alternates,omitempty"`
 }
 
 type yamlAgent struct {
@@ -239,7 +240,7 @@ func (r *yamlRoleEntity) model() Role {
 		role.Outro = &Outro{Clean: r.Outro.Clean, Failure: r.Outro.Failure}
 	}
 	if r.Identity != nil {
-		role.Identity = &AgentIdentity{Name: r.Identity.Name}
+		role.Identity = &AgentIdentity{Name: r.Identity.Name, Alternates: r.Identity.Alternates}
 	}
 	for _, scoped := range r.ScopedBoundaries {
 		role.ScopedBoundaries = append(role.ScopedBoundaries,

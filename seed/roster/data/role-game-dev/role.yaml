@@ -1,4 +1,10 @@
 role: game-dev
+identity:
+  name: Whale-Dragonfly
+  alternates:
+    - Orca-Dragonfly
+    - Narwhal-Dragonfly
+    - Dolphin-Dragonfly
 order: 5
 display_name: Game Developer
 purpose: 'Ship playable games: the code, the assets, and the build that carries both.'

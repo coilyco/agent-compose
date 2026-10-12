@@ -70,15 +70,27 @@ func prefixed(prefix string, names ...string) []string {
 // SelectWith is Select with an explicit connector table, so a test needs no shipped one.
 func (inv *Inventory) SelectWith(role string, table []Connector) Selection {
 	sel := inv.selectServers(role)
+	sel.connectors = grantedFrom(sel.Role, table)
+	return sel
+}
+
+// GrantedConnectors are the shipped connectors a role holds, with no inventory read. The
+// launch spec hands them to a launcher that renders the allowlist itself.
+func GrantedConnectors(role string) []Connector {
+	return grantedFrom(roleslug.Canonical(role), claudeAIConnectors)
+}
+
+func grantedFrom(role string, table []Connector) []Connector {
+	var out []Connector
 	for _, c := range table {
 		for _, tag := range c.Roles {
-			if roleslug.Canonical(tag) == sel.Role {
-				sel.connectors = append(sel.connectors, c)
+			if roleslug.Canonical(tag) == role {
+				out = append(out, c)
 				break
 			}
 		}
 	}
-	return sel
+	return out
 }
 
 // Connectors are the claude.ai connectors the role is granted.

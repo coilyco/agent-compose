@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/coilyco/agent-compose/v2/internal/launch"
+	"github.com/coilyco/agent-compose/v2/internal/mcpscope"
 	"github.com/coilyco/agent-compose/v2/internal/nativelaunch"
 )
 
@@ -28,6 +29,25 @@ type launchSpec struct {
 	RuntimeHome  string            `json:"runtime_home"`
 	EnvSet       map[string]string `json:"env_set"`
 	EnvUnset     []string          `json:"env_unset"`
+	// ClaudeAIConnectors: the role's grants from mcpscope, Claude only.
+	ClaudeAIConnectors []specConnector `json:"claude_ai_connectors"`
+}
+
+// specConnector is one granted connector: its URL and the tool names kept denied.
+type specConnector struct {
+	URL  string   `json:"url"`
+	Deny []string `json:"deny"`
+}
+
+func specConnectors(role, harness string) []specConnector {
+	out := []specConnector{}
+	if harness != "claude" {
+		return out
+	}
+	for _, c := range mcpscope.GrantedConnectors(role) {
+		out = append(out, specConnector{URL: c.URL, Deny: append([]string{}, c.Deny...)})
+	}
+	return out
 }
 
 // buildLaunchSpec records the environment the exec path would have applied, so
@@ -59,6 +79,8 @@ func buildLaunchSpec(role, harness, runtimeHome string, childDepth int, result *
 		RuntimeHome:  runtimeHome,
 		EnvSet:       env,
 		EnvUnset:     append([]string(nil), nativeLaunchSelectorEnv...),
+
+		ClaudeAIConnectors: specConnectors(role, harness),
 	}
 }
 

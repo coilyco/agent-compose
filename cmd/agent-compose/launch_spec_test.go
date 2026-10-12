@@ -9,6 +9,7 @@ import (
 
 	"github.com/coilyco/agent-compose/v2/internal/compose"
 	"github.com/coilyco/agent-compose/v2/internal/launch"
+	"github.com/coilyco/agent-compose/v2/internal/mcpscope"
 	"github.com/coilyco/agent-compose/v2/internal/nativelaunch"
 	"github.com/coilyco/agent-compose/v2/internal/resolver"
 )
@@ -116,5 +117,38 @@ func TestParseNativeLaunchFlagsReadsNoPause(t *testing.T) {
 	}
 	if _, _, noPause, _ := parseNativeLaunchFlags([]string{"scientist", "claude"}); noPause {
 		t.Fatal("no flag must mean the gate still pauses")
+	}
+}
+
+// The spec hands a launcher the shipped grant rows, so the launcher keeps no copy.
+func TestLaunchSpecCarriesTheRolesClaudeAIConnectors(t *testing.T) {
+	t.Parallel()
+	spec := buildLaunchSpec("prod-director", "claude", "", 0, &nativelaunch.Result{})
+	want := mcpscope.GrantedConnectors("prod-director")
+	if len(want) == 0 {
+		t.Fatal("prod-director is granted no shipped connector, so the fixture proves nothing")
+	}
+	if len(spec.ClaudeAIConnectors) != len(want) {
+		t.Fatalf("connectors = %v, want %d rows", spec.ClaudeAIConnectors, len(want))
+	}
+	for i, c := range want {
+		if spec.ClaudeAIConnectors[i].URL != c.URL || !reflect.DeepEqual(append([]string{}, c.Deny...), spec.ClaudeAIConnectors[i].Deny) {
+			t.Errorf("row %d = %v, want url %s deny %v", i, spec.ClaudeAIConnectors[i], c.URL, c.Deny)
+		}
+	}
+}
+
+func TestLaunchSpecConnectorsAreEmptyNeverNull(t *testing.T) {
+	t.Parallel()
+	for name, spec := range map[string]launchSpec{
+		"ungranted role": buildLaunchSpec("scientist", "claude", "", 0, &nativelaunch.Result{}),
+		"other harness":  buildLaunchSpec("prod-director", "codex", "", 0, &nativelaunch.Result{}),
+	} {
+		raw, _ := json.Marshal(spec)
+		var decoded map[string]any
+		_ = json.Unmarshal(raw, &decoded)
+		if rows, ok := decoded["claude_ai_connectors"].([]any); !ok || len(rows) != 0 {
+			t.Errorf("%s: claude_ai_connectors = %#v, want an empty array", name, decoded["claude_ai_connectors"])
+		}
 	}
 }

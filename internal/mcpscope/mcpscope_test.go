@@ -152,11 +152,10 @@ func TestGooseArgsRenderInTheGrammarGooseSplits(t *testing.T) {
 	}
 }
 
-// A header or a working directory has no goose flag, and dropping it silently
-// would launch a server without its auth or in the wrong place.
+// A working directory has no goose flag, and dropping it silently would launch a
+// server in the wrong place.
 func TestGooseArgsRefuseWhatGooseCannotCarry(t *testing.T) {
 	for _, body := range []string{
-		`{"mcpServers": {"r": {"url": "https://x/mcp", "headers": {"Authorization": "t"}}}}`,
 		`{"mcpServers": {"c": {"command": "tool", "cwd": "/srv"}}}`,
 		`{"mcpServers": {"q": {"command": "tool", "args": ["it's \"both\""]}}}`,
 	} {
@@ -322,5 +321,30 @@ func TestWriteSettingsStartsEmptyWithoutABaseAndRefusesABrokenOne(t *testing.T) 
 	}
 	if _, err := WriteSettings(dir, "eng-platform", broken, nil, nil); err == nil || !strings.Contains(err.Error(), "broken.json") {
 		t.Errorf("err = %v, want the broken file named", err)
+	}
+}
+
+// A header has no goose flag. The server is left out whole, never mounted without its
+// auth, and named so the launch can say so (COI-2639).
+func TestGooseLeavesOutAServerThatNeedsHeadersAndNamesIt(t *testing.T) {
+	body := `{"mcpServers": {
+		"authed": {"url": "https://x/mcp", "headers": {"Authorization": "t"}},
+		"plain": {"url": "https://y/mcp"},
+		"local": {"command": "tool"}}}`
+	inv, err := Load(write(t, body), roster)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sel := inv.Select("eng-platform")
+	args, err := sel.GooseArgs(nil, "/home/k")
+	if err != nil {
+		t.Fatalf("a header server must not refuse the launch: %v", err)
+	}
+	joined := strings.Join(args, " ")
+	if strings.Contains(joined, "https://x/mcp") || !strings.Contains(joined, "https://y/mcp") || !strings.Contains(joined, "tool") {
+		t.Errorf("args = %v, want the plain and local servers and not the authed one", args)
+	}
+	if got := sel.GooseOmitted(); len(got) != 1 || got[0] != "authed" {
+		t.Errorf("omitted = %v, want [authed]", got)
 	}
 }

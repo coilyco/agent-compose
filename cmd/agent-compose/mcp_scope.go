@@ -89,6 +89,9 @@ func nativeMCPScope(w io.Writer, loadPerson func() (*person.Person, error), role
 			return mcpLaunch{}, err
 		}
 		gooseArgs, err := sel.GooseArgs(keep, home)
+		if omitted := sel.GooseOmitted(); err == nil && len(omitted) > 0 {
+			fmt.Fprintf(w, "agent-compose: goose cannot pass headers, so not mounted: %s\n", strings.Join(omitted, ", "))
+		}
 		return mcpLaunch{GooseArgs: gooseArgs}, err
 	case "opencode":
 		content, err := sel.OpenCodeConfig(home)

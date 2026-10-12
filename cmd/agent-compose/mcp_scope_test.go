@@ -232,3 +232,32 @@ func TestApplyConnectorSettingsIsANoOpWithoutAGrant(t *testing.T) {
 		t.Fatalf("settings = %q, want untouched", identity.Settings)
 	}
 }
+
+// A goose seat whose inventory carries a header server launches without it, and the
+// launch says which. COI-2639
+func TestGooseSeatLaunchesWithoutAHeaderServerAndNamesIt(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("AOS_NATIVE_CANONICAL_HOME", home)
+	t.Setenv("XDG_CONFIG_HOME", "")
+	if err := os.MkdirAll(filepath.Join(home, ".mcporter"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	inventory := `{"mcpServers": {
+		"shared": {"command": "npx"},
+		"authed_linear": {"baseUrl": "https://x.invalid/mcp", "headers": {"Authorization": "t"}}
+	}}`
+	if err := os.WriteFile(filepath.Join(home, ".mcporter", "mcporter.json"), []byte(inventory), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	var out strings.Builder
+	got, err := nativeMCPScope(&out, person.Load, "eng-platform", "goose", t.TempDir(), nil)
+	if err != nil {
+		t.Fatalf("a header server must not refuse a goose launch: %v", err)
+	}
+	if joined := strings.Join(got.GooseArgs, " "); strings.Contains(joined, "x.invalid") || !strings.Contains(joined, "npx") {
+		t.Fatalf("goose args = %v, want the stdio server and not the header one", got.GooseArgs)
+	}
+	if !strings.Contains(out.String(), "goose cannot pass headers, so not mounted: authed_linear") {
+		t.Fatalf("the launch should name what it left out:\n%s", out.String())
+	}
+}

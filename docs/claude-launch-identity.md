@@ -99,8 +99,8 @@ the launch with that slug.
   registry is a shared host file.
 * Goose gets `session --no-profile`, its own config's enabled builtin and platform
   extensions by `--with-builtin`, and each selected server by `--with-extension`
-  or `--with-streamable-http-extension`. A header or working directory it cannot
-  carry refuses, and a resume keeps the set its session recorded.
+  or `--with-streamable-http-extension`. A server needing headers is left out and named
+  in a warning, a working directory it cannot carry refuses, and a resume keeps the set.
 * OpenCode gets `OPENCODE_CONFIG_CONTENT`, merged over its other layers, defining
   each selected server and setting `enabled: false` on each omitted one.
 * The bundle drops each omitted server's `mcp-tools-<server>` skill, composed ahead of this step.

@@ -244,6 +244,18 @@ func sortedNames(servers map[string]Server) []string {
 	return names
 }
 
+// GooseOmitted names the selected servers goose cannot reach, because its flag carries a
+// URL and no header. The launch warns with them. COI-2639
+func (sel Selection) GooseOmitted() []string {
+	var names []string
+	for _, name := range sel.Selected {
+		if s := sel.servers[name]; serverEndpoint(s) != "" && len(s.Headers) > 0 {
+			names = append(names, name)
+		}
+	}
+	return names
+}
+
 // GooseArgs replaces goose's configured extensions for one session with the
 // role's servers, keeping the builtin and platform extensions named in keep.
 func (sel Selection) GooseArgs(keep []string, home string) ([]string, error) {
@@ -254,9 +266,9 @@ func (sel Selection) GooseArgs(keep []string, home string) ([]string, error) {
 	for _, name := range sel.Selected {
 		s := sel.servers[name]
 		if endpoint := serverEndpoint(s); endpoint != "" {
-			// The flag takes a URL alone, so a header would be dropped silently.
+			// The flag takes a URL alone, so a server needing headers is left out.
 			if len(s.Headers) > 0 {
-				return nil, fmt.Errorf("mcpscope: goose cannot pass headers for %q", name)
+				continue
 			}
 			args = append(args, "--with-streamable-http-extension", homeExpander(home)(endpoint))
 			continue

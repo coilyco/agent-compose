@@ -417,3 +417,47 @@ func TestGooseLeavesOutAServerThatNeedsHeadersAndNamesIt(t *testing.T) {
 		t.Errorf("omitted = %v, want [authed]", got)
 	}
 }
+
+func shippedConnector(t *testing.T, url string) Connector {
+	t.Helper()
+	for _, c := range claudeAIConnectors {
+		if c.URL == url {
+			return c
+		}
+	}
+	t.Fatalf("%s is not in the shipped table", url)
+	return Connector{}
+}
+
+func TestWisprFlowIsProdDirectorOnlyWithNothingDenied(t *testing.T) {
+	c := shippedConnector(t, "https://api.wisprflow.ai/connect/mcp")
+	if len(c.Roles) != 1 || c.Roles[0] != "prod-director" {
+		t.Errorf("Wispr Flow roles = %v, want prod-director only", c.Roles)
+	}
+	if len(c.Deny) != 0 {
+		t.Errorf("Wispr Flow is read-only per its docs, but denies %v", c.Deny)
+	}
+}
+
+func TestWolframDeniesTheWritesUnderBothSpellingsAndKeepsTheEvaluators(t *testing.T) {
+	c := shippedConnector(t, "https://agenttools.wolfram.com/mcp")
+	if len(c.Roles) != 1 || c.Roles[0] != "prod-director" {
+		t.Errorf("Wolfram roles = %v, want prod-director only", c.Roles)
+	}
+	denied := map[string]bool{}
+	for _, name := range c.Deny {
+		denied[name] = true
+	}
+	for _, prefix := range []string{"mcp__claude_ai_Wolfram__", "mcp__claude_ai_Wolfram_Alpha__"} {
+		for _, tool := range []string{"WriteNotebook", "SubmitPaclet"} {
+			if !denied[prefix+tool] {
+				t.Errorf("%s%s is not denied", prefix, tool)
+			}
+		}
+		for _, tool := range []string{"WolframAlpha", "WolframContext", "WolframLanguageEvaluator"} {
+			if denied[prefix+tool] {
+				t.Errorf("%s%s is denied, which blinds the grant", prefix, tool)
+			}
+		}
+	}
+}

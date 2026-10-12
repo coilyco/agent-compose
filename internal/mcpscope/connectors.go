@@ -25,6 +25,9 @@ const (
 	stripeTool    = "mcp__claude_ai_Stripe__"
 	honeycombTool = "mcp__claude_ai_Honeycomb__"
 	dexTool       = "mcp__claude_ai_Dex__"
+	wolframTool   = "mcp__claude_ai_Wolfram__"
+	// The connector's display name is not confirmed on a seat, so deny under both spellings.
+	wolframAlphaTool = "mcp__claude_ai_Wolfram_Alpha__"
 )
 
 var claudeAIConnectors = []Connector{
@@ -48,6 +51,12 @@ var claudeAIConnectors = []Connector{
 		"dex_delete_group", "dex_remove_contacts_from_group", "dex_create_custom_field",
 		"dex_update_custom_field", "dex_delete_custom_field", "dex_set_custom_field_values",
 		"dex_create_calendar_event", "dex_update_calendar_event", "dex_delete_calendar_event")},
+	// Wispr Flow's MCP is read-only per its docs, so nothing is denied. COI-2772
+	{URL: "https://api.wisprflow.ai/connect/mcp", Roles: []string{"prod-director"}},
+	// Wolfram: the notebook and paclet writes stay out, the evaluators stay in. COI-2772
+	{URL: "https://agenttools.wolfram.com/mcp", Roles: []string{"prod-director"}, Deny: append(
+		prefixed(wolframTool, "WriteNotebook", "SubmitPaclet"),
+		prefixed(wolframAlphaTool, "WriteNotebook", "SubmitPaclet")...)},
 }
 
 func prefixed(prefix string, names ...string) []string {

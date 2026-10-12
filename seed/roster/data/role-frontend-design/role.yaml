@@ -1,4 +1,10 @@
 role: frontend-design
+identity:
+  name: Brownie-Dragonfly
+  alternates:
+    - Puck-Dragonfly
+    - Elf-Dragonfly
+    - Wisp-Dragonfly
 order: 17
 derives: frontend-eng
 display_name: Front-end Designer

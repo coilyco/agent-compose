@@ -1,4 +1,10 @@
 role: eng-junior
+identity:
+  name: Mole-Ox
+  alternates:
+    - Shrew-Ox
+    - Vole-Ox
+    - Stoat-Ox
 order: 14
 derives: eng-platform
 display_name: Junior Engineer

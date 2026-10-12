@@ -21,11 +21,53 @@ func (p *Person) OverrideRoleIdentity(roleName, name string) error {
 	if !ok {
 		return fmt.Errorf("override role identity: role %q is not defined", roleName)
 	}
-	role.Identity = &AgentIdentity{Name: name}
+	var alternates []string
+	if role.Identity != nil {
+		alternates = role.Identity.Alternates
+	}
+	role.Identity = &AgentIdentity{Name: name, Alternates: alternates}
 	for index := range role.Seats {
 		role.Seats[index].Name = name
 	}
 	// Roles is a map of structs, so the local copy has to be stored back.
+	p.Roles[roleName] = role
+	return nil
+}
+
+// RoleIdentityNames is every name a role may answer to, primary first: the
+// names its live instances take in turn.
+func (p *Person) RoleIdentityNames(roleName string) []string {
+	names := []string{p.RoleIdentityName(roleName)}
+	if role, ok := p.Roles[roleName]; ok && role.Identity != nil {
+		names = append(names, role.Identity.Alternates...)
+	}
+	return names
+}
+
+// ChooseRoleIdentity renames a role's seat to one of its own declared names.
+// A stamp must say who sent a message, so a name outside the pool is refused.
+func (p *Person) ChooseRoleIdentity(roleName, name string) error {
+	name = strings.TrimSpace(name)
+	pool := p.RoleIdentityNames(roleName)
+	var others []string
+	found := false
+	for _, candidate := range pool {
+		if candidate == name {
+			found = true
+			continue
+		}
+		others = append(others, candidate)
+	}
+	if !found {
+		return fmt.Errorf("choose role identity: %q is not one of %s's names (%s)",
+			name, roleName, strings.Join(pool, ", "))
+	}
+	if err := p.OverrideRoleIdentity(roleName, name); err != nil {
+		return err
+	}
+	// The pool stays the same set: the old primary becomes an alternate.
+	role := p.Roles[roleName]
+	role.Identity.Alternates = others
 	p.Roles[roleName] = role
 	return nil
 }

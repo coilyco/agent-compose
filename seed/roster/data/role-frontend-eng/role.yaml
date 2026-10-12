@@ -1,4 +1,10 @@
 role: frontend-eng
+identity:
+  name: Imp-Dragonfly
+  alternates:
+    - Sprite-Dragonfly
+    - Pixie-Dragonfly
+    - Gnome-Dragonfly
 order: 4
 display_name: Frontend Engineer
 purpose: Shape and build the surfaces a person navigates.

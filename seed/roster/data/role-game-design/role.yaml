@@ -1,4 +1,10 @@
 role: game-design
+identity:
+  name: Porpoise-Dragonfly
+  alternates:
+    - Manatee-Dragonfly
+    - Beluga-Dragonfly
+    - Seal-Dragonfly
 order: 16
 derives: game-dev
 display_name: Game Designer

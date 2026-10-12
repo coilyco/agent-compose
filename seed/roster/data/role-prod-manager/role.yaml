@@ -1,4 +1,10 @@
 role: prod-manager
+identity:
+  name: Heron-Goose
+  alternates:
+    - Egret-Goose
+    - Crane-Goose
+    - Stork-Goose
 order: 12
 derives: prod-director
 display_name: Project Manager

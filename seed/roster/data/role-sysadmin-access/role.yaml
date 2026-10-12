@@ -1,4 +1,10 @@
 role: sysadmin-access
+identity:
+  name: Badger-Ox
+  alternates:
+    - Wombat-Ox
+    - Marmot-Ox
+    - Mink-Ox
 order: 13
 derives: sysadmin-senior
 display_name: Access Sysadmin

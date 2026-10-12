@@ -58,7 +58,10 @@ type Options struct {
 	PlanPath        string
 	OutDir          string
 	PersonSelection compose.Options
-	SkipProjection  bool
+	// Identity renames the seat to one of the role's own names, chosen by the
+	// caller that knows which instances are live. Empty keeps the primary.
+	Identity       string
+	SkipProjection bool
 	// OmitSkills are ordinary skills left out of the bundle, so a seat's home
 	// holds no tool reference for an MCP server its launch omits. COI-2121
 	OmitSkills []string
@@ -121,6 +124,9 @@ func Refresh(opts Options) (*Result, error) {
 		Delivery:     schema.DeliveryNativeSkills,
 		ModelTier:    modelTier,
 		Repositories: repositories,
+	}
+	if name := strings.TrimSpace(opts.Identity); name != "" {
+		request.Identity = &schema.IdentityOverride{Name: name}
 	}
 	selection := opts.PersonSelection
 	selection.OperatingBase = opts.OperatingBase

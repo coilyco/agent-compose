@@ -1,4 +1,10 @@
 role: sysadmin-senior
+identity:
+  name: Turtle-Ox
+  alternates:
+    - Bison-Ox
+    - Yak-Ox
+    - Tortoise-Ox
 order: 2
 display_name: Senior Sysadmin
 purpose: Operate the real hosted systems and release surfaces.

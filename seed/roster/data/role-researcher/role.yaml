@@ -1,4 +1,10 @@
 role: researcher
+identity:
+  name: Tadpole-Ox
+  alternates:
+    - Axolotl-Ox
+    - Pika-Ox
+    - Hare-Ox
 order: 15
 derives: scientist
 display_name: Researcher

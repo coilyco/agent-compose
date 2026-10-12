@@ -324,6 +324,75 @@ func TestWriteSettingsStartsEmptyWithoutABaseAndRefusesABrokenOne(t *testing.T) 
 	}
 }
 
+// The shipped table is config, so this checks its shape, not its rows. A deny outside
+// a connector's own prefix, or a repeated one, would leave a grant leaky. COI-2772
+func TestShippedConnectorsDenyOnlyWritesUnderTheirOwnPrefix(t *testing.T) {
+	for _, c := range claudeAIConnectors {
+		seen := map[string]bool{}
+		for _, name := range c.Deny {
+			if !strings.HasPrefix(name, "mcp__claude_ai_") {
+				t.Errorf("%s denies %q, which is not a claude.ai connector tool", c.URL, name)
+			}
+			if seen[name] {
+				t.Errorf("%s denies %q twice", c.URL, name)
+			}
+			seen[name] = true
+		}
+	}
+}
+
+func TestDexIsGrantedToProdDirectorOnlyAndNeverDeniesAReadOrTheCleanupVerbs(t *testing.T) {
+	var dex *Connector
+	for i := range claudeAIConnectors {
+		if claudeAIConnectors[i].URL == "https://mcp.getdex.com/mcp" {
+			dex = &claudeAIConnectors[i]
+		}
+	}
+	if dex == nil {
+		t.Fatal("the Dex connector is not in the shipped table")
+	}
+	if len(dex.Roles) != 1 || dex.Roles[0] != "prod-director" {
+		t.Errorf("Dex roles = %v, want prod-director only", dex.Roles)
+	}
+	denied := map[string]bool{}
+	for _, name := range dex.Deny {
+		denied[name] = true
+	}
+	// The cleanup verbs prod-director needs, and the calendar writes that invite people.
+	for _, tool := range []string{"merge_contacts", "update_contact", "delete_contacts", "create_tag", "add_tags_to_contacts", "create_group", "add_contacts_to_group"} {
+		if denied["mcp__claude_ai_Dex__dex_"+tool] {
+			t.Errorf("Dex denies %s, which the cleanup needs", tool)
+		}
+	}
+	if !denied["mcp__claude_ai_Dex__dex_create_calendar_event"] {
+		t.Error("Dex lets the seat create calendar events, which invite attendees")
+	}
+	for _, name := range dex.Deny {
+		tool := strings.TrimPrefix(name, "mcp__claude_ai_Dex__dex_")
+		if tool == name {
+			t.Errorf("%q is not a Dex tool", name)
+		}
+		for _, read := range []string{"search", "filter", "list", "get"} {
+			if strings.HasPrefix(tool, read+"_") {
+				t.Errorf("Dex denies the read tool %q", name)
+			}
+		}
+	}
+	inv := &Inventory{Servers: map[string]Server{}}
+	found := false
+	for _, c := range inv.Select("prod-director").Connectors() {
+		found = found || c.URL == dex.URL
+	}
+	if !found {
+		t.Error("a prod-director selection does not carry the Dex connector")
+	}
+	for _, c := range inv.Select("scientist").Connectors() {
+		if c.URL == dex.URL {
+			t.Error("a scientist selection carries the Dex connector")
+		}
+	}
+}
+
 // A header has no goose flag. The server is left out whole, never mounted without its
 // auth, and named so the launch can say so (COI-2639).
 func TestGooseLeavesOutAServerThatNeedsHeadersAndNamesIt(t *testing.T) {

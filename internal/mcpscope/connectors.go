@@ -24,6 +24,7 @@ const (
 	slackTool     = "mcp__claude_ai_Slack__"
 	stripeTool    = "mcp__claude_ai_Stripe__"
 	honeycombTool = "mcp__claude_ai_Honeycomb__"
+	dexTool       = "mcp__claude_ai_Dex__"
 )
 
 var claudeAIConnectors = []Connector{
@@ -38,6 +39,15 @@ var claudeAIConnectors = []Connector{
 		"create_board", "create_marker", "create_recipient", "create_trigger", "update_board", "update_trigger",
 		"record_onboarding_state")},
 	{URL: "https://comment.io/mcp", Roles: []string{"prod-director"}},
+	// Dex admits the COI-2788 cleanup: merge, update, archive and delete contacts, add tags
+	// and groups. Removing tags or groups, notes, reminders and calendar writes stay out.
+	{URL: "https://mcp.getdex.com/mcp", Roles: []string{"prod-director"}, Deny: prefixed(dexTool,
+		"dex_create_contact", "dex_complete_keep_in_touch", "dex_create_note", "dex_update_note",
+		"dex_delete_note", "dex_create_reminder", "dex_update_reminder", "dex_delete_reminder",
+		"dex_update_tag", "dex_delete_tag", "dex_remove_tags_from_contacts", "dex_update_group",
+		"dex_delete_group", "dex_remove_contacts_from_group", "dex_create_custom_field",
+		"dex_update_custom_field", "dex_delete_custom_field", "dex_set_custom_field_values",
+		"dex_create_calendar_event", "dex_update_calendar_event", "dex_delete_calendar_event")},
 }
 
 func prefixed(prefix string, names ...string) []string {

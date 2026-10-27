@@ -461,3 +461,65 @@ func TestWolframDeniesTheWritesUnderBothSpellingsAndKeepsTheEvaluators(t *testin
 		}
 	}
 }
+
+// The fixture is the tool set Claude Docs advertises, not a copy of the row. Rendered
+// settings must deny all but read and query. A tool added later needs a fixture entry.
+func TestClaudeDocsRendersAsReadAndQueryOnlyForProdDirector(t *testing.T) {
+	const url = "https://api.anthropic.com/v1/pages/mcp"
+	const prefix = "mcp__claude_ai_Claude_Docs__"
+	advertised := []string{"batch", "create", "delete", "export", "guide", "query", "read", "update"}
+	readable := map[string]bool{"read": true, "query": true}
+
+	inv := &Inventory{Servers: map[string]Server{}}
+	sel := inv.Select("prod-director")
+	listed := false
+	for _, entry := range sel.Allowlist("/home/k") {
+		listed = listed || entry["serverUrl"] == url
+	}
+	if !listed {
+		t.Fatalf("prod-director allowlist = %v, want %s", sel.Allowlist("/home/k"), url)
+	}
+
+	path, err := WriteSettings(t.TempDir(), "prod-director", "", sel.Allowlist("/home/k"), sel.DeniedTools())
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rendered struct {
+		Permissions struct {
+			Deny []string `json:"deny"`
+		} `json:"permissions"`
+	}
+	if err := json.Unmarshal(raw, &rendered); err != nil {
+		t.Fatal(err)
+	}
+	denied := map[string]bool{}
+	for _, rule := range rendered.Permissions.Deny {
+		denied[rule] = true
+	}
+	for _, tool := range advertised {
+		if readable[tool] && denied[prefix+tool] {
+			t.Errorf("%s%s is denied, which blinds the grant", prefix, tool)
+		}
+		if !readable[tool] && !denied[prefix+tool] {
+			t.Errorf("%s%s is not denied", prefix, tool)
+		}
+	}
+
+	for _, role := range []string{"scientist", "eng-platform", "sysadmin-senior"} {
+		other := inv.Select(role)
+		for _, entry := range other.Allowlist("/home/k") {
+			if entry["serverUrl"] == url {
+				t.Errorf("%s allowlist carries Claude Docs", role)
+			}
+		}
+		for _, rule := range other.DeniedTools() {
+			if strings.HasPrefix(rule, prefix) {
+				t.Errorf("%s denies %s without holding the grant", role, rule)
+			}
+		}
+	}
+}

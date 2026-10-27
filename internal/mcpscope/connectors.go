@@ -21,11 +21,12 @@ type Connector struct {
 }
 
 const (
-	slackTool     = "mcp__claude_ai_Slack__"
-	stripeTool    = "mcp__claude_ai_Stripe__"
-	honeycombTool = "mcp__claude_ai_Honeycomb__"
-	dexTool       = "mcp__claude_ai_Dex__"
-	wolframTool   = "mcp__claude_ai_Wolfram__"
+	slackTool      = "mcp__claude_ai_Slack__"
+	stripeTool     = "mcp__claude_ai_Stripe__"
+	honeycombTool  = "mcp__claude_ai_Honeycomb__"
+	dexTool        = "mcp__claude_ai_Dex__"
+	wolframTool    = "mcp__claude_ai_Wolfram__"
+	claudeDocsTool = "mcp__claude_ai_Claude_Docs__"
 	// The connector's display name is not confirmed on a seat, so deny under both spellings.
 	wolframAlphaTool = "mcp__claude_ai_Wolfram_Alpha__"
 )
@@ -57,6 +58,10 @@ var claudeAIConnectors = []Connector{
 	{URL: "https://agenttools.wolfram.com/mcp", Roles: []string{"prod-director"}, Deny: append(
 		prefixed(wolframTool, "WriteNotebook", "SubmitPaclet"),
 		prefixed(wolframAlphaTool, "WriteNotebook", "SubmitPaclet")...)},
+	// Claude Docs is read and query only. Every other tool the connector advertises stays
+	// denied, guide and export included, so widening it is its own decision.
+	{URL: "https://api.anthropic.com/v1/pages/mcp", Roles: []string{"prod-director"}, Deny: prefixed(claudeDocsTool,
+		"batch", "create", "delete", "export", "guide", "update")},
 }
 
 func prefixed(prefix string, names ...string) []string {

@@ -8,7 +8,7 @@ the roster, runs against one subject, and is graded by a human.
 **`evalkit`** is the Python runner, in this repository. It runs the subject against `challenges.yaml`
 and writes the dataset. It left housecast under housecast#7961.
 
-**`housecast.grade`** is the grading half, shipped from `coilyco-flight-deck/housecast` under that
+**`housecast.grade`** is the grading half, shipped from `coilyco/housecast` under that
 package's `eval` extra so the pairing rule has one home. It holds no runner and no model client, so
 grading never spends a token and never touches a deployed system. Run `housecast grade help` for the
 exhaustive reference. a deployed lane grades through it too, against a live harness rather than a composed
@@ -109,7 +109,7 @@ that config is managed by agentic-os and a hand-added hook is lost on the next s
 * [Eval references](eval-references.md) - six external reference points, with notes on [the
   papers](eval-ref-papers.md) and [the platforms](eval-ref-platforms.md). Inspect is adopted for the run
   leg, nothing was adopted for grading, and those pages say why.
-* [housecast grading](https://forgejo.coilysiren.me/coilyco-flight-deck/housecast/src/branch/main/docs/grading.md)
+* [housecast grading](https://github.com/coilyco/housecast/blob/main/docs/grading.md)
   - the shared grading layer, its profile contract, and the probe layer under it.
 * [Deleting the Mechanical Scorer](https://coilysiren.me/posts/deleting-the-mechanical-scorer/) - the
   measurement that retired the discriminator tier, and why a rule written twice was the one extracted.

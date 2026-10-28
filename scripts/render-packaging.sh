@@ -4,9 +4,12 @@
 set -e
 VERSION="$(git describe --tags --exact-match)"
 BARE="${VERSION#v}"
-BASE="https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases/download/${VERSION}"
+# go.mod owns the slug, as in the release workflow's other readers of it.
+REPO="${RELEASE_REPO:-$(sed -n 's|^module github\.com/\([^/]*/[^/]*\).*|\1|p' "${GO_MOD:-go.mod}")}"
+: "${REPO:?RELEASE_REPO is unset and go.mod names no github.com module}"
+BASE="https://github.com/${REPO}/releases/download/${VERSION}"
 
-sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
+sha() { { shasum -a 256 "$1" 2>/dev/null || sha256sum "$1"; } | cut -d' ' -f1; }
 DARWIN_ARM64="$(sha dist/agent-compose-darwin-arm64)"
 LINUX_AMD64="$(sha dist/agent-compose-linux-amd64)"
 LINUX_ARM64="$(sha dist/agent-compose-linux-arm64)"
@@ -15,41 +18,39 @@ ROSTER="$(sha dist/agent-compose-roster.tar.gz)"
 BUNDLES="$(sha dist/agent-compose-bundles.tar.gz)"
 
 cat > dist/agent-compose.rb <<EOF
-require_relative "../lib/tailnet_download_strategy"
-
 class AgentCompose < Formula
   desc "Core Roster context composition for native agent harnesses"
-  homepage "https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose"
+  homepage "https://github.com/${REPO}"
   version "${BARE}"
   license "MIT"
 
   # The seed roster installs into the prefix. acompose prefers an editable
   # roster in the state directory, so an upgrade never overwrites one.
   resource "roster" do
-    url "${BASE}/agent-compose-roster.tar.gz", using: TailnetCurlDownloadStrategy
+    url "${BASE}/agent-compose-roster.tar.gz"
     sha256 "${ROSTER}"
   end
 
   # housecast composes at build time and never runs here, so the composed set
   # ships rather than the data behind it.
   resource "bundles" do
-    url "${BASE}/agent-compose-bundles.tar.gz", using: TailnetCurlDownloadStrategy
+    url "${BASE}/agent-compose-bundles.tar.gz"
     sha256 "${BUNDLES}"
   end
 
   on_macos do
     on_arm do
-      url "${BASE}/agent-compose-darwin-arm64", using: TailnetCurlDownloadStrategy
+      url "${BASE}/agent-compose-darwin-arm64"
       sha256 "${DARWIN_ARM64}"
     end
   end
   on_linux do
     on_intel do
-      url "${BASE}/agent-compose-linux-amd64", using: TailnetCurlDownloadStrategy
+      url "${BASE}/agent-compose-linux-amd64"
       sha256 "${LINUX_AMD64}"
     end
     on_arm do
-      url "${BASE}/agent-compose-linux-arm64", using: TailnetCurlDownloadStrategy
+      url "${BASE}/agent-compose-linux-arm64"
       sha256 "${LINUX_ARM64}"
     end
   end
@@ -73,7 +74,7 @@ cat > dist/agent-compose.json <<EOF
 {
     "version": "${BARE}",
     "description": "Core Roster context composition for native agent harnesses",
-    "homepage": "https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose",
+    "homepage": "https://github.com/${REPO}",
     "license": "MIT",
     "architecture": {
         "64bit": {
@@ -92,8 +93,7 @@ cat > dist/agent-compose.json <<EOF
                 ["agent-compose-windows-amd64.exe", "acompose", "compose"]
             ]
         }
-    },
-    "pre_install": "\$c = New-Object Net.Sockets.TcpClient; try { if (-not \$c.ConnectAsync('forgejo.coilysiren.me', 443).Wait(3000)) { throw 'timeout' } } catch { throw 'agent-compose is only available on the coilyco tailnet. If you''re on the tailnet and have access, connect and retry. If you''re the general public, you don''t have access to this.' } finally { \$c.Dispose() }"
+    }
 }
 EOF
 

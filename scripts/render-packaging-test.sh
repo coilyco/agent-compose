@@ -100,6 +100,16 @@ if [ "$urls" -ne "$public" ] || [ "$urls" -lt 5 ]; then
   echo "render-packaging-test: $public of $urls formula downloads are public GitHub URLs" >&2
   exit 1
 fi
+# Homebrew loads every tap formula under all 16 OS and arch combinations, and a
+# macOS section behind on_arm leaves Intel macOS with no URL: COI-3049.
+if awk '/on_macos do/{m=1} m&&/on_(arm|intel) do/{bad=1} m&&/^  end/{m=0} END{exit !bad}' "$formula"; then
+  echo "render-packaging-test: on_macos must carry the url directly, not behind on_arm" >&2
+  exit 1
+fi
+if ! awk '/on_macos do/{m=1} m&&/depends_on arch: :arm64/{a=1} m&&/^ *url "/{u=1} m&&/^  end/{m=0} END{exit !(a&&u)}' "$formula"; then
+  echo "render-packaging-test: on_macos needs depends_on arch: :arm64 and a url" >&2
+  exit 1
+fi
 if grep -F -e forgejo -e tailnet -e Tailnet -e pre_install "$formula" "$manifest" >/dev/null; then
   echo "render-packaging-test: package metadata still names the forge, the tailnet or a host probe" >&2
   exit 1

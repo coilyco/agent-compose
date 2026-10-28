@@ -69,9 +69,8 @@ The binary carries no roster, so the copy is required. Skip it and the first
 `go install` writes to `GOBIN`, by default `$(go env GOPATH)/bin`, which needs to be on your
 `PATH`. `agent-compose version` reports the build you are running.
 
-Releases publish to this project's canonical forge, `forgejo.coilysiren.me`, which resolves
-only on the tailnet, and the GitHub mirror trails it with no roster asset. On the tailnet, the
-Homebrew tap, Scoop bucket and raw release binaries install `acompose` and the roster too. The
+Releases publish on GitHub. The Homebrew tap, Scoop bucket and raw release binaries install
+`acompose` and the roster too, with no tailnet needed. The
 commands are in [guides/quickstart.md](guides/quickstart.md).
 
 ## Use it

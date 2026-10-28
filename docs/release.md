@@ -4,8 +4,8 @@ How agent-compose releases, and what the v2 migration changed.
 
 ## Release
 
-Agent Compose releases are canonical on the forge. Every push to `main` enters a
-no-cancel queue and validates the exact commit, and the owning
+Agent Compose releases run on GitHub Actions (`.github/workflows/release.yml`). Every
+push to `main` enters a no-cancel queue and validates the exact commit, and the owning
 `scripts/release-impact.sh` classifier decides whether publication runs.
 Automatic publication occurs when the unreleased diff from the latest reachable
 `v*` release tag changes shipped product inputs:
@@ -21,13 +21,12 @@ before the first release tag, and this roll-forward window keeps a failed
 release eligible when a later main push carries only recovery evidence. The
 classifier fails closed to publication when its base revision is unavailable.
 
-An automatic release publishes a new minor version once its binaries build,
-cross-compiling macOS, Linux and Windows, creating the forge release, uploading
-checksums and package files, and updating Homebrew and Scoop when tokens allow.
-Those two bumps run **before** the GitHub mirror check, whose poll ceiling stays
-well under the job's `timeout-minutes`. Neither channel reads the mirror, and a
-step killed mid-loop takes every later step down with it, so a red release may
-still have shipped: check the tap.
+An automatic release publishes a new minor version once its binaries build. It tags and
+releases on GitHub as the coilyco-ops App, uploads the assets, and `release-verify-assets.sh`
+compares every URL the formula and manifest name with `dist/`. Only then do the tap and
+bucket bumps run, rebased and retried when another train moved the repo. A red release may
+still have shipped, so check the tap. The hosted gate skips `pre-commit`
+(`ACOMPOSE_SKIP_PRECOMMIT`) until this repo's hook pin moves to GitHub (COI-2943).
 
 ### Major release hold
 

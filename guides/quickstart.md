@@ -45,32 +45,30 @@ One line per seat. If instead you get `no roster is mounted`, the
 message lists every directory it tried, in order. Put the roster in one of them,
 or point `AGENT_COMPOSE_ROSTER` at wherever you unpacked it.
 
-On the tailnet, releases publish to the project's canonical forge,
-`forgejo.coilysiren.me`, which public DNS does not resolve to a reachable address.
-The GitHub mirror trails it and has no roster asset. There the package managers
+Releases publish on GitHub, so none of this needs the tailnet. The package managers
 install the binary and the roster together, with the fewest steps:
 
 ```sh
-brew tap coilyco-flight-deck/tap https://forgejo.coilysiren.me/coilyco-flight-deck/homebrew-tap
-brew install coilyco-flight-deck/tap/agent-compose
+brew tap coilyco/tap
+brew install coilyco/tap/agent-compose
 ```
 
 ```powershell
-scoop bucket add coilyco-flight-deck https://forgejo.coilysiren.me/coilyco-flight-deck/scoop-bucket
-scoop install coilyco-flight-deck/agent-compose
+scoop bucket add coilyco https://github.com/coilyco/scoop-bucket
+scoop install coilyco/agent-compose
 ```
 
 A raw binary from the
-[forge releases](https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases)
+[releases](https://github.com/coilyco/agent-compose/releases)
 needs two assets, not one, because the binary alone has no seats in it:
 
 ```sh
 curl -fLo ~/.local/bin/agent-compose \
-  https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases/latest/download/agent-compose-darwin-arm64
+  https://github.com/coilyco/agent-compose/releases/latest/download/agent-compose-darwin-arm64
 chmod +x ~/.local/bin/agent-compose
 
 mkdir -p ~/.agent-compose
-curl -fL https://forgejo.coilysiren.me/coilyco-flight-deck/agent-compose/releases/latest/download/agent-compose-roster.tar.gz \
+curl -fL https://github.com/coilyco/agent-compose/releases/latest/download/agent-compose-roster.tar.gz \
   | tar xz -C ~/.agent-compose
 ```
 

@@ -1,5 +1,5 @@
-# Forgejo-canonical release pipeline. A red run may still have shipped, because
-# the mirror check runs last and the package bumps do not read it. docs/release.md.
+# GitHub release pipeline (COI-2945): tag, release and assets are made on GitHub.
+# A red run may still have shipped, since the package bumps run last: docs/release.md.
 
 name: release
 
@@ -24,37 +24,40 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   release:
-    runs-on: docker
+    if: github.repository_owner == 'coilyco'
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
-    container:
-      image: forgejo.coilysiren.me/coilyco-flight-deck/agentic-os:release
-    outputs:
-      publish: ${{ steps.impact.outputs.publish }}
-      tag: ${{ steps.tag.outputs.new_tag }}
+    env:
+      ACOMPOSE_SKIP_PRECOMMIT: "1"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
-      - name: Cache pre-commit envs
-        uses: actions/cache@v4
+      - uses: actions/setup-go@v7
         with:
-          path: ~/.cache/pre-commit
-          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
-          restore-keys: |
-            pre-commit-${{ runner.os }}-
+          go-version-file: go.mod
+      - uses: coilyco/agentic-os/actions/setup-ci@dec64b18f8f74cc792af630d91b2a1814fd5940d
+        with:
+          tools: just uv
 
       - name: Cache uv downloads
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/uv
           key: uv-${{ runner.os }}-${{ hashFiles('uv.lock', 'pyproject.toml') }}
           restore-keys: |
             uv-${{ runner.os }}-
+
+      - id: app
+        uses: coilyco/agentic-os/actions/app-token@dec64b18f8f74cc792af630d91b2a1814fd5940d
+        with:
+          app_id: ${{ secrets.COILYCO_OPS_APP_ID }}
+          private_key_base64: ${{ secrets.COILYCO_OPS_APP_PRIVATE_KEY_BASE64 }}
+          repositories: agent-compose,homebrew-tap,scoop-bucket
 
       - name: Validate the release commit
         run: just test
@@ -69,16 +72,13 @@ jobs:
 
       - id: tag
         if: ${{ steps.impact.outputs.publish == 'true' }}
-        uses: coilyco-flight-deck/agentic-os/actions/tag-bump@main
+        uses: coilyco/agentic-os/actions/tag-bump@dec64b18f8f74cc792af630d91b2a1814fd5940d
         with:
+          token: ${{ steps.app.outputs.token }}
           bump: ${{ github.event.inputs.bump || 'minor' }}
           tag_name: ${{ github.event.inputs.tag || '' }}
           create_tag: false
           release_sha: ${{ github.sha }}
-
-      - name: Fetch the release tag into the build checkout
-        if: ${{ steps.impact.outputs.publish == 'true' }}
-        run: git fetch --tags --force
 
       - name: Stamp the computed tag into the build checkout
         if: ${{ steps.impact.outputs.publish == 'true' }}
@@ -92,16 +92,18 @@ jobs:
 
       - name: Publish the release tag
         if: ${{ steps.impact.outputs.publish == 'true' }}
-        uses: coilyco-flight-deck/agentic-os/actions/tag-bump@main
+        uses: coilyco/agentic-os/actions/tag-bump@dec64b18f8f74cc792af630d91b2a1814fd5940d
         with:
+          token: ${{ steps.app.outputs.token }}
           tag_name: ${{ steps.tag.outputs.new_tag }}
           create_tag: true
           release_sha: ${{ github.sha }}
 
       - id: create
         if: ${{ steps.impact.outputs.publish == 'true' }}
-        uses: coilyco-flight-deck/agentic-os/actions/create-release@main
+        uses: coilyco/agentic-os/actions/create-release@dec64b18f8f74cc792af630d91b2a1814fd5940d
         with:
+          token: ${{ steps.app.outputs.token }}
           tag: ${{ steps.tag.outputs.new_tag }}
           name: agent-compose ${{ steps.tag.outputs.new_tag }}
           body: ${{ steps.tag.outputs.changelog }}
@@ -109,34 +111,35 @@ jobs:
       - name: Attach release artifacts
         if: ${{ steps.impact.outputs.publish == 'true' }}
         env:
-          FORGEJO_TOKEN: ${{ github.token }}
-          RELEASE_ID: ${{ steps.create.outputs.release_id }}
-          FORGEJO_API: https://forgejo.coilysiren.me/api/v1/repos/${{ github.repository }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ steps.tag.outputs.new_tag }}
         run: sh scripts/ci/release-attach-assets.sh
+
+      - name: Verify every package URL serves the built bytes
+        if: ${{ steps.impact.outputs.publish == 'true' }}
+        run: sh scripts/ci/release-verify-assets.sh
+
       - name: Update the Homebrew tap
         if: ${{ steps.impact.outputs.publish == 'true' }}
         env:
-          TAP_WRITE_TOKEN: ${{ secrets.TAP_WRITE_TOKEN }}
+          APP_TOKEN: ${{ steps.app.outputs.token }}
           TAG: ${{ steps.tag.outputs.new_tag }}
-        run: sh scripts/ci/release-publish-tap.sh
+        run: sh scripts/ci/release-publish-package.sh homebrew-tap dist/agent-compose.rb Formula/agent-compose.rb
+
       - name: Update the Scoop bucket
         if: ${{ steps.impact.outputs.publish == 'true' }}
         env:
-          SCOOP_WRITE_TOKEN: ${{ secrets.SCOOP_WRITE_TOKEN }}
+          APP_TOKEN: ${{ steps.app.outputs.token }}
           TAG: ${{ steps.tag.outputs.new_tag }}
-        run: sh scripts/ci/release-publish-scoop.sh
+        run: sh scripts/ci/release-publish-package.sh scoop-bucket dist/agent-compose.json bucket/agent-compose.json
 
-      - name: Verify the GitHub mirror carries the tag
-        if: ${{ steps.impact.outputs.publish == 'true' }}
-        env:
-          TAG: ${{ steps.tag.outputs.new_tag }}
-        run: sh scripts/ci/release-verify-mirror.sh
       - name: Alert Sentry on main failure
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
         continue-on-error: true
         env:
           NOTE: >-
-            a red release may still have shipped: the package bumps run before
-            the mirror check, so check the tap before concluding nothing landed
+            a red release may still have shipped: the package bumps run last,
+            so check the tap before concluding nothing landed
           SENTRY_DSN: ${{ secrets.SENTRY_CI_DSN }}
         run: python3 scripts/alert_sentry.py

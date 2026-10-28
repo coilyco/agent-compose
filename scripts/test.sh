@@ -16,9 +16,12 @@ go build -o "$test_home/bin/agent-compose" ./cmd/agent-compose
 PATH="$test_home/bin:$PATH"
 export PATH
 sh scripts/release-impact-test.sh
-sh scripts/release-verify-mirror-test.sh
+sh scripts/release-publish-package-test.sh
+sh scripts/release-verify-assets-test.sh
+sh scripts/release-attach-assets-test.sh
 sh scripts/render-packaging-test.sh
 env HOME="$test_home" sh scripts/palette-web.sh test
 env HOME="$test_home" sh scripts/context-budget.sh
 sh scripts/check.sh
-pre-commit run --all-files
+# The hosted gate cannot clone the Forgejo hook pin yet: docs/release.md.
+[ -n "${ACOMPOSE_SKIP_PRECOMMIT:-}" ] || pre-commit run --all-files

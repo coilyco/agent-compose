@@ -46,7 +46,7 @@ tar -czf "$fixture_root/dist/agent-compose-bundles.tar.gz" -C "$fixture_root/see
 
 (
   cd "$fixture_root"
-  sh "$renderer"
+  GO_MOD="$script_dir/../go.mod" sh "$renderer"
 )
 
 formula="$fixture_root/dist/agent-compose.rb"
@@ -92,21 +92,20 @@ do
   fi
 done
 
-# Outsiders fail fast with one sentence: every download uses the tailnet strategy
-# and the Scoop manifest probes the host. teable:coilyco/homebrew-tap#8682
+# Anyone installs it: plain public GitHub URLs, no tailnet strategy, no host probe.
+base="https://github.com/coilyco/agent-compose/releases/download/v2.0.0/"
 urls=$(grep -c '^ *url "' "$formula")
-strategies=$(grep -c 'using: TailnetCurlDownloadStrategy' "$formula")
-if [ "$urls" -ne "$strategies" ] || [ "$urls" -lt 5 ]; then
-  echo "render-packaging-test: $strategies of $urls formula downloads use the tailnet strategy" >&2
+public=$(grep -c "^ *url \"$base" "$formula")
+if [ "$urls" -ne "$public" ] || [ "$urls" -lt 5 ]; then
+  echo "render-packaging-test: $public of $urls formula downloads are public GitHub URLs" >&2
   exit 1
 fi
-if ! grep -F 'require_relative "../lib/tailnet_download_strategy"' "$formula" >/dev/null; then
-  echo "render-packaging-test: the formula does not load the tailnet strategy" >&2
+if grep -F -e forgejo -e tailnet -e Tailnet -e pre_install "$formula" "$manifest" >/dev/null; then
+  echo "render-packaging-test: package metadata still names the forge, the tailnet or a host probe" >&2
   exit 1
 fi
-if ! grep -F "only available on the coilyco tailnet" "$manifest" >/dev/null ||
-  ! grep -F "ConnectAsync('forgejo.coilysiren.me', 443)" "$manifest" >/dev/null; then
-  echo "render-packaging-test: the Scoop manifest does not probe the tailnet host" >&2
+if ! python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$manifest"; then
+  echo "render-packaging-test: the Scoop manifest is not valid JSON" >&2
   exit 1
 fi
 

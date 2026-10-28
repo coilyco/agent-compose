@@ -13,63 +13,46 @@ import (
 )
 
 // Connector is a claude.ai connector that strict mode hides, so a granted role runs
-// behind an allowlist. Deny holds the tool names that keep the grant read-first.
+// behind an allowlist. Deny holds tool names a grant keeps out, empty for full access.
 type Connector struct {
 	URL   string
 	Roles []string
 	Deny  []string
 }
 
-const (
-	slackTool      = "mcp__claude_ai_Slack__"
-	stripeTool     = "mcp__claude_ai_Stripe__"
-	honeycombTool  = "mcp__claude_ai_Honeycomb__"
-	dexTool        = "mcp__claude_ai_Dex__"
-	wolframTool    = "mcp__claude_ai_Wolfram__"
-	claudeDocsTool = "mcp__claude_ai_Claude_Docs__"
-	// The connector's display name is not confirmed on a seat, so deny under both spellings.
-	wolframAlphaTool = "mcp__claude_ai_Wolfram_Alpha__"
-)
-
+// prod-director holds full read and write on every row below, so no row carries a Deny.
+// Kai, 2026-10-28, superseding the read-only decision on COI-2991.
 var claudeAIConnectors = []Connector{
-	{URL: "https://mcp.slack.com/mcp", Roles: []string{"prod-director"}, Deny: prefixed(slackTool,
-		"slack_add_list_record", "slack_add_reaction", "slack_complete_file_upload", "slack_create_canvas",
-		"slack_create_conversation", "slack_create_list", "slack_get_file_upload_url", "slack_schedule_message",
-		"slack_send_message", "slack_send_message_draft", "slack_update_canvas", "slack_update_list",
-		"slack_update_list_record")},
-	{URL: "https://mcp.stripe.com", Roles: []string{"prod-director"}, Deny: prefixed(stripeTool,
-		"stripe_api_write", "convert_currency", "send_money", "setup_recipient", "transfer_money")},
-	{URL: "https://mcp.honeycomb.io/mcp", Roles: []string{"prod-director"}, Deny: prefixed(honeycombTool,
-		"create_board", "create_marker", "create_recipient", "create_trigger", "update_board", "update_trigger",
-		"record_onboarding_state")},
+	{URL: "https://mcp.slack.com/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.stripe.com", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.honeycomb.io/mcp", Roles: []string{"prod-director"}},
 	{URL: "https://comment.io/mcp", Roles: []string{"prod-director"}},
-	// Dex admits the COI-2788 cleanup: merge, update, archive and delete contacts, add tags
-	// and groups. Removing tags or groups, notes, reminders and calendar writes stay out.
-	{URL: "https://mcp.getdex.com/mcp", Roles: []string{"prod-director"}, Deny: prefixed(dexTool,
-		"dex_create_contact", "dex_complete_keep_in_touch", "dex_create_note", "dex_update_note",
-		"dex_delete_note", "dex_create_reminder", "dex_update_reminder", "dex_delete_reminder",
-		"dex_update_tag", "dex_delete_tag", "dex_remove_tags_from_contacts", "dex_update_group",
-		"dex_delete_group", "dex_remove_contacts_from_group", "dex_create_custom_field",
-		"dex_update_custom_field", "dex_delete_custom_field", "dex_set_custom_field_values",
-		"dex_create_calendar_event", "dex_update_calendar_event", "dex_delete_calendar_event")},
-	// Wispr Flow's MCP is read-only per its docs, so nothing is denied. COI-2772
+	{URL: "https://mcp.getdex.com/mcp", Roles: []string{"prod-director"}},
 	{URL: "https://api.wisprflow.ai/connect/mcp", Roles: []string{"prod-director"}},
-	// Wolfram: the notebook and paclet writes stay out, the evaluators stay in. COI-2772
-	{URL: "https://agenttools.wolfram.com/mcp", Roles: []string{"prod-director"}, Deny: append(
-		prefixed(wolframTool, "WriteNotebook", "SubmitPaclet"),
-		prefixed(wolframAlphaTool, "WriteNotebook", "SubmitPaclet")...)},
-	// Claude Docs is read and query only. Every other tool the connector advertises stays
-	// denied, guide and export included, so widening it is its own decision.
-	{URL: "https://api.anthropic.com/v1/pages/mcp", Roles: []string{"prod-director"}, Deny: prefixed(claudeDocsTool,
-		"batch", "create", "delete", "export", "guide", "update")},
-}
-
-func prefixed(prefix string, names ...string) []string {
-	out := make([]string, len(names))
-	for i, name := range names {
-		out[i] = prefix + name
-	}
-	return out
+	{URL: "https://agenttools.wolfram.com/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://api.anthropic.com/v1/pages/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.airtable.com/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://sprites.dev/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://docsmcp.googleapis.com/mcp/v1", Roles: []string{"prod-director"}},
+	{URL: "https://slidesmcp.googleapis.com/mcp/v1", Roles: []string{"prod-director"}},
+	{URL: "https://sheetsmcp.googleapis.com/mcp/v1", Roles: []string{"prod-director"}},
+	{URL: "https://api.elevenlabs.io/v1/mcp-claude-marketplace", Roles: []string{"prod-director"}},
+	{URL: "https://ai.todoist.net/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.audible.com/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.exa.ai/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.calendly.com", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.trello.com/v1", Roles: []string{"prod-director"}},
+	{URL: "https://mcp-gateway-external-pilot.spotify.net/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.sentry.dev/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://drivemcp.googleapis.com/mcp/v1", Roles: []string{"prod-director"}},
+	{URL: "https://calendarmcp.googleapis.com/mcp/v1", Roles: []string{"prod-director"}},
+	{URL: "https://gmailmcp.googleapis.com/mcp/v1", Roles: []string{"prod-director"}},
+	// These need auth on the account. The row stays so each works once Kai authenticates.
+	{URL: "https://exe.dev/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp2.readwise.io/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.ws.sonos.com/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://mcp.axiom.co/mcp", Roles: []string{"prod-director"}},
+	{URL: "https://teable.coilysiren.me/mcp", Roles: []string{"prod-director"}},
 }
 
 // SelectWith is Select with an explicit connector table, so a test needs no shipped one.

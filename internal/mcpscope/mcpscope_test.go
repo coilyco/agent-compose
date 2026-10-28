@@ -341,58 +341,6 @@ func TestShippedConnectorsDenyOnlyWritesUnderTheirOwnPrefix(t *testing.T) {
 	}
 }
 
-func TestDexIsGrantedToProdDirectorOnlyAndNeverDeniesAReadOrTheCleanupVerbs(t *testing.T) {
-	var dex *Connector
-	for i := range claudeAIConnectors {
-		if claudeAIConnectors[i].URL == "https://mcp.getdex.com/mcp" {
-			dex = &claudeAIConnectors[i]
-		}
-	}
-	if dex == nil {
-		t.Fatal("the Dex connector is not in the shipped table")
-	}
-	if len(dex.Roles) != 1 || dex.Roles[0] != "prod-director" {
-		t.Errorf("Dex roles = %v, want prod-director only", dex.Roles)
-	}
-	denied := map[string]bool{}
-	for _, name := range dex.Deny {
-		denied[name] = true
-	}
-	// The cleanup verbs prod-director needs, and the calendar writes that invite people.
-	for _, tool := range []string{"merge_contacts", "update_contact", "delete_contacts", "create_tag", "add_tags_to_contacts", "create_group", "add_contacts_to_group"} {
-		if denied["mcp__claude_ai_Dex__dex_"+tool] {
-			t.Errorf("Dex denies %s, which the cleanup needs", tool)
-		}
-	}
-	if !denied["mcp__claude_ai_Dex__dex_create_calendar_event"] {
-		t.Error("Dex lets the seat create calendar events, which invite attendees")
-	}
-	for _, name := range dex.Deny {
-		tool := strings.TrimPrefix(name, "mcp__claude_ai_Dex__dex_")
-		if tool == name {
-			t.Errorf("%q is not a Dex tool", name)
-		}
-		for _, read := range []string{"search", "filter", "list", "get"} {
-			if strings.HasPrefix(tool, read+"_") {
-				t.Errorf("Dex denies the read tool %q", name)
-			}
-		}
-	}
-	inv := &Inventory{Servers: map[string]Server{}}
-	found := false
-	for _, c := range inv.Select("prod-director").Connectors() {
-		found = found || c.URL == dex.URL
-	}
-	if !found {
-		t.Error("a prod-director selection does not carry the Dex connector")
-	}
-	for _, c := range inv.Select("scientist").Connectors() {
-		if c.URL == dex.URL {
-			t.Error("a scientist selection carries the Dex connector")
-		}
-	}
-}
-
 // A header has no goose flag. The server is left out whole, never mounted without its
 // auth, and named so the launch can say so (COI-2639).
 func TestGooseLeavesOutAServerThatNeedsHeadersAndNamesIt(t *testing.T) {
@@ -418,66 +366,35 @@ func TestGooseLeavesOutAServerThatNeedsHeadersAndNamesIt(t *testing.T) {
 	}
 }
 
-func shippedConnector(t *testing.T, url string) Connector {
-	t.Helper()
-	for _, c := range claudeAIConnectors {
-		if c.URL == url {
-			return c
-		}
+// prod-director holds full read and write on every shipped connector, so a row that
+// regains a Deny fails here. The grants fixture proves the renderer would carry one.
+func TestProdDirectorConnectorsRenderWithNothingDenied(t *testing.T) {
+	granted := GrantedConnectors("prod-director")
+	if len(granted) == 0 {
+		t.Fatal("prod-director is granted no shipped connector, so the check proves nothing")
 	}
-	t.Fatalf("%s is not in the shipped table", url)
-	return Connector{}
-}
-
-func TestWisprFlowIsProdDirectorOnlyWithNothingDenied(t *testing.T) {
-	c := shippedConnector(t, "https://api.wisprflow.ai/connect/mcp")
-	if len(c.Roles) != 1 || c.Roles[0] != "prod-director" {
-		t.Errorf("Wispr Flow roles = %v, want prod-director only", c.Roles)
-	}
-	if len(c.Deny) != 0 {
-		t.Errorf("Wispr Flow is read-only per its docs, but denies %v", c.Deny)
-	}
-}
-
-func TestWolframDeniesTheWritesUnderBothSpellingsAndKeepsTheEvaluators(t *testing.T) {
-	c := shippedConnector(t, "https://agenttools.wolfram.com/mcp")
-	if len(c.Roles) != 1 || c.Roles[0] != "prod-director" {
-		t.Errorf("Wolfram roles = %v, want prod-director only", c.Roles)
-	}
-	denied := map[string]bool{}
-	for _, name := range c.Deny {
-		denied[name] = true
-	}
-	for _, prefix := range []string{"mcp__claude_ai_Wolfram__", "mcp__claude_ai_Wolfram_Alpha__"} {
-		for _, tool := range []string{"WriteNotebook", "SubmitPaclet"} {
-			if !denied[prefix+tool] {
-				t.Errorf("%s%s is not denied", prefix, tool)
-			}
-		}
-		for _, tool := range []string{"WolframAlpha", "WolframContext", "WolframLanguageEvaluator"} {
-			if denied[prefix+tool] {
-				t.Errorf("%s%s is denied, which blinds the grant", prefix, tool)
-			}
-		}
-	}
-}
-
-// The fixture is the tool set Claude Docs advertises, not a copy of the row. Rendered
-// settings must deny all but read and query. A tool added later needs a fixture entry.
-func TestClaudeDocsRendersAsReadAndQueryOnlyForProdDirector(t *testing.T) {
-	const url = "https://api.anthropic.com/v1/pages/mcp"
-	const prefix = "mcp__claude_ai_Claude_Docs__"
-	advertised := []string{"batch", "create", "delete", "export", "guide", "query", "read", "update"}
-	readable := map[string]bool{"read": true, "query": true}
-
 	inv := &Inventory{Servers: map[string]Server{}}
-	sel := inv.Select("prod-director")
-	listed := false
-	for _, entry := range sel.Allowlist("/home/k") {
-		listed = listed || entry["serverUrl"] == url
+	if got := inv.SelectWith("eng-platform", grants).DeniedTools(); len(got) != 1 {
+		t.Fatalf("a table row with a Deny renders %v, want it carried", got)
 	}
-	if !listed {
-		t.Fatalf("prod-director allowlist = %v, want %s", sel.Allowlist("/home/k"), url)
+
+	sel := inv.Select("prod-director")
+	listed := map[string]bool{}
+	for _, entry := range sel.Allowlist("/home/k") {
+		if url, ok := entry["serverUrl"].(string); ok {
+			listed[url] = true
+		}
+	}
+	for _, c := range granted {
+		if !listed[c.URL] {
+			t.Errorf("prod-director allowlist lacks %s", c.URL)
+		}
+		if len(c.Deny) != 0 {
+			t.Errorf("%s denies %v, but prod-director holds full access", c.URL, c.Deny)
+		}
+	}
+	if got := sel.DeniedTools(); len(got) != 0 {
+		t.Errorf("prod-director denies %v, want nothing", got)
 	}
 
 	path, err := WriteSettings(t.TempDir(), "prod-director", "", sel.Allowlist("/home/k"), sel.DeniedTools())
@@ -488,38 +405,22 @@ func TestClaudeDocsRendersAsReadAndQueryOnlyForProdDirector(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var rendered struct {
-		Permissions struct {
-			Deny []string `json:"deny"`
-		} `json:"permissions"`
+	if strings.Contains(string(raw), "mcp__claude_ai_") {
+		t.Errorf("rendered settings carry a claude.ai tool rule: %s", raw)
 	}
-	if err := json.Unmarshal(raw, &rendered); err != nil {
-		t.Fatal(err)
-	}
-	denied := map[string]bool{}
-	for _, rule := range rendered.Permissions.Deny {
-		denied[rule] = true
-	}
-	for _, tool := range advertised {
-		if readable[tool] && denied[prefix+tool] {
-			t.Errorf("%s%s is denied, which blinds the grant", prefix, tool)
-		}
-		if !readable[tool] && !denied[prefix+tool] {
-			t.Errorf("%s%s is not denied", prefix, tool)
-		}
-	}
+}
 
-	for _, role := range []string{"scientist", "eng-platform", "sysadmin-senior"} {
-		other := inv.Select(role)
-		for _, entry := range other.Allowlist("/home/k") {
-			if entry["serverUrl"] == url {
-				t.Errorf("%s allowlist carries Claude Docs", role)
-			}
+// A repeated URL is a row listed twice, and a query or fragment is where an opaque id
+// or token would ride, which belongs in SSM and never in the table.
+func TestShippedConnectorURLsAreUniqueHTTPSWithNoQuery(t *testing.T) {
+	seen := map[string]bool{}
+	for _, c := range claudeAIConnectors {
+		if !strings.HasPrefix(c.URL, "https://") || strings.ContainsAny(c.URL, "?# ") {
+			t.Errorf("%q is not a plain https URL", c.URL)
 		}
-		for _, rule := range other.DeniedTools() {
-			if strings.HasPrefix(rule, prefix) {
-				t.Errorf("%s denies %s without holding the grant", role, rule)
-			}
+		if seen[c.URL] {
+			t.Errorf("%s is listed twice", c.URL)
 		}
+		seen[c.URL] = true
 	}
 }

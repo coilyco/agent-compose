@@ -94,7 +94,7 @@ the launch with that slug.
 
 * Claude gets `--strict-mcp-config --mcp-config <file>`. The file renders each
   server exactly as the host projection writes `~/.claude.json`, under the state
-  directory at `mcp/<role>-<digest>.json`, so seats of one role share it. A header whose every `${VAR}` is unset or blank is left out and named in the launch output, since an empty `Authorization` turns off Claude's OAuth fallback (COI-2992, `internal/mcpscope/headers.go`). A role granted claude.ai connectors (COI-2720, `internal/mcpscope/connectors.go`) drops `--strict-mcp-config`, which hides them, for an `allowedMcpServers` list plus connector write denies in `--settings`.
+  directory at `mcp/<role>-<digest>.json`, so seats of one role share it. A header whose every `${VAR}` is unset or blank is left out and named in the launch output, since an empty `Authorization` turns off Claude's OAuth fallback (COI-2992, `internal/mcpscope/headers.go`). A role granted claude.ai connectors (COI-2720, `internal/mcpscope/connectors.go`) drops `--strict-mcp-config`, which hides them, for an `allowedMcpServers` list plus any connector denies in `--settings`.
 * Codex gets `-c mcp_servers.<name>.enabled=false` per omitted server, since its
   registry is a shared host file.
 * Goose gets `session --no-profile`, its own config's enabled builtin and platform

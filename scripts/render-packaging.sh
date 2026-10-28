@@ -39,10 +39,9 @@ class AgentCompose < Formula
   end
 
   on_macos do
-    on_arm do
-      url "${BASE}/agent-compose-darwin-arm64"
-      sha256 "${DARWIN_ARM64}"
-    end
+    depends_on arch: :arm64
+    url "${BASE}/agent-compose-darwin-arm64"
+    sha256 "${DARWIN_ARM64}"
   end
   on_linux do
     on_intel do

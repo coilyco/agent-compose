@@ -80,6 +80,9 @@ func nativeMCPScope(w io.Writer, loadPerson func() (*person.Person, error), role
 	}
 	sel := inv.Select(role)
 	fmt.Fprintln(w, sel.Summary())
+	for _, line := range sel.HeaderOmissions() {
+		fmt.Fprintln(w, line)
+	}
 	switch harness {
 	case "codex":
 		return mcpLaunch{CodexArgs: sel.CodexOverrides()}, nil

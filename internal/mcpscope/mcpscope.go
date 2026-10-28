@@ -43,6 +43,7 @@ type Selection struct {
 	Omitted  []string
 	Scoped   int // selected servers that carry a role tag
 	servers  map[string]Server
+	lookup   func(string) (string, bool) // the ${VAR} source of a header, os.LookupEnv when nil
 
 	connectors []Connector
 }
@@ -147,7 +148,7 @@ func (sel Selection) Summary() string {
 func (sel Selection) WriteClaude(dir, home string) (string, error) {
 	out := map[string]any{}
 	for name, s := range sel.servers {
-		out[name] = claudeServer(s, home)
+		out[name] = claudeServer(sel.withReadableHeaders(s), home)
 	}
 	payload, err := json.MarshalIndent(map[string]any{"mcpServers": out}, "", "  ")
 	if err != nil {
@@ -329,7 +330,7 @@ func (sel Selection) OpenCodeConfig(home string) (string, error) {
 	mcp := map[string]any{}
 	for _, name := range sel.Selected {
 		s := sel.servers[name]
-		server := claudeServer(s, home)
+		server := claudeServer(sel.withReadableHeaders(s), home)
 		if endpoint := serverEndpoint(s); endpoint != "" {
 			entry := map[string]any{"type": "remote", "url": server["url"], "enabled": true}
 			if headers, ok := server["headers"]; ok {

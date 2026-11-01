@@ -91,7 +91,7 @@ to either contract need compatibility tests against both paths before release.
 
 ## Release
 
-Canonical development lives on Forgejo and releases run on GitHub Actions. Issues live in the Teable
+Canonical development lives on GitHub and releases run on GitHub Actions. Issues live in the Teable
 tracker, cited as `teable:<owner>/<repo>#<n>`. Every push to
 `main` queues the single-stage release workflow, validates the commit, bumps the
 minor version, and publishes version-stamped cross-platform binaries plus
@@ -145,4 +145,4 @@ switching tasks, or ending a session. The remote is the only durable artifact.
 * [README.md](README.md) - human-facing product boundary and status.
 * [docs/FEATURES.md](docs/FEATURES.md) - current shipped inventory.
 * [justfile](justfile) - development recipes.
-* [Catalog trifecta convention](https://forgejo.coilysiren.me/coilyco-flight-deck/agentic-os/src/branch/main/docs/features-release-tooling.md) - shared entry-point structure.
+* [Catalog trifecta convention](https://github.com/coilyco/agentic-os/blob/v0.65.0/docs/features-release-tooling.md) - shared entry-point structure.

@@ -10,12 +10,11 @@ same answer.
 
 ## 1. Install it
 
-Releases publish to the project's own public Forgejo server, which is why the
-tap names a URL.
+Releases publish on GitHub, so the tap resolves by name with no URL.
 
 ```sh
-brew tap coilyco-flight-deck/tap https://forgejo.coilysiren.me/coilyco-flight-deck/homebrew-tap
-brew install coilyco-flight-deck/tap/agent-compose
+brew tap coilyco/tap
+brew install coilyco/tap/agent-compose
 ```
 
 Check it took:

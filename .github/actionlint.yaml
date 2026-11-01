@@ -1,3 +1,2 @@
 self-hosted-runner:
-  labels:
-    - docker
+  labels: []

@@ -20,9 +20,8 @@ import urllib.request
 import uuid
 from typing import Any
 
-# GITHUB_SERVER_URL is the cluster-local name the runner registered against, so
-# a link built from it is unreachable from a phone. This is the forge ROOT_URL.
-DEFAULT_FORGE_URL = "https://forgejo.coilysiren.me"
+# Fallback when neither FORGE_URL nor GITHUB_SERVER_URL is set (COI-3104).
+DEFAULT_FORGE_URL = "https://github.com"
 
 # Sentry caps a tag value at 200 characters and drops the event on a longer one.
 TAG_LIMIT = 200
@@ -51,14 +50,17 @@ def run_url() -> str:
     explicit = os.environ.get("RUN_URL", "").strip()
     if explicit:
         return explicit
-    base = os.environ.get("FORGE_URL", "").strip() or DEFAULT_FORGE_URL
+    base = (
+        os.environ.get("FORGE_URL", "").strip()
+        or os.environ.get("GITHUB_SERVER_URL", "").strip()
+        or DEFAULT_FORGE_URL
+    )
     repo = os.environ.get("REPO", "") or os.environ.get("GITHUB_REPOSITORY", "")
-    # The web URL takes the per-repo run index. GITHUB_RUN_ID is the forge's global
-    # row id, so a link built from it opens the wrong run or none.
-    run_number = os.environ.get("GITHUB_RUN_NUMBER", "")
-    if not (repo and run_number):
+    # GitHub's run URL takes GITHUB_RUN_ID. The per-repo index was Forgejo's form.
+    run_id = os.environ.get("GITHUB_RUN_ID", "")
+    if not (repo and run_id):
         return "?"
-    return f"{base.rstrip('/')}/{repo}/actions/runs/{run_number}"
+    return f"{base.rstrip('/')}/{repo}/actions/runs/{run_id}"
 
 
 def parse_dsn(dsn: str) -> str:

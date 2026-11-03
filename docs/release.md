@@ -25,8 +25,7 @@ An automatic release publishes a new minor version once its binaries build. It t
 releases on GitHub as the coilyco-ops App, uploads the assets, and `release-verify-assets.sh`
 compares every URL the formula and manifest name with `dist/`. Only then do the tap and
 bucket bumps run, rebased and retried when another train moved the repo. A red release may
-still have shipped, so check the tap. The hosted gate skips `pre-commit`
-(`ACOMPOSE_SKIP_PRECOMMIT`) until this repo's hook pin moves to GitHub (COI-2943).
+still have shipped, so check the tap.
 
 ### Major release hold
 

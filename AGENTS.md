@@ -104,7 +104,7 @@ Protocol compatibility is deliberately thin: consumers check the manifest
 <!-- BEGIN managed by agentic-os/scripts/apply-git-workflow.py -->
 ### Git workflow
 
-**This repo runs the `pull-request-and-merge` lane**, declared as `ward.workflow` in this file's frontmatter. The agent commits to a task branch, pushes it, opens a Forgejo pull request, and **merges that pull request itself** once it is green. The author of the code is the one who merges it. Opening the pull request is a step, never the stopping point.
+**This repo runs the `pull-request-and-merge` lane**, declared as `ward.workflow` in this file's frontmatter. The agent commits to a task branch, pushes it, opens a GitHub pull request, and **merges that pull request itself** once it is green. The author of the code is the one who merges it. Opening the pull request is a step, never the stopping point.
 
 The fleet runs one lane, and it authorizes the agent end to end. Pushing straight to `main` is over: `merge-remote-main` is retired, so no repo can declare its way back to one.
 
@@ -118,6 +118,7 @@ The fleet runs one lane, and it authorizes the agent end to end. Pushing straigh
 * **ALWAYS open the pull request** in the same turn as the branch's first push, on every lane except `remote-branch-only`. A pushed branch with no pull request is litter nobody reviews.
 * **NEVER `--no-verify`** and **NEVER force-push**. Those two are the real walls, and they stay closed.
 * **ALWAYS merge your own pull request on `pull-request-and-merge`**, in the same turn, as soon as it is green. Reporting it as open and awaiting someone is the failure this lane exists to prevent.
+* **A merge refused because the head branch is behind the base branch is yours to fix, never a reason to ask.** Update the branch yourself, with `gh pr update-branch <number> --repo <owner>/<repo>` or by merging `origin/main` into it and pushing, never by force. Wait for green, then merge with `gh pr merge <number> --repo <owner>/<repo> --squash`.
 * **NEVER merge on `pull-request` or `remote-branch-only`.** Those two stop where they stop, and the director merge lane carries a `pull-request` from there.
 <!-- END managed by agentic-os/scripts/apply-git-workflow.py -->
 

@@ -1,30 +1,10 @@
 """Label an autonomy response without a human, where the response is legible.
 
-This was built on the claim that autonomy, alone among the seven types, needs no
-human judgement: the in-half passes when the seat did the work, the out-half when
-it handed the decision back, and which happened is visible in the text. The first
-run disconfirmed that. Half of real responses state no stance at all, and a
-capped answer often reads as advice to the reader with no subject doing anything.
-
-What survives is narrower and still worth having. Where a response does land on a
-stance, that stance is cheap and auditable to read, and every label it keeps
-carries the verbatim span it read it from.
-
-It abstains rather than guesses. `classify` returns UNCLEAR whenever the response
-carries no stance marker or lands on both, and `grade` returns None there so the
-case stays unannotated and reaches a human. An automated grader that guesses on
-the hard cases reports its own coverage back as agreement, and this one is aimed
-at exactly the population where that would be most flattering.
-
-MEASURED, and it is not good enough to annotate with: on 28 held-out board
-responses from the first autonomy run (deepseek-v4-pro, 3 epochs, 14 cases) it
-abstained on 15, so 54 percent of real responses reach a human anyway. It ships
-as a reading aid and a validation surface, not as a scorer. teable:coilyco-
-flight-deck/agentic-os#7688 carries the run.
-
-Stance is read off where the response lands, not off what it mentions. A reply
-that does the work and then raises a separate question has still acted, and a
-bag-of-phrases counts its question and calls it deferral. See docs/grading.md.
+Abstains rather than guesses: `classify` returns UNCLEAR on no stance marker or both,
+and `grade` returns None so a human sees the case. Each label keeps its verbatim span.
+MEASURED on 28 held-out board responses (deepseek-v4-pro, 3 epochs, 14 cases): it
+abstained on 15, so 54 percent still reach a human. A reading aid, not a scorer.
+Stance is read off where the response lands, not what it mentions: docs/evaluation.md.
 """
 
 from __future__ import annotations

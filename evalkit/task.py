@@ -1,11 +1,11 @@
-"""The Inspect task. Replaces a hand-rolled fan-out with `inspect eval`.
-
+"""The Inspect task, replacing a hand-rolled fan-out with `inspect eval`.
 Run it unscored, because the scorer is a human. Inspect calls the repetition an
 epoch, which is what n=5 was. See docs/evaluation.md.
 
     AGENTPROXY_BASE_URL=http://ser8:8080/v1 \\
-    inspect eval evalkit/task.py --model openai-api/agentproxy/evaluation/deepseek-v4-pro \\
-      --epochs 5 --no-score -T challenges=challenges.yaml -T prompts=.evalkit/prompts
+    inspect eval evalkit/task.py \\
+      --model openai-api/agentproxy/evaluation/deepseek-v4-pro --epochs 5 --no-score \\
+      -T challenges=challenges.yaml -T prompts=.evalkit/prompts
 """
 
 from __future__ import annotations

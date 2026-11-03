@@ -23,5 +23,9 @@ sh scripts/render-packaging-test.sh
 env HOME="$test_home" sh scripts/palette-web.sh test
 env HOME="$test_home" sh scripts/context-budget.sh
 sh scripts/check.sh
-# The hosted gate cannot clone the Forgejo hook pin yet: docs/release.md.
-[ -n "${ACOMPOSE_SKIP_PRECOMMIT:-}" ] || pre-commit run --all-files
+# The hosted job installs just and uv only, so uv supplies pre-commit there.
+if command -v pre-commit >/dev/null 2>&1; then
+  pre-commit run --all-files
+else
+  uvx pre-commit run --all-files
+fi

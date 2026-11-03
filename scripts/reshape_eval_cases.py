@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 """Reshape challenges.yaml's 121 hand-authored cases into housecast's EvalCase schema.
 
-Migration step 2 of the eval-only refactor (`teable:coilyco-flight-deck/
-agent-compose#7092`'s doc): `id`/`prompt`/`target` map straight across
-(`prompt` renamed `input`), and `entity`/`test_type`/`attribute`/`half`/
-`pair_id` - this deployment's roster vocabulary - fold into the opaque
-`metadata` bag housecast's schema does not otherwise look inside. The output
-still sits in this repo; moving it into agent-compose is a later step, not
-this script's job.
-
-No auto-generation: this only reshapes what a human already wrote.
+`id`/`prompt`/`target` map across (`prompt` becomes `input`), and the roster vocabulary
+(`entity`, `test_type`, `attribute`, `half`, `pair_id`) folds into the opaque `metadata`
+bag. Step 2 of the eval-only refactor, agent-compose#7092. The output still sits in
+this repo. No auto-generation: it only reshapes what a human already wrote.
 """
 
 from __future__ import annotations

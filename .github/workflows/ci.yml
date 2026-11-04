@@ -4,6 +4,8 @@
 name: ci
 
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -39,3 +41,11 @@ jobs:
 
       - name: Validate the pull request
         run: just test
+  gate:
+    name: gate
+    if: ${{ always() }}
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1

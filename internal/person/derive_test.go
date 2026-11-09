@@ -35,7 +35,7 @@ func derivedFields(t *testing.T, source fs.FS, slug string) map[string]any {
 func TestDeriveMergesMappingsReplacesListsAndDropsNull(t *testing.T) {
 	source := mergeFS(
 		roleFile("senior", "role: senior\norder: 2\nskill: role-senior\nguardrail: reversible-steps\n"+
-			"boundaries: [a, b]\nvoice:\n  summary: parent summary\n  tell: parent tell\narchived: true\n"),
+			"boundaries: [a, b]\nvoice:\n  summary: parent summary\n  tell: parent tell\narchived: true\npinned_by_default: true\n"),
 		roleFile("junior", "role: junior\norder: 11\nderives: senior\nguardrail: null\n"+
 			"boundaries: [a]\nvoice:\n  tell: child tell\n"),
 	)
@@ -55,6 +55,9 @@ func TestDeriveMergesMappingsReplacesListsAndDropsNull(t *testing.T) {
 	}
 	if _, ok := fields["archived"]; ok {
 		t.Error("retirement must not inherit")
+	}
+	if _, ok := fields["pinned_by_default"]; ok {
+		t.Error("a pin default must not inherit")
 	}
 	if fields["color_twin"] != "senior" || fields["derives"] != "senior" {
 		t.Errorf("derives implies color_twin and survives into the fragment, got %v", fields)
@@ -146,5 +149,36 @@ func TestDerivedRoleCannotOwnABoundary(t *testing.T) {
 	_, err := loadSource(source, "fixture")
 	if err == nil || !strings.Contains(err.Error(), "is a derived role") {
 		t.Fatalf("a derived boundary owner must be refused, got %v", err)
+	}
+}
+
+func TestPinnedByDefaultLoadsFromARoleAndReachesTheCatalog(t *testing.T) {
+	source := shippedWith(t, roleFile("junior-eng", derivedEngineer+"pinned_by_default: true\n"))
+	charter := strings.Replace(string(source[dataRoot+"/role-eng-platform/SKILL.md"].Data),
+		"name: role-eng-platform", "name: role-junior-eng", 1)
+	source[dataRoot+"/role-junior-eng/SKILL.md"] = &fstest.MapFile{Data: []byte(charter), Mode: 0o644}
+	p, err := loadSource(source, "fixture")
+	if err != nil {
+		t.Fatalf("load: %v", err)
+	}
+	if err := resolveAndValidatePerson(p); err != nil {
+		t.Fatalf("validate: %v", err)
+	}
+	entries, err := p.RoleCatalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	declared := false
+	for _, entry := range entries {
+		if entry.PinnedByDefault != p.Roles[entry.Slug].PinnedByDefault {
+			t.Errorf("%s: the catalog says %v, the role says %v", entry.Slug, entry.PinnedByDefault, p.Roles[entry.Slug].PinnedByDefault)
+		}
+		declared = declared || (entry.Slug == "junior-eng" && entry.PinnedByDefault)
+	}
+	if !declared {
+		t.Error("a role that declares pinned_by_default must read true in the catalog")
+	}
+	if p.Roles["eng-platform"].PinnedByDefault {
+		t.Error("declaring it on a derived role must not pin its parent")
 	}
 }

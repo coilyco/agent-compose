@@ -90,6 +90,7 @@ type yamlRoleEntity struct {
 	Acts             []yamlAct            `yaml:"acts,omitempty"`
 	CopyContract     *yamlCopyContract    `yaml:"copy_contract,omitempty"`
 	Archived         bool                 `yaml:"archived,omitempty"`
+	PinnedByDefault  bool                 `yaml:"pinned_by_default,omitempty"`
 }
 
 type yamlCarried struct {
@@ -229,6 +230,7 @@ func (r *yamlRoleEntity) model() Role {
 		Derives:             r.Derives,
 		Skill:               r.Skill,
 		Archived:            r.Archived,
+		PinnedByDefault:     r.PinnedByDefault,
 		Methods:             r.Methods,
 		SupportedModelTiers: r.ModelTier,
 		Personalities:       r.Personalities,

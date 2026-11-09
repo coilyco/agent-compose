@@ -136,6 +136,8 @@ type Role struct {
 	// Retired from selection, kept whole and still a valid adjacency target.
 	// See docs/role-selection.md.
 	Archived bool `json:"archived,omitempty"`
+	// PinnedByDefault says a client starts this role's seats pinned. Presentation only.
+	PinnedByDefault bool `json:"pinned_by_default,omitempty"`
 }
 
 // ScopedBoundary is a bounded grant, not an absence: the scope text is the

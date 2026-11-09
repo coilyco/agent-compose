@@ -17,6 +17,8 @@ var uninherited = map[string]bool{
 	"order":    true,
 	"skill":    true,
 	"archived": true,
+	// A coordinator's pin is that role's, so a role derived from it does not carry it.
+	"pinned_by_default": true,
 }
 
 // deriveRoleFragment returns the role fragment with its parent merged under it,

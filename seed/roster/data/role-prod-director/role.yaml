@@ -6,6 +6,7 @@ identity:
     - Wyvern-Goose
     - Chimera-Goose
 order: 6
+pinned_by_default: true
 display_name: Portfolio Director
 purpose: Decide what the portfolio does next, and carry each decision to its gate.
 stance: standing on two legs, forward lean, weight committed, mid-stride

@@ -24,21 +24,22 @@ type PersonalityCatalogEntry struct {
 }
 
 type RoleCatalogEntry struct {
-	Slug          string         `json:"slug"`
-	DisplayName   string         `json:"display_name"`
-	Purpose       string         `json:"purpose"`
-	Skill         string         `json:"skill"`
-	SkillSource   string         `json:"skill_source"`
-	SkillDigest   string         `json:"skill_digest"`
-	Methods       []string       `json:"methods,omitempty"`
-	Identity      *AgentIdentity `json:"identity,omitempty"`
-	Seats         []Seat         `json:"seats"`
-	Personalities []string       `json:"personalities"`
-	FavoriteColor string         `json:"favorite_color"`
-	Background    string         `json:"background"`
-	Archived      bool           `json:"archived,omitempty"`
-	Derives       string         `json:"derives,omitempty"`
-	ModelTiers    []string       `json:"model_tiers,omitempty"`
+	Slug            string         `json:"slug"`
+	DisplayName     string         `json:"display_name"`
+	Purpose         string         `json:"purpose"`
+	Skill           string         `json:"skill"`
+	SkillSource     string         `json:"skill_source"`
+	SkillDigest     string         `json:"skill_digest"`
+	Methods         []string       `json:"methods,omitempty"`
+	Identity        *AgentIdentity `json:"identity,omitempty"`
+	Seats           []Seat         `json:"seats"`
+	Personalities   []string       `json:"personalities"`
+	FavoriteColor   string         `json:"favorite_color"`
+	Background      string         `json:"background"`
+	Archived        bool           `json:"archived,omitempty"`
+	PinnedByDefault bool           `json:"pinned_by_default,omitempty"`
+	Derives         string         `json:"derives,omitempty"`
+	ModelTiers      []string       `json:"model_tiers,omitempty"`
 }
 
 type SeatCatalogEntry struct {
@@ -105,21 +106,22 @@ func (p *Person) RoleCatalog() ([]RoleCatalogEntry, error) {
 	for _, name := range p.RoleOrder {
 		role := p.Roles[name]
 		out = append(out, RoleCatalogEntry{
-			Slug:          name,
-			DisplayName:   p.RoleDisplayName(name),
-			Purpose:       role.Purpose,
-			Skill:         p.RoleSkillID(name),
-			SkillSource:   role.SkillSource,
-			SkillDigest:   role.SkillDigest,
-			Methods:       append([]string(nil), role.Methods...),
-			Identity:      role.Identity,
-			Seats:         append([]Seat(nil), role.Seats...),
-			Personalities: append([]string(nil), role.Personalities...),
-			FavoriteColor: snapshot.Roles[name].FavoriteColor,
-			Background:    role.Background,
-			Archived:      role.Archived,
-			Derives:       role.Derives,
-			ModelTiers:    append([]string(nil), role.SupportedModelTiers...),
+			Slug:            name,
+			DisplayName:     p.RoleDisplayName(name),
+			Purpose:         role.Purpose,
+			Skill:           p.RoleSkillID(name),
+			SkillSource:     role.SkillSource,
+			SkillDigest:     role.SkillDigest,
+			Methods:         append([]string(nil), role.Methods...),
+			Identity:        role.Identity,
+			Seats:           append([]Seat(nil), role.Seats...),
+			Personalities:   append([]string(nil), role.Personalities...),
+			FavoriteColor:   snapshot.Roles[name].FavoriteColor,
+			Background:      role.Background,
+			Archived:        role.Archived,
+			PinnedByDefault: role.PinnedByDefault,
+			Derives:         role.Derives,
+			ModelTiers:      append([]string(nil), role.SupportedModelTiers...),
 		})
 	}
 	return out, nil
